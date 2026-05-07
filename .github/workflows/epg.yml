@@ -1,0 +1,36 @@
+name: EPG
+
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the public repository
+        uses: actions/checkout@v4
+
+      - name: Download the EPG Data
+        run: |
+          curl --fail --location --silent --show-error \
+            "https://iptv-epg.org/files/epg-de.xml" \
+            --output ./misc/epg-de.xml
+
+      - name: Compress the EPG data
+        run: |
+          gzip -c ./misc/epg-de.xml > ./misc/epg-de.xml.gz
+
+      - name: Commit the changes to the public repository
+        run: |
+          git config --local user.name "BoBoBaSs84"
+          git config --local user.email "73112377+BoBoBaSs84@users.noreply.github.com"
+          git add .
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: updated epg files" -m "Co-Authored-By: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+            git push
+          fi
