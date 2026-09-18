@@ -6,5 +6,4 @@
 /// file paths in a platform-agnostic manner. It may include methods for combining paths,
 /// retrieving directory information, and ensuring compatibility across different operating systems.
 /// </summary>
-public partial interface IPathProvider
-{ }
+public partial interface IPathProvider;
