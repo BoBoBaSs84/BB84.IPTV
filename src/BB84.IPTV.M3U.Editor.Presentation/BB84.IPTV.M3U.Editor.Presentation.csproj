@@ -3,9 +3,6 @@
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="System.Drawing.Common" />
-	</ItemGroup>
-	<ItemGroup>
 		<ProjectReference Include="..\BB84.IPTV.M3U.Editor.Application\BB84.IPTV.M3U.Editor.Application.csproj" />
 	</ItemGroup>
 	<ItemGroup>
