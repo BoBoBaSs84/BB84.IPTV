@@ -1,0 +1,16 @@
+{
+	"profiles": {
+		"BB84.IPTV.M3U.Editor.Development": {
+			"commandName": "Project",
+			"environmentVariables": {
+				"DOTNET_ENVIRONMENT": "Development"
+			}
+		},
+		"BB84.IPTV.M3U.Editor.Production": {
+			"commandName": "Project",
+			"environmentVariables": {
+				"DOTNET_ENVIRONMENT": "Production"
+			}
+		}
+	}
+}

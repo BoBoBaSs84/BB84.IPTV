@@ -1,0 +1,31 @@
+﻿using System.Diagnostics.CodeAnalysis;
+
+using BB84.IPTV.M3U.Editor.Infrastructure.Extensions;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+namespace BB84.IPTV.M3U.Editor.Infrastructure.Installer;
+
+/// <summary>
+/// The infrastructure dependency injection installer class.
+/// </summary>
+[SuppressMessage("Style", "IDE0058", Justification = "Not relevant here, dependency injection.")]
+public static class DependencyInjectionInstaller
+{
+	/// <summary>
+	/// Registers the infrastructure services to the <paramref name="services"/> collection.
+	/// </summary>
+	/// <param name="services">The service collection to enrich.</param>
+	/// <param name="environment">The host environment instance to use.</param>
+	/// <returns>The enriched service collection.</returns>
+	public static IServiceCollection RegisterInfrastructureServices(this IServiceCollection services, IHostEnvironment environment)
+	{
+		services.RegisterLoggerService(environment)
+			.RegisterDatabaseContext(environment)
+			.RegisterHttpClients()
+			.RegisterServices();
+
+		return services;
+	}
+}

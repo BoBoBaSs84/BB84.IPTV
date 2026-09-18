@@ -1,0 +1,59 @@
+<Project>
+
+	<PropertyGroup>
+		<VersionMajor>1</VersionMajor>
+		<VersionMinor>0</VersionMinor>
+		<VersionPatch>$([System.DateTime]::UtcNow.ToString("MMdd"))</VersionPatch>
+		<VersionRevision>$([System.DateTime]::UtcNow.TimeOfDay.TotalMinutes.ToString("0"))</VersionRevision>
+		<VersionPrefix>$(VersionMajor).$(VersionMinor).$(VersionPatch).$(VersionRevision)</VersionPrefix>
+		<VersionSuffix Condition="'$(Configuration)'=='Debug'">Development</VersionSuffix>
+		<FileVersion>$(VersionMajor).$(VersionMinor).$(VersionPatch)</FileVersion>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<AnalysisMode>recommended</AnalysisMode>
+		<AppendTargetFrameworkToOutputPath>True</AppendTargetFrameworkToOutputPath>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+		<DebugType>full</DebugType>
+		<Deterministic>True</Deterministic>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>latest</LangVersion>
+		<TargetFrameworks>net8.0-windows</TargetFrameworks>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DebugType>none</DebugType>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('Tests'))">
+		<Author>BoBoBaSs84</Author>
+		<Authors>$(Author)</Authors>
+		<Company>https://github.com/$(Author)</Company>
+		<Copyright>Copyright © $([System.DateTime]::UtcNow.Year) $(Author)</Copyright>
+		<Description>...</Description>
+		<Product>BB84.IPTV.M3U.Editor</Product>
+		<Title>$(AssemblyName)</Title>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>http://www.github.com/$(Author)/$(Product)</RepositoryUrl>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(MSBuildProjectName.EndsWith('Tests'))">
+		<IsPackable>False</IsPackable>
+		<IsTestProject>True</IsTestProject>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup Condition="!$(MSBuildProjectName.EndsWith('Tests'))">
+		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<IsTestProject>True</IsTestProject>
+	</PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Moq" />
+    <PackageReference Include="MSTest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\BB84.IPTV.M3U.Editor.Presentation\BB84.IPTV.M3U.Editor.Presentation.csproj" />
+  </ItemGroup>
+</Project>
