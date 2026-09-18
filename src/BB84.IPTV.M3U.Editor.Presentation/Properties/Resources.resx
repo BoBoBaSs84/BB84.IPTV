@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="About" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\about.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Application" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tv.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Database" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\data.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
+    <value>Check Database</value>
+  </data>
+  <data name="DatabaseControl.CreateDatabaseButton.Content" xml:space="preserve">
+    <value>Create Database</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCheckedCheckBox.Content" xml:space="preserve">
+    <value>Database Checked</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCheckingCheckBox.Content" xml:space="preserve">
+    <value>Database Checking</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCreatedCheckBox.Content" xml:space="preserve">
+    <value>Database Created</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCreatingCheckBox.Content" xml:space="preserve">
+    <value>Database Creating</value>
+  </data>
+  <data name="DatabaseControl.DatabaseImportedCheckBox.Content" xml:space="preserve">
+    <value>Database Imported</value>
+  </data>
+  <data name="DatabaseControl.DatabaseImportingCheckBox.Content" xml:space="preserve">
+    <value>Database Importing</value>
+  </data>
+  <data name="DatabaseControl.DatabaseOperationsGroupBox.Header" xml:space="preserve">
+    <value>Database Operations</value>
+  </data>
+  <data name="DatabaseControl.DatabaseStatusGroupBox.Header" xml:space="preserve">
+    <value>Database Status</value>
+  </data>
+  <data name="DatabaseControl.ImportDatabaseButton.Content" xml:space="preserve">
+    <value>Import Database</value>
+  </data>
+  <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
+    <value>Import Progress</value>
+  </data>
+  <data name="ErrorMessageCaptition" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Exit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\exit.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FlagFrance" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flag_france.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FlagGermany" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flag_germany.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FlagItaly" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flag_italy.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FlagSpain" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flag_spain.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FlagUSA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flag_usa.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InformationMessageCaptition" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="Languages" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\earth.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Merge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\floppy_disks.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="New" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\document.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Open" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\folder_document.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Print" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\printer.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PrintPreview" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\document_view.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="QuestionMessageCaptition" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="RetryMessageCaptition" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\floppy_disk.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveAs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\floppy_disk_edit.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gear.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SettingsControl.AutoSaveCheckBox.Content" xml:space="preserve">
+    <value>Auto Save</value>
+  </data>
+  <data name="SettingsControl.AutoSaveIntervalTextBlock.Text" xml:space="preserve">
+    <value>Auto Save Interval (min):</value>
+  </data>
+  <data name="SettingsControl.CommandTimeoutTextBlock.Text" xml:space="preserve">
+    <value>Command Timeout (sec):</value>
+  </data>
+  <data name="SettingsControl.DatabaseGroupBox.Header" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="SettingsControl.EnableLoggingCheckBox.Content" xml:space="preserve">
+    <value>Enable Logging</value>
+  </data>
+  <data name="SettingsControl.GeneralGroupBox.Header" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SettingsControl.LanguageTextBlock.Text" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="SettingsControl.LoadSettingsButton.Content" xml:space="preserve">
+    <value>Load Settings</value>
+  </data>
+  <data name="SettingsControl.LogLevelTextBlock.Text" xml:space="preserve">
+    <value>Log Level:</value>
+  </data>
+  <data name="SettingsControl.MaxBatchSizeTextBlock.Text" xml:space="preserve">
+    <value>Max Batch Size:</value>
+  </data>
+  <data name="SettingsControl.SaveSettingsButton.Content" xml:space="preserve">
+    <value>Save Settings</value>
+  </data>
+  <data name="ToolTip.Metadata.Censored" xml:space="preserve">
+    <value>Indicates that the channel needs to be protected by parental control, if such is present in the device, can take values 0 and 1.</value>
+  </data>
+  <data name="ToolTip.Metadata.GroupId" xml:space="preserve">
+    <value>The group identifier of the channels, which is used to group.</value>
+  </data>
+  <data name="ToolTip.Metadata.GroupTitle" xml:space="preserve">
+    <value>The name or title of the group of channels, which is used to display.</value>
+  </data>
+  <data name="ToolTip.Metadata.Logo" xml:space="preserve">
+    <value>The TV guide logo URL or file path, which is used to display.</value>
+  </data>
+  <data name="ToolTip.Metadata.Name" xml:space="preserve">
+    <value>The name of the channel in the program file, which is used mainly when using programs in a format JTV.</value>
+  </data>
+  <data name="ToolTip.Playlist.Cache" xml:space="preserve">
+    <value>The cache period in milliseconds.</value>
+  </data>
+  <data name="ToolTip.Playlist.Deinterlace" xml:space="preserve">
+    <value>The deinterlace method to be applied.</value>
+  </data>
+  <data name="ToolTip.Playlist.FilePath" xml:space="preserve">
+    <value>The location or file path of the playlist.</value>
+  </data>
+  <data name="ToolTip.Playlist.Refresh" xml:space="preserve">
+    <value>The refresh period in seconds, after which the playlist should be reloaded.</value>
+  </data>
+  <data name="ToolTip.Playlist.TVGuidePath" xml:space="preserve">
+    <value>The URL or file path for the TV guide.</value>
+  </data>
+  <data name="ToolTip.Track.Duration" xml:space="preserve">
+    <value>The duration of the track in seconds, where -1 indicates that the duration is unknown or infinite.</value>
+  </data>
+  <data name="ToolTip.Track.Grouping" xml:space="preserve">
+    <value>The named grouping of the track, indicating the channel group is also unofficial.</value>
+  </data>
+  <data name="ToolTip.Track.Location" xml:space="preserve">
+    <value>The link to the media source itself, such as the IPTV stream or the path to the file name if it is a music track.</value>
+  </data>
+  <data name="ToolTip.Track.Title" xml:space="preserve">
+    <value>The title of the track / channel is a mandatory and standard.</value>
+  </data>
+  <data name="WarningMessageCaptition" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+</root>

@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BlocklistJson" xml:space="preserve">
+    <value>[{"channel":"AnimalPlanetEast.us","reason":"dmca","ref":"https://github.com/iptv-org/iptv/issues/1831"}]</value>
+  </data>
+  <data name="CategoryJson" xml:space="preserve">
+    <value>[{"id":"documentary","name":"Documentary","description":"Programming that depicts a person or real-world event"}]</value>
+  </data>
+  <data name="ChannelJson" xml:space="preserve">
+    <value>[{"alt_names": ["安徽卫视"],"categories": ["general"],"closed": "2020-05-31","country": "CN","id": "AnhuiTV.cn","is_nsfw": false,"launched": "2016-07-28","name": "Anhui TV","network": "Anhui","owners": ["China Central Television"],"replaced_by": "CCTV1.cn","website": "http://www.ahtv.cn/"}]</value>
+  </data>
+  <data name="CityJson" xml:space="preserve">
+    <value>[{"code":"CNYAT","country":"CN","name":"Yantai","subdivision":"CN-SD","wikidata_id":"Q210493"}]</value>
+  </data>
+  <data name="CountryJson" xml:space="preserve">
+    <value>[{"code":"CA","flag":"🇨🇦","languages":["eng","fra"],"name":"Canada"}]</value>
+  </data>
+  <data name="FeedJson" xml:space="preserve">
+    <value>[{"alt_names":["Paris Île-de-France"],"broadcast_area":["c/FR"],"channel":"France3.fr","format":"576i","id":"ParisIledeFrance","is_main":false,"languages":["fra"],"name":"Paris Ile-de-France","timezones":["Europe/Paris"]}]</value>
+  </data>
+  <data name="GuideJson" xml:space="preserve">
+    <value>[{"channel":"BBCOne.uk","feed":"EastMidlandsHD","lang":"en","site":"sky.co.uk","site_id":"bbcone","site_name":"BBC One"}]</value>
+  </data>
+  <data name="LanguageJson" xml:space="preserve">
+    <value>[{"name":"French","code":"fra"}]</value>
+  </data>
+  <data name="LogoJson" xml:space="preserve">
+    <value>[{"channel":"France3.fr","feed":"ParisIledeFrance","format":"SVG","height":468,"tags":["horizontal","white"],"url":"https://example.com/logo.svg","width":1000}]</value>
+  </data>
+  <data name="RegionJson" xml:space="preserve">
+    <value>[{"code":"MAGHREB","countries":["DZ","LY","MA","MR","TN"],"name":"Maghreb"}]</value>
+  </data>
+  <data name="StreamJson" xml:space="preserve">
+    <value>[{"channel":"France3.fr","feed":"NordPasdeCalaisHD","quality":"720p","referrer":"http://example.com/","title":"France 3 Nord Pas-de-Calais HD","url":"http://1111296894.rsc.cdn77.org/LS-ATL-54548-6/index.m3u8","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}]</value>
+  </data>
+  <data name="SubdivisionJson" xml:space="preserve">
+    <value>[{"code":"BD-01","country":"BD","name":"Bandarban","parent":"BD-B"}]</value>
+  </data>
+  <data name="TimezoneJson" xml:space="preserve">
+    <value>[{"countries":["UK","GG","IM","JE"],"id":"Europe/London","utc_offset":"+00:00"}]</value>
+  </data>
+</root>

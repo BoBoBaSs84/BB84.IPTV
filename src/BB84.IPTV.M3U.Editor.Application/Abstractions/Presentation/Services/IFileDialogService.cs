@@ -1,0 +1,29 @@
+// Copyright: 2025 Robert Peter Meyer
+// License: MIT
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+
+/// <summary>
+/// The interface for the file dialog service.
+/// </summary>
+public interface IFileDialogService
+{
+  /// <summary>
+  /// Shows an open file dialog and returns the selected file path.
+  /// </summary>
+  /// <param name="filter">The file type filter string.</param>
+  /// <param name="title">The dialog title.</param>
+  /// <returns>The selected file path, or <see langword="null"/> if cancelled.</returns>
+  string? ShowOpenFileDialog(string filter, string title);
+
+  /// <summary>
+  /// Shows a save file dialog and returns the selected file path.
+  /// </summary>
+  /// <param name="filter">The file type filter string.</param>
+  /// <param name="title">The dialog title.</param>
+  /// <param name="defaultFileName">The default file name.</param>
+  /// <returns>The selected file path, or <see langword="null"/> if cancelled.</returns>
+  string? ShowSaveFileDialog(string filter, string title, string? defaultFileName = null);
+}

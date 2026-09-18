@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
+    <value>Datenbank Überprüfen</value>
+  </data>
+  <data name="DatabaseControl.CreateDatabaseButton.Content" xml:space="preserve">
+    <value>Datenbank erstellen</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCheckedCheckBox.Content" xml:space="preserve">
+    <value>Datenbank überprüft</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCheckingCheckBox.Content" xml:space="preserve">
+    <value>Datenbankprüfung</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCreatedCheckBox.Content" xml:space="preserve">
+    <value>Datenbank erstellt</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCreatingCheckBox.Content" xml:space="preserve">
+    <value>Datenbankerstellung</value>
+  </data>
+  <data name="DatabaseControl.DatabaseImportedCheckBox.Content" xml:space="preserve">
+    <value>Datenbank importiert</value>
+  </data>
+  <data name="DatabaseControl.DatabaseImportingCheckBox.Content" xml:space="preserve">
+    <value>Datenbankimport</value>
+  </data>
+  <data name="DatabaseControl.DatabaseOperationsGroupBox.Header" xml:space="preserve">
+    <value>Datenbankoperationen</value>
+  </data>
+  <data name="DatabaseControl.DatabaseStatusGroupBox.Header" xml:space="preserve">
+    <value>Datenbankstatus</value>
+  </data>
+  <data name="DatabaseControl.ImportDatabaseButton.Content" xml:space="preserve">
+    <value>Datenbank importieren</value>
+  </data>
+  <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
+    <value>Importfortschritt</value>
+  </data>
+  <data name="ErrorMessageCaptition" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="InformationMessageCaptition" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="QuestionMessageCaptition" xml:space="preserve">
+    <value>Frage</value>
+  </data>
+  <data name="RetryMessageCaptition" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="SettingsControl.AutoSaveCheckBox.Content" xml:space="preserve">
+    <value>Automatisch speichern</value>
+  </data>
+  <data name="SettingsControl.AutoSaveIntervalTextBlock.Text" xml:space="preserve">
+    <value>Automatisches Speicherintervall (Min.):</value>
+  </data>
+  <data name="SettingsControl.CommandTimeoutTextBlock.Text" xml:space="preserve">
+    <value>Befehls-Timeout (Sek.):</value>
+  </data>
+  <data name="SettingsControl.DatabaseGroupBox.Header" xml:space="preserve">
+    <value>Datenbank</value>
+  </data>
+  <data name="SettingsControl.EnableLoggingCheckBox.Content" xml:space="preserve">
+    <value>Aktivieren Sie die Protokollierung</value>
+  </data>
+  <data name="SettingsControl.GeneralGroupBox.Header" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="SettingsControl.LanguageTextBlock.Text" xml:space="preserve">
+    <value>Sprache:</value>
+  </data>
+  <data name="SettingsControl.LoadSettingsButton.Content" xml:space="preserve">
+    <value>Einstellungen laden</value>
+  </data>
+  <data name="SettingsControl.LogLevelTextBlock.Text" xml:space="preserve">
+    <value>Protokollebene:</value>
+  </data>
+  <data name="SettingsControl.MaxBatchSizeTextBlock.Text" xml:space="preserve">
+    <value>Maximale Chargengröße:</value>
+  </data>
+  <data name="SettingsControl.SaveSettingsButton.Content" xml:space="preserve">
+    <value>Einstellungen speichern</value>
+  </data>
+  <data name="ToolTip.Metadata.Censored" xml:space="preserve">
+    <value>Zeigt an, dass der Kanal durch Kindersicherung geschützt werden muss, sofern diese im Gerät vorhanden ist. Kann die Werte 0 und 1 annehmen.</value>
+  </data>
+  <data name="ToolTip.Metadata.GroupId" xml:space="preserve">
+    <value>Die Gruppenkennung der Kanäle, die zur Gruppierung verwendet wird.</value>
+  </data>
+  <data name="ToolTip.Metadata.GroupTitle" xml:space="preserve">
+    <value>Der Name oder Titel der Kanalgruppe, der zur Anzeige verwendet wird.</value>
+  </data>
+  <data name="ToolTip.Metadata.Logo" xml:space="preserve">
+    <value>Die URL oder der Dateipfad des TV-Guide-Logos, der zur Anzeige verwendet wird.</value>
+  </data>
+  <data name="ToolTip.Metadata.Name" xml:space="preserve">
+    <value>Der Name des Kanals in der Programmdatei, der hauptsächlich bei der Verwendung von Programmen im JTV-Format verwendet wird.</value>
+  </data>
+  <data name="ToolTip.Playlist.Cache" xml:space="preserve">
+    <value>Der Cache-Zeitraum in Millisekunden.</value>
+  </data>
+  <data name="ToolTip.Playlist.Deinterlace" xml:space="preserve">
+    <value>Die anzuwendende Deinterlace-Methode.</value>
+  </data>
+  <data name="ToolTip.Playlist.FilePath" xml:space="preserve">
+    <value>Der Speicherort oder Dateipfad der Wiedergabeliste.</value>
+  </data>
+  <data name="ToolTip.Playlist.Refresh" xml:space="preserve">
+    <value>Der Aktualisierungszeitraum in Sekunden, nach dem die Playlist neu geladen werden soll.</value>
+  </data>
+  <data name="ToolTip.Playlist.TVGuidePath" xml:space="preserve">
+    <value>Die URL oder der Dateipfad für den TV-Guide.</value>
+  </data>
+  <data name="ToolTip.Track.Duration" xml:space="preserve">
+    <value>Die Dauer des Titels in Sekunden, wobei -1 angibt, dass die Dauer unbekannt oder unendlich ist.</value>
+  </data>
+  <data name="ToolTip.Track.Grouping" xml:space="preserve">
+    <value>Die benannte Gruppierung des Titels, die die Kanalgruppe angibt, ist ebenfalls inoffiziell.</value>
+  </data>
+  <data name="ToolTip.Track.Location" xml:space="preserve">
+    <value>Der Link zur Medienquelle selbst, beispielsweise zum IPTV-Stream oder der Pfad zum Dateinamen, wenn es sich um einen Musiktitel handelt.</value>
+  </data>
+  <data name="ToolTip.Track.Title" xml:space="preserve">
+    <value>Der Titel des Tracks/Kanals ist obligatorisch und Standard.</value>
+  </data>
+  <data name="WarningMessageCaptition" xml:space="preserve">
+    <value>Warnung</value>
+  </data>
+</root>
