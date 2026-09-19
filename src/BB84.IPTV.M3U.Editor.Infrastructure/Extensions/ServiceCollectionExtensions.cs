@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 using BB84.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persistence;
@@ -13,6 +14,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+using Serilog;
+using Serilog.Events;
 
 namespace BB84.IPTV.M3U.Editor.Infrastructure.Extensions;
 
@@ -36,7 +40,8 @@ internal static class ServiceCollectionExtensions
 
 		services.AddDbContext<IDatabaseContext, DatabaseContext>(options =>
 		{
-			string connectionString = $"Data Source={AssemblyInformation.Product}.db";
+			Directory.CreateDirectory(ApplicationPaths.DataDirectory);
+			string connectionString = $"Data Source={ApplicationPaths.DatabaseFilePath}";
 			options.UseSqlite(connectionString, options =>
 			{
 				options.CommandTimeout(settings.CommandTimeout);
@@ -87,7 +92,7 @@ internal static class ServiceCollectionExtensions
 			if (environment.IsProduction())
 			{
 				builder.SetMinimumLevel(settings.LogLevel);
-				builder.AddEventLog(settings => settings.SourceName = environment.ApplicationName);
+				builder.AddSerilog(CreateFileLogger(environment), dispose: true);
 			}
 		});
 
@@ -123,5 +128,24 @@ internal static class ServiceCollectionExtensions
 		services.AddScoped<IWebService, WebService>();
 
 		return services;
+	}
+
+	/// <summary>
+	/// Creates a cross-platform logger that writes to daily rolling files in the application log directory.
+	/// </summary>
+	/// <remarks>
+	/// The minimum level is left at <see cref="LogEventLevel.Verbose"/>, filtering is done by the
+	/// <see cref="ILoggingBuilder"/> minimum level.
+	/// </remarks>
+	/// <param name="environment">The host environment instance to use.</param>
+	/// <returns>The configured Serilog logger.</returns>
+	private static Serilog.Core.Logger CreateFileLogger(IHostEnvironment environment)
+	{
+		string filePath = Path.Combine(ApplicationPaths.LogDirectory, $"{environment.ApplicationName}-.log");
+
+		return new LoggerConfiguration()
+			.MinimumLevel.Verbose()
+			.WriteTo.File(filePath, formatProvider: CultureInfo.InvariantCulture, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7)
+			.CreateLogger();
 	}
 }

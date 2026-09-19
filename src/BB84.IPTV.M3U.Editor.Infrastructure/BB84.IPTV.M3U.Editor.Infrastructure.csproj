@@ -1,7 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1416</NoWarn>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BB84.EntityFrameworkCore.Repositories" />
     <PackageReference Include="BB84.SourceGenerators">
@@ -10,8 +7,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
-    <PackageReference Include="Microsoft.Extensions.Logging.EventLog" />
     <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Sinks.File" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BB84.IPTV.M3U.Editor.Application\BB84.IPTV.M3U.Editor.Application.csproj" />
