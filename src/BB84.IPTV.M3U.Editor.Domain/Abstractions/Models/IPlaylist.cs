@@ -36,6 +36,12 @@ public interface IPlaylist
 	int Refresh { get; set; }
 
 	/// <summary>
+	/// Gets or sets the <c>#EXTM3U</c> attributes that are not modelled by a dedicated property,
+	/// e.g. <c>x-tvg-url="..."</c>, kept as written so they survive a round trip.
+	/// </summary>
+	string? AdditionalAttributes { get; set; }
+
+	/// <summary>
 	/// Gets the list of entries in the playlist.
 	/// </summary>
 	IEnumerable<EntryModel> Entries { get; }

@@ -19,7 +19,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -68,7 +68,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ApplicationIsExiting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Application is starting ....
         /// </summary>
@@ -77,7 +77,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ApplicationIsStarting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Check Database.
         /// </summary>
@@ -86,7 +86,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.CheckDatabaseButton.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Create Database.
         /// </summary>
@@ -95,7 +95,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.CreateDatabaseButton.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database Checked.
         /// </summary>
@@ -104,7 +104,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.DatabaseCheckedCheckBox.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database Checking.
         /// </summary>
@@ -113,7 +113,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.DatabaseCheckingCheckBox.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database Created.
         /// </summary>
@@ -122,7 +122,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.DatabaseCreatedCheckBox.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database Creating.
         /// </summary>
@@ -131,7 +131,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.DatabaseCreatingCheckBox.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database Imported.
         /// </summary>
@@ -140,7 +140,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.DatabaseImportedCheckBox.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database Importing.
         /// </summary>
@@ -149,7 +149,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.DatabaseImportingCheckBox.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database Operations.
         /// </summary>
@@ -158,7 +158,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.DatabaseOperationsGroupBox.Header", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database Status.
         /// </summary>
@@ -167,7 +167,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.DatabaseStatusGroupBox.Header", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import Database.
         /// </summary>
@@ -176,7 +176,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.ImportDatabaseButton.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import Progress.
         /// </summary>
@@ -185,7 +185,16 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("DatabaseControl.ImportProgressGroupBox.Header", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The database could not be created or updated. See the log for details..
+        /// </summary>
+        public static string DatabaseMigrationFailed {
+            get {
+                return ResourceManager.GetString("DatabaseMigrationFailed", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
@@ -194,7 +203,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ErrorMessageCaptition", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Exit requested, trying to exit application ...
         /// </summary>
@@ -203,7 +212,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ExitRequested", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Information.
         /// </summary>
@@ -212,7 +221,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("InformationMessageCaptition", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Language has been set to &apos;{0}&apos;..
         /// </summary>
@@ -221,7 +230,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("LanguageSetTo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
@@ -257,7 +266,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("MessageDialog.YesButton.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Question.
         /// </summary>
@@ -266,7 +275,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("QuestionMessageCaptition", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Restart requested, trying to restart application ...
         /// </summary>
@@ -275,7 +284,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("RestartRequested", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Retry.
         /// </summary>
@@ -284,7 +293,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("RetryMessageCaptition", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Auto Save.
         /// </summary>
@@ -293,7 +302,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.AutoSaveCheckBox.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Auto Save Interval (min):.
         /// </summary>
@@ -302,7 +311,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.AutoSaveIntervalTextBlock.Text", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Command Timeout (sec):.
         /// </summary>
@@ -311,7 +320,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.CommandTimeoutTextBlock.Text", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Database.
         /// </summary>
@@ -320,7 +329,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.DatabaseGroupBox.Header", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enable Logging.
         /// </summary>
@@ -329,7 +338,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.EnableLoggingCheckBox.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
@@ -338,7 +347,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.GeneralGroupBox.Header", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Language:.
         /// </summary>
@@ -347,7 +356,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.LanguageTextBlock.Text", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Load Settings.
         /// </summary>
@@ -356,7 +365,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.LoadSettingsButton.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Log Level:.
         /// </summary>
@@ -365,7 +374,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.LogLevelTextBlock.Text", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Max Batch Size:.
         /// </summary>
@@ -374,7 +383,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.MaxBatchSizeTextBlock.Text", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save Settings.
         /// </summary>
@@ -383,7 +392,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("SettingsControl.SaveSettingsButton.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Indicates that the channel needs to be protected by parental control, if such is present in the device, can take values 0 and 1..
         /// </summary>
@@ -392,7 +401,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Metadata.Censored", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The group identifier of the channels, which is used to group..
         /// </summary>
@@ -401,7 +410,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Metadata.GroupId", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The name or title of the group of channels, which is used to display..
         /// </summary>
@@ -410,7 +419,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Metadata.GroupTitle", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The TV guide logo URL or file path, which is used to display..
         /// </summary>
@@ -419,7 +428,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Metadata.Logo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The name of the channel in the program file, which is used mainly when using programs in a format JTV..
         /// </summary>
@@ -428,7 +437,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Metadata.Name", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The cache period in milliseconds..
         /// </summary>
@@ -437,7 +446,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Playlist.Cache", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The deinterlace method to be applied..
         /// </summary>
@@ -446,7 +455,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Playlist.Deinterlace", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The location or file path of the playlist..
         /// </summary>
@@ -455,7 +464,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Playlist.FilePath", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The refresh period in seconds, after which the playlist should be reloaded..
         /// </summary>
@@ -464,7 +473,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Playlist.Refresh", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The URL or file path for the TV guide..
         /// </summary>
@@ -473,7 +482,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Playlist.TVGuidePath", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The duration of the track in seconds, where -1 indicates that the duration is unknown or infinite..
         /// </summary>
@@ -482,7 +491,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Track.Duration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The named grouping of the track, indicating the channel group is also unofficial..
         /// </summary>
@@ -491,7 +500,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Track.Grouping", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The link to the media source itself, such as the IPTV stream or the path to the file name if it is a music track..
         /// </summary>
@@ -500,7 +509,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Track.Location", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The title of the track / channel is a mandatory and standard..
         /// </summary>
@@ -509,7 +518,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
                 return ResourceManager.GetString("ToolTip.Track.Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Warning.
         /// </summary>

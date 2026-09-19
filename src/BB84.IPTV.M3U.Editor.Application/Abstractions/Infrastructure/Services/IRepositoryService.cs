@@ -43,6 +43,16 @@ public interface IRepositoryService
 	ILogoRepository Logos { get; }
 
 	/// <summary>
+	/// The repository instance for managing playlists.
+	/// </summary>
+	IPlaylistRepository Playlists { get; }
+
+	/// <summary>
+	/// The repository instance for managing playlist entries.
+	/// </summary>
+	IPlaylistEntryRepository PlaylistEntries { get; }
+
+	/// <summary>
 	/// The repository instance for managing streams.
 	/// </summary>
 	IStreamRepository Streams { get; }
@@ -63,16 +73,21 @@ public interface IRepositoryService
 	Task<int> CommitChangesAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Creates the database if it does not exist. If it already exists, this method will delete the
-	/// existing database and create a new one.
+	/// Creates the database or brings its schema up to date by applying the pending migrations.
 	/// </summary>
 	/// <remarks>
-	/// This method should be called before accessing any repositories to ensure that the database
-	/// is properly initialized.
+	/// A database created before migrations were introduced only holds catalog data, which can be imported
+	/// again, so it is deleted and created anew.
 	/// </remarks>
 	/// <param name="cancellationToken">The cancellation token that can be used to cancel the operation if needed.</param>
-	/// <returns>
-	/// True if the database was created successfully; otherwise, false if the database already exists.
-	/// </returns>
-	Task<bool> CreateDatabaseAsync(CancellationToken cancellationToken = default);
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	Task MigrateDatabaseAsync(CancellationToken cancellationToken = default);
+
+	/// <summary>
+	/// Deletes all catalog data imported from iptv-org (categories, countries, languages, channels, feeds,
+	/// guides, logos and streams), so it can be imported again. Playlists are kept.
+	/// </summary>
+	/// <param name="cancellationToken">The cancellation token that can be used to cancel the operation if needed.</param>
+	/// <returns>The number of deleted rows.</returns>
+	Task<int> ResetCatalogAsync(CancellationToken cancellationToken = default);
 }

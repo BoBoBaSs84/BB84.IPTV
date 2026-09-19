@@ -42,6 +42,9 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable
 		_synchronizationContext = SynchronizationContext.Current;
 
 		_eventService.Subscribe<DatabaseImportProgressEvent>(OnDatabaseImportProgress);
+
+		// The commands depend on the database state, the UI only re-queries them when told so.
+		PropertyChanged += (s, e) => RaiseCommandStatesChanged();
 	}
 
 	/// <summary>
@@ -215,6 +218,13 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable
 		_eventService.Publish(new ErrorOccuredEvent("Failed to import database.", exception));
 		ImportStatusMessage = "Import failed.";
 		ImportProgress = 0;
+	}
+
+	private void RaiseCommandStatesChanged()
+	{
+		_checkDatabaseCommand?.RaiseCanExecuteChanged();
+		_createDatabaseCommand?.RaiseCanExecuteChanged();
+		_importDatabaseCommand?.RaiseCanExecuteChanged();
 	}
 
 	private void OnDatabaseImportProgress(DatabaseImportProgressEvent @event)

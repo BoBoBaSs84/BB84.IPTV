@@ -41,6 +41,12 @@ public interface IEntry
 	string? Grouping { get; set; }
 
 	/// <summary>
+	/// Gets or sets the directive lines between <c>#EXTINF</c> and the link that are not modelled
+	/// by a dedicated property, e.g. <c>#EXTVLCOPT:http-user-agent=...</c>, one per line.
+	/// </summary>
+	string? Directives { get; set; }
+
+	/// <summary>
 	/// Gets or sets the additional metadata associated with the track.
 	/// </summary>
 	IMetadata Metadata { get; }

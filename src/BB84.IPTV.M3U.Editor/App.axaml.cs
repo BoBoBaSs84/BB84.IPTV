@@ -42,6 +42,9 @@ public partial class App : AvaloniaApp
 	private static readonly Action<ILogger, string, Exception?> LogInformation =
 		LoggerMessage.Define<string>(LogLevel.Information, 0, "{Information}");
 
+	private static readonly Action<ILogger, string, Exception?> LogError =
+		LoggerMessage.Define<string>(LogLevel.Error, 0, "{Error}");
+
 	private static readonly Action<ILogger, Exception?> LogCritical =
 		LoggerMessage.Define(LogLevel.Critical, 0, string.Empty);
 
@@ -88,9 +91,27 @@ public partial class App : AvaloniaApp
 
 		ApplyLanguage(_host.Services.GetRequiredService<ApplicationSettings>().General.Language);
 
+		await MigrateDatabaseAsync().ConfigureAwait(true);
+
 		MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
 		desktop.MainWindow = mainWindow;
 		mainWindow.Show();
+	}
+
+	private async Task MigrateDatabaseAsync()
+	{
+		try
+		{
+			await _host!.Services.GetRequiredService<IDatabaseService>()
+				.MigrateDatabaseAsync()
+				.ConfigureAwait(true);
+		}
+		catch (Exception ex)
+		{
+			// The app still starts, the database view can be used to create the database again.
+			_loggerService!.Log(LogError, RESX.DatabaseMigrationFailed, ex);
+			_eventService!.Publish(new ErrorOccuredEvent(RESX.DatabaseMigrationFailed, ex));
+		}
 	}
 
 	private void OnExit()

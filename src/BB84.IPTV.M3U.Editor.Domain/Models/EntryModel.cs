@@ -18,6 +18,7 @@ public sealed class EntryModel : ValidatableObject, IEntry
 	private string _title;
 	private string _filePath;
 	private string? _grouping;
+	private string? _directives;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="EntryModel"/> class.
@@ -46,6 +47,7 @@ public sealed class EntryModel : ValidatableObject, IEntry
 		Title = entry.Title;
 		FilePath = entry.FilePath;
 		Grouping = entry.Grouping;
+		Directives = entry.Directives;
 		Metadata = new MetadataModel(entry.Metadata);
 	}
 
@@ -78,6 +80,13 @@ public sealed class EntryModel : ValidatableObject, IEntry
 	{
 		get => _grouping;
 		set => SetProperty(ref _grouping, value);
+	}
+
+	/// <inheritdoc/>
+	public string? Directives
+	{
+		get => _directives;
+		set => SetProperty(ref _directives, value);
 	}
 
 	/// <inheritdoc/>

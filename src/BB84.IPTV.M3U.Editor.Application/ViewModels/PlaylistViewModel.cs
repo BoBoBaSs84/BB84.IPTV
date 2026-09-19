@@ -24,6 +24,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	private int _cache;
 	private Deinterlace _deinterlace;
 	private int _refresh;
+	private string? _additionalAttributes;
 	private IEntry? _selectedEntry;
 	private bool _isDirty;
 	private bool _isBusy;
@@ -165,6 +166,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 				Cache = playlist.Cache;
 				Deinterlace = playlist.Deinterlace;
 				Refresh = playlist.Refresh;
+				_additionalAttributes = playlist.AdditionalAttributes;
 
 				ClearEntries();
 				foreach (EntryModel entry in playlist.Entries)
@@ -190,6 +192,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 			Cache = 0;
 			Deinterlace = Deinterlace.None;
 			Refresh = 0;
+			_additionalAttributes = null;
 			FilePath = string.Empty;
 			ClearEntries();
 			SelectedEntry = null;
@@ -374,6 +377,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 			Cache = Cache,
 			Deinterlace = Deinterlace,
 			Refresh = Refresh,
+			AdditionalAttributes = _additionalAttributes,
 			Entries = snapshotEntries
 		};
 	}
@@ -384,6 +388,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 		public int Cache { get; set; }
 		public Deinterlace Deinterlace { get; set; }
 		public int Refresh { get; set; }
+		public string? AdditionalAttributes { get; set; }
 		public IEnumerable<EntryModel> Entries { get; set; } = [];
 	}
 }

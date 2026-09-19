@@ -38,6 +38,7 @@ internal static class ServiceCollectionExtensions
 		services.AddSingleton<IEventService, EventService>();
 		services.AddSingleton<IDatabaseService, DatabaseService>();
 		services.AddSingleton<INavigationService, NavigationService>();
+		services.AddSingleton<IPlaylistService, PlaylistService>();
 		services.AddSingleton<IProviderService, ProviderService>();
 		services.AddSingleton<ISerializerService, SerializerService>();
 

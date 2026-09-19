@@ -20,6 +20,7 @@ public sealed class PlaylistModel : ValidatableObject, IPlaylist
 	private int _cache;
 	private Deinterlace _deinterlace;
 	private int _refresh;
+	private string? _additionalAttributes;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="PlaylistModel"/> class.
@@ -36,6 +37,7 @@ public sealed class PlaylistModel : ValidatableObject, IPlaylist
 		Cache = playlist.Cache;
 		Deinterlace = playlist.Deinterlace;
 		Refresh = playlist.Refresh;
+		AdditionalAttributes = playlist.AdditionalAttributes;
 		Entries = entries?.Select(entry => new EntryModel(entry)).ToList() ?? [];
 	}
 
@@ -73,6 +75,13 @@ public sealed class PlaylistModel : ValidatableObject, IPlaylist
 	{
 		get => _refresh;
 		set => SetProperty(ref _refresh, value);
+	}
+
+	/// <inheritdoc/>
+	public string? AdditionalAttributes
+	{
+		get => _additionalAttributes;
+		set => SetProperty(ref _additionalAttributes, value);
 	}
 
 	/// <inheritdoc/>
