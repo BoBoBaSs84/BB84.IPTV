@@ -1,5 +1,7 @@
 ﻿using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Application.Enumerators;
+using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 
 using Microsoft.Extensions.Hosting;
@@ -29,5 +31,22 @@ public sealed class MainViewModelTests
 
 		Assert.AreEqual("TestApp - TestEnv", viewModel.ApplicationTitle);
 		Assert.AreEqual("TestDomain\\TestUser@TestMachine", viewModel.CurrentUser);
+	}
+
+	[TestMethod]
+	[DataRow(NotificationResult.Yes, 1)]
+	[DataRow(NotificationResult.No, 0)]
+	public async Task ExitApplicationCommandShouldPublishExitRequestedOnlyWhenConfirmed(NotificationResult answer, int expectedPublishCount)
+	{
+		Mock<IEventService> eventServiceMock = new();
+		Mock<INotificationService> notificationServiceMock = new();
+		notificationServiceMock.Setup(x => x.ShowQuestionAsync(It.IsAny<string>()))
+			.ReturnsAsync(answer);
+
+		MainViewModel viewModel = new(eventServiceMock.Object, new Mock<IHostEnvironment>().Object, notificationServiceMock.Object, new Mock<IUserService>().Object, new Mock<INavigationService>().Object);
+
+		await viewModel.ExitApplicationCommand.ExecuteAsync().ConfigureAwait(false);
+
+		eventServiceMock.Verify(x => x.Publish(It.IsAny<ExitRequestedEvent>()), Times.Exactly(expectedPublishCount));
 	}
 }

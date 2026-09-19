@@ -23,7 +23,7 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 	private readonly IUserService _userService;
 	private readonly SynchronizationContext? _synchronizationContext;
 	private IActionCommand? _showAboutControl;
-	private IActionCommand? _exitApplicationCommand;
+	private IAsyncActionCommand? _exitApplicationCommand;
 	private IActionCommand? _openSettingsCommand;
 	private string _applicationTitle;
 	private string _statusText;
@@ -132,13 +132,14 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 	/// <summary>
 	/// Gets the command to exit the application.
 	/// </summary>
-	public IActionCommand ExitApplicationCommand
-		=> _exitApplicationCommand ??= new ActionCommand(ExitApplication);
+	public IAsyncActionCommand ExitApplicationCommand
+		=> _exitApplicationCommand ??= new AsyncActionCommand(ExitApplicationAsync);
 
-	private void ExitApplication()
+	private async Task ExitApplicationAsync()
 	{
-		NotificationResult result = _notificationService
-			.ShowQuestion(Resources.ExitApplicationQuestion);
+		NotificationResult result = await _notificationService
+			.ShowQuestionAsync(Resources.ExitApplicationQuestion)
+			.ConfigureAwait(true);
 
 		if (result == NotificationResult.Yes)
 			_eventService.Publish(new ExitRequestedEvent());
@@ -185,10 +186,11 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 		ProgressBarVisible = @event.Value is > 0 and < 100;
 	}
 
-	private void OnLanguageChanged(LanguageChangedEvent @event)
+	private async void OnLanguageChanged(LanguageChangedEvent @event)
 	{
-		NotificationResult result = _notificationService
-			.ShowQuestion(Resources.ChangedLanguageRestartApplicationQuestion);
+		NotificationResult result = await _notificationService
+			.ShowQuestionAsync(Resources.ChangedLanguageRestartApplicationQuestion)
+			.ConfigureAwait(true);
 
 		if (result == NotificationResult.Yes)
 			_eventService.Publish(new RestartRequestedEvent());

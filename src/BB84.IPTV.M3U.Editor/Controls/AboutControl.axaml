@@ -1,0 +1,96 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
+						 mc:Ignorable="d"
+						 d:DesignWidth="700"
+						 d:DesignHeight="500"
+						 x:Class="BB84.IPTV.M3U.Editor.Controls.AboutControl"
+						 x:DataType="vm:AboutViewModel"
+						 Background="#F0F0F0">
+	<UserControl.Styles>
+		<Style Selector="TextBlock.InfoLabel">
+			<Setter Property="FontSize"
+							Value="12" />
+			<Setter Property="Foreground"
+							Value="#888" />
+			<Setter Property="Margin"
+							Value="0,0,0,2" />
+		</Style>
+		<Style Selector="TextBlock.InfoValue">
+			<Setter Property="FontSize"
+							Value="13" />
+			<Setter Property="Foreground"
+							Value="#222" />
+			<Setter Property="Margin"
+							Value="0,0,0,12" />
+			<Setter Property="TextWrapping"
+							Value="Wrap" />
+		</Style>
+	</UserControl.Styles>
+	<Grid HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				MaxWidth="480">
+		<!-- Card -->
+		<Border Background="White"
+						CornerRadius="6"
+						BoxShadow="0 2 20 0 #26000000">
+			<DockPanel>
+				<!-- Header banner -->
+				<Border DockPanel.Dock="Top"
+								Background="#1A1A2E"
+								CornerRadius="6,6,0,0"
+								Padding="28,24">
+					<StackPanel HorizontalAlignment="Center">
+						<Image Source="/Resources/about.ico"
+									 Width="48"
+									 Height="48"
+									 RenderOptions.BitmapInterpolationMode="HighQuality"
+									 HorizontalAlignment="Center"
+									 Margin="0,0,0,12" />
+						<TextBlock Text="{Binding Title}"
+											 FontSize="22"
+											 FontWeight="SemiBold"
+											 Foreground="White"
+											 HorizontalAlignment="Center" />
+						<TextBlock Text="{Binding Version, StringFormat='Version {0}'}"
+											 FontSize="13"
+											 Foreground="#AAB"
+											 HorizontalAlignment="Center"
+											 Margin="0,4,0,0" />
+					</StackPanel>
+				</Border>
+				<!-- Body -->
+				<StackPanel Margin="28,20,28,24">
+					<!-- Description -->
+					<TextBlock Text="{Binding Description}"
+										 Classes="InfoValue"
+										 Foreground="#555"
+										 TextAlignment="Center"
+										 Margin="0,0,0,16" />
+					<Separator Margin="0,0,0,16" />
+					<!-- Info grid -->
+					<TextBlock Text="COMPANY"
+										 Classes="InfoLabel" />
+					<TextBlock Text="{Binding Company}"
+										 Classes="InfoValue" />
+					<TextBlock Text="COPYRIGHT"
+										 Classes="InfoLabel" />
+					<TextBlock Text="{Binding Copyright}"
+										 Classes="InfoValue" />
+					<TextBlock Text="FRAMEWORK"
+										 Classes="InfoLabel" />
+					<TextBlock Text="{Binding FrameworkName}"
+										 Classes="InfoValue" />
+					<TextBlock Text="REPOSITORY"
+										 Classes="InfoLabel" />
+					<HyperlinkButton NavigateUri="{Binding Repository}"
+													 Content="{Binding Repository}"
+													 Padding="0"
+													 Margin="0,0,0,12" />
+				</StackPanel>
+			</DockPanel>
+		</Border>
+	</Grid>
+</UserControl>

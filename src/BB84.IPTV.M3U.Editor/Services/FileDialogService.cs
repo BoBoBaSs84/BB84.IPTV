@@ -5,44 +5,77 @@
 // LICENSE file in the root directory of this source tree.
 using System.Diagnostics.CodeAnalysis;
 
-using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using Avalonia.Platform.Storage;
 
-using Microsoft.Win32;
+using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Extensions;
 
 namespace BB84.IPTV.M3U.Editor.Services;
 
 /// <summary>
-/// The file dialog service class.
+/// The file dialog service class, backed by the Avalonia storage provider.
 /// </summary>
-[ExcludeFromCodeCoverage(Justification = "This class wraps WPF file dialogs which require a UI thread.")]
+[ExcludeFromCodeCoverage(Justification = "This class wraps Avalonia file pickers which require a UI thread.")]
 internal sealed class FileDialogService : IFileDialogService
 {
 	/// <inheritdoc/>
-	public string? ShowOpenFileDialog(string filter, string title)
+	public async Task<string?> ShowOpenFileDialogAsync(string filter, string title)
 	{
-		OpenFileDialog dialog = new()
+		FilePickerOpenOptions options = new()
 		{
-			Filter = filter,
-			Title = title
+			Title = title,
+			AllowMultiple = false,
+			FileTypeFilter = ParseFilter(filter)
 		};
 
-		bool? result = dialog.ShowDialog();
+		IReadOnlyList<IStorageFile> files = await GetStorageProvider()
+			.OpenFilePickerAsync(options)
+			.ConfigureAwait(true);
 
-		return result == true ? dialog.FileName : null;
+		return files.Count > 0 ? files[0].TryGetLocalPath() : null;
 	}
 
 	/// <inheritdoc/>
-	public string? ShowSaveFileDialog(string filter, string title, string? defaultFileName = null)
+	public async Task<string?> ShowSaveFileDialogAsync(string filter, string title, string? defaultFileName = null)
 	{
-		SaveFileDialog dialog = new()
+		FilePickerSaveOptions options = new()
 		{
-			Filter = filter,
 			Title = title,
-			FileName = defaultFileName ?? string.Empty
+			SuggestedFileName = defaultFileName,
+			FileTypeChoices = ParseFilter(filter)
 		};
 
-		bool? result = dialog.ShowDialog();
+		IStorageFile? file = await GetStorageProvider()
+			.SaveFilePickerAsync(options)
+			.ConfigureAwait(true);
 
-		return result == true ? dialog.FileName : null;
+		return file?.TryGetLocalPath();
+	}
+
+	private static IStorageProvider GetStorageProvider()
+		=> ApplicationExtensions.GetActiveWindow()?.StorageProvider
+			?? throw new InvalidOperationException("No window is available to host the file dialog.");
+
+	/// <summary>
+	/// Converts a filter string in the <c>Name|*.a;*.b|Name|*.*</c> format into Avalonia file types.
+	/// </summary>
+	/// <param name="filter">The filter string to convert.</param>
+	/// <returns>The file types described by the filter string.</returns>
+	internal static List<FilePickerFileType> ParseFilter(string filter)
+	{
+		string[] parts = filter.Split('|');
+		List<FilePickerFileType> fileTypes = [];
+
+		for (int i = 0; i + 1 < parts.Length; i += 2)
+		{
+			// "*.*" only matches names that contain a dot on Linux and macOS, "*" matches everything.
+			List<string> patterns = [.. parts[i + 1]
+				.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+				.Select(pattern => pattern == "*.*" ? "*" : pattern)];
+
+			fileTypes.Add(new FilePickerFileType(parts[i]) { Patterns = patterns });
+		}
+
+		return fileTypes;
 	}
 }

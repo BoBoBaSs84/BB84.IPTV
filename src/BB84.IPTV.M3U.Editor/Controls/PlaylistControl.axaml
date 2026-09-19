@@ -1,0 +1,230 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:m="using:BB84.IPTV.M3U.Editor.Markup"
+						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
+						 xmlns:domain="using:BB84.IPTV.M3U.Editor.Domain.Enumerators"
+						 xmlns:models="using:BB84.IPTV.M3U.Editor.Domain.Abstractions.Models"
+						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
+						 mc:Ignorable="d"
+						 d:DesignWidth="1000"
+						 d:DesignHeight="600"
+						 x:Class="BB84.IPTV.M3U.Editor.Controls.PlaylistControl"
+						 x:DataType="vm:PlaylistViewModel">
+	<UserControl.Styles>
+		<Style Selector="Grid.Detail > TextBlock">
+			<Setter Property="Margin"
+							Value="4" />
+			<Setter Property="VerticalAlignment"
+							Value="Center" />
+		</Style>
+		<Style Selector="Grid.Detail > TextBox">
+			<Setter Property="Margin"
+							Value="4" />
+		</Style>
+	</UserControl.Styles>
+	<DockPanel>
+		<!-- Toolbar -->
+		<StackPanel DockPanel.Dock="Top"
+								Orientation="Horizontal"
+								Spacing="4"
+								Margin="4">
+			<Button Content="Add"
+							ToolTip.Tip="Add Entry"
+							Click="AddButton_Click" />
+			<Button Content="Duplicate"
+							ToolTip.Tip="Duplicate Entry"
+							Click="DuplicateButton_Click" />
+			<Button Content="Remove"
+							ToolTip.Tip="Remove Entry"
+							Click="RemoveButton_Click" />
+			<Button Content="Move Up"
+							ToolTip.Tip="Move Entry Up"
+							Click="MoveUpButton_Click" />
+			<Button Content="Move Down"
+							ToolTip.Tip="Move Entry Down"
+							Click="MoveDownButton_Click" />
+		</StackPanel>
+
+		<Grid ColumnDefinitions="*,Auto">
+			<!-- Entries DataGrid -->
+			<HeaderedContentControl Grid.Column="0"
+															Theme="{StaticResource GroupBox}"
+															Header="Entries"
+															Margin="4">
+				<DataGrid x:Name="EntriesDataGrid"
+									AutoGenerateColumns="False"
+									IsReadOnly="True"
+									SelectionMode="Single"
+									GridLinesVisibility="All"
+									ItemsSource="{Binding Entries}"
+									SelectedItem="{Binding SelectedEntry}">
+					<DataGrid.Columns>
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="Duration"
+																Binding="{Binding Duration}"
+																Width="110" />
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="Title"
+																Binding="{Binding Title}"
+																Width="*" />
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="File Path"
+																Binding="{Binding FilePath}"
+																Width="*" />
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="Grouping"
+																Binding="{Binding Grouping}"
+																Width="120" />
+					</DataGrid.Columns>
+				</DataGrid>
+			</HeaderedContentControl>
+
+			<!-- Detail Panel -->
+			<ScrollViewer Grid.Column="1"
+										VerticalScrollBarVisibility="Auto"
+										Width="320">
+				<StackPanel Margin="4"
+										Spacing="4">
+					<!-- Playlist Header -->
+					<HeaderedContentControl Theme="{StaticResource GroupBox}"
+																	Header="Playlist">
+						<Grid Classes="Detail"
+									ColumnDefinitions="Auto,*"
+									RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+							<TextBlock Grid.Row="0"
+												 Text="File Path:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Playlist_FilePath}" />
+							<TextBox Grid.Row="0"
+											 Grid.Column="1"
+											 Text="{Binding FilePath}" />
+
+							<TextBlock Grid.Row="1"
+												 Text="TV Guide:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Playlist_TVGuidePath}" />
+							<TextBox Grid.Row="1"
+											 Grid.Column="1"
+											 Text="{Binding UrlTvg}" />
+
+							<TextBlock Grid.Row="2"
+												 Text="Cache:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Playlist_Cache}" />
+							<TextBox Grid.Row="2"
+											 Grid.Column="1"
+											 Text="{Binding Cache}" />
+
+							<TextBlock Grid.Row="3"
+												 Text="Deinterlace:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Playlist_Deinterlace}" />
+							<ComboBox Grid.Row="3"
+												Grid.Column="1"
+												Margin="4"
+												HorizontalAlignment="Stretch"
+												ItemsSource="{m:EnumValues {x:Type domain:Deinterlace}}"
+												SelectedItem="{Binding Deinterlace}" />
+
+							<TextBlock Grid.Row="4"
+												 Text="Refresh:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Playlist_Refresh}" />
+							<TextBox Grid.Row="4"
+											 Grid.Column="1"
+											 Text="{Binding Refresh}" />
+						</Grid>
+					</HeaderedContentControl>
+
+					<!-- Entry Detail -->
+					<HeaderedContentControl Theme="{StaticResource GroupBox}"
+																	Header="Entry"
+																	IsVisible="{Binding SelectedEntryVisible}">
+						<Grid Classes="Detail"
+									DataContext="{Binding SelectedEntry}"
+									x:DataType="models:IEntry"
+									ColumnDefinitions="Auto,*"
+									RowDefinitions="Auto,Auto,Auto,Auto">
+							<TextBlock Grid.Row="0"
+												 Text="Duration:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Track_Duration}" />
+							<TextBox Grid.Row="0"
+											 Grid.Column="1"
+											 Text="{Binding Duration}" />
+
+							<TextBlock Grid.Row="1"
+												 Text="Title:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Track_Title}" />
+							<TextBox Grid.Row="1"
+											 Grid.Column="1"
+											 Text="{Binding Title}" />
+
+							<TextBlock Grid.Row="2"
+												 Text="Location:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Track_Location}" />
+							<TextBox Grid.Row="2"
+											 Grid.Column="1"
+											 Text="{Binding FilePath}" />
+
+							<TextBlock Grid.Row="3"
+												 Text="Grouping:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Track_Grouping}" />
+							<TextBox Grid.Row="3"
+											 Grid.Column="1"
+											 Text="{Binding Grouping}" />
+						</Grid>
+					</HeaderedContentControl>
+
+					<!-- Metadata Detail -->
+					<HeaderedContentControl Theme="{StaticResource GroupBox}"
+																	Header="Metadata"
+																	IsVisible="{Binding SelectedEntryVisible}">
+						<Grid Classes="Detail"
+									DataContext="{Binding SelectedEntry.Metadata}"
+									x:DataType="models:IMetadata"
+									ColumnDefinitions="Auto,*"
+									RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+							<TextBlock Grid.Row="0"
+												 Text="TVG ID:" />
+							<TextBox Grid.Row="0"
+											 Grid.Column="1"
+											 Text="{Binding TvgId}" />
+
+							<TextBlock Grid.Row="1"
+												 Text="TVG Name:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_Name}" />
+							<TextBox Grid.Row="1"
+											 Grid.Column="1"
+											 Text="{Binding TvgName}" />
+
+							<TextBlock Grid.Row="2"
+												 Text="TVG Logo:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_Logo}" />
+							<TextBox Grid.Row="2"
+											 Grid.Column="1"
+											 Text="{Binding TvgLogo}" />
+
+							<TextBlock Grid.Row="3"
+												 Text="Group ID:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_GroupId}" />
+							<TextBox Grid.Row="3"
+											 Grid.Column="1"
+											 Text="{Binding GroupId}" />
+
+							<TextBlock Grid.Row="4"
+												 Text="Group Title:"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_GroupTitle}" />
+							<TextBox Grid.Row="4"
+											 Grid.Column="1"
+											 Text="{Binding GroupTitle}" />
+
+							<CheckBox Grid.Row="5"
+												Grid.ColumnSpan="2"
+												Content="Censored"
+												Margin="4"
+												ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_Censored}"
+												IsChecked="{Binding Censored}" />
+						</Grid>
+					</HeaderedContentControl>
+				</StackPanel>
+			</ScrollViewer>
+		</Grid>
+	</DockPanel>
+</UserControl>

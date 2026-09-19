@@ -1,18 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Windows;
+using System.Diagnostics.CodeAnalysis;
+
+using Avalonia.Controls;
+using Avalonia.Threading;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
+using BB84.IPTV.M3U.Editor.Extensions;
 using BB84.IPTV.M3U.Editor.Properties;
+using BB84.IPTV.M3U.Editor.Views;
 
 namespace BB84.IPTV.M3U.Editor.Services;
 
 /// <summary>
 /// Represents a service for displaying notifications to the user.
 /// </summary>
-[ExcludeFromCodeCoverage(Justification = "This class is just an abstraction for the MessageBox.")]
+[ExcludeFromCodeCoverage(Justification = "This class is just an abstraction for the message dialog.")]
 internal sealed class NotificationService : INotificationService
 {
 	private readonly IEventService _eventService;
@@ -27,40 +31,50 @@ internal sealed class NotificationService : INotificationService
 		RegisterEventHandlers();
 	}
 
-	public void ShowError(string message)
-		=> DisplayMessage(message, Resources.ErrorMessageCaptition, MessageBoxImage.Error);
+	public Task ShowErrorAsync(string message)
+		=> ShowAsync(message, Resources.ErrorMessageCaptition, MessageDialogKind.Error, NotificationResult.OK);
 
-	public void ShowInformation(string message)
-		=> DisplayMessage(message, Resources.InformationMessageCaptition, MessageBoxImage.Information);
+	public Task ShowInformationAsync(string message)
+		=> ShowAsync(message, Resources.InformationMessageCaptition, MessageDialogKind.Information, NotificationResult.OK);
 
-	public void ShowWarning(string message)
-		=> DisplayMessage(message, Resources.WarningMessageCaptition, MessageBoxImage.Warning);
+	public Task ShowWarningAsync(string message)
+		=> ShowAsync(message, Resources.WarningMessageCaptition, MessageDialogKind.Warning, NotificationResult.OK);
 
-	public NotificationResult ShowQuestion(string message)
-		=> ToNotificationResult(DisplayQuestion(message, Resources.QuestionMessageCaptition, MessageBoxButton.YesNo, MessageBoxImage.Question));
+	public Task<NotificationResult> ShowQuestionAsync(string message)
+		=> ShowAsync(message, Resources.QuestionMessageCaptition, MessageDialogKind.Question, NotificationResult.Yes, NotificationResult.No);
 
-	public NotificationResult ShowRetry(string message)
-		=> ToNotificationResult(MessageBox.Show(message, Resources.RetryMessageCaptition, MessageBoxButton.OKCancel, MessageBoxImage.Question));
+	public Task<NotificationResult> ShowRetryAsync(string message)
+		=> ShowAsync(message, Resources.RetryMessageCaptition, MessageDialogKind.Question, NotificationResult.OK, NotificationResult.Cancel);
 
-	private static void DisplayMessage(string message, string caption, MessageBoxImage icon)
-		=> MessageBox.Show(message, caption, MessageBoxButton.OK, icon);
+	/// <summary>
+	/// Shows the message on the UI thread, so it can be called from background threads as well.
+	/// </summary>
+	private static Task<NotificationResult> ShowAsync(string message, string caption, MessageDialogKind kind, params NotificationResult[] buttons)
+		=> Dispatcher.UIThread.InvokeAsync(() => ShowDialogAsync(new MessageDialog(message, caption, kind, buttons)));
 
-	private static MessageBoxResult DisplayQuestion(string message, string caption, MessageBoxButton buttons, MessageBoxImage icon)
-		=> MessageBox.Show(message, caption, buttons, icon);
-
-	private static NotificationResult ToNotificationResult(MessageBoxResult result) => result switch
+	private static async Task<NotificationResult> ShowDialogAsync(MessageDialog dialog)
 	{
-		MessageBoxResult.OK => NotificationResult.OK,
-		MessageBoxResult.Cancel => NotificationResult.Cancel,
-		MessageBoxResult.Yes => NotificationResult.Yes,
-		MessageBoxResult.No => NotificationResult.No,
-		_ => NotificationResult.None
-	};
+		Window? owner = ApplicationExtensions.GetActiveWindow();
+
+		if (owner is { IsVisible: true })
+		{
+			await dialog.ShowDialog(owner).ConfigureAwait(true);
+			return dialog.Result;
+		}
+
+		// No window to be modal to yet, e.g. an error during startup.
+		TaskCompletionSource<NotificationResult> completionSource = new();
+		dialog.Closed += (s, e) => completionSource.TrySetResult(dialog.Result);
+		dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+		dialog.Show();
+
+		return await completionSource.Task.ConfigureAwait(true);
+	}
 
 	private void RegisterEventHandlers()
 	{
-		_eventService.Subscribe<ErrorOccuredEvent>(e => ShowError(e.Message));
-		_eventService.Subscribe<InformationOccuredEvent>(e => ShowInformation(e.Message));
-		_eventService.Subscribe<WarningOccuredEvent>(e => ShowWarning(e.Message));
+		_eventService.Subscribe<ErrorOccuredEvent>(e => _ = ShowErrorAsync(e.Message));
+		_eventService.Subscribe<InformationOccuredEvent>(e => _ = ShowInformationAsync(e.Message));
+		_eventService.Subscribe<WarningOccuredEvent>(e => _ = ShowWarningAsync(e.Message));
 	}
 }

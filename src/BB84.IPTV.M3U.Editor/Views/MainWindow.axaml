@@ -1,108 +1,93 @@
-<Window x:Class="BB84.IPTV.M3U.Editor.Views.MainWindow"
-				xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Window xmlns="https://github.com/avaloniaui"
 				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-				xmlns:vm="clr-namespace:BB84.IPTV.M3U.Editor.Application.ViewModels;assembly=BB84.IPTV.M3U.Editor.Application"
-				xmlns:controls="clr-namespace:BB84.IPTV.M3U.Editor.Controls"
+				xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
 				mc:Ignorable="d"
-				d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
-				ShowInTaskbar="True"
+				d:DesignWidth="1280"
+				d:DesignHeight="720"
+				x:Class="BB84.IPTV.M3U.Editor.Views.MainWindow"
+				x:DataType="vm:MainViewModel"
+				Icon="/Application.ico"
 				Title="{Binding ApplicationTitle}"
-				Height="720"
 				Width="1280"
+				Height="720"
 				WindowStartupLocation="CenterScreen">
-	<Window.Resources>
-		<BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-	</Window.Resources>
 	<DockPanel>
 		<!-- Menu Bar -->
 		<Menu DockPanel.Dock="Top">
 			<MenuItem Header="_File">
 				<MenuItem Header="_New"
-									InputGestureText="Ctrl+N"
+									InputGesture="Ctrl+N"
+									HotKey="Ctrl+N"
 									Click="NewMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/document.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/document.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="_Open"
-									InputGestureText="Ctrl+O"
+									InputGesture="Ctrl+O"
+									HotKey="Ctrl+O"
 									Click="OpenMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/folder_document.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/folder_document.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<Separator />
-				<MenuItem x:Name="saveMenuItem"
+				<MenuItem x:Name="SaveMenuItem"
 									Header="_Save"
-									InputGestureText="Ctrl+S"
+									InputGesture="Ctrl+S"
+									HotKey="Ctrl+S"
 									Click="SaveMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/floppy_disk.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/floppy_disk.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem x:Name="saveAsMenuItem"
+				<MenuItem x:Name="SaveAsMenuItem"
 									Header="Save _As"
 									Click="SaveAsMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/floppy_disk_edit.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/floppy_disk_edit.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="_Merge"
 									Click="MergeMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/floppy_disks.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/floppy_disks.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<Separator />
 				<MenuItem Header="_Print"
-									InputGestureText="Ctrl+P">
+									InputGesture="Ctrl+P">
 					<MenuItem.Icon>
-						<Image Source="/Resources/printer.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/printer.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="Print Pre_view">
 					<MenuItem.Icon>
-						<Image Source="/Resources/document_view.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/document_view.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<Separator />
 				<MenuItem Header="E_xit"
 									Command="{Binding ExitApplicationCommand}">
 					<MenuItem.Icon>
-						<Image Source="/Resources/exit.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/exit.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
 			<MenuItem Header="_Edit">
 				<MenuItem Header="_Undo"
-									InputGestureText="Ctrl+Z" />
+									InputGesture="Ctrl+Z" />
 				<MenuItem Header="_Redo"
-									InputGestureText="Ctrl+Y" />
+									InputGesture="Ctrl+Y" />
 				<Separator />
 				<MenuItem Header="Cu_t"
-									InputGestureText="Ctrl+X" />
+									InputGesture="Ctrl+X" />
 				<MenuItem Header="_Copy"
-									InputGestureText="Ctrl+C" />
+									InputGesture="Ctrl+C" />
 				<MenuItem Header="_Paste"
-									InputGestureText="Ctrl+V" />
+									InputGesture="Ctrl+V" />
 				<Separator />
 				<MenuItem Header="Select _All" />
 			</MenuItem>
@@ -110,17 +95,13 @@
 				<MenuItem Header="_Database"
 									Click="DatabaseMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/data.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/data.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="_Settings"
 									Command="{Binding OpenSettingsCommand}">
 					<MenuItem.Icon>
-						<Image Source="/Resources/gear.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/gear.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
@@ -131,29 +112,31 @@
 				<MenuItem Header="_About..."
 									Command="{Binding ShowAboutControl}">
 					<MenuItem.Icon>
-						<Image Source="/Resources/about.ico"
-									 Width="16"
-									 Height="16" />
+						<Image Source="/Resources/about.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
 		</Menu>
 
 		<!-- Status Bar -->
-		<StatusBar DockPanel.Dock="Bottom">
-			<StatusBarItem>
-				<TextBlock Text="{Binding StatusText}" />
-			</StatusBarItem>
-			<StatusBarItem HorizontalAlignment="Right">
-				<ProgressBar x:Name="mainProgressBar"
+		<Border DockPanel.Dock="Bottom"
+						Background="#F0F0F0"
+						BorderBrush="#D0D0D0"
+						BorderThickness="0,1,0,0"
+						Padding="8,3">
+			<DockPanel>
+				<ProgressBar DockPanel.Dock="Right"
 										 Width="200"
 										 Height="16"
+										 MinHeight="16"
 										 Minimum="{Binding ProgressBarMinimum}"
 										 Maximum="{Binding ProgressBarMaximum}"
 										 Value="{Binding ProgressBarValue}"
-										 Visibility="{Binding ProgressBarVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-			</StatusBarItem>
-		</StatusBar>
+										 IsVisible="{Binding ProgressBarVisible}" />
+				<TextBlock Text="{Binding StatusText}"
+									 VerticalAlignment="Center" />
+			</DockPanel>
+		</Border>
 
 		<!-- Main Content Area -->
 		<ContentControl Content="{Binding NavigationService.CurrentView}" />

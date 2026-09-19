@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				x:Class="BB84.IPTV.M3U.Editor.Views.MessageDialog"
+				Icon="/Application.ico"
+				SizeToContent="WidthAndHeight"
+				MinWidth="320"
+				MaxWidth="560"
+				CanResize="False"
+				ShowInTaskbar="False"
+				WindowStartupLocation="CenterOwner">
+	<DockPanel Margin="16">
+		<StackPanel x:Name="ButtonPanel"
+								DockPanel.Dock="Bottom"
+								Orientation="Horizontal"
+								HorizontalAlignment="Right"
+								Spacing="8"
+								Margin="0,16,0,0" />
+		<Border x:Name="IconBorder"
+						DockPanel.Dock="Left"
+						Width="32"
+						Height="32"
+						CornerRadius="16"
+						VerticalAlignment="Top"
+						Margin="0,0,12,0">
+			<TextBlock x:Name="IconText"
+								 Foreground="White"
+								 FontSize="18"
+								 FontWeight="Bold"
+								 HorizontalAlignment="Center"
+								 VerticalAlignment="Center" />
+		</Border>
+		<SelectableTextBlock x:Name="MessageText"
+												 TextWrapping="Wrap"
+												 VerticalAlignment="Center" />
+	</DockPanel>
+</Window>

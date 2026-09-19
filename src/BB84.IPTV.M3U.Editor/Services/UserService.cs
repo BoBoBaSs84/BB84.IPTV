@@ -14,7 +14,7 @@ internal sealed class UserService : IUserService
 	public string Name => Environment.UserName;
 
 	/// <inheritdoc/>
-	public string Domain => Environment.UserName;
+	public string Domain => Environment.UserDomainName;
 
 	/// <inheritdoc/>
 	public string Machine => Environment.MachineName;

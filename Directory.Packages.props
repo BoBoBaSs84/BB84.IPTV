@@ -3,6 +3,12 @@
     <ManagePackageVersionsCentrally>True</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Avalonia" Version="12.1.2" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="12.1.2" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.1.2" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.1.2" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.1.2" />
+    <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
     <PackageVersion Include="BB84.EntityFrameworkCore.Entities" Version="5.0.916" />
     <PackageVersion Include="BB84.EntityFrameworkCore.Repositories" Version="5.0.916" />
     <PackageVersion Include="BB84.EntityFrameworkCore.Repositories.Abstractions" Version="5.0.916" />

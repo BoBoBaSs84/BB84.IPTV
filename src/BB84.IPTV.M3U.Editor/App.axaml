@@ -1,0 +1,58 @@
+<Application xmlns="https://github.com/avaloniaui"
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
+						 xmlns:c="using:BB84.IPTV.M3U.Editor.Controls"
+						 x:Class="BB84.IPTV.M3U.Editor.App"
+						 RequestedThemeVariant="Light">
+	<Application.Resources>
+		<!-- Avalonia has no GroupBox, this theme gives a HeaderedContentControl the same look. -->
+		<ControlTheme x:Key="GroupBox"
+									TargetType="HeaderedContentControl">
+			<Setter Property="BorderBrush"
+							Value="#D0D0D0" />
+			<Setter Property="BorderThickness"
+							Value="1" />
+			<Setter Property="CornerRadius"
+							Value="4" />
+			<Setter Property="Padding"
+							Value="4" />
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Border BorderBrush="{TemplateBinding BorderBrush}"
+									BorderThickness="{TemplateBinding BorderThickness}"
+									CornerRadius="{TemplateBinding CornerRadius}"
+									Background="{TemplateBinding Background}">
+						<DockPanel>
+							<ContentPresenter DockPanel.Dock="Top"
+																Content="{TemplateBinding Header}"
+																FontWeight="SemiBold"
+																Margin="8,6,8,0" />
+							<ContentPresenter Name="PART_ContentPresenter"
+																Content="{TemplateBinding Content}"
+																ContentTemplate="{TemplateBinding ContentTemplate}"
+																Padding="{TemplateBinding Padding}" />
+						</DockPanel>
+					</Border>
+				</ControlTemplate>
+			</Setter>
+		</ControlTheme>
+	</Application.Resources>
+	<Application.DataTemplates>
+		<DataTemplate DataType="vm:AboutViewModel">
+			<c:AboutControl />
+		</DataTemplate>
+		<DataTemplate DataType="vm:DatabaseViewModel">
+			<c:DatabaseControl />
+		</DataTemplate>
+		<DataTemplate DataType="vm:PlaylistViewModel">
+			<c:PlaylistControl />
+		</DataTemplate>
+		<DataTemplate DataType="vm:SettingsViewModel">
+			<c:SettingsControl />
+		</DataTemplate>
+	</Application.DataTemplates>
+	<Application.Styles>
+		<FluentTheme />
+		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+	</Application.Styles>
+</Application>

@@ -10,20 +10,20 @@ namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 /// </summary>
 public interface IFileDialogService
 {
-  /// <summary>
-  /// Shows an open file dialog and returns the selected file path.
-  /// </summary>
-  /// <param name="filter">The file type filter string.</param>
-  /// <param name="title">The dialog title.</param>
-  /// <returns>The selected file path, or <see langword="null"/> if cancelled.</returns>
-  string? ShowOpenFileDialog(string filter, string title);
+	/// <summary>
+	/// Shows an open file dialog and returns the selected file path.
+	/// </summary>
+	/// <param name="filter">The file type filter string, e.g. <c>M3U Files (*.m3u;*.m3u8)|*.m3u;*.m3u8|All Files (*.*)|*.*</c>.</param>
+	/// <param name="title">The dialog title.</param>
+	/// <returns>The selected file path, or <see langword="null"/> if cancelled.</returns>
+	Task<string?> ShowOpenFileDialogAsync(string filter, string title);
 
-  /// <summary>
-  /// Shows a save file dialog and returns the selected file path.
-  /// </summary>
-  /// <param name="filter">The file type filter string.</param>
-  /// <param name="title">The dialog title.</param>
-  /// <param name="defaultFileName">The default file name.</param>
-  /// <returns>The selected file path, or <see langword="null"/> if cancelled.</returns>
-  string? ShowSaveFileDialog(string filter, string title, string? defaultFileName = null);
+	/// <summary>
+	/// Shows a save file dialog and returns the selected file path.
+	/// </summary>
+	/// <param name="filter">The file type filter string, e.g. <c>M3U Files (*.m3u;*.m3u8)|*.m3u;*.m3u8|All Files (*.*)|*.*</c>.</param>
+	/// <param name="title">The dialog title.</param>
+	/// <param name="defaultFileName">The default file name.</param>
+	/// <returns>The selected file path, or <see langword="null"/> if cancelled.</returns>
+	Task<string?> ShowSaveFileDialogAsync(string filter, string title, string? defaultFileName = null);
 }

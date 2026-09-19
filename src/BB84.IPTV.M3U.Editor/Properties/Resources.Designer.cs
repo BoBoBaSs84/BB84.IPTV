@@ -22,7 +22,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BB84.IPTV.M3U.Editor.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,19 +61,9 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon About {
-            get {
-                object obj = ResourceManager.GetObject("About", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Application is exiting ....
         /// </summary>
-        internal static string ApplicationIsExiting {
+        public static string ApplicationIsExiting {
             get {
                 return ResourceManager.GetString("ApplicationIsExiting", resourceCulture);
             }
@@ -82,36 +72,16 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Application is starting ....
         /// </summary>
-        internal static string ApplicationIsStarting {
+        public static string ApplicationIsStarting {
             get {
                 return ResourceManager.GetString("ApplicationIsStarting", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon Application {
-            get {
-                object obj = ResourceManager.GetObject("Application", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon Database {
-            get {
-                object obj = ResourceManager.GetObject("Database", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Check Database.
         /// </summary>
-        internal static string DatabaseControl_CheckDatabaseButton_Content {
+        public static string DatabaseControl_CheckDatabaseButton_Content {
             get {
                 return ResourceManager.GetString("DatabaseControl.CheckDatabaseButton.Content", resourceCulture);
             }
@@ -120,7 +90,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create Database.
         /// </summary>
-        internal static string DatabaseControl_CreateDatabaseButton_Content {
+        public static string DatabaseControl_CreateDatabaseButton_Content {
             get {
                 return ResourceManager.GetString("DatabaseControl.CreateDatabaseButton.Content", resourceCulture);
             }
@@ -129,7 +99,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Database Checked.
         /// </summary>
-        internal static string DatabaseControl_DatabaseCheckedCheckBox_Content {
+        public static string DatabaseControl_DatabaseCheckedCheckBox_Content {
             get {
                 return ResourceManager.GetString("DatabaseControl.DatabaseCheckedCheckBox.Content", resourceCulture);
             }
@@ -138,7 +108,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Database Checking.
         /// </summary>
-        internal static string DatabaseControl_DatabaseCheckingCheckBox_Content {
+        public static string DatabaseControl_DatabaseCheckingCheckBox_Content {
             get {
                 return ResourceManager.GetString("DatabaseControl.DatabaseCheckingCheckBox.Content", resourceCulture);
             }
@@ -147,7 +117,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Database Created.
         /// </summary>
-        internal static string DatabaseControl_DatabaseCreatedCheckBox_Content {
+        public static string DatabaseControl_DatabaseCreatedCheckBox_Content {
             get {
                 return ResourceManager.GetString("DatabaseControl.DatabaseCreatedCheckBox.Content", resourceCulture);
             }
@@ -156,7 +126,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Database Creating.
         /// </summary>
-        internal static string DatabaseControl_DatabaseCreatingCheckBox_Content {
+        public static string DatabaseControl_DatabaseCreatingCheckBox_Content {
             get {
                 return ResourceManager.GetString("DatabaseControl.DatabaseCreatingCheckBox.Content", resourceCulture);
             }
@@ -165,7 +135,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Database Imported.
         /// </summary>
-        internal static string DatabaseControl_DatabaseImportedCheckBox_Content {
+        public static string DatabaseControl_DatabaseImportedCheckBox_Content {
             get {
                 return ResourceManager.GetString("DatabaseControl.DatabaseImportedCheckBox.Content", resourceCulture);
             }
@@ -174,7 +144,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Database Importing.
         /// </summary>
-        internal static string DatabaseControl_DatabaseImportingCheckBox_Content {
+        public static string DatabaseControl_DatabaseImportingCheckBox_Content {
             get {
                 return ResourceManager.GetString("DatabaseControl.DatabaseImportingCheckBox.Content", resourceCulture);
             }
@@ -183,7 +153,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Database Operations.
         /// </summary>
-        internal static string DatabaseControl_DatabaseOperationsGroupBox_Header {
+        public static string DatabaseControl_DatabaseOperationsGroupBox_Header {
             get {
                 return ResourceManager.GetString("DatabaseControl.DatabaseOperationsGroupBox.Header", resourceCulture);
             }
@@ -192,7 +162,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Database Status.
         /// </summary>
-        internal static string DatabaseControl_DatabaseStatusGroupBox_Header {
+        public static string DatabaseControl_DatabaseStatusGroupBox_Header {
             get {
                 return ResourceManager.GetString("DatabaseControl.DatabaseStatusGroupBox.Header", resourceCulture);
             }
@@ -201,7 +171,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Import Database.
         /// </summary>
-        internal static string DatabaseControl_ImportDatabaseButton_Content {
+        public static string DatabaseControl_ImportDatabaseButton_Content {
             get {
                 return ResourceManager.GetString("DatabaseControl.ImportDatabaseButton.Content", resourceCulture);
             }
@@ -210,7 +180,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Import Progress.
         /// </summary>
-        internal static string DatabaseControl_ImportProgressGroupBox_Header {
+        public static string DatabaseControl_ImportProgressGroupBox_Header {
             get {
                 return ResourceManager.GetString("DatabaseControl.ImportProgressGroupBox.Header", resourceCulture);
             }
@@ -219,7 +189,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
-        internal static string ErrorMessageCaptition {
+        public static string ErrorMessageCaptition {
             get {
                 return ResourceManager.GetString("ErrorMessageCaptition", resourceCulture);
             }
@@ -228,76 +198,16 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Exit requested, trying to exit application ...
         /// </summary>
-        internal static string ExitRequested {
+        public static string ExitRequested {
             get {
                 return ResourceManager.GetString("ExitRequested", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon Exit {
-            get {
-                object obj = ResourceManager.GetObject("Exit", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon FlagFrance {
-            get {
-                object obj = ResourceManager.GetObject("FlagFrance", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon FlagGermany {
-            get {
-                object obj = ResourceManager.GetObject("FlagGermany", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon FlagItaly {
-            get {
-                object obj = ResourceManager.GetObject("FlagItaly", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon FlagSpain {
-            get {
-                object obj = ResourceManager.GetObject("FlagSpain", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon FlagUSA {
-            get {
-                object obj = ResourceManager.GetObject("FlagUSA", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Information.
         /// </summary>
-        internal static string InformationMessageCaptition {
+        public static string InformationMessageCaptition {
             get {
                 return ResourceManager.GetString("InformationMessageCaptition", resourceCulture);
             }
@@ -306,76 +216,52 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Language has been set to &apos;{0}&apos;..
         /// </summary>
-        internal static string LanguageSetTo {
+        public static string LanguageSetTo {
             get {
                 return ResourceManager.GetString("LanguageSetTo", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        internal static System.Drawing.Icon Languages {
+        public static string MessageDialog_CancelButton_Content {
             get {
-                object obj = ResourceManager.GetObject("Languages", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                return ResourceManager.GetString("MessageDialog.CancelButton.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized string similar to No.
         /// </summary>
-        internal static System.Drawing.Icon Merge {
+        public static string MessageDialog_NoButton_Content {
             get {
-                object obj = ResourceManager.GetObject("Merge", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                return ResourceManager.GetString("MessageDialog.NoButton.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized string similar to OK.
         /// </summary>
-        internal static System.Drawing.Icon New {
+        public static string MessageDialog_OkButton_Content {
             get {
-                object obj = ResourceManager.GetObject("New", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                return ResourceManager.GetString("MessageDialog.OkButton.Content", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized string similar to Yes.
         /// </summary>
-        internal static System.Drawing.Icon Open {
+        public static string MessageDialog_YesButton_Content {
             get {
-                object obj = ResourceManager.GetObject("Open", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon Print {
-            get {
-                object obj = ResourceManager.GetObject("Print", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon PrintPreview {
-            get {
-                object obj = ResourceManager.GetObject("PrintPreview", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                return ResourceManager.GetString("MessageDialog.YesButton.Content", resourceCulture);
             }
         }
 
         /// <summary>
         ///   Looks up a localized string similar to Question.
         /// </summary>
-        internal static string QuestionMessageCaptition {
+        public static string QuestionMessageCaptition {
             get {
                 return ResourceManager.GetString("QuestionMessageCaptition", resourceCulture);
             }
@@ -384,7 +270,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Restart requested, trying to restart application ...
         /// </summary>
-        internal static string RestartRequested {
+        public static string RestartRequested {
             get {
                 return ResourceManager.GetString("RestartRequested", resourceCulture);
             }
@@ -393,46 +279,16 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Retry.
         /// </summary>
-        internal static string RetryMessageCaptition {
+        public static string RetryMessageCaptition {
             get {
                 return ResourceManager.GetString("RetryMessageCaptition", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon Save {
-            get {
-                object obj = ResourceManager.GetObject("Save", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon SaveAs {
-            get {
-                object obj = ResourceManager.GetObject("SaveAs", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon Settings {
-            get {
-                object obj = ResourceManager.GetObject("Settings", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Auto Save.
         /// </summary>
-        internal static string SettingsControl_AutoSaveCheckBox_Content {
+        public static string SettingsControl_AutoSaveCheckBox_Content {
             get {
                 return ResourceManager.GetString("SettingsControl.AutoSaveCheckBox.Content", resourceCulture);
             }
@@ -441,7 +297,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Auto Save Interval (min):.
         /// </summary>
-        internal static string SettingsControl_AutoSaveIntervalTextBlock_Text {
+        public static string SettingsControl_AutoSaveIntervalTextBlock_Text {
             get {
                 return ResourceManager.GetString("SettingsControl.AutoSaveIntervalTextBlock.Text", resourceCulture);
             }
@@ -450,7 +306,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Command Timeout (sec):.
         /// </summary>
-        internal static string SettingsControl_CommandTimeoutTextBlock_Text {
+        public static string SettingsControl_CommandTimeoutTextBlock_Text {
             get {
                 return ResourceManager.GetString("SettingsControl.CommandTimeoutTextBlock.Text", resourceCulture);
             }
@@ -459,7 +315,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Database.
         /// </summary>
-        internal static string SettingsControl_DatabaseGroupBox_Header {
+        public static string SettingsControl_DatabaseGroupBox_Header {
             get {
                 return ResourceManager.GetString("SettingsControl.DatabaseGroupBox.Header", resourceCulture);
             }
@@ -468,7 +324,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Enable Logging.
         /// </summary>
-        internal static string SettingsControl_EnableLoggingCheckBox_Content {
+        public static string SettingsControl_EnableLoggingCheckBox_Content {
             get {
                 return ResourceManager.GetString("SettingsControl.EnableLoggingCheckBox.Content", resourceCulture);
             }
@@ -477,7 +333,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
-        internal static string SettingsControl_GeneralGroupBox_Header {
+        public static string SettingsControl_GeneralGroupBox_Header {
             get {
                 return ResourceManager.GetString("SettingsControl.GeneralGroupBox.Header", resourceCulture);
             }
@@ -486,7 +342,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Language:.
         /// </summary>
-        internal static string SettingsControl_LanguageTextBlock_Text {
+        public static string SettingsControl_LanguageTextBlock_Text {
             get {
                 return ResourceManager.GetString("SettingsControl.LanguageTextBlock.Text", resourceCulture);
             }
@@ -495,7 +351,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Load Settings.
         /// </summary>
-        internal static string SettingsControl_LoadSettingsButton_Content {
+        public static string SettingsControl_LoadSettingsButton_Content {
             get {
                 return ResourceManager.GetString("SettingsControl.LoadSettingsButton.Content", resourceCulture);
             }
@@ -504,7 +360,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Log Level:.
         /// </summary>
-        internal static string SettingsControl_LogLevelTextBlock_Text {
+        public static string SettingsControl_LogLevelTextBlock_Text {
             get {
                 return ResourceManager.GetString("SettingsControl.LogLevelTextBlock.Text", resourceCulture);
             }
@@ -513,7 +369,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Max Batch Size:.
         /// </summary>
-        internal static string SettingsControl_MaxBatchSizeTextBlock_Text {
+        public static string SettingsControl_MaxBatchSizeTextBlock_Text {
             get {
                 return ResourceManager.GetString("SettingsControl.MaxBatchSizeTextBlock.Text", resourceCulture);
             }
@@ -522,7 +378,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Save Settings.
         /// </summary>
-        internal static string SettingsControl_SaveSettingsButton_Content {
+        public static string SettingsControl_SaveSettingsButton_Content {
             get {
                 return ResourceManager.GetString("SettingsControl.SaveSettingsButton.Content", resourceCulture);
             }
@@ -531,7 +387,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Indicates that the channel needs to be protected by parental control, if such is present in the device, can take values 0 and 1..
         /// </summary>
-        internal static string ToolTip_Metadata_Censored {
+        public static string ToolTip_Metadata_Censored {
             get {
                 return ResourceManager.GetString("ToolTip.Metadata.Censored", resourceCulture);
             }
@@ -540,7 +396,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The group identifier of the channels, which is used to group..
         /// </summary>
-        internal static string ToolTip_Metadata_GroupId {
+        public static string ToolTip_Metadata_GroupId {
             get {
                 return ResourceManager.GetString("ToolTip.Metadata.GroupId", resourceCulture);
             }
@@ -549,7 +405,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The name or title of the group of channels, which is used to display..
         /// </summary>
-        internal static string ToolTip_Metadata_GroupTitle {
+        public static string ToolTip_Metadata_GroupTitle {
             get {
                 return ResourceManager.GetString("ToolTip.Metadata.GroupTitle", resourceCulture);
             }
@@ -558,7 +414,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The TV guide logo URL or file path, which is used to display..
         /// </summary>
-        internal static string ToolTip_Metadata_Logo {
+        public static string ToolTip_Metadata_Logo {
             get {
                 return ResourceManager.GetString("ToolTip.Metadata.Logo", resourceCulture);
             }
@@ -567,7 +423,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The name of the channel in the program file, which is used mainly when using programs in a format JTV..
         /// </summary>
-        internal static string ToolTip_Metadata_Name {
+        public static string ToolTip_Metadata_Name {
             get {
                 return ResourceManager.GetString("ToolTip.Metadata.Name", resourceCulture);
             }
@@ -576,7 +432,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The cache period in milliseconds..
         /// </summary>
-        internal static string ToolTip_Playlist_Cache {
+        public static string ToolTip_Playlist_Cache {
             get {
                 return ResourceManager.GetString("ToolTip.Playlist.Cache", resourceCulture);
             }
@@ -585,7 +441,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The deinterlace method to be applied..
         /// </summary>
-        internal static string ToolTip_Playlist_Deinterlace {
+        public static string ToolTip_Playlist_Deinterlace {
             get {
                 return ResourceManager.GetString("ToolTip.Playlist.Deinterlace", resourceCulture);
             }
@@ -594,7 +450,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The location or file path of the playlist..
         /// </summary>
-        internal static string ToolTip_Playlist_FilePath {
+        public static string ToolTip_Playlist_FilePath {
             get {
                 return ResourceManager.GetString("ToolTip.Playlist.FilePath", resourceCulture);
             }
@@ -603,7 +459,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The refresh period in seconds, after which the playlist should be reloaded..
         /// </summary>
-        internal static string ToolTip_Playlist_Refresh {
+        public static string ToolTip_Playlist_Refresh {
             get {
                 return ResourceManager.GetString("ToolTip.Playlist.Refresh", resourceCulture);
             }
@@ -612,7 +468,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The URL or file path for the TV guide..
         /// </summary>
-        internal static string ToolTip_Playlist_TVGuidePath {
+        public static string ToolTip_Playlist_TVGuidePath {
             get {
                 return ResourceManager.GetString("ToolTip.Playlist.TVGuidePath", resourceCulture);
             }
@@ -621,7 +477,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The duration of the track in seconds, where -1 indicates that the duration is unknown or infinite..
         /// </summary>
-        internal static string ToolTip_Track_Duration {
+        public static string ToolTip_Track_Duration {
             get {
                 return ResourceManager.GetString("ToolTip.Track.Duration", resourceCulture);
             }
@@ -630,7 +486,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The named grouping of the track, indicating the channel group is also unofficial..
         /// </summary>
-        internal static string ToolTip_Track_Grouping {
+        public static string ToolTip_Track_Grouping {
             get {
                 return ResourceManager.GetString("ToolTip.Track.Grouping", resourceCulture);
             }
@@ -639,7 +495,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The link to the media source itself, such as the IPTV stream or the path to the file name if it is a music track..
         /// </summary>
-        internal static string ToolTip_Track_Location {
+        public static string ToolTip_Track_Location {
             get {
                 return ResourceManager.GetString("ToolTip.Track.Location", resourceCulture);
             }
@@ -648,7 +504,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The title of the track / channel is a mandatory and standard..
         /// </summary>
-        internal static string ToolTip_Track_Title {
+        public static string ToolTip_Track_Title {
             get {
                 return ResourceManager.GetString("ToolTip.Track.Title", resourceCulture);
             }
@@ -657,7 +513,7 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Warning.
         /// </summary>
-        internal static string WarningMessageCaptition {
+        public static string WarningMessageCaptition {
             get {
                 return ResourceManager.GetString("WarningMessageCaptition", resourceCulture);
             }

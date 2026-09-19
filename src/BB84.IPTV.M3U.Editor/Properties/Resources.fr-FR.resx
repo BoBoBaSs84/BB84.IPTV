@@ -171,6 +171,18 @@
   <data name="LanguageSetTo" xml:space="preserve">
     <value>La langue a été définie sur « {0} ».</value>
   </data>
+  <data name="MessageDialog.CancelButton.Content" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="MessageDialog.NoButton.Content" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="MessageDialog.OkButton.Content" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MessageDialog.YesButton.Content" xml:space="preserve">
+    <value>Oui</value>
+  </data>
   <data name="RestartRequested" xml:space="preserve">
     <value>Redémarrage demandé, tentative de redémarrage de l'application.</value>
   </data>
