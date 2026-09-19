@@ -4,7 +4,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 
-namespace BB84.IPTV.M3U.Editor.Presentation.Views;
+namespace BB84.IPTV.M3U.Editor.Views;
 
 /// <summary>
 /// The main window class.

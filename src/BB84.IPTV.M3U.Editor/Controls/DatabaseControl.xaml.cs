@@ -1,8 +1,8 @@
 ﻿using System.Windows.Controls;
 
-using RESX = BB84.IPTV.M3U.Editor.Presentation.Properties.Resources;
+using RESX = BB84.IPTV.M3U.Editor.Properties.Resources;
 
-namespace BB84.IPTV.M3U.Editor.Presentation.Controls;
+namespace BB84.IPTV.M3U.Editor.Controls;
 
 /// <summary>
 /// Interaction logic for DatabaseControl.xaml

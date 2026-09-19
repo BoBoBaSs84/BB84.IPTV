@@ -123,13 +123,136 @@
   <data name="ApplicationIsStarting" xml:space="preserve">
     <value>L'application démarre...</value>
   </data>
+  <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
+    <value>Vérifier la base de données</value>
+  </data>
+  <data name="DatabaseControl.CreateDatabaseButton.Content" xml:space="preserve">
+    <value>Créer une base de données</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCheckedCheckBox.Content" xml:space="preserve">
+    <value>Base de données vérifiée</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCheckingCheckBox.Content" xml:space="preserve">
+    <value>Vérification de la base de données</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCreatedCheckBox.Content" xml:space="preserve">
+    <value>Base de données créée</value>
+  </data>
+  <data name="DatabaseControl.DatabaseCreatingCheckBox.Content" xml:space="preserve">
+    <value>Création de base de données</value>
+  </data>
+  <data name="DatabaseControl.DatabaseImportedCheckBox.Content" xml:space="preserve">
+    <value>Base de données importée</value>
+  </data>
+  <data name="DatabaseControl.DatabaseImportingCheckBox.Content" xml:space="preserve">
+    <value>Importation de base de données</value>
+  </data>
+  <data name="DatabaseControl.DatabaseOperationsGroupBox.Header" xml:space="preserve">
+    <value>Opérations de base de données</value>
+  </data>
+  <data name="DatabaseControl.DatabaseStatusGroupBox.Header" xml:space="preserve">
+    <value>Statut de la base de données</value>
+  </data>
+  <data name="DatabaseControl.ImportDatabaseButton.Content" xml:space="preserve">
+    <value>Importer la base de données</value>
+  </data>
+  <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
+    <value>Progression de l'importation</value>
+  </data>
+  <data name="ErrorMessageCaptition" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
   <data name="ExitRequested" xml:space="preserve">
     <value>Sortie demandée, tentative de sortie de l'application ..</value>
+  </data>
+  <data name="InformationMessageCaptition" xml:space="preserve">
+    <value>Information</value>
   </data>
   <data name="LanguageSetTo" xml:space="preserve">
     <value>La langue a été définie sur « {0} ».</value>
   </data>
   <data name="RestartRequested" xml:space="preserve">
     <value>Redémarrage demandé, tentative de redémarrage de l'application.</value>
+  </data>
+  <data name="RetryMessageCaptition" xml:space="preserve">
+    <value>Réessayer</value>
+  </data>
+  <data name="SettingsControl.AutoSaveCheckBox.Content" xml:space="preserve">
+    <value>Sauvegarde automatique</value>
+  </data>
+  <data name="SettingsControl.AutoSaveIntervalTextBlock.Text" xml:space="preserve">
+    <value>Intervalle de sauvegarde automatique (min) :</value>
+  </data>
+  <data name="SettingsControl.CommandTimeoutTextBlock.Text" xml:space="preserve">
+    <value>Délai d'expiration de la commande (s) :</value>
+  </data>
+  <data name="SettingsControl.DatabaseGroupBox.Header" xml:space="preserve">
+    <value>Base de données</value>
+  </data>
+  <data name="SettingsControl.EnableLoggingCheckBox.Content" xml:space="preserve">
+    <value>Activer la journalisation</value>
+  </data>
+  <data name="SettingsControl.GeneralGroupBox.Header" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="SettingsControl.LanguageTextBlock.Text" xml:space="preserve">
+    <value>Langue:</value>
+  </data>
+  <data name="SettingsControl.LoadSettingsButton.Content" xml:space="preserve">
+    <value>Charger les paramètres</value>
+  </data>
+  <data name="SettingsControl.LogLevelTextBlock.Text" xml:space="preserve">
+    <value>Niveau de journalisation :</value>
+  </data>
+  <data name="SettingsControl.MaxBatchSizeTextBlock.Text" xml:space="preserve">
+    <value>Taille maximale du lot :</value>
+  </data>
+  <data name="SettingsControl.SaveSettingsButton.Content" xml:space="preserve">
+    <value>Enregistrer les paramètres</value>
+  </data>
+  <data name="ToolTip.Metadata.Censored" xml:space="preserve">
+    <value>Indique que la chaîne doit être protégée par le contrôle parental, si celui-ci est présent dans l'appareil, peut prendre les valeurs 0 et 1.</value>
+  </data>
+  <data name="ToolTip.Metadata.GroupId" xml:space="preserve">
+    <value>L'identifiant de groupe des canaux, utilisé pour le regroupement.</value>
+  </data>
+  <data name="ToolTip.Metadata.GroupTitle" xml:space="preserve">
+    <value>Le nom ou le titre du groupe de chaînes utilisé pour l'affichage.</value>
+  </data>
+  <data name="ToolTip.Metadata.Logo" xml:space="preserve">
+    <value>L'URL du logo du guide TV ou le chemin du fichier utilisé pour l'affichage.</value>
+  </data>
+  <data name="ToolTip.Metadata.Name" xml:space="preserve">
+    <value>Le nom de la chaîne dans le fichier programme, qui est principalement utilisé lors de l'utilisation de programmes au format JTV.</value>
+  </data>
+  <data name="ToolTip.Playlist.Cache" xml:space="preserve">
+    <value>La période de cache en millisecondes.</value>
+  </data>
+  <data name="ToolTip.Playlist.Deinterlace" xml:space="preserve">
+    <value>La méthode de désentrelacement à appliquer.</value>
+  </data>
+  <data name="ToolTip.Playlist.FilePath" xml:space="preserve">
+    <value>L'emplacement ou le chemin du fichier de la liste de lecture.</value>
+  </data>
+  <data name="ToolTip.Playlist.Refresh" xml:space="preserve">
+    <value>La période de rafraîchissement en secondes, après laquelle la playlist doit être rechargée.</value>
+  </data>
+  <data name="ToolTip.Playlist.TVGuidePath" xml:space="preserve">
+    <value>L'URL ou le chemin du fichier du guide TV.</value>
+  </data>
+  <data name="ToolTip.Track.Duration" xml:space="preserve">
+    <value>La durée de la piste en secondes, où -1 indique que la durée est inconnue ou infinie.</value>
+  </data>
+  <data name="ToolTip.Track.Grouping" xml:space="preserve">
+    <value>Le regroupement nommé de la piste, indiquant le groupe de canaux, n'est également pas officiel.</value>
+  </data>
+  <data name="ToolTip.Track.Location" xml:space="preserve">
+    <value>Le lien vers la source multimédia elle-même, comme le flux IPTV ou le chemin vers le nom du fichier s'il s'agit d'un morceau de musique.</value>
+  </data>
+  <data name="ToolTip.Track.Title" xml:space="preserve">
+    <value>Le titre de la piste/chaîne est obligatoire et standard.</value>
+  </data>
+  <data name="WarningMessageCaptition" xml:space="preserve">
+    <value>Avertissement</value>
   </data>
 </root>

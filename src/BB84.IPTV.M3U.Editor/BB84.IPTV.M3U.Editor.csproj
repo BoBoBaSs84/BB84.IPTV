@@ -22,7 +22,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\BB84.IPTV.M3U.Editor.Infrastructure\BB84.IPTV.M3U.Editor.Infrastructure.csproj" />
-		<ProjectReference Include="..\BB84.IPTV.M3U.Editor.Presentation\BB84.IPTV.M3U.Editor.Presentation.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Properties\Resources.Designer.cs">

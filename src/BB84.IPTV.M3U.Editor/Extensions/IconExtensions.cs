@@ -4,7 +4,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace BB84.IPTV.M3U.Editor.Presentation.Extensions;
+namespace BB84.IPTV.M3U.Editor.Extensions;
 
 /// <summary>
 /// Represents extension methods for the <see cref="Icon"/> class.

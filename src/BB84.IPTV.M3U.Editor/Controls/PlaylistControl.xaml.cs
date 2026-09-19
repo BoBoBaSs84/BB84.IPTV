@@ -4,9 +4,9 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 
-using RESX = BB84.IPTV.M3U.Editor.Presentation.Properties.Resources;
+using RESX = BB84.IPTV.M3U.Editor.Properties.Resources;
 
-namespace BB84.IPTV.M3U.Editor.Presentation.Controls;
+namespace BB84.IPTV.M3U.Editor.Controls;
 
 /// <summary>
 /// Represents the playlist control in the IPTV M3U Editor application.

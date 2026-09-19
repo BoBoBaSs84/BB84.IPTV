@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace BB84.IPTV.M3U.Editor.Presentation.Behaviors;
+namespace BB84.IPTV.M3U.Editor.Behaviors;
 
 /// <summary>
 /// Provides attached behavior for <see cref="TextBox"/> controls to allow integer-only input

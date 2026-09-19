@@ -2,7 +2,7 @@
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 
-namespace BB84.IPTV.M3U.Editor.Presentation.Services;
+namespace BB84.IPTV.M3U.Editor.Services;
 
 /// <summary>
 /// The user service implementation.

@@ -7,11 +7,11 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
-using BB84.IPTV.M3U.Editor.Presentation.Extensions;
+using BB84.IPTV.M3U.Editor.Extensions;
 
-using RESX = BB84.IPTV.M3U.Editor.Presentation.Properties.Resources;
+using RESX = BB84.IPTV.M3U.Editor.Properties.Resources;
 
-namespace BB84.IPTV.M3U.Editor.Presentation.Controls;
+namespace BB84.IPTV.M3U.Editor.Controls;
 
 /// <summary>
 /// Interaction logic for AboutControl.xaml

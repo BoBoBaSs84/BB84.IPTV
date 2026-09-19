@@ -5,9 +5,9 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
-using BB84.IPTV.M3U.Editor.Presentation.Properties;
+using BB84.IPTV.M3U.Editor.Properties;
 
-namespace BB84.IPTV.M3U.Editor.Presentation.Services;
+namespace BB84.IPTV.M3U.Editor.Services;
 
 /// <summary>
 /// Represents a service for displaying notifications to the user.
