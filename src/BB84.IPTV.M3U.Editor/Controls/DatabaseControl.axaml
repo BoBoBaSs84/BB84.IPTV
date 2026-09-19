@@ -1,0 +1,92 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
+						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
+						 mc:Ignorable="d"
+						 d:DesignWidth="800"
+						 d:DesignHeight="450"
+						 x:Class="BB84.IPTV.M3U.Editor.Controls.DatabaseControl"
+						 x:DataType="vm:DatabaseViewModel">
+	<Grid Margin="8"
+				ColumnDefinitions="*,*"
+				RowDefinitions="*,Auto">
+		<HeaderedContentControl Grid.Row="0"
+														Grid.Column="0"
+														Theme="{StaticResource GroupBox}"
+														Header="{x:Static p:Resources.DatabaseControl_DatabaseOperationsGroupBox_Header}"
+														Margin="4">
+			<StackPanel Margin="8">
+				<Button Content="{x:Static p:Resources.DatabaseControl_CreateDatabaseButton_Content}"
+								HorizontalAlignment="Stretch"
+								HorizontalContentAlignment="Center"
+								VerticalContentAlignment="Center"
+								Margin="4"
+								Height="40"
+								Command="{Binding CreateDatabaseCommand}" />
+				<Button Content="{x:Static p:Resources.DatabaseControl_CheckDatabaseButton_Content}"
+								HorizontalAlignment="Stretch"
+								HorizontalContentAlignment="Center"
+								VerticalContentAlignment="Center"
+								Margin="4"
+								Height="40"
+								Command="{Binding CheckDatabaseCommand}" />
+				<Button Content="{x:Static p:Resources.DatabaseControl_ImportDatabaseButton_Content}"
+								HorizontalAlignment="Stretch"
+								HorizontalContentAlignment="Center"
+								VerticalContentAlignment="Center"
+								Margin="4"
+								Height="40"
+								Command="{Binding ImportDatabaseCommand}" />
+			</StackPanel>
+		</HeaderedContentControl>
+		<HeaderedContentControl Grid.Row="0"
+														Grid.Column="1"
+														Theme="{StaticResource GroupBox}"
+														Header="{x:Static p:Resources.DatabaseControl_DatabaseStatusGroupBox_Header}"
+														Margin="4">
+			<StackPanel Margin="8">
+				<CheckBox Content="{x:Static p:Resources.DatabaseControl_DatabaseCreatedCheckBox_Content}"
+									IsChecked="{Binding DatabaseCreated, Mode=OneWay}"
+									IsEnabled="False"
+									Margin="4" />
+				<CheckBox Content="{x:Static p:Resources.DatabaseControl_DatabaseCreatingCheckBox_Content}"
+									IsChecked="{Binding DatabaseCreating, Mode=OneWay}"
+									IsEnabled="False"
+									Margin="4" />
+				<CheckBox Content="{x:Static p:Resources.DatabaseControl_DatabaseCheckedCheckBox_Content}"
+									IsChecked="{Binding DatabaseChecked, Mode=OneWay}"
+									IsEnabled="False"
+									Margin="4" />
+				<CheckBox Content="{x:Static p:Resources.DatabaseControl_DatabaseCheckingCheckBox_Content}"
+									IsChecked="{Binding DatabaseChecking, Mode=OneWay}"
+									IsEnabled="False"
+									Margin="4" />
+				<CheckBox Content="{x:Static p:Resources.DatabaseControl_DatabaseImportedCheckBox_Content}"
+									IsChecked="{Binding DatabaseImported, Mode=OneWay}"
+									IsEnabled="False"
+									Margin="4" />
+				<CheckBox Content="{x:Static p:Resources.DatabaseControl_DatabaseImportingCheckBox_Content}"
+									IsChecked="{Binding DatabaseImporting, Mode=OneWay}"
+									IsEnabled="False"
+									Margin="4" />
+			</StackPanel>
+		</HeaderedContentControl>
+		<HeaderedContentControl Grid.Row="1"
+														Grid.ColumnSpan="2"
+														Theme="{StaticResource GroupBox}"
+														Header="{x:Static p:Resources.DatabaseControl_ImportProgressGroupBox_Header}"
+														Margin="4">
+			<StackPanel Margin="8">
+				<ProgressBar Height="22"
+										 Margin="4"
+										 Minimum="0"
+										 Maximum="{Binding ImportProgressMaximum}"
+										 Value="{Binding ImportProgress}" />
+				<TextBlock Text="{Binding ImportStatusMessage}"
+									 Margin="4" />
+			</StackPanel>
+		</HeaderedContentControl>
+	</Grid>
+</UserControl>

@@ -2,7 +2,7 @@
 
 A desktop application to view, create, edit and merge IPTV playlists (M3U). Channel data comes from the public [iptv-org API](https://github.com/iptv-org/api), is stored in a local SQLite database and can be combined with your own custom channels. The app can also generate a `channels.xml` for [iptv-org/epg](https://github.com/iptv-org/epg#usage), so that your custom channel list gets matching program guide data.
 
-> **Status:** work in progress. The current version is a WPF app that imports the iptv-org data into SQLite and edits a single M3U file. This document describes where the project is heading.
+> **Status:** work in progress. The current version is a cross-platform AvaloniaUI app that imports the iptv-org data into SQLite and edits a single M3U file. This document describes where the project is heading.
 
 ## Goals
 
@@ -26,19 +26,19 @@ A desktop application to view, create, edit and merge IPTV playlists (M3U). Chan
 Clean-architecture layering, dependencies point inward:
 
 ```
-Host (WPF now, Avalonia next)  →  Infrastructure  →  Application  →  Domain
+Host (Avalonia)  →  Infrastructure  →  Application  →  Domain
 ```
 
 - **Domain**: EF entities and playlist models.
-- **Application**: interfaces, services, MVVM view models, events, settings, localized resources. View models stay UI-framework-free, so they carry over to Avalonia unchanged.
+- **Application**: interfaces, services, MVVM view models, events, settings, localized resources. View models stay UI-framework-free.
 - **Infrastructure**: EF Core / SQLite, iptv-org HTTP client, file, settings and logging services.
 - **Host**: UI and the presentation service implementations (`IFileDialogService`, `INotificationService`, `IUserService`).
 
-The Avalonia host is added as a new project (`BB84.IPTV.M3U.Editor.Avalonia`) beside the WPF host. Views are ported one by one following the [WPF migration guide](https://docs.avaloniaui.net/docs/migration/wpf/), and the WPF host is deleted once feature parity is reached. See [CLAUDE.md](CLAUDE.md) for the current code layout and conventions.
+The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Phase 1). See [CLAUDE.md](CLAUDE.md) for the current code layout and conventions.
 
 ## Roadmap
 
-### Phase 0 – Cross-platform groundwork
+### Phase 0 – Cross-platform groundwork (done)
 
 - Change the target framework in `Directory.Build.props` from `net10.0-windows` to `net10.0`.
 - Replace the Windows EventLog logger (`Microsoft.Extensions.Logging.EventLog`) used in Production with a cross-platform sink.
@@ -48,7 +48,7 @@ The Avalonia host is added as a new project (`BB84.IPTV.M3U.Editor.Avalonia`) be
 
 **Done when:** Application, Domain, Infrastructure and their tests build and pass on Linux and Windows.
 
-### Phase 1 – Avalonia host
+### Phase 1 – Avalonia host (done)
 
 - New project with `App.axaml`, the same host/DI setup (reusing the three `DependencyInjectionInstaller`s) and Avalonia implementations of the presentation services.
 - Port `MainWindow`, `AboutControl`, `DatabaseControl`, `SettingsControl`, `PlaylistControl` and `IntegerTextBoxBehavior`.

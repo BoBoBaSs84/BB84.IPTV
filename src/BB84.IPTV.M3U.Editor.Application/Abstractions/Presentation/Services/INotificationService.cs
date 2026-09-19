@@ -1,4 +1,4 @@
-﻿using BB84.IPTV.M3U.Editor.Application.Enumerators;
+using BB84.IPTV.M3U.Editor.Application.Enumerators;
 
 namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 
@@ -11,31 +11,34 @@ public interface INotificationService
 	/// Shows a error message.
 	/// </summary>
 	/// <param name="message">The message to show.</param>
-	void ShowError(string message);
+	/// <returns>A task that completes when the message has been closed.</returns>
+	Task ShowErrorAsync(string message);
 
 	/// <summary>
 	/// Shows a informational message.
 	/// </summary>
 	/// <param name="message">The message to show.</param>
-	void ShowInformation(string message);
+	/// <returns>A task that completes when the message has been closed.</returns>
+	Task ShowInformationAsync(string message);
 
 	/// <summary>
 	/// Shows a warning message.
 	/// </summary>
 	/// <param name="message">The message to show.</param>
-	void ShowWarning(string message);
+	/// <returns>A task that completes when the message has been closed.</returns>
+	Task ShowWarningAsync(string message);
 
 	/// <summary>
 	/// Shows a retry message and return the result.
 	/// </summary>
 	/// <param name="message">The message to show.</param>
 	/// <returns>The result of the retry message.</returns>
-	NotificationResult ShowRetry(string message);
+	Task<NotificationResult> ShowRetryAsync(string message);
 
 	/// <summary>
 	/// Shows a question message and return the result.
 	/// </summary>
 	/// <param name="message">The question to show.</param>
 	/// <returns>The result of the question.</returns>
-	NotificationResult ShowQuestion(string message);
+	Task<NotificationResult> ShowQuestionAsync(string message);
 }

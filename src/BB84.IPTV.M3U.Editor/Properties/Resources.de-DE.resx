@@ -171,6 +171,18 @@
   <data name="LanguageSetTo" xml:space="preserve">
     <value>Die Sprache wurde auf „{0}“ gesetzt.</value>
   </data>
+  <data name="MessageDialog.CancelButton.Content" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="MessageDialog.NoButton.Content" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="MessageDialog.OkButton.Content" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MessageDialog.YesButton.Content" xml:space="preserve">
+    <value>Ja</value>
+  </data>
   <data name="QuestionMessageCaptition" xml:space="preserve">
     <value>Frage</value>
   </data>

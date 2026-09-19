@@ -1,11 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<ApplicationIcon>Application.ico</ApplicationIcon>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<AvaloniaUseCompiledBindingsByDefault>True</AvaloniaUseCompiledBindingsByDefault>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net10.0-windows</TargetFrameworks>
-		<EnableWindowsTargeting>true</EnableWindowsTargeting>
-		<UseWPF>true</UseWPF>
-		<StartupObject>BB84.IPTV.M3U.Editor.App</StartupObject>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.Equals('Release'))">
 		<IncludeAllContentForSelfExtract>False</IncludeAllContentForSelfExtract>
@@ -14,13 +12,20 @@
 		<PublishSingleFile>True</PublishSingleFile>
 	</PropertyGroup>
 	<ItemGroup>
-		<Content Include="Application.ico" />
+		<AvaloniaResource Include="Application.ico" />
+		<AvaloniaResource Include="Resources\*.ico" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Avalonia.Controls.DataGrid" />
+		<PackageReference Include="Avalonia.Desktop" />
+		<PackageReference Include="Avalonia.Fonts.Inter" />
+		<PackageReference Include="Avalonia.Themes.Fluent" />
+		<PackageReference Include="AvaloniaUI.DiagnosticsSupport">
+			<IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Hosting" />
-	</ItemGroup>
-	<ItemGroup>
-		<Page Include="App.xaml" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\BB84.IPTV.M3U.Editor.Infrastructure\BB84.IPTV.M3U.Editor.Infrastructure.csproj" />
@@ -34,7 +39,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Update="Properties\Resources.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
+			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>

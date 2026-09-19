@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 using BB84.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
@@ -35,7 +37,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	{
 		_fileService = fileService;
 		Entries = [];
-		Entries.ListChanged += (s, e) => OnEntriesListChanged(e);
+		Entries.CollectionChanged += (s, e) => OnEntriesCollectionChanged(e);
 	}
 
 	/// <summary>
@@ -102,7 +104,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	/// <summary>
 	/// Gets the collection of playlist entries.
 	/// </summary>
-	public BindingList<IEntry> Entries { get; }
+	public ObservableCollection<IEntry> Entries { get; }
 
 	/// <summary>
 	/// Indicates whether the playlist has unsaved changes.
@@ -125,7 +127,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	/// <summary>
 	/// Indicates whether the playlist can be saved without prompting for a file path.
 	/// </summary>
-	public bool CanSave => !IsBusy && IsDirty && FilePath.IsNullOrWhiteSpace();
+	public bool CanSave => !IsBusy && IsDirty && FilePath.IsNotNullOrWhiteSpace();
 
 	/// <summary>
 	/// Indicates whether Save As should be enabled.
@@ -164,12 +166,9 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 				Deinterlace = playlist.Deinterlace;
 				Refresh = playlist.Refresh;
 
-				Entries.RaiseListChangedEvents = false;
-				Entries.Clear();
+				ClearEntries();
 				foreach (EntryModel entry in playlist.Entries)
 					Entries.Add(new EntryModel(entry));
-				Entries.RaiseListChangedEvents = true;
-				Entries.ResetBindings();
 				SelectedEntry = Entries.FirstOrDefault();
 			});
 			IsDirty = false;
@@ -192,7 +191,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 			Deinterlace = Deinterlace.None;
 			Refresh = 0;
 			FilePath = string.Empty;
-			Entries.Clear();
+			ClearEntries();
 			SelectedEntry = null;
 		});
 		IsDirty = false;
@@ -311,17 +310,37 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 		if (newIndex < 0 || newIndex >= Entries.Count)
 			return;
 
-		Entries.RaiseListChangedEvents = false;
+		// Remove and insert instead of Move, not every view (e.g. the Avalonia DataGrid) handles move notifications.
+		// Removing the entry may clear the selection of a bound view, so it is selected again afterwards.
+		IEntry entry = Entries[index];
 		Entries.RemoveAt(index);
-		Entries.Insert(newIndex, SelectedEntry);
-		Entries.RaiseListChangedEvents = true;
-		Entries.ResetBindings();
+		Entries.Insert(newIndex, entry);
+		SelectedEntry = entry;
 	}
 
-	private void OnEntriesListChanged(ListChangedEventArgs e)
+	private void OnEntriesCollectionChanged(NotifyCollectionChangedEventArgs e)
 	{
-		if (e.ListChangedType is ListChangedType.ItemAdded or ListChangedType.ItemDeleted or ListChangedType.ItemChanged or ListChangedType.Reset)
-			MarkDirty();
+		if (e.OldItems is not null)
+			foreach (INotifyPropertyChanged entry in e.OldItems.OfType<INotifyPropertyChanged>())
+				entry.PropertyChanged -= OnEntryPropertyChanged;
+
+		if (e.NewItems is not null)
+			foreach (INotifyPropertyChanged entry in e.NewItems.OfType<INotifyPropertyChanged>())
+				entry.PropertyChanged += OnEntryPropertyChanged;
+
+		MarkDirty();
+	}
+
+	private void OnEntryPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		=> MarkDirty();
+
+	private void ClearEntries()
+	{
+		// Clear raises a reset without the removed items, so detach the handlers first.
+		foreach (INotifyPropertyChanged entry in Entries.OfType<INotifyPropertyChanged>())
+			entry.PropertyChanged -= OnEntryPropertyChanged;
+
+		Entries.Clear();
 	}
 
 	private void MarkDirty()

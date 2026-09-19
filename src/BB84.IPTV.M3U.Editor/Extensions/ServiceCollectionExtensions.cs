@@ -1,8 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Installer;
-using BB84.IPTV.M3U.Editor.Controls;
 using BB84.IPTV.M3U.Editor.Domain.Installer;
 using BB84.IPTV.M3U.Editor.Infrastructure.Installer;
 using BB84.IPTV.M3U.Editor.Services;
@@ -30,23 +29,8 @@ internal static class ServiceCollectionExtensions
 		services.RegisterApplicationServices()
 			.RegisterDomainServices()
 			.RegisterInfrastructureServices(environment)
-			.RegisterControls()
 			.RegisterServices()
 			.RegisterWindows();
-
-		return services;
-	}
-
-	/// <summary>
-	/// Registers the required WPF views to the <paramref name="services"/> collection.
-	/// </summary>
-	/// <param name="services">The service collection to enrich.</param>
-	/// <returns>The enriched service collection.</returns>
-	internal static IServiceCollection RegisterControls(this IServiceCollection services)
-	{
-		services.AddSingleton<AboutControl>();
-		services.AddSingleton<DatabaseControl>();
-		services.AddSingleton<PlaylistControl>();
 
 		return services;
 	}
