@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
+using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Installer;
+using BB84.IPTV.M3U.Editor.Controls;
 using BB84.IPTV.M3U.Editor.Domain.Installer;
 using BB84.IPTV.M3U.Editor.Infrastructure.Installer;
-using BB84.IPTV.M3U.Editor.Presentation.Installer;
+using BB84.IPTV.M3U.Editor.Services;
+using BB84.IPTV.M3U.Editor.Views;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,7 +30,49 @@ internal static class ServiceCollectionExtensions
 		services.RegisterApplicationServices()
 			.RegisterDomainServices()
 			.RegisterInfrastructureServices(environment)
-			.RegisterPresentationServices();
+			.RegisterControls()
+			.RegisterServices()
+			.RegisterWindows();
+
+		return services;
+	}
+
+	/// <summary>
+	/// Registers the required WPF views to the <paramref name="services"/> collection.
+	/// </summary>
+	/// <param name="services">The service collection to enrich.</param>
+	/// <returns>The enriched service collection.</returns>
+	internal static IServiceCollection RegisterControls(this IServiceCollection services)
+	{
+		services.AddSingleton<AboutControl>();
+		services.AddSingleton<DatabaseControl>();
+		services.AddSingleton<PlaylistControl>();
+
+		return services;
+	}
+
+	/// <summary>
+	/// Registers the required services to the <paramref name="services"/> collection.
+	/// </summary>
+	/// <param name="services">The service collection to enrich.</param>
+	/// <returns>The enriched service collection.</returns>
+	internal static IServiceCollection RegisterServices(this IServiceCollection services)
+	{
+		services.AddSingleton<IFileDialogService, FileDialogService>();
+		services.AddTransient<IUserService, UserService>();
+		services.AddSingleton<INotificationService, NotificationService>();
+
+		return services;
+	}
+
+	/// <summary>
+	/// Registers the required windows to the <paramref name="services"/> collection.
+	/// </summary>
+	/// <param name="services">The service collection to enrich.</param>
+	/// <returns>The enriched service collection.</returns>
+	internal static IServiceCollection RegisterWindows(this IServiceCollection services)
+	{
+		services.AddSingleton<MainWindow>();
 
 		return services;
 	}
