@@ -14,7 +14,9 @@
 		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<AnalysisMode>recommended</AnalysisMode>
-		<AppendTargetFrameworkToOutputPath>True</AppendTargetFrameworkToOutputPath>
+		<AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>False</AppendRuntimeIdentifierToOutputPath>
+		<AppendPlatformToOutputPath>False</AppendPlatformToOutputPath>
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
 		<DebugType>full</DebugType>
 		<Deterministic>True</Deterministic>
