@@ -63,8 +63,10 @@ internal sealed class PlaylistService(IServiceScopeFactory serviceScopeFactory, 
 		return entity.Id;
 	}
 
-	public async Task<bool> UpdateAsync(int id, IPlaylist playlist, CancellationToken cancellationToken = default)
+	public async Task<bool> UpdateAsync(int id, string name, IPlaylist playlist, CancellationToken cancellationToken = default)
 	{
+		ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
 
@@ -76,6 +78,7 @@ internal sealed class PlaylistService(IServiceScopeFactory serviceScopeFactory, 
 			return false;
 
 		// Header, removed and added entries go into one commit, so a failure leaves the stored playlist untouched.
+		entity.Name = name.Trim();
 		entity.Apply(playlist);
 		repositoryService.PlaylistEntries.Delete(entity.Entries);
 

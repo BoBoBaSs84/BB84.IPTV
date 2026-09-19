@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
+						 mc:Ignorable="d"
+						 d:DesignWidth="1200"
+						 d:DesignHeight="700"
+						 x:Class="BB84.IPTV.M3U.Editor.Controls.PlaylistsControl"
+						 x:DataType="vm:PlaylistsViewModel">
+	<Grid ColumnDefinitions="260,*">
+		<!-- Playlist list -->
+		<HeaderedContentControl Grid.Column="0"
+														Theme="{StaticResource GroupBox}"
+														Header="Playlists"
+														Margin="4">
+			<DockPanel>
+				<UniformGrid DockPanel.Dock="Bottom"
+										 Columns="2"
+										 Margin="0,4,0,0">
+					<Button Content="New"
+									ToolTip.Tip="Create a new, empty playlist"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Center"
+									Margin="2"
+									Command="{Binding NewCommand}" />
+					<Button Content="Delete"
+									ToolTip.Tip="Delete the open playlist"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Center"
+									Margin="2"
+									Command="{Binding DeleteCommand}" />
+					<Button Content="Import..."
+									ToolTip.Tip="Import an M3U file as a new playlist"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Center"
+									Margin="2"
+									Command="{Binding ImportCommand}" />
+					<Button Content="Export..."
+									ToolTip.Tip="Save and export the open playlist to an M3U file"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Center"
+									Margin="2"
+									Command="{Binding ExportCommand}" />
+					<Button Content="Save"
+									ToolTip.Tip="Save the open playlist"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Center"
+									Margin="2"
+									Command="{Binding SaveCommand}" />
+					<Button Content="Merge..."
+									ToolTip.Tip="Append the entries of an M3U file to the open playlist"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Center"
+									Margin="2"
+									Command="{Binding MergeCommand}" />
+				</UniformGrid>
+				<ListBox x:Name="PlaylistList"
+								 ItemsSource="{Binding Playlists}"
+								 SelectionMode="Single"
+								 SelectionChanged="PlaylistList_SelectionChanged">
+					<ListBox.Styles>
+						<!-- Screen readers announce the playlist name instead of the view model type. -->
+						<Style Selector="ListBoxItem"
+									 x:DataType="vm:PlaylistItemViewModel">
+							<Setter Property="AutomationProperties.Name"
+											Value="{Binding Name}" />
+						</Style>
+					</ListBox.Styles>
+					<ListBox.ItemTemplate>
+						<DataTemplate x:DataType="vm:PlaylistItemViewModel">
+							<StackPanel>
+								<TextBlock Text="{Binding Name}"
+													 FontWeight="SemiBold"
+													 TextTrimming="CharacterEllipsis" />
+								<TextBlock Text="{Binding EntryCount, StringFormat='{}{0} entries'}"
+													 FontSize="12"
+													 Foreground="#888" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</DockPanel>
+		</HeaderedContentControl>
+
+		<!-- Editor of the open playlist -->
+		<ContentControl Grid.Column="1"
+										Content="{Binding Editor}"
+										IsVisible="{Binding Editor.HasPlaylist}" />
+		<TextBlock Grid.Column="1"
+							 Text="Select a playlist on the left, or create or import one."
+							 Foreground="#888"
+							 HorizontalAlignment="Center"
+							 VerticalAlignment="Center"
+							 IsVisible="{Binding !Editor.HasPlaylist}" />
+	</Grid>
+</UserControl>

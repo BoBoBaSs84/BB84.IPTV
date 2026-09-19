@@ -33,13 +33,14 @@ public interface IPlaylistService
 	Task<int> CreateAsync(string name, IPlaylist playlist, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Replaces the header and all entries of a stored playlist.
+	/// Replaces the name, the header and all entries of a stored playlist in one commit.
 	/// </summary>
 	/// <param name="id">The identifier of the playlist.</param>
+	/// <param name="name">The name of the playlist.</param>
 	/// <param name="playlist">The new content of the playlist.</param>
 	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
 	/// <returns><see langword="true"/> if the playlist was updated; <see langword="false"/> if it does not exist.</returns>
-	Task<bool> UpdateAsync(int id, IPlaylist playlist, CancellationToken cancellationToken = default);
+	Task<bool> UpdateAsync(int id, string name, IPlaylist playlist, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Renames a stored playlist.

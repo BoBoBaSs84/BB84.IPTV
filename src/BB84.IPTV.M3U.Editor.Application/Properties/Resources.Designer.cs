@@ -19,7 +19,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -79,11 +79,128 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete the playlist &apos;{0}&apos;? This cannot be undone..
+        /// </summary>
+        internal static string DeletePlaylistQuestion {
+            get {
+                return ResourceManager.GetString("DeletePlaylistQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to exit the application?.
         /// </summary>
         internal static string ExitApplicationQuestion {
             get {
                 return ResourceManager.GetString("ExitApplicationQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Playlist.
+        /// </summary>
+        internal static string ExportPlaylistTitle {
+            get {
+                return ResourceManager.GetString("ExportPlaylistTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Playlist.
+        /// </summary>
+        internal static string ImportPlaylistTitle {
+            get {
+                return ResourceManager.GetString("ImportPlaylistTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge Playlist.
+        /// </summary>
+        internal static string MergePlaylistTitle {
+            get {
+                return ResourceManager.GetString("MergePlaylistTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Playlist.
+        /// </summary>
+        internal static string NewPlaylistName {
+            get {
+                return ResourceManager.GetString("NewPlaylistName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The playlist cannot be saved: {0}.
+        /// </summary>
+        internal static string PlaylistCannotBeSaved {
+            get {
+                return ResourceManager.GetString("PlaylistCannotBeSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} entries have no URL..
+        /// </summary>
+        internal static string PlaylistEntriesWithoutUrl {
+            get {
+                return ResourceManager.GetString("PlaylistEntriesWithoutUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist &apos;{0}&apos; exported to &apos;{1}&apos;..
+        /// </summary>
+        internal static string PlaylistExported {
+            get {
+                return ResourceManager.GetString("PlaylistExported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist &apos;{0}&apos; imported..
+        /// </summary>
+        internal static string PlaylistImported {
+            get {
+                return ResourceManager.GetString("PlaylistImported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The playlist needs a name..
+        /// </summary>
+        internal static string PlaylistNameRequired {
+            get {
+                return ResourceManager.GetString("PlaylistNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The playlist operation failed..
+        /// </summary>
+        internal static string PlaylistOperationFailed {
+            get {
+                return ResourceManager.GetString("PlaylistOperationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist &apos;{0}&apos; saved..
+        /// </summary>
+        internal static string PlaylistSaved {
+            get {
+                return ResourceManager.GetString("PlaylistSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The playlist &apos;{0}&apos; has unsaved changes. Do you want to save them?.
+        /// </summary>
+        internal static string SaveChangesQuestion {
+            get {
+                return ResourceManager.GetString("SaveChangesQuestion", resourceCulture);
             }
         }
     }

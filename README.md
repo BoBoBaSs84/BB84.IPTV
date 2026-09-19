@@ -69,7 +69,7 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 **Done when:** an M3U file round-trips import → database → export without losing entries or metadata.
 
-### Phase 3 – Playlist editor
+### Phase 3 – Playlist editor (done)
 
 - Playlist list: create, rename, delete, import, export.
 - Entry grid: add, remove, reorder, edit title, group, `tvg-id`, `tvg-name`, URL.

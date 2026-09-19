@@ -17,18 +17,18 @@
 		<!-- Menu Bar -->
 		<Menu DockPanel.Dock="Top">
 			<MenuItem Header="_File">
-				<MenuItem Header="_New"
+				<MenuItem x:Name="NewMenuItem"
+									Header="_New Playlist"
 									InputGesture="Ctrl+N"
-									HotKey="Ctrl+N"
-									Click="NewMenuItem_Click">
+									HotKey="Ctrl+N">
 					<MenuItem.Icon>
 						<Image Source="/Resources/document.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="_Open"
+				<MenuItem x:Name="ImportMenuItem"
+									Header="_Import..."
 									InputGesture="Ctrl+O"
-									HotKey="Ctrl+O"
-									Click="OpenMenuItem_Click">
+									HotKey="Ctrl+O">
 					<MenuItem.Icon>
 						<Image Source="/Resources/folder_document.ico" />
 					</MenuItem.Icon>
@@ -37,21 +37,19 @@
 				<MenuItem x:Name="SaveMenuItem"
 									Header="_Save"
 									InputGesture="Ctrl+S"
-									HotKey="Ctrl+S"
-									Click="SaveMenuItem_Click">
+									HotKey="Ctrl+S">
 					<MenuItem.Icon>
 						<Image Source="/Resources/floppy_disk.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem x:Name="SaveAsMenuItem"
-									Header="Save _As"
-									Click="SaveAsMenuItem_Click">
+				<MenuItem x:Name="ExportMenuItem"
+									Header="_Export...">
 					<MenuItem.Icon>
 						<Image Source="/Resources/floppy_disk_edit.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="_Merge"
-									Click="MergeMenuItem_Click">
+				<MenuItem x:Name="MergeMenuItem"
+									Header="_Merge...">
 					<MenuItem.Icon>
 						<Image Source="/Resources/floppy_disks.ico" />
 					</MenuItem.Icon>
@@ -92,6 +90,12 @@
 				<MenuItem Header="Select _All" />
 			</MenuItem>
 			<MenuItem Header="_Tools">
+				<MenuItem Header="_Playlists"
+									Click="PlaylistsMenuItem_Click">
+					<MenuItem.Icon>
+						<Image Source="/Resources/tv.ico" />
+					</MenuItem.Icon>
+				</MenuItem>
 				<MenuItem Header="_Database"
 									Click="DatabaseMenuItem_Click">
 					<MenuItem.Icon>

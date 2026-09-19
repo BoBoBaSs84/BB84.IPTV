@@ -127,4 +127,43 @@
   <data name="ExitApplicationQuestion" xml:space="preserve">
     <value>Möchten Sie die Anwendung wirklich beenden?</value>
   </data>
+  <data name="DeletePlaylistQuestion" xml:space="preserve">
+    <value>Die Wiedergabeliste &apos;{0}&apos; löschen? Das kann nicht rückgängig gemacht werden.</value>
+  </data>
+  <data name="ExportPlaylistTitle" xml:space="preserve">
+    <value>Wiedergabeliste exportieren</value>
+  </data>
+  <data name="ImportPlaylistTitle" xml:space="preserve">
+    <value>Wiedergabeliste importieren</value>
+  </data>
+  <data name="MergePlaylistTitle" xml:space="preserve">
+    <value>Wiedergabeliste zusammenführen</value>
+  </data>
+  <data name="NewPlaylistName" xml:space="preserve">
+    <value>Neue Wiedergabeliste</value>
+  </data>
+  <data name="PlaylistCannotBeSaved" xml:space="preserve">
+    <value>Die Wiedergabeliste kann nicht gespeichert werden: {0}</value>
+  </data>
+  <data name="PlaylistEntriesWithoutUrl" xml:space="preserve">
+    <value>{0} Einträge haben keine URL.</value>
+  </data>
+  <data name="PlaylistExported" xml:space="preserve">
+    <value>Wiedergabeliste &apos;{0}&apos; nach &apos;{1}&apos; exportiert.</value>
+  </data>
+  <data name="PlaylistImported" xml:space="preserve">
+    <value>Wiedergabeliste &apos;{0}&apos; importiert.</value>
+  </data>
+  <data name="PlaylistNameRequired" xml:space="preserve">
+    <value>Die Wiedergabeliste braucht einen Namen.</value>
+  </data>
+  <data name="PlaylistOperationFailed" xml:space="preserve">
+    <value>Der Vorgang an der Wiedergabeliste ist fehlgeschlagen.</value>
+  </data>
+  <data name="PlaylistSaved" xml:space="preserve">
+    <value>Wiedergabeliste &apos;{0}&apos; gespeichert.</value>
+  </data>
+  <data name="SaveChangesQuestion" xml:space="preserve">
+    <value>Die Wiedergabeliste &apos;{0}&apos; hat ungespeicherte Änderungen. Sollen sie gespeichert werden?</value>
+  </data>
 </root>

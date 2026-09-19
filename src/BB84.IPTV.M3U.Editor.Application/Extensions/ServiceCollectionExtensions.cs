@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Services;
@@ -59,6 +59,7 @@ internal static class ServiceCollectionExtensions
 		services.AddSingleton<DatabaseViewModel>();
 		services.AddSingleton<MainViewModel>();
 		services.AddSingleton<PlaylistViewModel>();
+		services.AddSingleton<PlaylistsViewModel>();
 		services.AddSingleton<SettingsViewModel>();
 
 		return services;
