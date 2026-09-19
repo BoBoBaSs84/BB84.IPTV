@@ -18,6 +18,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Settings;
+using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Extensions;
 using BB84.IPTV.M3U.Editor.Views;
 
@@ -92,6 +93,7 @@ public partial class App : AvaloniaApp
 		ApplyLanguage(_host.Services.GetRequiredService<ApplicationSettings>().General.Language);
 
 		await MigrateDatabaseAsync().ConfigureAwait(true);
+		await ShowPlaylistsAsync().ConfigureAwait(true);
 
 		MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
 		desktop.MainWindow = mainWindow;
@@ -114,6 +116,22 @@ public partial class App : AvaloniaApp
 		}
 	}
 
+	private async Task ShowPlaylistsAsync()
+	{
+		PlaylistsViewModel playlistsViewModel = _host!.Services.GetRequiredService<PlaylistsViewModel>();
+		_host.Services.GetRequiredService<INavigationService>().NavigateTo<PlaylistsViewModel>();
+
+		try
+		{
+			await playlistsViewModel.LoadPlaylistsAsync().ConfigureAwait(true);
+		}
+		catch (Exception ex)
+		{
+			_loggerService!.Log(LogError, ex.Message, ex);
+			_eventService!.Publish(new ErrorOccuredEvent(ex.Message, ex));
+		}
+	}
+
 	private void OnExit()
 	{
 		_loggerService?.Log(LogInformation, RESX.ApplicationIsExiting);
@@ -128,7 +146,12 @@ public partial class App : AvaloniaApp
 	private void OnExitRequested(IClassicDesktopStyleApplicationLifetime desktop)
 	{
 		_loggerService!.Log(LogInformation, RESX.ExitRequested);
-		desktop.Shutdown();
+
+		// Closing the main window asks about unsaved changes and ends the application.
+		if (desktop.MainWindow is { } mainWindow)
+			mainWindow.Close();
+		else
+			desktop.Shutdown();
 	}
 
 	private void OnRestartRequested(IClassicDesktopStyleApplicationLifetime desktop)

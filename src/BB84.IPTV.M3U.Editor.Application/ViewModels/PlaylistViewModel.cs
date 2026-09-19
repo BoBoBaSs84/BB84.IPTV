@@ -1,10 +1,12 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
 using BB84.Extensions;
-using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
+using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Extensions;
+using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.ViewModels.Base;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 using BB84.IPTV.M3U.Editor.Domain.Enumerators;
@@ -14,12 +16,14 @@ using BB84.Notifications.Attributes;
 namespace BB84.IPTV.M3U.Editor.Application.ViewModels;
 
 /// <summary>
-/// Represents the view model for an M3U playlist.
+/// Represents the editor of one stored playlist: its name, header and entries.
 /// </summary>
-public sealed class PlaylistViewModel : ViewModelBase, INavigateable
+public sealed class PlaylistViewModel : ViewModelBase
 {
+	private readonly IPlaylistService _playlistService;
 	private readonly IFileService _fileService;
-	private string _filePath = string.Empty;
+	private int? _playlistId;
+	private string _name = string.Empty;
 	private string _urlTvg = string.Empty;
 	private int _cache;
 	private Deinterlace _deinterlace;
@@ -33,21 +37,39 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	/// <summary>
 	/// Initializes a new instance of the <see cref="PlaylistViewModel"/> class.
 	/// </summary>
-	/// <param name="fileService">The file service instance to use.</param>
-	public PlaylistViewModel(IFileService fileService)
+	/// <param name="playlistService">The service that loads and saves stored playlists.</param>
+	/// <param name="fileService">The file service used to read playlists to merge.</param>
+	public PlaylistViewModel(IPlaylistService playlistService, IFileService fileService)
 	{
+		_playlistService = playlistService;
 		_fileService = fileService;
 		Entries = [];
 		Entries.CollectionChanged += (s, e) => OnEntriesCollectionChanged(e);
 	}
 
 	/// <summary>
-	/// Gets or sets the file path of the playlist.
+	/// Gets the identifier of the stored playlist being edited, <see langword="null"/> if none is open.
 	/// </summary>
-	public string FilePath
+	[NotifyChanged(nameof(HasPlaylist))]
+	public int? PlaylistId
 	{
-		get => _filePath;
-		set => SetProperty(ref _filePath, value);
+		get => _playlistId;
+		private set => SetProperty(ref _playlistId, value);
+	}
+
+	/// <summary>
+	/// Indicates whether a stored playlist is open in the editor.
+	/// </summary>
+	public bool HasPlaylist
+		=> PlaylistId.HasValue;
+
+	/// <summary>
+	/// Gets or sets the name of the playlist.
+	/// </summary>
+	public string Name
+	{
+		get => _name;
+		set => SetPropertyAndMarkDirty(ref _name, value);
 	}
 
 	/// <summary>
@@ -56,7 +78,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	public string UrlTvg
 	{
 		get => _urlTvg;
-		set => SetProperty(ref _urlTvg, value);
+		set => SetPropertyAndMarkDirty(ref _urlTvg, value);
 	}
 
 	/// <summary>
@@ -65,7 +87,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	public int Cache
 	{
 		get => _cache;
-		set => SetProperty(ref _cache, value);
+		set => SetPropertyAndMarkDirty(ref _cache, value);
 	}
 
 	/// <summary>
@@ -74,7 +96,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	public Deinterlace Deinterlace
 	{
 		get => _deinterlace;
-		set => SetProperty(ref _deinterlace, value);
+		set => SetPropertyAndMarkDirty(ref _deinterlace, value);
 	}
 
 	/// <summary>
@@ -83,7 +105,7 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	public int Refresh
 	{
 		get => _refresh;
-		set => SetProperty(ref _refresh, value);
+		set => SetPropertyAndMarkDirty(ref _refresh, value);
 	}
 
 	/// <summary>
@@ -113,7 +135,11 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	public bool IsDirty
 	{
 		get => _isDirty;
-		private set => SetProperty(ref _isDirty, value);
+		private set
+		{
+			if (SetProperty(ref _isDirty, value))
+				RaisePropertyChanged(nameof(CanSave));
+		}
 	}
 
 	/// <summary>
@@ -122,46 +148,69 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	public bool IsBusy
 	{
 		get => _isBusy;
-		private set => SetProperty(ref _isBusy, value);
+		private set
+		{
+			if (SetProperty(ref _isBusy, value))
+				RaisePropertyChanged(nameof(CanSave));
+		}
 	}
 
 	/// <summary>
-	/// Indicates whether the playlist can be saved without prompting for a file path.
+	/// Gets the reason why the playlist cannot be saved, <see langword="null"/> if it is valid.
 	/// </summary>
-	public bool CanSave => !IsBusy && IsDirty && FilePath.IsNotNullOrWhiteSpace();
-
-	/// <summary>
-	/// Indicates whether Save As should be enabled.
-	/// </summary>
-	public bool CanSaveAs => !IsBusy;
-
-	/// <summary>
-	/// Loads the playlist from the specified file path.
-	/// </summary>
-	/// <param name="filePath">The file path to load from. If null or empty, the current FilePath will be used.</param>
-	/// <param name="cancellationToken">The cancellation token.</param>
-	/// <returns>A task that represents the asynchronous operation.</returns>
-	public async Task LoadPlaylistAsync(string? filePath = null, CancellationToken cancellationToken = default)
+	public string? ValidationMessage
 	{
-		if (filePath.IsNotNullOrWhiteSpace())
-			FilePath = filePath;
+		get
+		{
+			if (Name.IsNullOrWhiteSpace())
+				return Resources.PlaylistNameRequired;
 
-		if (FilePath.IsNullOrWhiteSpace())
-			return;
+			int entriesWithoutUrl = Entries.Count(entry => entry.FilePath.IsNullOrWhiteSpace());
+			return entriesWithoutUrl > 0
+				? Resources.PlaylistEntriesWithoutUrl.FormatMessage(entriesWithoutUrl)
+				: null;
+		}
+	}
 
+	/// <summary>
+	/// Indicates whether the playlist can be saved as it is.
+	/// </summary>
+	public bool IsValid
+		=> ValidationMessage is null;
+
+	/// <summary>
+	/// Indicates whether there are valid, unsaved changes to a stored playlist.
+	/// </summary>
+	public bool CanSave
+		=> HasPlaylist && !IsBusy && IsDirty && IsValid;
+
+	/// <summary>
+	/// Loads a stored playlist into the editor.
+	/// </summary>
+	/// <param name="id">The identifier of the stored playlist.</param>
+	/// <param name="name">The name of the playlist.</param>
+	/// <param name="cancellationToken">The cancellation token.</param>
+	/// <returns><see langword="true"/> if the playlist was loaded; <see langword="false"/> if it does not exist.</returns>
+	public async Task<bool> LoadAsync(int id, string name, CancellationToken cancellationToken = default)
+	{
 		IsBusy = true;
 
 		try
 		{
-			IPlaylist? playlist = await _fileService
-				.LoadAsync(FilePath, cancellationToken)
+			IPlaylist? playlist = await _playlistService
+				.LoadAsync(id, cancellationToken)
 				.ConfigureAwait(true);
 
 			if (playlist is null)
-				return;
+			{
+				Clear();
+				return false;
+			}
 
 			SuppressDirtyTracking(() =>
 			{
+				PlaylistId = id;
+				Name = name;
 				UrlTvg = playlist.UrlTvg ?? string.Empty;
 				Cache = playlist.Cache;
 				Deinterlace = playlist.Deinterlace;
@@ -174,51 +223,8 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 				SelectedEntry = Entries.FirstOrDefault();
 			});
 			IsDirty = false;
-		}
-		finally
-		{
-			IsBusy = false;
-		}
-	}
+			RaiseValidationChanged();
 
-	/// <summary>
-	/// Clears the current playlist and starts a new one.
-	/// </summary>
-	public void NewPlaylist()
-	{
-		SuppressDirtyTracking(() =>
-		{
-			UrlTvg = string.Empty;
-			Cache = 0;
-			Deinterlace = Deinterlace.None;
-			Refresh = 0;
-			_additionalAttributes = null;
-			FilePath = string.Empty;
-			ClearEntries();
-			SelectedEntry = null;
-		});
-		IsDirty = false;
-	}
-
-	/// <summary>
-	/// Saves the playlist to disk, optionally specifying a new path.
-	/// </summary>
-	/// <param name="targetPath">Optional override for the file path.</param>
-	/// <param name="cancellationToken">Cancellation token.</param>
-	public async Task<bool> SavePlaylistAsync(string? targetPath = null, CancellationToken cancellationToken = default)
-	{
-		string? destinationPath = targetPath.IsNullOrWhiteSpace() ? FilePath : targetPath;
-		if (destinationPath.IsNullOrWhiteSpace())
-			return false;
-
-		PlaylistSnapshot snapshot = CreateSnapshot();
-
-		IsBusy = true;
-		try
-		{
-			await _fileService.Save(snapshot, destinationPath, cancellationToken).ConfigureAwait(true);
-			FilePath = destinationPath;
-			IsDirty = false;
 			return true;
 		}
 		finally
@@ -228,30 +234,94 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	}
 
 	/// <summary>
-	/// Merges entries from another playlist file into the current list.
+	/// Closes the playlist, the editor is empty afterwards.
 	/// </summary>
-	public async Task MergePlaylistAsync(string mergeFilePath, CancellationToken cancellationToken = default)
+	public void Clear()
 	{
-		if (mergeFilePath.IsNullOrWhiteSpace())
-			return;
+		SuppressDirtyTracking(() =>
+		{
+			PlaylistId = null;
+			Name = string.Empty;
+			UrlTvg = string.Empty;
+			Cache = 0;
+			Deinterlace = Deinterlace.None;
+			Refresh = 0;
+			_additionalAttributes = null;
+			ClearEntries();
+			SelectedEntry = null;
+		});
+		IsDirty = false;
+		RaiseValidationChanged();
+	}
+
+	/// <summary>
+	/// Saves the name, header and entries to the stored playlist.
+	/// </summary>
+	/// <param name="cancellationToken">The cancellation token.</param>
+	/// <returns><see langword="true"/> if saved; <see langword="false"/> if no playlist is open, it is invalid or no longer exists.</returns>
+	public async Task<bool> SaveAsync(CancellationToken cancellationToken = default)
+	{
+		if (PlaylistId is not int id || !IsValid)
+			return false;
 
 		IsBusy = true;
+
 		try
 		{
-			IPlaylist? playlist = await _fileService
-				.LoadAsync(mergeFilePath, cancellationToken)
+			bool updated = await _playlistService
+				.UpdateAsync(id, Name, CreateSnapshot(), cancellationToken)
 				.ConfigureAwait(true);
 
-			if (playlist is null)
-				return;
+			if (updated)
+				IsDirty = false;
 
-			foreach (EntryModel entry in playlist.Entries)
-				Entries.Add(new EntryModel(entry));
+			return updated;
 		}
 		finally
 		{
 			IsBusy = false;
 		}
+	}
+
+	/// <summary>
+	/// Appends the entries of an M3U file to the open playlist.
+	/// </summary>
+	/// <param name="filePath">The path of the M3U file to merge.</param>
+	/// <param name="cancellationToken">The cancellation token.</param>
+	/// <returns>The number of appended entries.</returns>
+	public async Task<int> MergeFileAsync(string filePath, CancellationToken cancellationToken = default)
+	{
+		if (!HasPlaylist || filePath.IsNullOrWhiteSpace())
+			return 0;
+
+		IsBusy = true;
+		int appended = 0;
+
+		try
+		{
+			IPlaylist? playlist = await _fileService
+				.LoadAsync(filePath, cancellationToken)
+				.ConfigureAwait(true);
+
+			if (playlist is null)
+				return 0;
+
+			foreach (EntryModel entry in playlist.Entries)
+			{
+				Entries.Add(new EntryModel(entry));
+				appended++;
+			}
+		}
+		finally
+		{
+			IsBusy = false;
+		}
+
+		// Changes made while busy are not tracked, so the merge marks the playlist itself.
+		if (appended > 0)
+			MarkDirty();
+
+		return appended;
 	}
 
 	/// <summary>
@@ -321,17 +391,61 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 		SelectedEntry = entry;
 	}
 
+	/// <summary>
+	/// Creates the playlist as it is currently edited.
+	/// </summary>
+	/// <returns>A copy of the header and the entries.</returns>
+	public IPlaylist CreateSnapshot()
+	{
+		List<EntryModel> snapshotEntries = Entries
+			.Select(entry => entry is EntryModel model ? new EntryModel(model) : new EntryModel(entry))
+			.ToList();
+
+		PlaylistModel header = new()
+		{
+			UrlTvg = UrlTvg.IsNullOrWhiteSpace() ? null : UrlTvg,
+			Cache = Cache,
+			Deinterlace = Deinterlace,
+			Refresh = Refresh,
+			AdditionalAttributes = _additionalAttributes
+		};
+
+		return new PlaylistModel(header, snapshotEntries);
+	}
+
+	private void SetPropertyAndMarkDirty<T>(ref T field, T value, [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
+	{
+		if (SetProperty(ref field, value, propertyName))
+			MarkDirty();
+	}
+
 	private void OnEntriesCollectionChanged(NotifyCollectionChangedEventArgs e)
 	{
 		if (e.OldItems is not null)
-			foreach (INotifyPropertyChanged entry in e.OldItems.OfType<INotifyPropertyChanged>())
-				entry.PropertyChanged -= OnEntryPropertyChanged;
+			foreach (IEntry entry in e.OldItems.OfType<IEntry>())
+				Detach(entry);
 
 		if (e.NewItems is not null)
-			foreach (INotifyPropertyChanged entry in e.NewItems.OfType<INotifyPropertyChanged>())
-				entry.PropertyChanged += OnEntryPropertyChanged;
+			foreach (IEntry entry in e.NewItems.OfType<IEntry>())
+				Attach(entry);
 
 		MarkDirty();
+	}
+
+	private void Attach(IEntry entry)
+	{
+		if (entry is INotifyPropertyChanged notifyingEntry)
+			notifyingEntry.PropertyChanged += OnEntryPropertyChanged;
+		if (entry.Metadata is INotifyPropertyChanged notifyingMetadata)
+			notifyingMetadata.PropertyChanged += OnEntryPropertyChanged;
+	}
+
+	private void Detach(IEntry entry)
+	{
+		if (entry is INotifyPropertyChanged notifyingEntry)
+			notifyingEntry.PropertyChanged -= OnEntryPropertyChanged;
+		if (entry.Metadata is INotifyPropertyChanged notifyingMetadata)
+			notifyingMetadata.PropertyChanged -= OnEntryPropertyChanged;
 	}
 
 	private void OnEntryPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -340,8 +454,8 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	private void ClearEntries()
 	{
 		// Clear raises a reset without the removed items, so detach the handlers first.
-		foreach (INotifyPropertyChanged entry in Entries.OfType<INotifyPropertyChanged>())
-			entry.PropertyChanged -= OnEntryPropertyChanged;
+		foreach (IEntry entry in Entries)
+			Detach(entry);
 
 		Entries.Clear();
 	}
@@ -349,7 +463,17 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 	private void MarkDirty()
 	{
 		if (!IsBusy && !_suppressDirtyTracking)
+		{
 			IsDirty = true;
+			RaiseValidationChanged();
+		}
+	}
+
+	private void RaiseValidationChanged()
+	{
+		RaisePropertyChanged(nameof(ValidationMessage));
+		RaisePropertyChanged(nameof(IsValid));
+		RaisePropertyChanged(nameof(CanSave));
 	}
 
 	private void SuppressDirtyTracking(Action action)
@@ -363,32 +487,5 @@ public sealed class PlaylistViewModel : ViewModelBase, INavigateable
 		{
 			_suppressDirtyTracking = !_suppressDirtyTracking;
 		}
-	}
-
-	private PlaylistSnapshot CreateSnapshot()
-	{
-		List<EntryModel> snapshotEntries = Entries
-			.Select(entry => entry is EntryModel model ? new EntryModel(model) : new EntryModel(entry))
-			.ToList();
-
-		return new PlaylistSnapshot
-		{
-			UrlTvg = UrlTvg.IsNullOrWhiteSpace() ? null : UrlTvg,
-			Cache = Cache,
-			Deinterlace = Deinterlace,
-			Refresh = Refresh,
-			AdditionalAttributes = _additionalAttributes,
-			Entries = snapshotEntries
-		};
-	}
-
-	private sealed class PlaylistSnapshot : IPlaylist
-	{
-		public string? UrlTvg { get; set; }
-		public int Cache { get; set; }
-		public Deinterlace Deinterlace { get; set; }
-		public int Refresh { get; set; }
-		public string? AdditionalAttributes { get; set; }
-		public IEnumerable<EntryModel> Entries { get; set; } = [];
 	}
 }

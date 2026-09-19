@@ -4,6 +4,8 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using System.ComponentModel.DataAnnotations;
+
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 using BB84.Notifications;
 
@@ -69,10 +71,14 @@ public sealed class EntryModel : ValidatableObject, IEntry
 	}
 
 	/// <inheritdoc/>
+	/// <remarks>
+	/// Required, an entry without a link cannot be played.
+	/// </remarks>
+	[Required(AllowEmptyStrings = false)]
 	public string FilePath
 	{
 		get => _filePath;
-		set => SetProperty(ref _filePath, value);
+		set => SetPropertyAndValidate(ref _filePath, value);
 	}
 
 	/// <inheritdoc/>

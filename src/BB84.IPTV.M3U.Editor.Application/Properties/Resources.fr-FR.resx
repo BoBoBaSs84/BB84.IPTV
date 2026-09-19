@@ -127,4 +127,43 @@
   <data name="ExitApplicationQuestion" xml:space="preserve">
     <value>Etes-vous sûr de vouloir quitter l'application ?</value>
   </data>
+  <data name="DeletePlaylistQuestion" xml:space="preserve">
+    <value>Supprimer la playlist &apos;{0}&apos; ? Cette action est irréversible.</value>
+  </data>
+  <data name="ExportPlaylistTitle" xml:space="preserve">
+    <value>Exporter une playlist</value>
+  </data>
+  <data name="ImportPlaylistTitle" xml:space="preserve">
+    <value>Importer une playlist</value>
+  </data>
+  <data name="MergePlaylistTitle" xml:space="preserve">
+    <value>Fusionner une playlist</value>
+  </data>
+  <data name="NewPlaylistName" xml:space="preserve">
+    <value>Nouvelle playlist</value>
+  </data>
+  <data name="PlaylistCannotBeSaved" xml:space="preserve">
+    <value>Impossible d&apos;enregistrer la playlist : {0}</value>
+  </data>
+  <data name="PlaylistEntriesWithoutUrl" xml:space="preserve">
+    <value>{0} entrées n&apos;ont pas d&apos;URL.</value>
+  </data>
+  <data name="PlaylistExported" xml:space="preserve">
+    <value>Playlist &apos;{0}&apos; exportée vers &apos;{1}&apos;.</value>
+  </data>
+  <data name="PlaylistImported" xml:space="preserve">
+    <value>Playlist &apos;{0}&apos; importée.</value>
+  </data>
+  <data name="PlaylistNameRequired" xml:space="preserve">
+    <value>La playlist doit avoir un nom.</value>
+  </data>
+  <data name="PlaylistOperationFailed" xml:space="preserve">
+    <value>L&apos;opération sur la playlist a échoué.</value>
+  </data>
+  <data name="PlaylistSaved" xml:space="preserve">
+    <value>Playlist &apos;{0}&apos; enregistrée.</value>
+  </data>
+  <data name="SaveChangesQuestion" xml:space="preserve">
+    <value>La playlist &apos;{0}&apos; contient des modifications non enregistrées. Voulez-vous les enregistrer ?</value>
+  </data>
 </root>

@@ -84,11 +84,12 @@ public sealed class PlaylistPersistenceTests
 		List<EntryModel> entries = [.. playlist.Entries.Reverse().Skip(1), new EntryModel("New", "https://example.com/new")];
 		PlaylistModel changed = new(playlist, entries) { UrlTvg = "https://changed.example" };
 
-		bool updated = await _sut.UpdateAsync(id, changed).ConfigureAwait(false);
+		bool updated = await _sut.UpdateAsync(id, "Renamed", changed).ConfigureAwait(false);
 		IPlaylist reloaded = (await _sut.LoadAsync(id).ConfigureAwait(false))!;
 
 		Assert.IsTrue(updated);
 		Assert.AreEqual("https://changed.example", reloaded.UrlTvg);
+		Assert.AreEqual("Renamed", (await _sut.GetPlaylistsAsync().ConfigureAwait(false)).Single().Name);
 		Assert.AreEqual("ZDF|Das Erste, HD|New", string.Join('|', reloaded.Entries.Select(e => e.Title)));
 		Assert.AreEqual(3, _database.Scalar("SELECT COUNT(*) FROM PlaylistEntries"));
 	}
@@ -120,7 +121,7 @@ public sealed class PlaylistPersistenceTests
 	public async Task MissingPlaylistShouldBeReported()
 	{
 		Assert.IsNull(await _sut.LoadAsync(42).ConfigureAwait(false));
-		Assert.IsFalse(await _sut.UpdateAsync(42, new PlaylistModel()).ConfigureAwait(false));
+		Assert.IsFalse(await _sut.UpdateAsync(42, "Name", new PlaylistModel()).ConfigureAwait(false));
 		Assert.IsFalse(await _sut.RenameAsync(42, "Name").ConfigureAwait(false));
 		Assert.IsFalse(await _sut.DeleteAsync(42).ConfigureAwait(false));
 		Assert.IsFalse(await _sut.ExportAsync(42, Path.Combine(_directory, "missing.m3u")).ConfigureAwait(false));

@@ -127,4 +127,43 @@
   <data name="ExitApplicationQuestion" xml:space="preserve">
     <value>¿Estás seguro de que quieres salir de la aplicación?</value>
   </data>
+  <data name="DeletePlaylistQuestion" xml:space="preserve">
+    <value>¿Eliminar la lista de reproducción &apos;{0}&apos;? No se puede deshacer.</value>
+  </data>
+  <data name="ExportPlaylistTitle" xml:space="preserve">
+    <value>Exportar lista de reproducción</value>
+  </data>
+  <data name="ImportPlaylistTitle" xml:space="preserve">
+    <value>Importar lista de reproducción</value>
+  </data>
+  <data name="MergePlaylistTitle" xml:space="preserve">
+    <value>Combinar lista de reproducción</value>
+  </data>
+  <data name="NewPlaylistName" xml:space="preserve">
+    <value>Nueva lista de reproducción</value>
+  </data>
+  <data name="PlaylistCannotBeSaved" xml:space="preserve">
+    <value>No se puede guardar la lista de reproducción: {0}</value>
+  </data>
+  <data name="PlaylistEntriesWithoutUrl" xml:space="preserve">
+    <value>{0} entradas no tienen URL.</value>
+  </data>
+  <data name="PlaylistExported" xml:space="preserve">
+    <value>Lista de reproducción &apos;{0}&apos; exportada a &apos;{1}&apos;.</value>
+  </data>
+  <data name="PlaylistImported" xml:space="preserve">
+    <value>Lista de reproducción &apos;{0}&apos; importada.</value>
+  </data>
+  <data name="PlaylistNameRequired" xml:space="preserve">
+    <value>La lista de reproducción necesita un nombre.</value>
+  </data>
+  <data name="PlaylistOperationFailed" xml:space="preserve">
+    <value>La operación con la lista de reproducción ha fallado.</value>
+  </data>
+  <data name="PlaylistSaved" xml:space="preserve">
+    <value>Lista de reproducción &apos;{0}&apos; guardada.</value>
+  </data>
+  <data name="SaveChangesQuestion" xml:space="preserve">
+    <value>La lista de reproducción &apos;{0}&apos; tiene cambios sin guardar. ¿Desea guardarlos?</value>
+  </data>
 </root>

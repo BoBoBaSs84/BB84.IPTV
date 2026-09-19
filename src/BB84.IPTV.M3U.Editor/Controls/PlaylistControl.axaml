@@ -45,7 +45,26 @@
 			<Button Content="Move Down"
 							ToolTip.Tip="Move Entry Down"
 							Click="MoveDownButton_Click" />
+			<TextBlock Text="Unsaved changes"
+								 Foreground="#888"
+								 VerticalAlignment="Center"
+								 Margin="12,0,0,0"
+								 IsVisible="{Binding IsDirty}" />
 		</StackPanel>
+
+		<!-- Why the playlist cannot be saved -->
+		<Border DockPanel.Dock="Top"
+						Background="#FDECEA"
+						BorderBrush="#F5C2C0"
+						BorderThickness="1"
+						CornerRadius="4"
+						Padding="8,4"
+						Margin="4,0"
+						IsVisible="{Binding !IsValid}">
+			<TextBlock Text="{Binding ValidationMessage}"
+								 Foreground="#A4262C"
+								 TextWrapping="Wrap" />
+		</Border>
 
 		<Grid ColumnDefinitions="*,Auto">
 			<!-- Entries DataGrid -->
@@ -55,28 +74,34 @@
 															Margin="4">
 				<DataGrid x:Name="EntriesDataGrid"
 									AutoGenerateColumns="False"
-									IsReadOnly="True"
+									IsReadOnly="False"
+									CanUserSortColumns="False"
 									SelectionMode="Single"
 									GridLinesVisibility="All"
 									ItemsSource="{Binding Entries}"
 									SelectedItem="{Binding SelectedEntry}">
+					<!-- Sorting is off, the row order is the playlist order. -->
 					<DataGrid.Columns>
-						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="Duration"
-																Binding="{Binding Duration}"
-																Width="110" />
 						<DataGridTextColumn x:DataType="models:IEntry"
 																Header="Title"
 																Binding="{Binding Title}"
+																Width="2*" />
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="Group"
+																Binding="{Binding Metadata.GroupTitle}"
 																Width="*" />
 						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="File Path"
+																Header="TVG ID"
+																Binding="{Binding Metadata.TvgId}"
+																Width="*" />
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="TVG Name"
+																Binding="{Binding Metadata.TvgName}"
+																Width="*" />
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="URL"
 																Binding="{Binding FilePath}"
-																Width="*" />
-						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="Grouping"
-																Binding="{Binding Grouping}"
-																Width="120" />
+																Width="2*" />
 					</DataGrid.Columns>
 				</DataGrid>
 			</HeaderedContentControl>
@@ -94,11 +119,10 @@
 									ColumnDefinitions="Auto,*"
 									RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 							<TextBlock Grid.Row="0"
-												 Text="File Path:"
-												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Playlist_FilePath}" />
+												 Text="Name:" />
 							<TextBox Grid.Row="0"
 											 Grid.Column="1"
-											 Text="{Binding FilePath}" />
+											 Text="{Binding Name}" />
 
 							<TextBlock Grid.Row="1"
 												 Text="TV Guide:"
