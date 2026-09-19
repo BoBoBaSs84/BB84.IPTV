@@ -43,4 +43,10 @@ public interface IMetadata
 	/// display.
 	/// </summary>
 	string? GroupTitle { get; set; }
+
+	/// <summary>
+	/// Get or set the <c>#EXTINF</c> attributes that are not modelled by a dedicated property,
+	/// e.g. <c>tvg-country="DE" tvg-language="German"</c>, kept as written so they survive a round trip.
+	/// </summary>
+	string? AdditionalAttributes { get; set; }
 }

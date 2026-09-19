@@ -19,6 +19,7 @@ public sealed class MetadataModel : ValidatableObject, IMetadata
 	private string? _tvgLogo;
 	private string? _groupId;
 	private string? _groupTitle;
+	private string? _additionalAttributes;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="MetadataModel"/> class.
@@ -38,6 +39,7 @@ public sealed class MetadataModel : ValidatableObject, IMetadata
 		TvgLogo = metadata.TvgLogo;
 		GroupId = metadata.GroupId;
 		GroupTitle = metadata.GroupTitle;
+		AdditionalAttributes = metadata.AdditionalAttributes;
 	}
 
 	/// <inheritdoc/>
@@ -80,5 +82,12 @@ public sealed class MetadataModel : ValidatableObject, IMetadata
 	{
 		get => _groupTitle;
 		set => SetProperty(ref _groupTitle, value);
+	}
+
+	/// <inheritdoc/>
+	public string? AdditionalAttributes
+	{
+		get => _additionalAttributes;
+		set => SetProperty(ref _additionalAttributes, value);
 	}
 }

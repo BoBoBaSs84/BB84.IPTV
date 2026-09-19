@@ -159,6 +159,9 @@
   <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
     <value>Importfortschritt</value>
   </data>
+  <data name="DatabaseMigrationFailed" xml:space="preserve">
+    <value>Die Datenbank konnte nicht erstellt oder aktualisiert werden. Details stehen im Protokoll.</value>
+  </data>
   <data name="ErrorMessageCaptition" xml:space="preserve">
     <value>Fehler</value>
   </data>

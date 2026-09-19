@@ -1,4 +1,4 @@
-﻿using BB84.IPTV.M3U.Editor.Application.Installer;
+using BB84.IPTV.M3U.Editor.Application.Installer;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +14,6 @@ public class DependencyInjectionInstallerTests
 
 		services.RegisterApplicationServices();
 
-		Assert.HasCount(12, services);
+		Assert.HasCount(13, services);
 	}
 }

@@ -19,14 +19,22 @@ public interface IDatabaseService
 	Task<bool> CheckDatabaseAvailabilityAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Creates the database, initializing all necessary tables and schema for the application.
+	/// Prepares the database for a catalog import: brings the schema up to date and deletes the previously
+	/// imported catalog data. Playlists are kept.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
 	/// <returns>
 	/// A task that represents the asynchronous operation, containing a boolean value indicating
-	/// whether the database was successfully created.
+	/// whether the database was successfully prepared.
 	/// </returns>
 	Task<bool> CreateDatabaseAsync(CancellationToken cancellationToken = default);
+
+	/// <summary>
+	/// Creates the database or brings its schema up to date, called once at application start.
+	/// </summary>
+	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	Task MigrateDatabaseAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Imports all reference data into the database, including categories, countries, languages, and channels.

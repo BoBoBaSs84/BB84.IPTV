@@ -33,7 +33,18 @@ internal sealed class DatabaseService(IEventService eventService, IServiceScopeF
 	{
 		using IServiceScope scope = _serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = scope.ServiceProvider.GetRequiredService<IRepositoryService>();
-		return await repositoryService.CreateDatabaseAsync(cancellationToken).ConfigureAwait(false);
+
+		await repositoryService.MigrateDatabaseAsync(cancellationToken).ConfigureAwait(false);
+		await repositoryService.ResetCatalogAsync(cancellationToken).ConfigureAwait(false);
+
+		return true;
+	}
+
+	public async Task MigrateDatabaseAsync(CancellationToken cancellationToken = default)
+	{
+		using IServiceScope scope = _serviceScopeFactory.CreateScope();
+		IRepositoryService repositoryService = scope.ServiceProvider.GetRequiredService<IRepositoryService>();
+		await repositoryService.MigrateDatabaseAsync(cancellationToken).ConfigureAwait(false);
 	}
 
 	public async Task<DatabaseImportResponse> ImportDatabaseAsync(CancellationToken cancellationToken = default)

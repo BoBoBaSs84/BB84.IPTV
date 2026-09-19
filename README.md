@@ -57,7 +57,7 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 **Done when:** the Avalonia app offers everything the WPF app does and the WPF project is gone.
 
-### Phase 2 – Playlist persistence
+### Phase 2 – Playlist persistence (done)
 
 - New entities `PlaylistEntity` and `PlaylistEntryEntity` (position, title, group, `tvg-*` metadata, optional reference to a channel, stream or custom channel), with EF configurations and repositories following the existing `Infrastructure/Persistence` patterns.
 - `IPlaylistService` for load/save and for M3U import/export through `SerializerService`.
@@ -65,6 +65,7 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
   - `#EXTGRP` is written without a line break.
   - `GetMetadataValue` finds keys by substring, so attribute names that contain other names can be mixed up.
   - `Deserialize(byte[])` only splits on `\r\n` and `\n`.
+- Also done: the schema is managed by EF Core migrations (applied at startup), and "Create Database" only resets the iptv-org catalog, so stored playlists survive a catalog re-import. Entries reference catalog channels by their iptv-org id instead of a foreign key. Unknown `#EXTINF` attributes and directives such as `#EXTVLCOPT` are kept, so nothing is lost on export.
 
 **Done when:** an M3U file round-trips import → database → export without losing entries or metadata.
 
@@ -126,13 +127,13 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 ## Data model (planned additions)
 
-| Entity                            | Purpose                                                        | Key relations                                                     |
-| --------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `PlaylistEntity`                  | Playlist header (name, `url-tvg`, cache, refresh, deinterlace) | 1 → n `PlaylistEntryEntity`                                       |
-| `PlaylistEntryEntity`             | Ordered entry with title, group, `tvg-*` metadata, URL         | optional → `ChannelEntity`, `StreamEntity`, `CustomChannelEntity` |
-| `CustomChannelEntity`             | User-defined channel and stream URL                            | referenced by entries                                             |
-| `ChannelGuideMappingEntity`       | `site` / `site_id` / `lang` / `xmltv_id` for `channels.xml`    | per entry, prefilled from `GuideEntity`                           |
-| Logo cache fields on `LogoEntity` | Local path, hash/ETag, downloaded-at                           | 1 → 1 with existing logo row                                      |
+| Entity                            | Purpose                                                        | Key relations                                                  |
+| --------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `PlaylistEntity`                  | Playlist header (name, `url-tvg`, cache, refresh, deinterlace) | 1 → n `PlaylistEntryEntity`                                    |
+| `PlaylistEntryEntity`             | Ordered entry with title, group, `tvg-*` metadata, URL         | iptv-org `Channel`/`Feed` id, optional → `CustomChannelEntity` |
+| `CustomChannelEntity`             | User-defined channel and stream URL                            | referenced by entries                                          |
+| `ChannelGuideMappingEntity`       | `site` / `site_id` / `lang` / `xmltv_id` for `channels.xml`    | per entry, prefilled from `GuideEntity`                        |
+| Logo cache fields on `LogoEntity` | Local path, hash/ETag, downloaded-at                           | 1 → 1 with existing logo row                                   |
 
 ## Build and run
 
