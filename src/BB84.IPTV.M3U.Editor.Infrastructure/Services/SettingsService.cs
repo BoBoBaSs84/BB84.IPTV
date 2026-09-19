@@ -18,7 +18,6 @@ internal sealed class SettingsService : ISettingsService
 	private readonly ILoggerService<SettingsService> _loggerService;
 	private readonly IProviderService _providerService;
 	private readonly ApplicationSettings _applicationSettings;
-	private readonly string _settingsFileName;
 	private readonly string _settingsFilePath;
 
 	private static readonly Action<ILogger, string, Exception?> LogError =
@@ -36,8 +35,7 @@ internal sealed class SettingsService : ISettingsService
 		_eventService = eventService;
 		_loggerService = loggerService;
 		_providerService = providerService;
-		_settingsFileName = $"{AssemblyInformation.Product}.ini";
-		_settingsFilePath = _providerService.Environment.CurrentDirectory;
+		_settingsFilePath = ApplicationPaths.SettingsFilePath;
 		_applicationSettings = applicationSettings;
 
 		RegisterSettingsChangeHandler();
@@ -47,9 +45,7 @@ internal sealed class SettingsService : ISettingsService
 	{
 		try
 		{
-			string filePath = Path.Combine(_settingsFilePath, _settingsFileName);
-
-			if (_providerService.File.Exists(filePath).IsFalse())
+			if (_providerService.File.Exists(_settingsFilePath).IsFalse())
 			{
 				ApplicationSettings defaultSettings = new();
 
@@ -58,7 +54,7 @@ internal sealed class SettingsService : ISettingsService
 			}
 
 			string fileContent = await _providerService.File
-				.ReadAllTextAsync(filePath, cancellationToken)
+				.ReadAllTextAsync(_settingsFilePath, cancellationToken)
 				.ConfigureAwait(false);
 
 			ApplicationSettings newSettings = ApplicationSettings
@@ -79,11 +75,12 @@ internal sealed class SettingsService : ISettingsService
 	{
 		try
 		{
-			string filePath = _providerService.Path.Combine(_settingsFilePath, _settingsFileName);
 			string fileContent = ApplicationSettings.Write(settings);
 
+			_providerService.Directory.CreateDirectory(ApplicationPaths.DataDirectory);
+
 			await _providerService.File
-				.WriteAllTextAsync(filePath, fileContent, cancellationToken)
+				.WriteAllTextAsync(_settingsFilePath, fileContent, cancellationToken)
 				.ConfigureAwait(false);
 
 			_eventService.Publish(new SettingsSavedEvent());

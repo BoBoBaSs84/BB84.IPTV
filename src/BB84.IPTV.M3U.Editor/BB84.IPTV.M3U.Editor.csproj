@@ -2,6 +2,8 @@
 	<PropertyGroup>
 		<ApplicationIcon>Application.ico</ApplicationIcon>
 		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net10.0-windows</TargetFrameworks>
+		<EnableWindowsTargeting>true</EnableWindowsTargeting>
 		<UseWPF>true</UseWPF>
 		<StartupObject>BB84.IPTV.M3U.Editor.App</StartupObject>
 	</PropertyGroup>
