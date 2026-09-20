@@ -66,6 +66,14 @@ public partial class MainWindow : Window
 		Close();
 	}
 
+	/// <summary>
+	/// A menu item keeps the state it was created with until its command reports a change, and the
+	/// items are only created when the menu opens, so the commands are asked for their state here.
+	/// Without it, Save, Export and Merge look usable with no playlist open.
+	/// </summary>
+	private void FileMenuItem_SubmenuOpened(object? sender, RoutedEventArgs e)
+		=> _playlistsViewModel.RefreshCommandStates();
+
 	private void PlaylistsMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<PlaylistsViewModel>();
 

@@ -14,7 +14,8 @@ namespace BB84.IPTV.M3U.Editor.Controls;
 /// </summary>
 /// <remarks>
 /// The filter values and the custom channels are loaded whenever the control is shown, so an
-/// imported catalog is picked up without a restart.
+/// imported catalog is picked up without a restart. The load cannot be awaited here, so it reports
+/// a failure itself.
 /// </remarks>
 public partial class CatalogControl : UserControl
 {
@@ -30,6 +31,6 @@ public partial class CatalogControl : UserControl
 		base.OnDataContextChanged(e);
 
 		if (DataContext is CatalogViewModel viewModel)
-			_ = viewModel.LoadAsync();
+			_ = viewModel.LoadAndReportAsync();
 	}
 }

@@ -204,6 +204,26 @@ public sealed class MergeViewModel : ViewModelBase, INavigateable
 		=> _mergeCommand ??= new AsyncActionCommand(MergeAsync, () => !IsBusy && IsValid, OnError);
 
 	/// <summary>
+	/// Loads like <see cref="LoadAsync"/> and reports a failure instead of throwing.
+	/// </summary>
+	/// <remarks>
+	/// For callers that cannot await, e.g. a view that is shown; a failure would be lost otherwise,
+	/// leaving an empty screen without a reason.
+	/// </remarks>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	public async Task LoadAndReportAsync()
+	{
+		try
+		{
+			await LoadAsync().ConfigureAwait(true);
+		}
+		catch (Exception exception)
+		{
+			OnError(exception);
+		}
+	}
+
+	/// <summary>
 	/// Loads the stored playlists, the selection and the preview are dropped.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token.</param>

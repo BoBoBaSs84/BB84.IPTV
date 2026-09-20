@@ -420,6 +420,16 @@ public sealed class PlaylistsViewModel : ViewModelBase, INavigateable
 	private bool HasOpenPlaylist()
 		=> CurrentPlaylist is not null && !Editor.IsBusy;
 
+	/// <summary>
+	/// Makes every command report its state again.
+	/// </summary>
+	/// <remarks>
+	/// A menu item takes the state of its command only when the command says it changed, not when
+	/// it is assigned, so the view asks for it once after it is shown.
+	/// </remarks>
+	public void RefreshCommandStates()
+		=> RaiseCommandStatesChanged();
+
 	private void RaiseCommandStatesChanged()
 	{
 		_previousPageCommand?.RaiseCanExecuteChanged();

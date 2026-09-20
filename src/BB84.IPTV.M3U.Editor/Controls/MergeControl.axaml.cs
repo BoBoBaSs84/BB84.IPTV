@@ -14,7 +14,7 @@ namespace BB84.IPTV.M3U.Editor.Controls;
 /// </summary>
 /// <remarks>
 /// The stored playlists are loaded whenever the control is shown, so a playlist created or deleted
-/// elsewhere is picked up.
+/// elsewhere is picked up. The load cannot be awaited here, so it reports a failure itself.
 /// </remarks>
 public partial class MergeControl : UserControl
 {
@@ -30,6 +30,6 @@ public partial class MergeControl : UserControl
 		base.OnDataContextChanged(e);
 
 		if (DataContext is MergeViewModel viewModel)
-			_ = viewModel.LoadAsync();
+			_ = viewModel.LoadAndReportAsync();
 	}
 }
