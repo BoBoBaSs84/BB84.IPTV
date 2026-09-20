@@ -3,13 +3,16 @@ using System.Collections.ObjectModel;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.ViewModels.Base;
 using BB84.IPTV.M3U.Editor.Domain.Models;
+using BB84.Notifications.Attributes;
 using BB84.Notifications.Commands;
 using BB84.Notifications.Interfaces.Commands;
 
@@ -25,12 +28,22 @@ public sealed class PlaylistsViewModel : ViewModelBase, INavigateable
 	/// </summary>
 	public const string PlaylistFilter = "M3U Files (*.m3u;*.m3u8)|*.m3u;*.m3u8|All Files (*.*)|*.*";
 
+	/// <summary>
+	/// The number of playlists per page, more than anybody keeps, so the paging stays out of the way.
+	/// </summary>
+	public const int PageSize = Parameters.MaxPageSize;
+
 	private readonly IPlaylistService _playlistService;
 	private readonly IFileDialogService _fileDialogService;
 	private readonly INotificationService _notificationService;
 	private readonly INavigationService _navigationService;
 	private readonly IEventService _eventService;
 	private PlaylistItemViewModel? _currentPlaylist;
+	private int _pageNumber = 1;
+	private int _totalPages;
+	private int _totalCount;
+	private AsyncActionCommand? _previousPageCommand;
+	private AsyncActionCommand? _nextPageCommand;
 	private AsyncActionCommand? _newCommand;
 	private AsyncActionCommand? _deleteCommand;
 	private AsyncActionCommand? _importCommand;
@@ -84,6 +97,71 @@ public sealed class PlaylistsViewModel : ViewModelBase, INavigateable
 	}
 
 	/// <summary>
+	/// Gets the number of the page that is shown, the first page is page one.
+	/// </summary>
+	[NotifyChanged(nameof(HasPreviousPage), nameof(HasNextPage), nameof(HasMultiplePages))]
+	public int PageNumber
+	{
+		get => _pageNumber;
+		private set => SetProperty(ref _pageNumber, value);
+	}
+
+	/// <summary>
+	/// Gets the number of pages the stored playlists fill.
+	/// </summary>
+	[NotifyChanged(nameof(HasPreviousPage), nameof(HasNextPage), nameof(HasMultiplePages))]
+	public int TotalPages
+	{
+		get => _totalPages;
+		private set => SetProperty(ref _totalPages, value);
+	}
+
+	/// <summary>
+	/// Gets the number of stored playlists, not only the ones on the page.
+	/// </summary>
+	public int TotalCount
+	{
+		get => _totalCount;
+		private set => SetProperty(ref _totalCount, value);
+	}
+
+	/// <summary>
+	/// Indicates whether a page before the shown one exists.
+	/// </summary>
+	public bool HasPreviousPage
+		=> PageNumber > 1;
+
+	/// <summary>
+	/// Indicates whether a page after the shown one exists.
+	/// </summary>
+	public bool HasNextPage
+		=> PageNumber < TotalPages;
+
+	/// <summary>
+	/// Indicates whether the playlists fill more than one page, the paging is hidden otherwise.
+	/// </summary>
+	public bool HasMultiplePages
+		=> TotalPages > 1;
+
+	/// <summary>
+	/// Gets the status of the paging, e.g. "Page 1 of 3".
+	/// </summary>
+	public string PageStatus
+		=> Resources.PageStatus.FormatMessage(PageNumber, TotalPages);
+
+	/// <summary>
+	/// Gets the command that shows the page before the shown one.
+	/// </summary>
+	public IAsyncActionCommand PreviousPageCommand
+		=> _previousPageCommand ??= new AsyncActionCommand(() => LoadPageAsync(PageNumber - 1), () => HasPreviousPage && !Editor.IsBusy, OnError);
+
+	/// <summary>
+	/// Gets the command that shows the page after the shown one.
+	/// </summary>
+	public IAsyncActionCommand NextPageCommand
+		=> _nextPageCommand ??= new AsyncActionCommand(() => LoadPageAsync(PageNumber + 1), () => HasNextPage && !Editor.IsBusy, OnError);
+
+	/// <summary>
 	/// Gets the command that creates and opens a new, empty playlist.
 	/// </summary>
 	public IAsyncActionCommand NewCommand
@@ -125,15 +203,29 @@ public sealed class PlaylistsViewModel : ViewModelBase, INavigateable
 	/// <param name="cancellationToken">The cancellation token.</param>
 	/// <returns>A task that represents the asynchronous operation.</returns>
 	public async Task LoadPlaylistsAsync(CancellationToken cancellationToken = default)
+		=> await LoadPageAsync(PageNumber, cancellationToken).ConfigureAwait(true);
+
+	/// <summary>
+	/// Loads a page of the stored playlists, the open playlist stays open.
+	/// </summary>
+	/// <param name="pageNumber">The page to show, the first page is page one.</param>
+	/// <param name="cancellationToken">The cancellation token.</param>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	public async Task LoadPageAsync(int pageNumber, CancellationToken cancellationToken = default)
 	{
-		IReadOnlyList<PlaylistSummaryResponse> summaries = await _playlistService
-			.GetPlaylistsAsync(cancellationToken)
+		IPagedList<PlaylistSummaryResponse> summaries = await _playlistService
+			.GetPlaylistsAsync(new PlaylistSearchRequest { PageNumber = pageNumber, PageSize = PageSize }, cancellationToken)
 			.ConfigureAwait(true);
 
 		int? currentId = CurrentPlaylist?.Id;
 		Playlists.Clear();
 		foreach (PlaylistSummaryResponse summary in summaries)
 			Playlists.Add(new PlaylistItemViewModel(summary));
+
+		PageNumber = summaries.MetaData.CurrentPage;
+		TotalPages = summaries.MetaData.TotalPages;
+		TotalCount = summaries.MetaData.TotalCount;
+		RaisePropertyChanged(nameof(PageStatus));
 
 		CurrentPlaylist = Playlists.FirstOrDefault(item => item.Id == currentId);
 	}
@@ -193,8 +285,11 @@ public sealed class PlaylistsViewModel : ViewModelBase, INavigateable
 			.CreateAsync(name, new PlaylistModel())
 			.ConfigureAwait(true);
 
-		PlaylistItemViewModel item = new(id, name, 0);
-		Playlists.Add(item);
+		// Reloaded, so the page and its counters hold the new playlist; it is opened even when it
+		// belongs to another page.
+		await LoadPlaylistsAsync().ConfigureAwait(true);
+
+		PlaylistItemViewModel item = Playlists.FirstOrDefault(playlist => playlist.Id == id) ?? new PlaylistItemViewModel(id, name, 0);
 		await OpenCoreAsync(item).ConfigureAwait(true);
 	}
 
@@ -210,10 +305,15 @@ public sealed class PlaylistsViewModel : ViewModelBase, INavigateable
 		if (result is not NotificationResult.Yes)
 			return;
 
-		await _playlistService.DeleteAsync(item.Id).ConfigureAwait(true);
-		Playlists.Remove(item);
+		_ = await _playlistService.DeleteAsync(item.Id).ConfigureAwait(true);
 		Editor.Clear();
 		CurrentPlaylist = null;
+
+		// The page may hold one playlist less than before, and one page less as well.
+		if (PageNumber > 1 && Playlists.Count is 1)
+			PageNumber--;
+
+		await LoadPlaylistsAsync().ConfigureAwait(true);
 	}
 
 	private async Task ImportAsync()
@@ -322,6 +422,8 @@ public sealed class PlaylistsViewModel : ViewModelBase, INavigateable
 
 	private void RaiseCommandStatesChanged()
 	{
+		_previousPageCommand?.RaiseCanExecuteChanged();
+		_nextPageCommand?.RaiseCanExecuteChanged();
 		_newCommand?.RaiseCanExecuteChanged();
 		_deleteCommand?.RaiseCanExecuteChanged();
 		_importCommand?.RaiseCanExecuteChanged();

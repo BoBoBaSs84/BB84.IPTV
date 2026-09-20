@@ -80,7 +80,9 @@ internal static class PlaylistExtensions
 		TvgLogo = entry.Metadata.TvgLogo,
 		GroupId = entry.Metadata.GroupId,
 		GroupTitle = entry.Metadata.GroupTitle,
-		AdditionalAttributes = entry.Metadata.AdditionalAttributes
+		AdditionalAttributes = entry.Metadata.AdditionalAttributes,
+		Channel = entry.Channel,
+		Feed = entry.Feed
 	};
 
 	private static EntryModel ToModel(this PlaylistEntryEntity entity)
@@ -98,7 +100,9 @@ internal static class PlaylistExtensions
 
 		return new EntryModel(entity.Title, entity.Url, entity.Duration, entity.Grouping, metadata)
 		{
-			Directives = entity.Directives
+			Directives = entity.Directives,
+			Channel = entity.Channel,
+			Feed = entity.Feed
 		};
 	}
 }

@@ -41,6 +41,9 @@
 		<DataTemplate DataType="vm:AboutViewModel">
 			<c:AboutControl />
 		</DataTemplate>
+		<DataTemplate DataType="vm:CatalogViewModel">
+			<c:CatalogControl />
+		</DataTemplate>
 		<DataTemplate DataType="vm:DatabaseViewModel">
 			<c:DatabaseControl />
 		</DataTemplate>

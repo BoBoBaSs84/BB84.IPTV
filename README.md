@@ -2,7 +2,7 @@
 
 A desktop application to view, create, edit and merge IPTV playlists (M3U). Channel data comes from the public [iptv-org API](https://github.com/iptv-org/api), is stored in a local SQLite database and can be combined with your own custom channels. The app can also generate a `channels.xml` for [iptv-org/epg](https://github.com/iptv-org/epg#usage), so that your custom channel list gets matching program guide data.
 
-> **Status:** work in progress. The current version is a cross-platform AvaloniaUI app that imports the iptv-org data into SQLite and edits a single M3U file. This document describes where the project is heading.
+> **Status:** work in progress. The current version is a cross-platform AvaloniaUI app that imports the iptv-org data into SQLite, stores playlists in the database, edits them (import/export as M3U) and fills them from the channel catalog or from custom channels. This document describes where the project is heading.
 
 ## Goals
 
@@ -77,11 +77,13 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 **Done when:** a playlist can be built and edited entirely inside the app.
 
-### Phase 4 – Channel catalog and custom channels
+### Phase 4 – Channel catalog and custom channels (done)
 
 - Searchable, filterable catalog over `ChannelEntity` with its streams and logos (country, language, category, NSFW flag).
-- Add catalog channels to a playlist.
-- `CustomChannelEntity` (name, URL, group, logo, `tvg-id`) for streams that are not in the catalog. Any URL scheme is allowed (`http`, `https`, `rtsp`, `udp`, ...).
+- Add catalog channels to a playlist, one by one or all results at once. The entry keeps the iptv-org `Channel` and `Feed` id, so it stays linked to the catalog.
+- `CustomChannelEntity` (name, URL, group, logo, `tvg-id`) for streams that are not in the catalog. Any URL scheme is allowed (`http`, `https`, `rtsp`, `udp`, ...). Custom channels survive a catalog reset.
+- New screen "Channels" (menu `Tools`), with the catalog and the custom channels on two tabs.
+- The catalog result is paged (`Features/PagedList`, 500 channels per page) and reports the total, so an unfiltered search is navigable instead of silently truncated. Playlists and custom channels are paged as well, in SQL; their paging row only appears when there is more than one page.
 
 **Done when:** a playlist can mix catalog channels and custom channels such as `rtsp://192.168.12.1:554`.
 
@@ -127,13 +129,13 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 ## Data model (planned additions)
 
-| Entity                            | Purpose                                                        | Key relations                                                  |
-| --------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
-| `PlaylistEntity`                  | Playlist header (name, `url-tvg`, cache, refresh, deinterlace) | 1 → n `PlaylistEntryEntity`                                    |
-| `PlaylistEntryEntity`             | Ordered entry with title, group, `tvg-*` metadata, URL         | iptv-org `Channel`/`Feed` id, optional → `CustomChannelEntity` |
-| `CustomChannelEntity`             | User-defined channel and stream URL                            | referenced by entries                                          |
-| `ChannelGuideMappingEntity`       | `site` / `site_id` / `lang` / `xmltv_id` for `channels.xml`    | per entry, prefilled from `GuideEntity`                        |
-| Logo cache fields on `LogoEntity` | Local path, hash/ETag, downloaded-at                           | 1 → 1 with existing logo row                                   |
+| Entity                            | Purpose                                                        | Key relations                                       |
+| --------------------------------- | -------------------------------------------------------------- | --------------------------------------------------- |
+| `PlaylistEntity`                  | Playlist header (name, `url-tvg`, cache, refresh, deinterlace) | 1 → n `PlaylistEntryEntity`                         |
+| `PlaylistEntryEntity`             | Ordered entry with title, group, `tvg-*` metadata, URL         | iptv-org `Channel`/`Feed` id                        |
+| `CustomChannelEntity`             | User-defined channel and stream URL                            | copied into an entry when it is added to a playlist |
+| `ChannelGuideMappingEntity`       | `site` / `site_id` / `lang` / `xmltv_id` for `channels.xml`    | per entry, prefilled from `GuideEntity`             |
+| Logo cache fields on `LogoEntity` | Local path, hash/ETag, downloaded-at                           | 1 → 1 with existing logo row                        |
 
 ## Build and run
 

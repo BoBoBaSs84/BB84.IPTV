@@ -69,6 +69,9 @@ public partial class MainWindow : Window
 	private void PlaylistsMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<PlaylistsViewModel>();
 
+	private void CatalogMenuItem_Click(object? sender, RoutedEventArgs e)
+		=> _navigationService.NavigateTo<CatalogViewModel>();
+
 	private void DatabaseMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<DatabaseViewModel>();
 }

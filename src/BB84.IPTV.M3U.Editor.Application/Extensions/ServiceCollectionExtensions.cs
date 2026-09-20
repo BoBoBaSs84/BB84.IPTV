@@ -36,6 +36,8 @@ internal static class ServiceCollectionExtensions
 	internal static IServiceCollection RegisterServices(this IServiceCollection services)
 	{
 		services.AddSingleton<IEventService, EventService>();
+		services.AddSingleton<ICatalogService, CatalogService>();
+		services.AddSingleton<ICustomChannelService, CustomChannelService>();
 		services.AddSingleton<IDatabaseService, DatabaseService>();
 		services.AddSingleton<INavigationService, NavigationService>();
 		services.AddSingleton<IPlaylistService, PlaylistService>();
@@ -56,6 +58,7 @@ internal static class ServiceCollectionExtensions
 	internal static IServiceCollection RegisterViewModels(this IServiceCollection services)
 	{
 		services.AddSingleton<AboutViewModel>();
+		services.AddSingleton<CatalogViewModel>();
 		services.AddSingleton<DatabaseViewModel>();
 		services.AddSingleton<MainViewModel>();
 		services.AddSingleton<PlaylistViewModel>();

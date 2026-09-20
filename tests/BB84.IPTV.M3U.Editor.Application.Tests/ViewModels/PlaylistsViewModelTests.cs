@@ -1,9 +1,11 @@
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 using BB84.IPTV.M3U.Editor.Domain.Models;
@@ -21,16 +23,19 @@ public sealed class PlaylistsViewModelTests
 	private readonly Mock<IEventService> _eventServiceMock = new();
 	private readonly PlaylistsViewModel _sut;
 
+	/// <summary>
+	/// The stored playlists the service mock reads, writes and pages over.
+	/// </summary>
+	private readonly List<PlaylistSummaryResponse> _storedPlaylists = [];
+
 	public PlaylistsViewModelTests()
 	{
 		PlaylistViewModel editor = new(_playlistServiceMock.Object, new Mock<IFileService>().Object);
 		_sut = new PlaylistsViewModel(_playlistServiceMock.Object, _fileDialogServiceMock.Object, _notificationServiceMock.Object, new Mock<INavigationService>().Object, _eventServiceMock.Object, editor);
 
-		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(
-		[
+		SetupPlaylists(
 			new PlaylistSummaryResponse { Id = 1, Name = "First", EntryCount = 1 },
-			new PlaylistSummaryResponse { Id = 2, Name = "Second", EntryCount = 0 }
-		]);
+			new PlaylistSummaryResponse { Id = 2, Name = "Second", EntryCount = 0 });
 		_playlistServiceMock.Setup(x => x.LoadAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(() => new PlaylistModel(new PlaylistModel(), [new EntryModel("Entry", "http://entry")]));
 		_playlistServiceMock.Setup(x => x.UpdateAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IPlaylist>(), It.IsAny<CancellationToken>()))
@@ -119,8 +124,7 @@ public sealed class PlaylistsViewModelTests
 	[TestMethod]
 	public async Task NewCommandShouldCreateAndOpenAPlaylistWithAUniqueName()
 	{
-		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<CancellationToken>()))
-			.ReturnsAsync([new PlaylistSummaryResponse { Id = 1, Name = "New Playlist", EntryCount = 0 }]);
+		SetupPlaylists(new PlaylistSummaryResponse { Id = 1, Name = "New Playlist", EntryCount = 0 });
 		_playlistServiceMock.Setup(x => x.CreateAsync(It.IsAny<string>(), It.IsAny<IPlaylist>(), It.IsAny<CancellationToken>())).ReturnsAsync(7);
 		await _sut.LoadPlaylistsAsync().ConfigureAwait(false);
 
@@ -198,5 +202,21 @@ public sealed class PlaylistsViewModelTests
 		await _sut.OpenAsync(_sut.Playlists[0]).ConfigureAwait(false);
 		_sut.Editor.Name = "First changed";
 		_notificationServiceMock.Setup(x => x.ShowQuestionAsync(It.IsAny<string>())).ReturnsAsync(answer);
+	}
+
+	/// <summary>
+	/// Lets the service return the <paramref name="summaries"/> as the requested page.
+	/// </summary>
+	private void SetupPlaylists(params PlaylistSummaryResponse[] summaries)
+	{
+		_storedPlaylists.Clear();
+		_storedPlaylists.AddRange(summaries);
+
+		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((PlaylistSearchRequest? request, CancellationToken _)
+				=> _storedPlaylists.ToPagedList(request?.PageNumber ?? 1, request?.PageSize ?? PlaylistsViewModel.PageSize));
+
+		_playlistServiceMock.Setup(x => x.DeleteAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((int id, CancellationToken _) => _storedPlaylists.RemoveAll(playlist => playlist.Id == id) > 0);
 	}
 }

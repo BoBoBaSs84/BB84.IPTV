@@ -21,6 +21,8 @@ public sealed class EntryModel : ValidatableObject, IEntry
 	private string _filePath;
 	private string? _grouping;
 	private string? _directives;
+	private string? _channel;
+	private string? _feed;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="EntryModel"/> class.
@@ -50,6 +52,8 @@ public sealed class EntryModel : ValidatableObject, IEntry
 		FilePath = entry.FilePath;
 		Grouping = entry.Grouping;
 		Directives = entry.Directives;
+		Channel = entry.Channel;
+		Feed = entry.Feed;
 		Metadata = new MetadataModel(entry.Metadata);
 	}
 
@@ -93,6 +97,20 @@ public sealed class EntryModel : ValidatableObject, IEntry
 	{
 		get => _directives;
 		set => SetProperty(ref _directives, value);
+	}
+
+	/// <inheritdoc/>
+	public string? Channel
+	{
+		get => _channel;
+		set => SetProperty(ref _channel, value);
+	}
+
+	/// <inheritdoc/>
+	public string? Feed
+	{
+		get => _feed;
+		set => SetProperty(ref _feed, value);
 	}
 
 	/// <inheritdoc/>
