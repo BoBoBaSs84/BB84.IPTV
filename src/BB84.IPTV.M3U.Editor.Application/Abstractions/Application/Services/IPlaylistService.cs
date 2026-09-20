@@ -1,4 +1,6 @@
+using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 
 namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
@@ -9,11 +11,12 @@ namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 public interface IPlaylistService
 {
 	/// <summary>
-	/// Gets all stored playlists, ordered by name.
+	/// Gets a page of the stored playlists, ordered by name.
 	/// </summary>
+	/// <param name="request">The page to read, the first page with the default size if omitted.</param>
 	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
-	/// <returns>The summaries of all stored playlists.</returns>
-	Task<IReadOnlyList<PlaylistSummaryResponse>> GetPlaylistsAsync(CancellationToken cancellationToken = default);
+	/// <returns>The requested page of the summaries, with the number of stored playlists.</returns>
+	Task<IPagedList<PlaylistSummaryResponse>> GetPlaylistsAsync(PlaylistSearchRequest? request = null, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Loads a stored playlist with its entries in their stored order.

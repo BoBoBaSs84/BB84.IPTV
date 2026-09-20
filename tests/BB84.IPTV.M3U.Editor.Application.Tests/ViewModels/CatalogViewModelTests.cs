@@ -9,6 +9,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 using BB84.IPTV.M3U.Editor.Domain.Models;
@@ -20,6 +21,17 @@ namespace BB84.IPTV.M3U.Editor.Application.Tests.ViewModels;
 [TestClass]
 public sealed class CatalogViewModelTests
 {
+	/// <summary>
+	/// More channels than fit on one page, so the paging commands have something to do.
+	/// </summary>
+	private const int TotalChannels = CatalogViewModel.PageSize + 1;
+
+	/// <summary>
+	/// The stored custom channels the service mock reads, writes and pages over.
+	/// </summary>
+	private readonly List<CustomChannelResponse> _storedCustomChannels =
+		[new CustomChannelResponse { Id = 1, Name = "Local camera", Url = "rtsp://192.168.12.1:554" }];
+
 	private readonly Mock<ICatalogService> _catalogServiceMock = new();
 	private readonly Mock<ICustomChannelService> _customChannelServiceMock = new();
 	private readonly Mock<INotificationService> _notificationServiceMock = new();
@@ -43,12 +55,21 @@ public sealed class CatalogViewModelTests
 			Categories = [new CatalogFilterValue("news", "News")]
 		});
 		_catalogServiceMock.Setup(x => x.SearchAsync(It.IsAny<CatalogSearchRequest>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync([CreateCatalogChannel()]);
-		_customChannelServiceMock.Setup(x => x.GetChannelsAsync(It.IsAny<CancellationToken>()))
-			.ReturnsAsync([new CustomChannelResponse { Id = 1, Name = "Local camera", Url = "rtsp://192.168.12.1:554" }]);
-		_customChannelServiceMock.Setup(x => x.CreateAsync(It.IsAny<CustomChannelResponse>(), It.IsAny<CancellationToken>())).ReturnsAsync(7);
+			.ReturnsAsync((CatalogSearchRequest request, CancellationToken _)
+				=> new PagedList<CatalogChannelResponse>([CreateCatalogChannel()], TotalChannels, request.PageNumber, request.PageSize));
+		_customChannelServiceMock.Setup(x => x.GetChannelsAsync(It.IsAny<CustomChannelSearchRequest?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((CustomChannelSearchRequest? request, CancellationToken _)
+				=> _storedCustomChannels.ToPagedList(request?.PageNumber ?? 1, request?.PageSize ?? CatalogViewModel.CustomChannelPageSize));
+		_customChannelServiceMock.Setup(x => x.CreateAsync(It.IsAny<CustomChannelResponse>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((CustomChannelResponse channel, CancellationToken _) =>
+			{
+				CustomChannelResponse stored = new() { Id = 7, Name = channel.Name, Url = channel.Url, GroupTitle = channel.GroupTitle, TvgId = channel.TvgId, TvgLogo = channel.TvgLogo };
+				_storedCustomChannels.Add(stored);
+				return stored.Id;
+			});
 		_customChannelServiceMock.Setup(x => x.UpdateAsync(It.IsAny<CustomChannelResponse>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
-		_customChannelServiceMock.Setup(x => x.DeleteAsync(It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
+		_customChannelServiceMock.Setup(x => x.DeleteAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((int id, CancellationToken _) => _storedCustomChannels.RemoveAll(channel => channel.Id == id) > 0);
 	}
 
 	[TestMethod]
@@ -104,6 +125,40 @@ public sealed class CatalogViewModelTests
 	}
 
 	[TestMethod]
+	public async Task SearchCommandShouldReportThePageAndStartAtTheFirstOne()
+	{
+		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.NextPageCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
+
+		Assert.AreEqual(1, _sut.PageNumber);
+		Assert.AreEqual(2, _sut.TotalPages);
+		Assert.AreEqual(TotalChannels, _sut.TotalCount);
+		Assert.IsFalse(_sut.HasPreviousPage);
+		Assert.IsTrue(_sut.HasNextPage);
+	}
+
+	[TestMethod]
+	public async Task NextAndPreviousPageCommandsShouldRequestTheNeighbouringPages()
+	{
+		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
+
+		Assert.IsFalse(_sut.PreviousPageCommand.CanExecute());
+
+		await _sut.NextPageCommand.ExecuteAsync().ConfigureAwait(false);
+
+		Assert.AreEqual(2, _sut.PageNumber);
+		Assert.IsFalse(_sut.HasNextPage);
+		Assert.IsTrue(_sut.PreviousPageCommand.CanExecute());
+		_catalogServiceMock.Verify(x => x.SearchAsync(It.Is<CatalogSearchRequest>(r => r.PageNumber == 2), It.IsAny<CancellationToken>()), Times.Once);
+
+		await _sut.PreviousPageCommand.ExecuteAsync().ConfigureAwait(false);
+
+		Assert.AreEqual(1, _sut.PageNumber);
+		_catalogServiceMock.Verify(x => x.SearchAsync(It.Is<CatalogSearchRequest>(r => r.PageNumber == 1), It.IsAny<CancellationToken>()), Times.Exactly(2));
+	}
+
+	[TestMethod]
 	public async Task ResetFiltersCommandShouldClearTheFilterAndTheResult()
 	{
 		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
@@ -114,6 +169,9 @@ public sealed class CatalogViewModelTests
 		Assert.AreEqual(string.Empty, _sut.SearchText);
 		Assert.IsEmpty(_sut.Channels);
 		Assert.IsNull(_sut.SelectedChannel);
+		Assert.AreEqual(1, _sut.PageNumber);
+		Assert.AreEqual(0, _sut.TotalCount);
+		Assert.IsFalse(_sut.HasNextPage);
 	}
 
 	[TestMethod]
@@ -188,7 +246,8 @@ public sealed class CatalogViewModelTests
 		await _sut.SaveCustomChannelCommand.ExecuteAsync().ConfigureAwait(false);
 
 		_customChannelServiceMock.Verify(x => x.CreateAsync(It.IsAny<CustomChannelResponse>(), It.IsAny<CancellationToken>()), Times.Once);
-		Assert.AreEqual(7, _sut.SelectedCustomChannel.Id);
+		Assert.HasCount(2, _sut.CustomChannels);
+		Assert.AreEqual(7, _sut.SelectedCustomChannel!.Id);
 		Assert.IsFalse(_sut.SelectedCustomChannel.IsNew);
 	}
 

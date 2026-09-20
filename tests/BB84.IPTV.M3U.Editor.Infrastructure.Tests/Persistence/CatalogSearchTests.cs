@@ -6,6 +6,7 @@
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +39,7 @@ public sealed class CatalogSearchTests
 	[TestMethod]
 	public async Task SearchAsyncShouldFindByNameAndSkipChannelsWithoutStream()
 	{
-		IReadOnlyList<CatalogChannelResponse> channels = await _sut
+		IPagedList<CatalogChannelResponse> channels = await _sut
 			.SearchAsync(new CatalogSearchRequest { SearchText = "Erste" })
 			.ConfigureAwait(false);
 
@@ -53,7 +54,7 @@ public sealed class CatalogSearchTests
 	[TestMethod]
 	public async Task SearchAsyncShouldReturnChannelsWithoutStreamWhenAsked()
 	{
-		IReadOnlyList<CatalogChannelResponse> channels = await _sut
+		IPagedList<CatalogChannelResponse> channels = await _sut
 			.SearchAsync(new CatalogSearchRequest { SearchText = "Offline", IncludeWithoutStream = true })
 			.ConfigureAwait(false);
 
@@ -64,15 +65,15 @@ public sealed class CatalogSearchTests
 	[TestMethod]
 	public async Task SearchAsyncShouldFilterByCountryLanguageAndCategory()
 	{
-		IReadOnlyList<CatalogChannelResponse> byCountry = await _sut
+		IPagedList<CatalogChannelResponse> byCountry = await _sut
 			.SearchAsync(new CatalogSearchRequest { Country = "FR" })
 			.ConfigureAwait(false);
 
-		IReadOnlyList<CatalogChannelResponse> byLanguage = await _sut
+		IPagedList<CatalogChannelResponse> byLanguage = await _sut
 			.SearchAsync(new CatalogSearchRequest { Language = "fra" })
 			.ConfigureAwait(false);
 
-		IReadOnlyList<CatalogChannelResponse> byCategory = await _sut
+		IPagedList<CatalogChannelResponse> byCategory = await _sut
 			.SearchAsync(new CatalogSearchRequest { Category = "news" })
 			.ConfigureAwait(false);
 
@@ -86,11 +87,11 @@ public sealed class CatalogSearchTests
 	[TestMethod]
 	public async Task SearchAsyncShouldSkipNsfwChannelsUnlessAsked()
 	{
-		IReadOnlyList<CatalogChannelResponse> without = await _sut
+		IPagedList<CatalogChannelResponse> without = await _sut
 			.SearchAsync(new CatalogSearchRequest())
 			.ConfigureAwait(false);
 
-		IReadOnlyList<CatalogChannelResponse> with = await _sut
+		IPagedList<CatalogChannelResponse> with = await _sut
 			.SearchAsync(new CatalogSearchRequest { IncludeNsfw = true })
 			.ConfigureAwait(false);
 
@@ -99,13 +100,32 @@ public sealed class CatalogSearchTests
 	}
 
 	[TestMethod]
-	public async Task SearchAsyncShouldLimitTheNumberOfResults()
+	public async Task SearchAsyncShouldPageTheResultAndReportTheTotalCount()
 	{
-		IReadOnlyList<CatalogChannelResponse> channels = await _sut
-			.SearchAsync(new CatalogSearchRequest { MaxResults = 1 })
+		IPagedList<CatalogChannelResponse> firstPage = await _sut
+			.SearchAsync(new CatalogSearchRequest { IncludeWithoutStream = true, IncludeNsfw = true, PageSize = 100 })
 			.ConfigureAwait(false);
 
-		Assert.HasCount(1, channels);
+		Assert.HasCount(4, firstPage);
+		Assert.AreEqual(4, firstPage.MetaData.TotalCount);
+		Assert.AreEqual(1, firstPage.MetaData.TotalPages);
+		Assert.IsFalse(firstPage.MetaData.HasPrevious);
+		Assert.IsFalse(firstPage.MetaData.HasNext);
+	}
+
+	[TestMethod]
+	public async Task SearchAsyncShouldReturnTheRequestedPage()
+	{
+		// The page size is clamped to at least 100, so the whole catalog is one page here; the
+		// second page is empty, but still reports the total.
+		IPagedList<CatalogChannelResponse> secondPage = await _sut
+			.SearchAsync(new CatalogSearchRequest { IncludeWithoutStream = true, IncludeNsfw = true, PageNumber = 2 })
+			.ConfigureAwait(false);
+
+		Assert.IsEmpty(secondPage);
+		Assert.AreEqual(4, secondPage.MetaData.TotalCount);
+		Assert.AreEqual(2, secondPage.MetaData.CurrentPage);
+		Assert.IsTrue(secondPage.MetaData.HasPrevious);
 	}
 
 	[TestMethod]

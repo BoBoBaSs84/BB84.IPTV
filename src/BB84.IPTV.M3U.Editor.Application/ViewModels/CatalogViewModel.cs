@@ -13,6 +13,7 @@ using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.ViewModels.Base;
 using BB84.IPTV.M3U.Editor.Domain.Models;
@@ -31,6 +32,16 @@ namespace BB84.IPTV.M3U.Editor.Application.ViewModels;
 /// </remarks>
 public sealed class CatalogViewModel : ViewModelBase, INavigateable
 {
+	/// <summary>
+	/// The number of channels per page, a compromise between the number of pages and the time one page takes.
+	/// </summary>
+	public const int PageSize = 500;
+
+	/// <summary>
+	/// The number of user defined channels per page.
+	/// </summary>
+	public const int CustomChannelPageSize = Parameters.MaxPageSize;
+
 	private readonly ICatalogService _catalogService;
 	private readonly ICustomChannelService _customChannelService;
 	private readonly INotificationService _notificationService;
@@ -44,9 +55,16 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 	private bool _isBusy;
 	private bool _filtersLoaded;
 	private string _resultMessage = string.Empty;
+	private int _pageNumber = 1;
+	private int _totalPages;
+	private int _totalCount;
+	private int _customChannelPageNumber = 1;
+	private int _customChannelTotalPages;
 	private CatalogChannelViewModel? _selectedChannel;
 	private CustomChannelViewModel? _selectedCustomChannel;
 	private AsyncActionCommand? _searchCommand;
+	private AsyncActionCommand? _previousPageCommand;
+	private AsyncActionCommand? _nextPageCommand;
 	private ActionCommand? _resetFiltersCommand;
 	private ActionCommand? _addChannelCommand;
 	private ActionCommand? _addAllChannelsCommand;
@@ -54,6 +72,8 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 	private AsyncActionCommand? _saveCustomChannelCommand;
 	private AsyncActionCommand? _deleteCustomChannelCommand;
 	private ActionCommand? _addCustomChannelCommand;
+	private AsyncActionCommand? _previousCustomChannelPageCommand;
+	private AsyncActionCommand? _nextCustomChannelPageCommand;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="CatalogViewModel"/> class.
@@ -162,13 +182,54 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 	}
 
 	/// <summary>
-	/// Gets the result of the last search, e.g. the number of channels found.
+	/// Gets the result of the last search, e.g. the page and the number of channels found.
 	/// </summary>
 	public string ResultMessage
 	{
 		get => _resultMessage;
 		private set => SetProperty(ref _resultMessage, value);
 	}
+
+	/// <summary>
+	/// Gets the number of the page that is shown, the first page is page one.
+	/// </summary>
+	[NotifyChanged(nameof(HasPreviousPage), nameof(HasNextPage))]
+	public int PageNumber
+	{
+		get => _pageNumber;
+		private set => SetProperty(ref _pageNumber, value);
+	}
+
+	/// <summary>
+	/// Gets the number of pages the result has.
+	/// </summary>
+	[NotifyChanged(nameof(HasPreviousPage), nameof(HasNextPage))]
+	public int TotalPages
+	{
+		get => _totalPages;
+		private set => SetProperty(ref _totalPages, value);
+	}
+
+	/// <summary>
+	/// Gets the number of channels the search found, not only the ones on the page.
+	/// </summary>
+	public int TotalCount
+	{
+		get => _totalCount;
+		private set => SetProperty(ref _totalCount, value);
+	}
+
+	/// <summary>
+	/// Indicates whether a page before the shown one exists.
+	/// </summary>
+	public bool HasPreviousPage
+		=> PageNumber > 1;
+
+	/// <summary>
+	/// Indicates whether a page after the shown one exists.
+	/// </summary>
+	public bool HasNextPage
+		=> PageNumber < TotalPages;
 
 	/// <summary>
 	/// Indicates whether the view model is busy performing a long-running operation.
@@ -218,6 +279,18 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 		=> _searchCommand ??= new AsyncActionCommand(SearchAsync, () => !IsBusy, OnError);
 
 	/// <summary>
+	/// Gets the command that shows the page before the shown one.
+	/// </summary>
+	public IAsyncActionCommand PreviousPageCommand
+		=> _previousPageCommand ??= new AsyncActionCommand(() => LoadPageAsync(PageNumber - 1), () => !IsBusy && HasPreviousPage, OnError);
+
+	/// <summary>
+	/// Gets the command that shows the page after the shown one.
+	/// </summary>
+	public IAsyncActionCommand NextPageCommand
+		=> _nextPageCommand ??= new AsyncActionCommand(() => LoadPageAsync(PageNumber + 1), () => !IsBusy && HasNextPage, OnError);
+
+	/// <summary>
 	/// Gets the command that clears the filter and the result.
 	/// </summary>
 	public IActionCommand ResetFiltersCommand
@@ -260,6 +333,62 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 		=> _addCustomChannelCommand ??= new ActionCommand(AddSelectedCustomChannel, () => CanAddToPlaylist && SelectedCustomChannel?.IsValid is true);
 
 	/// <summary>
+	/// Gets the number of the custom channel page that is shown, the first page is page one.
+	/// </summary>
+	[NotifyChanged(nameof(HasPreviousCustomChannelPage), nameof(HasNextCustomChannelPage), nameof(HasMultipleCustomChannelPages), nameof(CustomChannelPageStatus))]
+	public int CustomChannelPageNumber
+	{
+		get => _customChannelPageNumber;
+		private set => SetProperty(ref _customChannelPageNumber, value);
+	}
+
+	/// <summary>
+	/// Gets the number of pages the stored custom channels fill.
+	/// </summary>
+	[NotifyChanged(nameof(HasPreviousCustomChannelPage), nameof(HasNextCustomChannelPage), nameof(HasMultipleCustomChannelPages), nameof(CustomChannelPageStatus))]
+	public int CustomChannelTotalPages
+	{
+		get => _customChannelTotalPages;
+		private set => SetProperty(ref _customChannelTotalPages, value);
+	}
+
+	/// <summary>
+	/// Indicates whether a custom channel page before the shown one exists.
+	/// </summary>
+	public bool HasPreviousCustomChannelPage
+		=> CustomChannelPageNumber > 1;
+
+	/// <summary>
+	/// Indicates whether a custom channel page after the shown one exists.
+	/// </summary>
+	public bool HasNextCustomChannelPage
+		=> CustomChannelPageNumber < CustomChannelTotalPages;
+
+	/// <summary>
+	/// Indicates whether the custom channels fill more than one page, the paging is hidden otherwise.
+	/// </summary>
+	public bool HasMultipleCustomChannelPages
+		=> CustomChannelTotalPages > 1;
+
+	/// <summary>
+	/// Gets the status of the custom channel paging, e.g. "Page 1 of 3".
+	/// </summary>
+	public string CustomChannelPageStatus
+		=> Resources.PageStatus.FormatMessage(CustomChannelPageNumber, CustomChannelTotalPages);
+
+	/// <summary>
+	/// Gets the command that shows the custom channel page before the shown one.
+	/// </summary>
+	public IAsyncActionCommand PreviousCustomChannelPageCommand
+		=> _previousCustomChannelPageCommand ??= new AsyncActionCommand(() => LoadCustomChannelPageAsync(CustomChannelPageNumber - 1), () => !IsBusy && HasPreviousCustomChannelPage, OnError);
+
+	/// <summary>
+	/// Gets the command that shows the custom channel page after the shown one.
+	/// </summary>
+	public IAsyncActionCommand NextCustomChannelPageCommand
+		=> _nextCustomChannelPageCommand ??= new AsyncActionCommand(() => LoadCustomChannelPageAsync(CustomChannelPageNumber + 1), () => !IsBusy && HasNextCustomChannelPage, OnError);
+
+	/// <summary>
 	/// Loads the filter values and the stored custom channels, the filter values only once.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token.</param>
@@ -292,7 +421,13 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 		}
 	}
 
+	/// <summary>
+	/// Searches with the current filter, starting again at the first page.
+	/// </summary>
 	private async Task SearchAsync()
+		=> await LoadPageAsync(1).ConfigureAwait(true);
+
+	private async Task LoadPageAsync(int pageNumber)
 	{
 		IsBusy = true;
 
@@ -305,10 +440,12 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 				Language = SelectedLanguage?.Code,
 				Category = SelectedCategory?.Code,
 				IncludeNsfw = IncludeNsfw,
-				IncludeWithoutStream = IncludeWithoutStream
+				IncludeWithoutStream = IncludeWithoutStream,
+				PageNumber = pageNumber,
+				PageSize = PageSize
 			};
 
-			IReadOnlyList<CatalogChannelResponse> channels = await _catalogService
+			IPagedList<CatalogChannelResponse> channels = await _catalogService
 				.SearchAsync(request)
 				.ConfigureAwait(true);
 
@@ -317,7 +454,12 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 				Channels.Add(new CatalogChannelViewModel(channel));
 
 			SelectedChannel = Channels.FirstOrDefault();
-			ResultMessage = Resources.CatalogChannelsFound.FormatMessage(Channels.Count);
+			PageNumber = channels.MetaData.CurrentPage;
+			TotalPages = channels.MetaData.TotalPages;
+			TotalCount = channels.MetaData.TotalCount;
+			ResultMessage = TotalCount > 0
+				? Resources.CatalogPageStatus.FormatMessage(PageNumber, TotalPages, TotalCount)
+				: Resources.CatalogChannelsFound.FormatMessage(0);
 		}
 		finally
 		{
@@ -336,6 +478,9 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 		Channels.Clear();
 		SelectedChannel = null;
 		ResultMessage = string.Empty;
+		PageNumber = 1;
+		TotalPages = 0;
+		TotalCount = 0;
 	}
 
 	private void AddSelectedChannel()
@@ -389,6 +534,9 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 					.ConfigureAwait(true);
 
 				channel.MarkStored(id);
+
+				// Reloaded, so the stored order and the page counters hold the new channel.
+				await LoadCustomChannelPageAsync(CustomChannelPageNumber).ConfigureAwait(true);
 			}
 			else if (!await _customChannelService.UpdateAsync(channel.ToResponse()).ConfigureAwait(true))
 			{
@@ -436,18 +584,33 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 
 		_ = CustomChannels.Remove(channel);
 		SelectedCustomChannel = CustomChannels.FirstOrDefault();
+
+		if (channel.IsNew)
+			return;
+
+		// The page may hold one channel less than before, and one page less as well.
+		if (CustomChannelPageNumber > 1 && CustomChannels.Count is 0)
+			CustomChannelPageNumber--;
+
+		await LoadCustomChannelPageAsync(CustomChannelPageNumber).ConfigureAwait(true);
 	}
 
 	private async Task LoadCustomChannelsAsync(CancellationToken cancellationToken)
+		=> await LoadCustomChannelPageAsync(CustomChannelPageNumber, cancellationToken).ConfigureAwait(true);
+
+	private async Task LoadCustomChannelPageAsync(int pageNumber, CancellationToken cancellationToken = default)
 	{
-		IReadOnlyList<CustomChannelResponse> channels = await _customChannelService
-			.GetChannelsAsync(cancellationToken)
+		IPagedList<CustomChannelResponse> channels = await _customChannelService
+			.GetChannelsAsync(new CustomChannelSearchRequest { PageNumber = pageNumber, PageSize = CustomChannelPageSize }, cancellationToken)
 			.ConfigureAwait(true);
 
 		int? selectedId = SelectedCustomChannel?.Id;
 		CustomChannels.Clear();
 		foreach (CustomChannelResponse channel in channels)
 			CustomChannels.Add(new CustomChannelViewModel(channel));
+
+		CustomChannelPageNumber = channels.MetaData.CurrentPage;
+		CustomChannelTotalPages = channels.MetaData.TotalPages;
 
 		// The channel that was selected before stays selected, otherwise the first one is shown.
 		SelectedCustomChannel = CustomChannels.FirstOrDefault(channel => channel.Id == selectedId)
@@ -470,6 +633,8 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 	private void RaiseCommandStatesChanged()
 	{
 		_searchCommand?.RaiseCanExecuteChanged();
+		_previousPageCommand?.RaiseCanExecuteChanged();
+		_nextPageCommand?.RaiseCanExecuteChanged();
 		_resetFiltersCommand?.RaiseCanExecuteChanged();
 		_addChannelCommand?.RaiseCanExecuteChanged();
 		_addAllChannelsCommand?.RaiseCanExecuteChanged();
@@ -477,6 +642,8 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 		_saveCustomChannelCommand?.RaiseCanExecuteChanged();
 		_deleteCustomChannelCommand?.RaiseCanExecuteChanged();
 		_addCustomChannelCommand?.RaiseCanExecuteChanged();
+		_previousCustomChannelPageCommand?.RaiseCanExecuteChanged();
+		_nextCustomChannelPageCommand?.RaiseCanExecuteChanged();
 	}
 
 	private void PublishStatus(string message)

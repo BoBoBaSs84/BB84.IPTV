@@ -133,6 +133,9 @@
   <data name="CatalogNoPlaylistOpen" xml:space="preserve">
     <value>No hay ninguna lista de reproducción abierta. Abra una primero, los canales se añaden a ella.</value>
   </data>
+  <data name="CatalogPageStatus" xml:space="preserve">
+    <value>Página {0} de {1}: {2} canales encontrados.</value>
+  </data>
   <data name="CatalogOperationFailed" xml:space="preserve">
     <value>La operación del canal ha fallado.</value>
   </data>
@@ -162,6 +165,9 @@
   </data>
   <data name="NewPlaylistName" xml:space="preserve">
     <value>Nueva lista de reproducción</value>
+  </data>
+  <data name="PageStatus" xml:space="preserve">
+    <value>Página {0} de {1}</value>
   </data>
   <data name="PlaylistCannotBeSaved" xml:space="preserve">
     <value>No se puede guardar la lista de reproducción: {0}</value>

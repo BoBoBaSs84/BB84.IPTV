@@ -12,6 +12,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persistence.R
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -67,7 +68,7 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 		};
 	}
 
-	public async Task<IReadOnlyList<CatalogChannelResponse>> SearchAsync(CatalogSearchRequest request, CancellationToken cancellationToken = default)
+	public async Task<IPagedList<CatalogChannelResponse>> SearchAsync(CatalogSearchRequest request, CancellationToken cancellationToken = default)
 	{
 		ArgumentNullException.ThrowIfNull(request);
 
@@ -82,6 +83,7 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 
 		string? category = request.Category?.Trim();
 		string? language = request.Language?.Trim();
+		bool filterByLanguage = !string.IsNullOrWhiteSpace(language);
 
 		IEnumerable<ChannelEntity> candidates = string.IsNullOrWhiteSpace(category)
 			? channels
@@ -89,22 +91,17 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 
 		List<string> candidateIds = [.. candidates.Select(channel => channel.Channel)];
 
-		List<FeedEntity> feeds = await LoadChunkedAsync(
-			repositoryService.Feeds,
-			candidateIds,
-			chunk => feed => chunk.Contains(feed.Channel),
-			cancellationToken).ConfigureAwait(false);
+		// Feeds and streams of every candidate are only needed for the filters, the page itself is
+		// served by the smaller lookups below.
+		ILookup<string, FeedEntity> feedsByChannel = filterByLanguage
+			? await LoadFeedsAsync(repositoryService, candidateIds, cancellationToken).ConfigureAwait(false)
+			: EmptyLookup<FeedEntity>();
 
-		List<StreamEntity> streams = await LoadChunkedAsync(
-			repositoryService.Streams,
-			candidateIds,
-			chunk => stream => stream.Channel != null && chunk.Contains(stream.Channel),
-			cancellationToken).ConfigureAwait(false);
+		ILookup<string, StreamEntity> streamsByChannel = request.IncludeWithoutStream
+			? EmptyLookup<StreamEntity>()
+			: await LoadStreamsAsync(repositoryService, candidateIds, cancellationToken).ConfigureAwait(false);
 
-		ILookup<string, FeedEntity> feedsByChannel = feeds.ToLookup(feed => feed.Channel, StringComparer.OrdinalIgnoreCase);
-		ILookup<string, StreamEntity> streamsByChannel = streams.ToLookup(stream => stream.Channel!, StringComparer.OrdinalIgnoreCase);
-
-		if (!string.IsNullOrWhiteSpace(language))
+		if (filterByLanguage)
 		{
 			candidates = candidates
 				.Where(channel => feedsByChannel[channel.Channel].Any(feed => Contains(feed.Languages, language)));
@@ -113,18 +110,28 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 		if (!request.IncludeWithoutStream)
 			candidates = candidates.Where(channel => streamsByChannel[channel.Channel].Any());
 
-		List<ChannelEntity> results = [.. candidates.Take(Math.Max(1, request.MaxResults))];
-		List<string> resultIds = [.. results.Select(channel => channel.Channel)];
+		List<ChannelEntity> matches = [.. candidates];
+		List<ChannelEntity> page = [.. matches.Skip(request.Skip).Take(request.PageSize)];
+		List<string> pageIds = [.. page.Select(channel => channel.Channel)];
+
+		if (!filterByLanguage)
+			feedsByChannel = await LoadFeedsAsync(repositoryService, pageIds, cancellationToken).ConfigureAwait(false);
+
+		if (request.IncludeWithoutStream)
+			streamsByChannel = await LoadStreamsAsync(repositoryService, pageIds, cancellationToken).ConfigureAwait(false);
 
 		List<LogoEntity> logos = await LoadChunkedAsync(
 			repositoryService.Logos,
-			resultIds,
+			pageIds,
 			chunk => logo => chunk.Contains(logo.Channel),
 			cancellationToken).ConfigureAwait(false);
 
 		ILookup<string, LogoEntity> logosByChannel = logos.ToLookup(logo => logo.Channel, StringComparer.OrdinalIgnoreCase);
 
-		return [.. results.Select(channel => ToResponse(channel, feedsByChannel[channel.Channel], streamsByChannel[channel.Channel], logosByChannel[channel.Channel]))];
+		IEnumerable<CatalogChannelResponse> responses = page
+			.Select(channel => ToResponse(channel, feedsByChannel[channel.Channel], streamsByChannel[channel.Channel], logosByChannel[channel.Channel]));
+
+		return new PagedList<CatalogChannelResponse>(responses, matches.Count, request.PageNumber, request.PageSize);
 	}
 
 	/// <summary>
@@ -162,6 +169,31 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 
 		return Expression.Lambda<Func<T, bool>>(body, parameter);
 	}
+
+	private static async Task<ILookup<string, FeedEntity>> LoadFeedsAsync(IRepositoryService repositoryService, IReadOnlyList<string> channelIds, CancellationToken cancellationToken)
+	{
+		List<FeedEntity> feeds = await LoadChunkedAsync(
+			repositoryService.Feeds,
+			channelIds,
+			chunk => feed => chunk.Contains(feed.Channel),
+			cancellationToken).ConfigureAwait(false);
+
+		return feeds.ToLookup(feed => feed.Channel, StringComparer.OrdinalIgnoreCase);
+	}
+
+	private static async Task<ILookup<string, StreamEntity>> LoadStreamsAsync(IRepositoryService repositoryService, IReadOnlyList<string> channelIds, CancellationToken cancellationToken)
+	{
+		List<StreamEntity> streams = await LoadChunkedAsync(
+			repositoryService.Streams,
+			channelIds,
+			chunk => stream => stream.Channel != null && chunk.Contains(stream.Channel),
+			cancellationToken).ConfigureAwait(false);
+
+		return streams.ToLookup(stream => stream.Channel!, StringComparer.OrdinalIgnoreCase);
+	}
+
+	private static ILookup<string, TEntity> EmptyLookup<TEntity>()
+		=> Array.Empty<TEntity>().ToLookup(_ => string.Empty);
 
 	/// <summary>
 	/// Loads the entities of the given channels, in chunks, so the query stays within the parameter limit.

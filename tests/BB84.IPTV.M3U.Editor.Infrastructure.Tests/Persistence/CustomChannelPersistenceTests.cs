@@ -4,7 +4,9 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -39,7 +41,7 @@ public sealed class CustomChannelPersistenceTests
 			.CreateAsync(CreateChannel("Local camera", "rtsp://192.168.12.1:554"))
 			.ConfigureAwait(false);
 
-		IReadOnlyList<CustomChannelResponse> channels = await _sut.GetChannelsAsync().ConfigureAwait(false);
+		IPagedList<CustomChannelResponse> channels = await _sut.GetChannelsAsync().ConfigureAwait(false);
 
 		Assert.IsGreaterThan(0, id);
 		Assert.HasCount(1, channels);
@@ -54,10 +56,36 @@ public sealed class CustomChannelPersistenceTests
 		_ = await _sut.CreateAsync(CreateChannel("Zebra", "udp://239.0.0.1:1234")).ConfigureAwait(false);
 		_ = await _sut.CreateAsync(CreateChannel("Alpha", "http://alpha.example")).ConfigureAwait(false);
 
-		IReadOnlyList<CustomChannelResponse> channels = await _sut.GetChannelsAsync().ConfigureAwait(false);
+		IPagedList<CustomChannelResponse> channels = await _sut.GetChannelsAsync().ConfigureAwait(false);
 
 		Assert.AreEqual("Alpha", channels[0].Name);
 		Assert.AreEqual("Zebra", channels[1].Name);
+	}
+
+	[TestMethod]
+	public async Task GetChannelsAsyncShouldPageInTheDatabase()
+	{
+		for (int number = 1; number <= 150; number++)
+			_ = await _sut.CreateAsync(CreateChannel($"Camera {number:000}", $"rtsp://192.168.12.{number}:554")).ConfigureAwait(false);
+
+		IPagedList<CustomChannelResponse> firstPage = await _sut
+			.GetChannelsAsync(new CustomChannelSearchRequest { PageSize = 100 })
+			.ConfigureAwait(false);
+
+		IPagedList<CustomChannelResponse> secondPage = await _sut
+			.GetChannelsAsync(new CustomChannelSearchRequest { PageNumber = 2, PageSize = 100 })
+			.ConfigureAwait(false);
+
+		Assert.HasCount(100, firstPage);
+		Assert.AreEqual("Camera 001", firstPage[0].Name);
+		Assert.AreEqual(150, firstPage.MetaData.TotalCount);
+		Assert.AreEqual(2, firstPage.MetaData.TotalPages);
+		Assert.IsTrue(firstPage.MetaData.HasNext);
+
+		Assert.HasCount(50, secondPage);
+		Assert.AreEqual("Camera 101", secondPage[0].Name);
+		Assert.IsFalse(secondPage.MetaData.HasNext);
+		Assert.IsTrue(secondPage.MetaData.HasPrevious);
 	}
 
 	[TestMethod]
@@ -69,7 +97,7 @@ public sealed class CustomChannelPersistenceTests
 			.UpdateAsync(new CustomChannelResponse { Id = id, Name = "Garden", Url = "rtsp://192.168.12.2:554", TvgId = "garden" })
 			.ConfigureAwait(false);
 
-		IReadOnlyList<CustomChannelResponse> channels = await _sut.GetChannelsAsync().ConfigureAwait(false);
+		IPagedList<CustomChannelResponse> channels = await _sut.GetChannelsAsync().ConfigureAwait(false);
 
 		Assert.IsTrue(updated);
 		Assert.HasCount(1, channels);

@@ -133,6 +133,9 @@
   <data name="CatalogNoPlaylistOpen" xml:space="preserve">
     <value>Nessuna playlist aperta. Aprine prima una, i canali vengono aggiunti a essa.</value>
   </data>
+  <data name="CatalogPageStatus" xml:space="preserve">
+    <value>Pagina {0} di {1} – {2} canali trovati.</value>
+  </data>
   <data name="CatalogOperationFailed" xml:space="preserve">
     <value>L&apos;operazione sul canale non è riuscita.</value>
   </data>
@@ -162,6 +165,9 @@
   </data>
   <data name="NewPlaylistName" xml:space="preserve">
     <value>Nuova playlist</value>
+  </data>
+  <data name="PageStatus" xml:space="preserve">
+    <value>Pagina {0} di {1}</value>
   </data>
   <data name="PlaylistCannotBeSaved" xml:space="preserve">
     <value>Impossibile salvare la playlist: {0}</value>

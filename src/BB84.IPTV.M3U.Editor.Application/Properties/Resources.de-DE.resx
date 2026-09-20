@@ -133,6 +133,9 @@
   <data name="CatalogNoPlaylistOpen" xml:space="preserve">
     <value>Es ist keine Wiedergabeliste geöffnet. Öffnen Sie zuerst eine, die Sender werden ihr hinzugefügt.</value>
   </data>
+  <data name="CatalogPageStatus" xml:space="preserve">
+    <value>Seite {0} von {1} – {2} Sender gefunden.</value>
+  </data>
   <data name="CatalogOperationFailed" xml:space="preserve">
     <value>Der Vorgang am Sender ist fehlgeschlagen.</value>
   </data>
@@ -162,6 +165,9 @@
   </data>
   <data name="NewPlaylistName" xml:space="preserve">
     <value>Neue Wiedergabeliste</value>
+  </data>
+  <data name="PageStatus" xml:space="preserve">
+    <value>Seite {0} von {1}</value>
   </data>
   <data name="PlaylistCannotBeSaved" xml:space="preserve">
     <value>Die Wiedergabeliste kann nicht gespeichert werden: {0}</value>

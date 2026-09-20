@@ -97,6 +97,15 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Page {0} of {1} — {2} channels found..
+        /// </summary>
+        internal static string CatalogPageStatus {
+            get {
+                return ResourceManager.GetString("CatalogPageStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The language has been changed. Do you want to restart the application to apply the changes?.
         /// </summary>
         internal static string ChangedLanguageRestartApplicationQuestion {
@@ -192,6 +201,15 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         internal static string NewPlaylistName {
             get {
                 return ResourceManager.GetString("NewPlaylistName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page {0} of {1}.
+        /// </summary>
+        internal static string PageStatus {
+            get {
+                return ResourceManager.GetString("PageStatus", resourceCulture);
             }
         }
         

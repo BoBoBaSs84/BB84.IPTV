@@ -2,6 +2,7 @@ using System.Text;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 using BB84.IPTV.M3U.Editor.Domain.Models;
@@ -66,7 +67,7 @@ public sealed class PlaylistPersistenceTests
 		string sourcePath = WriteFile("German TV.m3u8", SampleM3u);
 
 		int id = await _sut.ImportAsync(sourcePath).ConfigureAwait(false);
-		IReadOnlyList<PlaylistSummaryResponse> playlists = await _sut.GetPlaylistsAsync().ConfigureAwait(false);
+		IPagedList<PlaylistSummaryResponse> playlists = await _sut.GetPlaylistsAsync().ConfigureAwait(false);
 
 		PlaylistSummaryResponse summary = playlists.Single();
 		Assert.AreEqual(id, summary.Id);
