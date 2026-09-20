@@ -160,6 +160,24 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Wiedergabeliste zusammenführen</value>
   </data>
+  <data name="MergeCompleted" xml:space="preserve">
+    <value>Wiedergabeliste &apos;{0}&apos; erstellt.</value>
+  </data>
+  <data name="MergeNeedsTwoPlaylists" xml:space="preserve">
+    <value>Wählen Sie mindestens zwei Wiedergabelisten zum Zusammenführen aus.</value>
+  </data>
+  <data name="MergeOperationFailed" xml:space="preserve">
+    <value>Das Zusammenführen ist fehlgeschlagen.</value>
+  </data>
+  <data name="MergePreviewStatus" xml:space="preserve">
+    <value>{0} Wiedergabelisten, {1} Einträge, {2} Duplikate verworfen.</value>
+  </data>
+  <data name="MergeWithoutSources" xml:space="preserve">
+    <value>Das Zusammenführen hat keine Wiedergabelisten.</value>
+  </data>
+  <data name="MergedPlaylistName" xml:space="preserve">
+    <value>Zusammengeführte Wiedergabeliste</value>
+  </data>
   <data name="NewCustomChannelName" xml:space="preserve">
     <value>Neuer Sender</value>
   </data>

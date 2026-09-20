@@ -160,6 +160,24 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Combinar lista de reproducción</value>
   </data>
+  <data name="MergeCompleted" xml:space="preserve">
+    <value>Lista de reproducción &apos;{0}&apos; creada.</value>
+  </data>
+  <data name="MergeNeedsTwoPlaylists" xml:space="preserve">
+    <value>Seleccione al menos dos listas de reproducción para combinar.</value>
+  </data>
+  <data name="MergeOperationFailed" xml:space="preserve">
+    <value>La combinación ha fallado.</value>
+  </data>
+  <data name="MergePreviewStatus" xml:space="preserve">
+    <value>{0} listas de reproducción, {1} entradas, {2} duplicados descartados.</value>
+  </data>
+  <data name="MergeWithoutSources" xml:space="preserve">
+    <value>La combinación no tiene listas de reproducción.</value>
+  </data>
+  <data name="MergedPlaylistName" xml:space="preserve">
+    <value>Lista de reproducción combinada</value>
+  </data>
   <data name="NewCustomChannelName" xml:space="preserve">
     <value>Canal nuevo</value>
   </data>

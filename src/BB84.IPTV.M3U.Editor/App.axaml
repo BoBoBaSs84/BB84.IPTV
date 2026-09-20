@@ -47,6 +47,9 @@
 		<DataTemplate DataType="vm:DatabaseViewModel">
 			<c:DatabaseControl />
 		</DataTemplate>
+		<DataTemplate DataType="vm:MergeViewModel">
+			<c:MergeControl />
+		</DataTemplate>
 		<DataTemplate DataType="vm:PlaylistsViewModel">
 			<c:PlaylistsControl />
 		</DataTemplate>

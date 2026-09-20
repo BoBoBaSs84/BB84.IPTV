@@ -87,11 +87,12 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 **Done when:** a playlist can mix catalog channels and custom channels such as `rtsp://192.168.12.1:554`.
 
-### Phase 5 – Merge
+### Phase 5 – Merge (done)
 
-- Merge two or more playlists.
-- Options: append, de-duplicate by `tvg-id` or URL, keep first or last, remap groups.
-- Preview the result before committing.
+- Merge two or more playlists, in a chosen order (`IMergeService`, screen "Merge Playlists" in the `Tools` menu).
+- Options: append, de-duplicate by `tvg-id`, by URL or by either, keep the first or the last of two duplicates, rename or clear groups.
+- Preview the result before committing: the merged entries, the number of dropped duplicates and the groups of the result, which is where the renaming is set up.
+- The header (`url-tvg`, cache, deinterlace, refresh) of the first source is kept, an entry without a `tvg-id` or URL is never a duplicate.
 
 **Done when:** merging produces a new playlist and never modifies the sources.
 

@@ -160,6 +160,24 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Unisci playlist</value>
   </data>
+  <data name="MergeCompleted" xml:space="preserve">
+    <value>Playlist &apos;{0}&apos; creata.</value>
+  </data>
+  <data name="MergeNeedsTwoPlaylists" xml:space="preserve">
+    <value>Selezionare almeno due playlist da unire.</value>
+  </data>
+  <data name="MergeOperationFailed" xml:space="preserve">
+    <value>L&apos;unione non è riuscita.</value>
+  </data>
+  <data name="MergePreviewStatus" xml:space="preserve">
+    <value>{0} playlist, {1} voci, {2} duplicati scartati.</value>
+  </data>
+  <data name="MergeWithoutSources" xml:space="preserve">
+    <value>L&apos;unione non ha playlist.</value>
+  </data>
+  <data name="MergedPlaylistName" xml:space="preserve">
+    <value>Playlist unita</value>
+  </data>
   <data name="NewCustomChannelName" xml:space="preserve">
     <value>Nuovo canale</value>
   </data>

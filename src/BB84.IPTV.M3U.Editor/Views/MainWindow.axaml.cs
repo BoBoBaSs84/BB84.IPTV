@@ -72,6 +72,9 @@ public partial class MainWindow : Window
 	private void CatalogMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<CatalogViewModel>();
 
+	private void MergeMenuItem_Click(object? sender, RoutedEventArgs e)
+		=> _navigationService.NavigateTo<MergeViewModel>();
+
 	private void DatabaseMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<DatabaseViewModel>();
 }

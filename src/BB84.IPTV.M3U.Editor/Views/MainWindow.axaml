@@ -96,6 +96,12 @@
 						<Image Source="/Resources/tv.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
+				<MenuItem Header="Merge _Playlists"
+									Click="MergeMenuItem_Click">
+					<MenuItem.Icon>
+						<Image Source="/Resources/floppy_disks.ico" />
+					</MenuItem.Icon>
+				</MenuItem>
 				<MenuItem Header="_Channels"
 									Click="CatalogMenuItem_Click">
 					<MenuItem.Icon>
