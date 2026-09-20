@@ -47,6 +47,18 @@ public interface IEntry
 	string? Directives { get; set; }
 
 	/// <summary>
+	/// Gets or sets the iptv-org channel identifier the entry was created from, <see langword="null"/>
+	/// for an entry that is not based on the catalog.
+	/// </summary>
+	string? Channel { get; set; }
+
+	/// <summary>
+	/// Gets or sets the iptv-org feed identifier the entry was created from, <see langword="null"/>
+	/// if the entry belongs to the main feed or is not based on the catalog.
+	/// </summary>
+	string? Feed { get; set; }
+
+	/// <summary>
 	/// Gets or sets the additional metadata associated with the track.
 	/// </summary>
 	IMetadata Metadata { get; }

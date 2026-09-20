@@ -61,6 +61,42 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} channels added to the playlist &apos;{1}&apos;..
+        /// </summary>
+        internal static string CatalogChannelsAdded {
+            get {
+                return ResourceManager.GetString("CatalogChannelsAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} channels found..
+        /// </summary>
+        internal static string CatalogChannelsFound {
+            get {
+                return ResourceManager.GetString("CatalogChannelsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No playlist is open. Open a playlist first, the channels are added to it..
+        /// </summary>
+        internal static string CatalogNoPlaylistOpen {
+            get {
+                return ResourceManager.GetString("CatalogNoPlaylistOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The channel operation failed..
+        /// </summary>
+        internal static string CatalogOperationFailed {
+            get {
+                return ResourceManager.GetString("CatalogOperationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The language has been changed. Do you want to restart the application to apply the changes?.
         /// </summary>
         internal static string ChangedLanguageRestartApplicationQuestion {
@@ -75,6 +111,24 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         internal static string ChangeLanguageQuestion {
             get {
                 return ResourceManager.GetString("ChangeLanguageQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom channel &apos;{0}&apos; saved..
+        /// </summary>
+        internal static string CustomChannelSaved {
+            get {
+                return ResourceManager.GetString("CustomChannelSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the custom channel &apos;{0}&apos;? This cannot be undone..
+        /// </summary>
+        internal static string DeleteCustomChannelQuestion {
+            get {
+                return ResourceManager.GetString("DeleteCustomChannelQuestion", resourceCulture);
             }
         }
         
@@ -120,6 +174,15 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         internal static string MergePlaylistTitle {
             get {
                 return ResourceManager.GetString("MergePlaylistTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Channel.
+        /// </summary>
+        internal static string NewCustomChannelName {
+            get {
+                return ResourceManager.GetString("NewCustomChannelName", resourceCulture);
             }
         }
         

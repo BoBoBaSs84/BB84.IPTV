@@ -335,6 +335,29 @@ public sealed class PlaylistViewModel : ViewModelBase
 	}
 
 	/// <summary>
+	/// Appends entries to the open playlist, e.g. channels picked from the catalog.
+	/// </summary>
+	/// <param name="entries">The entries to append.</param>
+	/// <returns>The number of appended entries.</returns>
+	public int AddEntries(IEnumerable<EntryModel> entries)
+	{
+		ArgumentNullException.ThrowIfNull(entries);
+
+		if (!HasPlaylist)
+			return 0;
+
+		int appended = 0;
+		foreach (EntryModel entry in entries)
+		{
+			Entries.Add(entry);
+			SelectedEntry = entry;
+			appended++;
+		}
+
+		return appended;
+	}
+
+	/// <summary>
 	/// Duplicates the selected entry.
 	/// </summary>
 	public void DuplicateSelectedEntry()

@@ -23,6 +23,11 @@ public interface IRepositoryService
 	ICountryRepository Countries { get; }
 
 	/// <summary>
+	/// The repository instance for managing user defined channels.
+	/// </summary>
+	ICustomChannelRepository CustomChannels { get; }
+
+	/// <summary>
 	/// The repository instance for managing feeds.
 	/// </summary>
 	IFeedRepository Feeds { get; }

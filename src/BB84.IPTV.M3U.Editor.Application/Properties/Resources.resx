@@ -123,8 +123,26 @@
   <data name="ChangeLanguageQuestion" xml:space="preserve">
     <value>Are you sure you want to change the application language to '{0}'?</value>
   </data>
+  <data name="CatalogChannelsAdded" xml:space="preserve">
+    <value>{0} channels added to the playlist &apos;{1}&apos;.</value>
+  </data>
+  <data name="CatalogChannelsFound" xml:space="preserve">
+    <value>{0} channels found.</value>
+  </data>
+  <data name="CatalogNoPlaylistOpen" xml:space="preserve">
+    <value>No playlist is open. Open a playlist first, the channels are added to it.</value>
+  </data>
+  <data name="CatalogOperationFailed" xml:space="preserve">
+    <value>The channel operation failed.</value>
+  </data>
+  <data name="CustomChannelSaved" xml:space="preserve">
+    <value>Custom channel &apos;{0}&apos; saved.</value>
+  </data>
   <data name="ExitApplicationQuestion" xml:space="preserve">
     <value>Are you sure you want to exit the application?</value>
+  </data>
+  <data name="DeleteCustomChannelQuestion" xml:space="preserve">
+    <value>Delete the custom channel &apos;{0}&apos;? This cannot be undone.</value>
   </data>
   <data name="DeletePlaylistQuestion" xml:space="preserve">
     <value>Delete the playlist &apos;{0}&apos;? This cannot be undone.</value>
@@ -137,6 +155,9 @@
   </data>
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Merge Playlist</value>
+  </data>
+  <data name="NewCustomChannelName" xml:space="preserve">
+    <value>New Channel</value>
   </data>
   <data name="NewPlaylistName" xml:space="preserve">
     <value>New Playlist</value>

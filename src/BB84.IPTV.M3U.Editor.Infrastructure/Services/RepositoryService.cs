@@ -20,6 +20,7 @@ internal sealed class RepositoryService : IRepositoryService
 	private readonly Lazy<ICategoryRepository> _categoryRepository;
 	private readonly Lazy<IChannelRepository> _channelRepository;
 	private readonly Lazy<ICountryRepository> _countryRepository;
+	private readonly Lazy<ICustomChannelRepository> _customChannelRepository;
 	private readonly Lazy<IFeedRepository> _feedRepository;
 	private readonly Lazy<IGuideRepository> _guideRepository;
 	private readonly Lazy<ILanguageRepository> _languageRepository;
@@ -38,6 +39,7 @@ internal sealed class RepositoryService : IRepositoryService
 		_categoryRepository = new Lazy<ICategoryRepository>(() => new CategoryRepository(_context));
 		_channelRepository = new Lazy<IChannelRepository>(() => new ChannelRepository(_context));
 		_countryRepository = new Lazy<ICountryRepository>(() => new CountryRepository(_context));
+		_customChannelRepository = new Lazy<ICustomChannelRepository>(() => new CustomChannelRepository(_context));
 		_feedRepository = new Lazy<IFeedRepository>(() => new FeedRepository(_context));
 		_guideRepository = new Lazy<IGuideRepository>(() => new GuideRepository(_context));
 		_languageRepository = new Lazy<ILanguageRepository>(() => new LanguageRepository(_context));
@@ -50,6 +52,7 @@ internal sealed class RepositoryService : IRepositoryService
 	public ICategoryRepository Categories => _categoryRepository.Value;
 	public IChannelRepository Channels => _channelRepository.Value;
 	public ICountryRepository Countries => _countryRepository.Value;
+	public ICustomChannelRepository CustomChannels => _customChannelRepository.Value;
 	public IFeedRepository Feeds => _feedRepository.Value;
 	public IGuideRepository Guides => _guideRepository.Value;
 	public ILanguageRepository Languages => _languageRepository.Value;
