@@ -16,7 +16,9 @@
 	<DockPanel>
 		<!-- Menu Bar -->
 		<Menu DockPanel.Dock="Top">
-			<MenuItem Header="_File">
+			<MenuItem x:Name="FileMenuItem"
+								Header="_File"
+								SubmenuOpened="FileMenuItem_SubmenuOpened">
 				<MenuItem x:Name="NewMenuItem"
 									Header="_New Playlist"
 									InputGesture="Ctrl+N"

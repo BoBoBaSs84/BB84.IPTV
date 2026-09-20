@@ -9,6 +9,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
+using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
@@ -82,6 +83,18 @@ public sealed class CatalogViewModelTests
 		Assert.HasCount(1, _sut.Categories);
 		Assert.HasCount(1, _sut.CustomChannels);
 		Assert.AreEqual("Local camera", _sut.SelectedCustomChannel!.Name);
+	}
+
+	[TestMethod]
+	public async Task LoadAndReportAsyncShouldReportAFailureInsteadOfThrowing()
+	{
+		_catalogServiceMock.Setup(x => x.GetFiltersAsync(It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new InvalidOperationException("no database"));
+
+		await _sut.LoadAndReportAsync().ConfigureAwait(false);
+
+		_eventServiceMock.Verify(x => x.Publish(It.IsAny<ErrorOccuredEvent>()), Times.Once);
+		Assert.IsFalse(_sut.IsBusy);
 	}
 
 	[TestMethod]

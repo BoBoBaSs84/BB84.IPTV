@@ -7,6 +7,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
+using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Domain.Models;
@@ -53,6 +54,18 @@ public sealed class MergeViewModelTests
 		Assert.AreEqual("First", _sut.Sources[0].Name);
 		Assert.AreEqual(0, _sut.SelectedCount);
 		Assert.IsFalse(_sut.HasPreview);
+	}
+
+	[TestMethod]
+	public async Task LoadAndReportAsyncShouldReportAFailureInsteadOfThrowing()
+	{
+		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new InvalidOperationException("no database"));
+
+		await _sut.LoadAndReportAsync().ConfigureAwait(false);
+
+		_eventServiceMock.Verify(x => x.Publish(It.IsAny<ErrorOccuredEvent>()), Times.Once);
+		Assert.IsFalse(_sut.IsBusy);
 	}
 
 	[TestMethod]
