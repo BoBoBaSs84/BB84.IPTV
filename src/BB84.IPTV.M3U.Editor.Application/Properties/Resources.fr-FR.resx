@@ -160,6 +160,24 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Fusionner une playlist</value>
   </data>
+  <data name="MergeCompleted" xml:space="preserve">
+    <value>Liste de lecture &apos;{0}&apos; créée.</value>
+  </data>
+  <data name="MergeNeedsTwoPlaylists" xml:space="preserve">
+    <value>Sélectionnez au moins deux listes de lecture à fusionner.</value>
+  </data>
+  <data name="MergeOperationFailed" xml:space="preserve">
+    <value>La fusion a échoué.</value>
+  </data>
+  <data name="MergePreviewStatus" xml:space="preserve">
+    <value>{0} listes de lecture, {1} entrées, {2} doublons supprimés.</value>
+  </data>
+  <data name="MergeWithoutSources" xml:space="preserve">
+    <value>La fusion n&apos;a aucune liste de lecture.</value>
+  </data>
+  <data name="MergedPlaylistName" xml:space="preserve">
+    <value>Liste de lecture fusionnée</value>
+  </data>
   <data name="NewCustomChannelName" xml:space="preserve">
     <value>Nouvelle chaîne</value>
   </data>

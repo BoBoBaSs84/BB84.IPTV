@@ -159,6 +159,24 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Merge Playlist</value>
   </data>
+  <data name="MergeCompleted" xml:space="preserve">
+    <value>Playlist &apos;{0}&apos; created.</value>
+  </data>
+  <data name="MergeNeedsTwoPlaylists" xml:space="preserve">
+    <value>Select at least two playlists to merge.</value>
+  </data>
+  <data name="MergeOperationFailed" xml:space="preserve">
+    <value>The merge failed.</value>
+  </data>
+  <data name="MergePreviewStatus" xml:space="preserve">
+    <value>{0} playlists, {1} entries, {2} duplicates dropped.</value>
+  </data>
+  <data name="MergeWithoutSources" xml:space="preserve">
+    <value>The merge has no playlists to merge.</value>
+  </data>
+  <data name="MergedPlaylistName" xml:space="preserve">
+    <value>Merged Playlist</value>
+  </data>
   <data name="NewCustomChannelName" xml:space="preserve">
     <value>New Channel</value>
   </data>

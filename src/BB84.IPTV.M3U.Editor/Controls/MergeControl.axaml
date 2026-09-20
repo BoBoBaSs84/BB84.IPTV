@@ -1,0 +1,210 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:m="using:BB84.IPTV.M3U.Editor.Markup"
+						 xmlns:enums="using:BB84.IPTV.M3U.Editor.Application.Enumerators"
+						 xmlns:models="using:BB84.IPTV.M3U.Editor.Domain.Abstractions.Models"
+						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
+						 mc:Ignorable="d"
+						 d:DesignWidth="1200"
+						 d:DesignHeight="700"
+						 x:Class="BB84.IPTV.M3U.Editor.Controls.MergeControl"
+						 x:DataType="vm:MergeViewModel">
+	<UserControl.Styles>
+		<Style Selector="Grid.Detail > TextBlock">
+			<Setter Property="Margin"
+							Value="4" />
+			<Setter Property="VerticalAlignment"
+							Value="Center" />
+		</Style>
+		<Style Selector="Grid.Detail > TextBox">
+			<Setter Property="Margin"
+							Value="4" />
+		</Style>
+	</UserControl.Styles>
+	<Grid ColumnDefinitions="320,*">
+		<!-- Sources and options -->
+		<ScrollViewer Grid.Column="0"
+									VerticalScrollBarVisibility="Auto">
+			<StackPanel Spacing="4">
+				<HeaderedContentControl Theme="{StaticResource GroupBox}"
+																Header="Playlists to merge"
+																Margin="4">
+					<DockPanel>
+						<UniformGrid DockPanel.Dock="Bottom"
+												 Columns="2"
+												 Margin="0,4,0,0">
+							<Button Content="Move Up"
+											ToolTip.Tip="Merge the selected playlist earlier"
+											HorizontalAlignment="Stretch"
+											HorizontalContentAlignment="Center"
+											Margin="2"
+											Command="{Binding MoveUpCommand}" />
+							<Button Content="Move Down"
+											ToolTip.Tip="Merge the selected playlist later"
+											HorizontalAlignment="Stretch"
+											HorizontalContentAlignment="Center"
+											Margin="2"
+											Command="{Binding MoveDownCommand}" />
+						</UniformGrid>
+						<ListBox Height="240"
+										 ItemsSource="{Binding Sources}"
+										 SelectionMode="Single"
+										 SelectedItem="{Binding SelectedSource}">
+							<ListBox.Styles>
+								<!-- Screen readers announce the playlist name instead of the view model type. -->
+								<Style Selector="ListBoxItem"
+											 x:DataType="vm:MergeSourceViewModel">
+									<Setter Property="AutomationProperties.Name"
+													Value="{Binding Name}" />
+								</Style>
+							</ListBox.Styles>
+							<ListBox.ItemTemplate>
+								<DataTemplate x:DataType="vm:MergeSourceViewModel">
+									<CheckBox IsChecked="{Binding IsSelected}">
+										<StackPanel>
+											<TextBlock Text="{Binding Name}"
+																 FontWeight="SemiBold"
+																 TextTrimming="CharacterEllipsis" />
+											<TextBlock Text="{Binding EntryCount, StringFormat='{}{0} entries'}"
+																 FontSize="12"
+																 Foreground="#888" />
+										</StackPanel>
+									</CheckBox>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+					</DockPanel>
+				</HeaderedContentControl>
+
+				<HeaderedContentControl Theme="{StaticResource GroupBox}"
+																Header="Options"
+																Margin="4">
+					<Grid Classes="Detail"
+								ColumnDefinitions="Auto,*"
+								RowDefinitions="Auto,Auto,Auto">
+						<TextBlock Grid.Row="0"
+											 Text="Name:" />
+						<TextBox Grid.Row="0"
+										 Grid.Column="1"
+										 Text="{Binding Name}" />
+
+						<TextBlock Grid.Row="1"
+											 Text="Duplicates:"
+											 ToolTip.Tip="What makes two entries the same entry" />
+						<ComboBox Grid.Row="1"
+											Grid.Column="1"
+											Margin="4"
+											HorizontalAlignment="Stretch"
+											ItemsSource="{m:EnumValues {x:Type enums:MergeDuplicateMode}}"
+											SelectedItem="{Binding DuplicateMode}" />
+
+						<TextBlock Grid.Row="2"
+											 Text="Keep:"
+											 ToolTip.Tip="Which of two duplicate entries survives" />
+						<ComboBox Grid.Row="2"
+											Grid.Column="1"
+											Margin="4"
+											HorizontalAlignment="Stretch"
+											ItemsSource="{m:EnumValues {x:Type enums:MergeDuplicateResolution}}"
+											SelectedItem="{Binding DuplicateResolution}" />
+					</Grid>
+				</HeaderedContentControl>
+
+				<!-- Group remapping, filled by a preview -->
+				<HeaderedContentControl Theme="{StaticResource GroupBox}"
+																Header="Groups"
+																Margin="4"
+																IsVisible="{Binding HasPreview}">
+					<StackPanel>
+						<TextBlock Text="Rename the groups of the result, an empty value clears the group."
+											 Foreground="#888"
+											 TextWrapping="Wrap"
+											 Margin="4" />
+						<DataGrid MaxHeight="220"
+											AutoGenerateColumns="False"
+											CanUserSortColumns="False"
+											GridLinesVisibility="All"
+											ItemsSource="{Binding GroupMappings}">
+							<DataGrid.Columns>
+								<DataGridTextColumn x:DataType="vm:MergeGroupMappingViewModel"
+																		Header="Group"
+																		Binding="{Binding SourceGroup}"
+																		IsReadOnly="True"
+																		Width="*" />
+								<DataGridTextColumn x:DataType="vm:MergeGroupMappingViewModel"
+																		Header="Rename to"
+																		Binding="{Binding TargetGroup}"
+																		Width="*" />
+							</DataGrid.Columns>
+						</DataGrid>
+					</StackPanel>
+				</HeaderedContentControl>
+			</StackPanel>
+		</ScrollViewer>
+
+		<!-- Preview -->
+		<DockPanel Grid.Column="1">
+			<StackPanel DockPanel.Dock="Top"
+									Orientation="Horizontal"
+									Spacing="4"
+									Margin="4">
+				<Button Content="Preview"
+								ToolTip.Tip="Merge without saving, to see the result"
+								Command="{Binding PreviewCommand}" />
+				<Button Content="Merge"
+								ToolTip.Tip="Save the result as a new playlist, the sources stay as they are"
+								Command="{Binding MergeCommand}" />
+				<TextBlock Text="{Binding PreviewMessage}"
+									 Foreground="#888"
+									 VerticalAlignment="Center"
+									 Margin="8,0,0,0" />
+			</StackPanel>
+
+			<!-- Why the merge cannot run -->
+			<Border DockPanel.Dock="Top"
+							Background="#FDECEA"
+							BorderBrush="#F5C2C0"
+							BorderThickness="1"
+							CornerRadius="4"
+							Padding="8,4"
+							Margin="4,0"
+							IsVisible="{Binding !IsValid}">
+				<TextBlock Text="{Binding ValidationMessage}"
+									 Foreground="#A4262C"
+									 TextWrapping="Wrap" />
+			</Border>
+
+			<HeaderedContentControl Theme="{StaticResource GroupBox}"
+															Header="Preview"
+															Margin="4">
+				<DataGrid AutoGenerateColumns="False"
+									IsReadOnly="True"
+									CanUserSortColumns="False"
+									SelectionMode="Single"
+									GridLinesVisibility="All"
+									ItemsSource="{Binding PreviewEntries}">
+					<DataGrid.Columns>
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="Title"
+																Binding="{Binding Title}"
+																Width="2*" />
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="Group"
+																Binding="{Binding Metadata.GroupTitle}"
+																Width="*" />
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="TVG ID"
+																Binding="{Binding Metadata.TvgId}"
+																Width="*" />
+						<DataGridTextColumn x:DataType="models:IEntry"
+																Header="URL"
+																Binding="{Binding FilePath}"
+																Width="2*" />
+					</DataGrid.Columns>
+				</DataGrid>
+			</HeaderedContentControl>
+		</DockPanel>
+	</Grid>
+</UserControl>

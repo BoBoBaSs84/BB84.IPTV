@@ -178,11 +178,65 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Playlist &apos;{0}&apos; created..
+        /// </summary>
+        internal static string MergeCompleted {
+            get {
+                return ResourceManager.GetString("MergeCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merged Playlist.
+        /// </summary>
+        internal static string MergedPlaylistName {
+            get {
+                return ResourceManager.GetString("MergedPlaylistName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select at least two playlists to merge..
+        /// </summary>
+        internal static string MergeNeedsTwoPlaylists {
+            get {
+                return ResourceManager.GetString("MergeNeedsTwoPlaylists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The merge failed..
+        /// </summary>
+        internal static string MergeOperationFailed {
+            get {
+                return ResourceManager.GetString("MergeOperationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Merge Playlist.
         /// </summary>
         internal static string MergePlaylistTitle {
             get {
                 return ResourceManager.GetString("MergePlaylistTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} playlists, {1} entries, {2} duplicates dropped..
+        /// </summary>
+        internal static string MergePreviewStatus {
+            get {
+                return ResourceManager.GetString("MergePreviewStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The merge has no playlists to merge..
+        /// </summary>
+        internal static string MergeWithoutSources {
+            get {
+                return ResourceManager.GetString("MergeWithoutSources", resourceCulture);
             }
         }
         
