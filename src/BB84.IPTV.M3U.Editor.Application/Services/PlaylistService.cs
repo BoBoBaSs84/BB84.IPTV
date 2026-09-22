@@ -3,10 +3,13 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
+using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
+using BB84.IPTV.M3U.Editor.Domain.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +21,14 @@ namespace BB84.IPTV.M3U.Editor.Application.Services;
 /// <param name="serviceScopeFactory">The scope factory used to resolve the scoped repository service per call.</param>
 /// <param name="providerService">The provider service used for file access.</param>
 /// <param name="serializerService">The serializer used to read and write M3U content.</param>
-internal sealed class PlaylistService(IServiceScopeFactory serviceScopeFactory, IProviderService providerService, ISerializerService serializerService) : IPlaylistService
+/// <param name="logoService">The service that knows which logos are cached.</param>
+/// <param name="settings">The application settings, which say how a cached logo is exported.</param>
+internal sealed class PlaylistService(
+	IServiceScopeFactory serviceScopeFactory,
+	IProviderService providerService,
+	ISerializerService serializerService,
+	ILogoService logoService,
+	ApplicationSettings settings) : IPlaylistService
 {
 	public async Task<IPagedList<PlaylistSummaryResponse>> GetPlaylistsAsync(PlaylistSearchRequest? request = null, CancellationToken cancellationToken = default)
 	{
@@ -150,6 +160,9 @@ internal sealed class PlaylistService(IServiceScopeFactory serviceScopeFactory, 
 		if (playlist is null)
 			return false;
 
+		await ApplyCachedLogosAsync(playlist, filePath, cancellationToken)
+			.ConfigureAwait(false);
+
 		string fileContent = serializerService.Serialize(playlist);
 
 		await providerService.File
@@ -157,6 +170,40 @@ internal sealed class PlaylistService(IServiceScopeFactory serviceScopeFactory, 
 			.ConfigureAwait(false);
 
 		return true;
+	}
+
+	/// <summary>
+	/// Points the <c>tvg-logo</c> of every entry whose logo is cached at the cached file.
+	/// </summary>
+	/// <remarks>
+	/// The playlist is the copy that was loaded for the export, the stored one keeps its URLs.
+	/// </remarks>
+	/// <param name="playlist">The playlist that is about to be written.</param>
+	/// <param name="filePath">The file the playlist is written to, a relative path starts there.</param>
+	/// <param name="cancellationToken">The cancellation token.</param>
+	private async Task ApplyCachedLogosAsync(IPlaylist playlist, string filePath, CancellationToken cancellationToken)
+	{
+		if (!settings.Logo.UseLocalPathsOnExport)
+			return;
+
+		IReadOnlyDictionary<string, string> pathsByUrl = await logoService
+			.GetPathsByUrlAsync(cancellationToken)
+			.ConfigureAwait(false);
+
+		if (pathsByUrl.Count is 0)
+			return;
+
+		string? directory = Path.GetDirectoryName(Path.GetFullPath(filePath));
+
+		foreach (EntryModel entry in playlist.Entries)
+		{
+			if (entry.Metadata.TvgLogo is not { } logo || !pathsByUrl.TryGetValue(logo, out string? localPath))
+				continue;
+
+			entry.Metadata.TvgLogo = settings.Logo.ExportPathStyle is LogoPathStyle.Relative && directory is not null
+				? Path.GetRelativePath(directory, localPath)
+				: localPath;
+		}
 	}
 
 	private static IRepositoryService GetRepositoryService(IServiceScope scope)

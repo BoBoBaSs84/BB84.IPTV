@@ -26,6 +26,7 @@
 			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Hosting" />
+		<PackageReference Include="Svg.Controls.Skia.Avalonia" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\BB84.IPTV.M3U.Editor.Infrastructure\BB84.IPTV.M3U.Editor.Infrastructure.csproj" />

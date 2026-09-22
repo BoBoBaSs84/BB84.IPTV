@@ -111,6 +111,10 @@ internal static class ServiceCollectionExtensions
 				.WithMediaType(Constants.HttpClientMediaType)
 				.WithTimeout(TimeSpan.FromSeconds(30)));
 
+		// The logos are hosted wherever their channel keeps them, so this client has no base address.
+		services.AddHttpClient(Constants.DownloadClientName, configureClient =>
+			configureClient.WithTimeout(TimeSpan.FromSeconds(30)));
+
 		return services;
 	}
 
@@ -122,7 +126,10 @@ internal static class ServiceCollectionExtensions
 	internal static IServiceCollection RegisterServices(this IServiceCollection services)
 	{
 		services.AddSingleton<IFileService, FileService>();
+		services.AddSingleton<ILogoStoreService, LogoStoreService>();
 		services.AddSingleton<ISettingsService, SettingsService>();
+
+		services.AddScoped<IDownloadService, DownloadService>();
 
 		services.AddScoped<IRepositoryService, RepositoryService>();
 		services.AddScoped<IWebService, WebService>();

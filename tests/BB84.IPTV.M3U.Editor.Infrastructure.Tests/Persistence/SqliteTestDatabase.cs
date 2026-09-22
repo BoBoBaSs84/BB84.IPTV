@@ -4,9 +4,12 @@ using BB84.IPTV.M3U.Editor.Application.Installer;
 using BB84.IPTV.M3U.Editor.Infrastructure.Persistence;
 using BB84.IPTV.M3U.Editor.Infrastructure.Services;
 
+using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace BB84.IPTV.M3U.Editor.Infrastructure.Tests.Persistence;
 
@@ -19,11 +22,14 @@ internal sealed class SqliteTestDatabase : IDisposable
 	private readonly string _connectionString;
 	private readonly string? _filePath;
 
-	private SqliteTestDatabase(string? filePath)
+	private SqliteTestDatabase(string? filePath, Action<IServiceCollection>? configureServices = null)
 	{
 		_filePath = filePath;
 		ServiceCollection services = new();
 		services.RegisterApplicationServices();
+
+		// Lets a test replace an infrastructure service, e.g. the downloader of the logo cache.
+		configureServices?.Invoke(services);
 
 		if (filePath is null)
 		{
@@ -41,14 +47,23 @@ internal sealed class SqliteTestDatabase : IDisposable
 		}
 
 		services.AddScoped<IRepositoryService, RepositoryService>();
+
+		// The application services need a logger and, since the logo cache, a downloader and a
+		// store; a test that cares about them replaces them through configureServices.
+		services.AddLogging();
+		services.TryAddSingleton(typeof(ILoggerService<>), typeof(LoggerService<>));
+		services.TryAddSingleton<IDownloadService, OfflineDownloadService>();
+		services.TryAddSingleton<ILogoStoreService, EmptyLogoStoreService>();
+
 		Services = services.BuildServiceProvider();
 	}
 
 	/// <summary>
 	/// Creates a test database in memory.
 	/// </summary>
-	public static SqliteTestDatabase InMemory()
-		=> new(null);
+	/// <param name="configureServices">Adds or replaces services before the provider is built.</param>
+	public static SqliteTestDatabase InMemory(Action<IServiceCollection>? configureServices = null)
+		=> new(null, configureServices);
 
 	/// <summary>
 	/// Creates a test database in a new temporary file, deleted on dispose.
@@ -77,6 +92,30 @@ internal sealed class SqliteTestDatabase : IDisposable
 	{
 		using IServiceScope scope = Services.CreateScope();
 		await action(scope.ServiceProvider.GetRequiredService<IRepositoryService>()).ConfigureAwait(false);
+	}
+
+	/// <summary>
+	/// Answers no download, so a test never reaches the network.
+	/// </summary>
+	private sealed class OfflineDownloadService : IDownloadService
+	{
+		public Task<LogoDownloadResponse?> DownloadAsync(string url, string? eTag = null, CancellationToken cancellationToken = default)
+			=> Task.FromResult<LogoDownloadResponse?>(null);
+	}
+
+	/// <summary>
+	/// Holds nothing, so a test never writes into the application data directory.
+	/// </summary>
+	private sealed class EmptyLogoStoreService : ILogoStoreService
+	{
+		public Task<string> SaveAsync(string channel, string fileName, byte[] content, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException("The test database does not store logos.");
+
+		public bool Exists(string? path)
+			=> false;
+
+		public int Clear()
+			=> 0;
 	}
 
 	/// <summary>

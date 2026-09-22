@@ -2,6 +2,7 @@
 						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:conv="using:BB84.IPTV.M3U.Editor.Converters"
 						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
 						 mc:Ignorable="d"
 						 d:DesignWidth="1200"
@@ -109,6 +110,19 @@
 										ItemsSource="{Binding Channels}"
 										SelectedItem="{Binding SelectedChannel}">
 						<DataGrid.Columns>
+							<!-- Only cached logos are shown, a missing one stays empty. -->
+							<DataGridTemplateColumn Header="Logo"
+																			Width="56">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate x:DataType="vm:CatalogChannelViewModel">
+										<Image Source="{Binding LogoUrl, Converter={x:Static conv:LogoImageConverter.Instance}}"
+													 Height="32"
+													 Width="48"
+													 Stretch="Uniform"
+													 Margin="2" />
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
 							<DataGridTextColumn x:DataType="vm:CatalogChannelViewModel"
 																	Header="Name"
 																	Binding="{Binding Name}"

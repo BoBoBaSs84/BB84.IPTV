@@ -156,6 +156,27 @@
   <data name="DatabaseControl.ImportDatabaseButton.Content" xml:space="preserve">
     <value>Importer la base de données</value>
   </data>
+  <data name="DatabaseControl.LogoCacheGroupBox.Header" xml:space="preserve">
+    <value>Cache des logos</value>
+  </data>
+  <data name="DatabaseControl.DownloadLogosButton.Content" xml:space="preserve">
+    <value>Télécharger les logos</value>
+  </data>
+  <data name="DatabaseControl.DownloadLogosButton.ToolTip" xml:space="preserve">
+    <value>Télécharger les logos qui ne sont pas encore en cache</value>
+  </data>
+  <data name="DatabaseControl.CancelLogoCacheButton.Content" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="DatabaseControl.CancelLogoCacheButton.ToolTip" xml:space="preserve">
+    <value>Arrêter le téléchargement, les logos déjà téléchargés sont conservés</value>
+  </data>
+  <data name="DatabaseControl.ClearLogoCacheButton.Content" xml:space="preserve">
+    <value>Vider</value>
+  </data>
+  <data name="DatabaseControl.ClearLogoCacheButton.ToolTip" xml:space="preserve">
+    <value>Supprimer tous les logos en cache</value>
+  </data>
   <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
     <value>Progression de l'importation</value>
   </data>

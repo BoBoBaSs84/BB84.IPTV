@@ -21,4 +21,11 @@ public sealed partial class ApplicationSettings
 	/// </summary>
 	[GenerateIniFileSection]
 	public DatabaseSettings Database { get; } = new();
+
+	/// <summary>
+	/// Gets the settings of the logo cache, which say how an export writes the logo of an entry
+	/// whose logo is cached.
+	/// </summary>
+	[GenerateIniFileSection]
+	public LogoSettings Logo { get; } = new();
 }

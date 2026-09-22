@@ -178,6 +178,69 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logo Cache.
+        /// </summary>
+        public static string DatabaseControl_LogoCacheGroupBox_Header {
+            get {
+                return ResourceManager.GetString("DatabaseControl.LogoCacheGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Logos.
+        /// </summary>
+        public static string DatabaseControl_DownloadLogosButton_Content {
+            get {
+                return ResourceManager.GetString("DatabaseControl.DownloadLogosButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download the logos that are not cached yet.
+        /// </summary>
+        public static string DatabaseControl_DownloadLogosButton_ToolTip {
+            get {
+                return ResourceManager.GetString("DatabaseControl.DownloadLogosButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string DatabaseControl_CancelLogoCacheButton_Content {
+            get {
+                return ResourceManager.GetString("DatabaseControl.CancelLogoCacheButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop the download, the logos downloaded so far are kept.
+        /// </summary>
+        public static string DatabaseControl_CancelLogoCacheButton_ToolTip {
+            get {
+                return ResourceManager.GetString("DatabaseControl.CancelLogoCacheButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string DatabaseControl_ClearLogoCacheButton_Content {
+            get {
+                return ResourceManager.GetString("DatabaseControl.ClearLogoCacheButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete every cached logo.
+        /// </summary>
+        public static string DatabaseControl_ClearLogoCacheButton_ToolTip {
+            get {
+                return ResourceManager.GetString("DatabaseControl.ClearLogoCacheButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import Progress.
         /// </summary>
         public static string DatabaseControl_ImportProgressGroupBox_Header {

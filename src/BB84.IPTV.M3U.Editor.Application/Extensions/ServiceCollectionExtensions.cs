@@ -39,6 +39,7 @@ internal static class ServiceCollectionExtensions
 		services.AddSingleton<ICatalogService, CatalogService>();
 		services.AddSingleton<ICustomChannelService, CustomChannelService>();
 		services.AddSingleton<IDatabaseService, DatabaseService>();
+		services.AddSingleton<ILogoService, LogoService>();
 		services.AddSingleton<IMergeService, MergeService>();
 		services.AddSingleton<INavigationService, NavigationService>();
 		services.AddSingleton<IPlaylistService, PlaylistService>();

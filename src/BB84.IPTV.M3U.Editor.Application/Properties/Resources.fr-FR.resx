@@ -160,6 +160,24 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Fusionner une playlist</value>
   </data>
+  <data name="LogoCacheCleared" xml:space="preserve">
+    <value>{0} logos en cache supprimés.</value>
+  </data>
+  <data name="LogoCacheDownloaded" xml:space="preserve">
+    <value>{0} logos téléchargés.</value>
+  </data>
+  <data name="LogoCacheFailed" xml:space="preserve">
+    <value>Le cache des logos a échoué.</value>
+  </data>
+  <data name="LogoCacheProgress" xml:space="preserve">
+    <value>Téléchargement des logos : {0} sur {1}.</value>
+  </data>
+  <data name="LogoCacheStatus" xml:space="preserve">
+    <value>{0} logos sur {1} en cache.</value>
+  </data>
+  <data name="LogoCacheMissing" xml:space="preserve">
+    <value>{0} manquants</value>
+  </data>
   <data name="MergeCompleted" xml:space="preserve">
     <value>Liste de lecture &apos;{0}&apos; créée.</value>
   </data>

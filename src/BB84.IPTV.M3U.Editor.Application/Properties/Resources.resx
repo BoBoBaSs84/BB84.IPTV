@@ -159,6 +159,24 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Merge Playlist</value>
   </data>
+  <data name="LogoCacheCleared" xml:space="preserve">
+    <value>{0} cached logos deleted.</value>
+  </data>
+  <data name="LogoCacheDownloaded" xml:space="preserve">
+    <value>{0} logos downloaded.</value>
+  </data>
+  <data name="LogoCacheFailed" xml:space="preserve">
+    <value>The logo cache failed.</value>
+  </data>
+  <data name="LogoCacheProgress" xml:space="preserve">
+    <value>Downloading logos: {0} of {1}.</value>
+  </data>
+  <data name="LogoCacheStatus" xml:space="preserve">
+    <value>{0} of {1} logos cached.</value>
+  </data>
+  <data name="LogoCacheMissing" xml:space="preserve">
+    <value>{0} missing</value>
+  </data>
   <data name="MergeCompleted" xml:space="preserve">
     <value>Playlist &apos;{0}&apos; created.</value>
   </data>

@@ -1,5 +1,7 @@
 using Avalonia.Controls;
 
+using BB84.IPTV.M3U.Editor.Application.ViewModels;
+
 namespace BB84.IPTV.M3U.Editor.Controls;
 
 /// <summary>
@@ -12,4 +14,17 @@ public partial class DatabaseControl : UserControl
 	/// </summary>
 	public DatabaseControl()
 		=> InitializeComponent();
+
+	/// <inheritdoc/>
+	/// <remarks>
+	/// The state of the logo cache is read whenever the screen is shown, so an import or a run
+	/// elsewhere is picked up. The load cannot be awaited here, so it reports a failure itself.
+	/// </remarks>
+	protected override void OnDataContextChanged(EventArgs e)
+	{
+		base.OnDataContextChanged(e);
+
+		if (DataContext is DatabaseViewModel viewModel)
+			_ = viewModel.LoadLogoCacheStatusAndReportAsync();
+	}
 }

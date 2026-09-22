@@ -41,4 +41,31 @@ public sealed class LogoEntity : EntityBase
 	/// Gets or sets the logo URL.
 	/// </summary>
 	public required string Url { get; set; }
+
+	/// <summary>
+	/// Gets or sets the path of the downloaded file, <see langword="null"/> while the logo is not cached.
+	/// </summary>
+	public string? LocalPath { get; set; }
+
+	/// <summary>
+	/// Gets or sets the entity tag the server sent with the file, used to skip a download that
+	/// would bring the same file again.
+	/// </summary>
+	public string? ETag { get; set; }
+
+	/// <summary>
+	/// Gets or sets the hash of the downloaded file, used to detect a changed logo when the server
+	/// sends no entity tag.
+	/// </summary>
+	public string? ContentHash { get; set; }
+
+	/// <summary>
+	/// Gets or sets the size of the downloaded file in bytes.
+	/// </summary>
+	public long? FileSize { get; set; }
+
+	/// <summary>
+	/// Gets or sets the moment the logo was downloaded.
+	/// </summary>
+	public DateTime? DownloadedAt { get; set; }
 }

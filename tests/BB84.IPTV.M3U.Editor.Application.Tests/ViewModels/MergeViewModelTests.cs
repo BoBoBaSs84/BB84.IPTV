@@ -29,6 +29,11 @@ public sealed class MergeViewModelTests
 		new PlaylistSummaryResponse { Id = 3, Name = "Third", EntryCount = 0 }
 	];
 
+	/// <summary>
+	/// The order the sources have after the second one was moved up.
+	/// </summary>
+	private static readonly int[] SecondThenFirst = [2, 1];
+
 	private readonly MergeViewModel _sut;
 
 	public MergeViewModelTests()
@@ -121,7 +126,7 @@ public sealed class MergeViewModelTests
 
 		_mergeServiceMock.Verify(x => x.PreviewAsync(
 			It.Is<MergeRequest>(request
-				=> request.PlaylistIds.SequenceEqual(new[] { 2, 1 })
+				=> request.PlaylistIds.SequenceEqual(SecondThenFirst)
 				&& request.DuplicateMode == MergeDuplicateMode.ByTvgIdOrUrl
 				&& request.DuplicateResolution == MergeDuplicateResolution.KeepLast),
 			It.IsAny<CancellationToken>()), Times.Once);

@@ -160,6 +160,24 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Combinar lista de reproducción</value>
   </data>
+  <data name="LogoCacheCleared" xml:space="preserve">
+    <value>{0} logotipos en caché eliminados.</value>
+  </data>
+  <data name="LogoCacheDownloaded" xml:space="preserve">
+    <value>{0} logotipos descargados.</value>
+  </data>
+  <data name="LogoCacheFailed" xml:space="preserve">
+    <value>La caché de logotipos ha fallado.</value>
+  </data>
+  <data name="LogoCacheProgress" xml:space="preserve">
+    <value>Descargando logotipos: {0} de {1}.</value>
+  </data>
+  <data name="LogoCacheStatus" xml:space="preserve">
+    <value>{0} de {1} logotipos en caché.</value>
+  </data>
+  <data name="LogoCacheMissing" xml:space="preserve">
+    <value>{0} faltan</value>
+  </data>
   <data name="MergeCompleted" xml:space="preserve">
     <value>Lista de reproducción &apos;{0}&apos; creada.</value>
   </data>

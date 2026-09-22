@@ -32,6 +32,11 @@ internal static class ApplicationPaths
 	internal static string SettingsFilePath { get; } = Path.Combine(DataDirectory, $"{AssemblyInformation.Product}.ini");
 
 	/// <summary>
+	/// The directory that holds the cached channel logos, one folder per iptv-org channel.
+	/// </summary>
+	internal static string LogoDirectory { get; } = Path.Combine(DataDirectory, "logos");
+
+	/// <summary>
 	/// The directory that holds the log files.
 	/// </summary>
 	internal static string LogDirectory { get; } = Path.Combine(DataDirectory, "logs");

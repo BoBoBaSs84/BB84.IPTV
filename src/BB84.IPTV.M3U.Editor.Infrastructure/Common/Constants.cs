@@ -16,6 +16,11 @@ public static class Constants
 	public const string HttpClientName = "BB84.IPTV.HttpClient";
 
 	/// <summary>
+	/// The name of the client used to download files from any host, e.g. the channel logos.
+	/// </summary>
+	public const string DownloadClientName = "BB84.IPTV.DownloadClient";
+
+	/// <summary>
 	/// The media type to be used in HTTP requests and responses.
 	/// </summary>
 	public const string HttpClientMediaType = "application/json";

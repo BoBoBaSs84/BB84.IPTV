@@ -5,6 +5,7 @@
 						 xmlns:m="using:BB84.IPTV.M3U.Editor.Markup"
 						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
 						 xmlns:domain="using:BB84.IPTV.M3U.Editor.Domain.Enumerators"
+						 xmlns:conv="using:BB84.IPTV.M3U.Editor.Converters"
 						 xmlns:models="using:BB84.IPTV.M3U.Editor.Domain.Abstractions.Models"
 						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
 						 mc:Ignorable="d"
@@ -82,6 +83,20 @@
 									SelectedItem="{Binding SelectedEntry}">
 					<!-- Sorting is off, the row order is the playlist order. -->
 					<DataGrid.Columns>
+						<!-- Only cached logos are shown, a missing one stays empty. -->
+						<DataGridTemplateColumn Header="Logo"
+																		Width="56"
+																		IsReadOnly="True">
+							<DataGridTemplateColumn.CellTemplate>
+								<DataTemplate x:DataType="models:IEntry">
+									<Image Source="{Binding Metadata.TvgLogo, Converter={x:Static conv:LogoImageConverter.Instance}}"
+												 Height="32"
+												 Width="48"
+												 Stretch="Uniform"
+												 Margin="2" />
+								</DataTemplate>
+							</DataGridTemplateColumn.CellTemplate>
+						</DataGridTemplateColumn>
 						<DataGridTextColumn x:DataType="models:IEntry"
 																Header="Title"
 																Binding="{Binding Title}"

@@ -20,6 +20,7 @@ using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Extensions;
+using BB84.IPTV.M3U.Editor.Services;
 using BB84.IPTV.M3U.Editor.Views;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -93,6 +94,7 @@ public partial class App : AvaloniaApp
 		ApplyLanguage(_host.Services.GetRequiredService<ApplicationSettings>().General.Language);
 
 		await MigrateDatabaseAsync().ConfigureAwait(true);
+		await LoadLogoCacheAsync().ConfigureAwait(true);
 		await ShowPlaylistsAsync().ConfigureAwait(true);
 
 		MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
@@ -113,6 +115,25 @@ public partial class App : AvaloniaApp
 			// The app still starts, the database view can be used to create the database again.
 			_loggerService!.Log(LogError, RESX.DatabaseMigrationFailed, ex);
 			_eventService!.Publish(new ErrorOccuredEvent(RESX.DatabaseMigrationFailed, ex));
+		}
+	}
+
+	/// <summary>
+	/// Reads which logos are cached, so the views show them without asking the network.
+	/// </summary>
+	private async Task LoadLogoCacheAsync()
+	{
+		LogoImageService logoImageService = _host!.Services.GetRequiredService<LogoImageService>();
+		LogoImageService.Current = logoImageService;
+
+		try
+		{
+			await logoImageService.RefreshAsync().ConfigureAwait(true);
+		}
+		catch (Exception ex)
+		{
+			// The logos are a convenience, the application runs without them.
+			_loggerService!.Log(LogError, ex.Message, ex);
 		}
 	}
 

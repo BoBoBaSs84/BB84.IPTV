@@ -42,5 +42,5 @@ public sealed class MergeGroupMappingViewModel : ViewModelBase
 	/// Indicates whether the group title is renamed.
 	/// </summary>
 	public bool IsMapped
-		=> !string.Equals(SourceGroup, TargetGroup, StringComparison.CurrentCulture);
+		=> !string.Equals(SourceGroup, TargetGroup, StringComparison.Ordinal);
 }
