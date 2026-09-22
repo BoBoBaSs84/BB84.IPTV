@@ -11,7 +11,7 @@
 						 x:DataType="vm:DatabaseViewModel">
 	<Grid Margin="8"
 				ColumnDefinitions="*,*"
-				RowDefinitions="*,Auto">
+				RowDefinitions="*,Auto,Auto">
 		<HeaderedContentControl Grid.Row="0"
 														Grid.Column="0"
 														Theme="{StaticResource GroupBox}"
@@ -85,6 +85,39 @@
 										 Maximum="{Binding ImportProgressMaximum}"
 										 Value="{Binding ImportProgress}" />
 				<TextBlock Text="{Binding ImportStatusMessage}"
+									 Margin="4" />
+			</StackPanel>
+		</HeaderedContentControl>
+		<!-- The logo cache: the files a playlist is shown and exported with. -->
+		<HeaderedContentControl Grid.Row="2"
+														Grid.ColumnSpan="2"
+														Theme="{StaticResource GroupBox}"
+														Header="{x:Static p:Resources.DatabaseControl_LogoCacheGroupBox_Header}"
+														Margin="4">
+			<StackPanel Margin="8">
+				<StackPanel Orientation="Horizontal"
+										Spacing="4"
+										Margin="4">
+					<Button Content="{x:Static p:Resources.DatabaseControl_DownloadLogosButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.DatabaseControl_DownloadLogosButton_ToolTip}"
+									Command="{Binding CacheLogosCommand}" />
+					<Button Content="{x:Static p:Resources.DatabaseControl_CancelLogoCacheButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.DatabaseControl_CancelLogoCacheButton_ToolTip}"
+									Command="{Binding CancelLogoCacheCommand}" />
+					<Button Content="{x:Static p:Resources.DatabaseControl_ClearLogoCacheButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.DatabaseControl_ClearLogoCacheButton_ToolTip}"
+									Command="{Binding ClearLogoCacheCommand}" />
+					<TextBlock Text="{Binding LogoCacheMissingMessage}"
+										 Foreground="#888"
+										 VerticalAlignment="Center"
+										 Margin="8,0,0,0" />
+				</StackPanel>
+				<ProgressBar Height="22"
+										 Margin="4"
+										 Minimum="0"
+										 Maximum="100"
+										 Value="{Binding LogoProgress}" />
+				<TextBlock Text="{Binding LogoStatusMessage}"
 									 Margin="4" />
 			</StackPanel>
 		</HeaderedContentControl>

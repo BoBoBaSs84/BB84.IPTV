@@ -160,6 +160,24 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Wiedergabeliste zusammenführen</value>
   </data>
+  <data name="LogoCacheCleared" xml:space="preserve">
+    <value>{0} zwischengespeicherte Logos gelöscht.</value>
+  </data>
+  <data name="LogoCacheDownloaded" xml:space="preserve">
+    <value>{0} Logos heruntergeladen.</value>
+  </data>
+  <data name="LogoCacheFailed" xml:space="preserve">
+    <value>Der Logo-Zwischenspeicher ist fehlgeschlagen.</value>
+  </data>
+  <data name="LogoCacheProgress" xml:space="preserve">
+    <value>Logos werden heruntergeladen: {0} von {1}.</value>
+  </data>
+  <data name="LogoCacheStatus" xml:space="preserve">
+    <value>{0} von {1} Logos zwischengespeichert.</value>
+  </data>
+  <data name="LogoCacheMissing" xml:space="preserve">
+    <value>{0} fehlen</value>
+  </data>
   <data name="MergeCompleted" xml:space="preserve">
     <value>Wiedergabeliste &apos;{0}&apos; erstellt.</value>
   </data>

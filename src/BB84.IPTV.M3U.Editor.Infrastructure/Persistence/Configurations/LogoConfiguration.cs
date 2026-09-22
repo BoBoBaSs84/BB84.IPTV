@@ -22,6 +22,10 @@ internal sealed class LogoConfiguration : ConfigurationBase<LogoEntity>
 		builder.HasIndex(i => i.Feed)
 			.IsUnique(false);
 
+		// The export looks a cached logo up by the URL an entry already carries.
+		builder.HasIndex(i => i.Url)
+			.IsUnique(false);
+
 		builder.Property(p=>p.Tags)
 			.HasConversion<StringCollectionConverter>()
 			.IsRequired(false);

@@ -22,6 +22,6 @@ public class DependencyInjectionInstallerTests
 			.AddSingleton<ApplicationSettings>()
 			.RegisterInfrastructureServices(hostEnvironmentMock.Object);
 
-		Assert.HasCount(38, services);
+		Assert.HasCount(42, services);
 	}
 }

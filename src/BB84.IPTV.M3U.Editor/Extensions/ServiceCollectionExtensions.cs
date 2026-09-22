@@ -43,6 +43,7 @@ internal static class ServiceCollectionExtensions
 	internal static IServiceCollection RegisterServices(this IServiceCollection services)
 	{
 		services.AddSingleton<IFileDialogService, FileDialogService>();
+		services.AddSingleton<LogoImageService>();
 		services.AddTransient<IUserService, UserService>();
 		services.AddSingleton<INotificationService, NotificationService>();
 

@@ -178,6 +178,60 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} cached logos deleted..
+        /// </summary>
+        internal static string LogoCacheCleared {
+            get {
+                return ResourceManager.GetString("LogoCacheCleared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} logos downloaded..
+        /// </summary>
+        internal static string LogoCacheDownloaded {
+            get {
+                return ResourceManager.GetString("LogoCacheDownloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The logo cache failed..
+        /// </summary>
+        internal static string LogoCacheFailed {
+            get {
+                return ResourceManager.GetString("LogoCacheFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading logos: {0} of {1}..
+        /// </summary>
+        internal static string LogoCacheProgress {
+            get {
+                return ResourceManager.GetString("LogoCacheProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1} logos cached..
+        /// </summary>
+        internal static string LogoCacheStatus {
+            get {
+                return ResourceManager.GetString("LogoCacheStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} missing.
+        /// </summary>
+        internal static string LogoCacheMissing {
+            get {
+                return ResourceManager.GetString("LogoCacheMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Playlist &apos;{0}&apos; created..
         /// </summary>
         internal static string MergeCompleted {

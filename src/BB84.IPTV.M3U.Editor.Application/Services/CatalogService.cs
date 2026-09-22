@@ -10,6 +10,7 @@ using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persistence.Repositories.Base;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -218,7 +219,7 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 	private static CatalogChannelResponse ToResponse(ChannelEntity channel, IEnumerable<FeedEntity> feeds, IEnumerable<StreamEntity> streams, IEnumerable<LogoEntity> logos)
 	{
 		StreamEntity? stream = SelectStream(streams);
-		LogoEntity? logo = SelectLogo(logos, stream?.Feed);
+		LogoEntity? logo = LogoSelector.Select(logos, stream?.Feed);
 
 		return new CatalogChannelResponse
 		{
@@ -243,14 +244,6 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 			.OrderByDescending(stream => GetResolution(stream.Quality))
 			.ThenBy(stream => stream.Feed is null ? 0 : 1)
 			.FirstOrDefault();
-
-	/// <summary>
-	/// Picks the logo of the feed of the selected stream, otherwise the logo of the channel itself.
-	/// </summary>
-	private static LogoEntity? SelectLogo(IEnumerable<LogoEntity> logos, string? feed)
-		=> logos.FirstOrDefault(logo => feed is not null && feed.Equals(logo.Feed, StringComparison.OrdinalIgnoreCase))
-			?? logos.FirstOrDefault(logo => logo.Feed is null)
-			?? logos.FirstOrDefault();
 
 	private static int GetResolution(string? quality)
 	{

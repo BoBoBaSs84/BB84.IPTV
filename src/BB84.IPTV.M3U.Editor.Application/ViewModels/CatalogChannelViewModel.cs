@@ -63,6 +63,12 @@ public sealed class CatalogChannelViewModel(CatalogChannelResponse channel) : Vi
 		=> Channel.StreamUrl ?? string.Empty;
 
 	/// <summary>
+	/// Gets the logo URL, which the view turns into the cached image, empty if the catalog knows none.
+	/// </summary>
+	public string? LogoUrl
+		=> Channel.LogoUrl;
+
+	/// <summary>
 	/// Indicates whether the channel is marked as NSFW.
 	/// </summary>
 	public bool IsNsfw

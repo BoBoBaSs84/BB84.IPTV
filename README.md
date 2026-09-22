@@ -96,13 +96,13 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 **Done when:** merging produces a new playlist and never modifies the sources.
 
-### Phase 6 – Local logo cache
+### Phase 6 – Local logo cache (done)
 
-- `ILogoService` downloads `LogoEntity.Url` to `<app data>/logos/<channel>/<file>` and stores the local path plus a hash/ETag in the database.
-- Picks the best logo per channel from tags, size and format.
-- Bulk download with progress (`ProgressChangedEvent`), cancellable and resumable.
-- M3U export writes `tvg-logo` as a local path (absolute or relative, configurable).
-- The UI shows cached logos only; missing logos never trigger network calls at playlist load.
+- `ILogoService` downloads `LogoEntity.Url` to `<app data>/logos/<channel>/<file>` and stores the local path, the ETag, a content hash, the size and the download time in the database.
+- `LogoSelector` picks one logo per channel: the one of the feed, then the one without special tags, then the format that displays best, then the larger image.
+- Bulk download from the `Logo Cache` section of the Database screen, with progress, Cancel and Clear. Logos are downloaded in batches (`Logo.MaxParallelDownloads`, four by default, at most 16), a run skips what is already on disk, so it is resumable, and asks with the ETag when refreshing.
+- M3U export writes `tvg-logo` as a local path, absolute or relative (`Logo` settings section); the stored playlist keeps its URLs.
+- Catalog list and playlist editor show a logo column that reads the cache only, never the network. SVG renders through `Svg.Controls.Skia.Avalonia`, WebP through Skia.
 
 **Done when:** loading and displaying a playlist works offline with all logos shown, including SVG and WebP.
 
