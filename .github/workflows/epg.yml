@@ -5,6 +5,18 @@ on:
     - cron: "0 0 * * 0"
   workflow_dispatch:
 
+# The branch is force-pushed, so two runs must not overlap.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  EPG_BRANCH: epg
+
 jobs:
   update-epg:
     runs-on: ubuntu-latest
@@ -23,14 +35,41 @@ jobs:
         run: |
           gzip -c ./misc/epg-de.xml > ./misc/epg-de.xml.gz
 
-      - name: Commit the changes to the public repository
+      - name: Commit the changes to the EPG branch
+        id: commit
         run: |
           git config --local user.name "BoBoBaSs84"
           git config --local user.email "73112377+BoBoBaSs84@users.noreply.github.com"
-          git add .
+          git add ./misc/epg-de.xml ./misc/epg-de.xml.gz
+
           if git diff --cached --quiet; then
             echo "No changes to commit."
-          else
-            git commit -m "chore: updated epg files" -m "Co-Authored-By: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
-            git push
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+
+          # The branch starts at the commit that was checked out, so it holds one commit on top of it.
+          git checkout -B "$EPG_BRANCH"
+          git commit -m "chore: updated epg files" -m "Co-Authored-By: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          git push --force origin "$EPG_BRANCH"
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open the pull request to the main branch
+        if: steps.commit.outputs.committed == 'true'
+        env:
+          # A personal access token lets the pull request start the other workflows; without it the
+          # default token opens the pull request, but no checks run on it.
+          GH_TOKEN: ${{ secrets.EPG_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          number=$(gh pr list --head "$EPG_BRANCH" --base main --state open --json number --jq '.[0].number // empty')
+
+          if [ -n "$number" ]; then
+            echo "The pull request #$number already exists and now holds the new files."
+            exit 0
+          fi
+
+          gh pr create \
+            --head "$EPG_BRANCH" \
+            --base main \
+            --title "chore: updated epg files" \
+            --body "The weekly EPG snapshot from iptv-epg.org, refreshed by the EPG workflow. Only \`misc/epg-de.xml\` and \`misc/epg-de.xml.gz\` change, they are not part of the application."
