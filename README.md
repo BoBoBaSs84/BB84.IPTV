@@ -108,7 +108,7 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 **Done when:** loading and displaying a playlist works offline with all logos shown, including SVG and WebP.
 
-### Phase 7 – `channels.xml` export
+### Phase 7 – `channels.xml` export (done)
 
 - Output format as used by iptv-org/epg:
   ```xml

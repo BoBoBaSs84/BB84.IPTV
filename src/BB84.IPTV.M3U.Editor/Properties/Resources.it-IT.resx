@@ -177,6 +177,51 @@
   <data name="DatabaseControl.ClearLogoCacheButton.ToolTip" xml:space="preserve">
     <value>Elimina tutti i loghi nella cache</value>
   </data>
+  <data name="GuideControl.PlaylistGroupBox.Header" xml:space="preserve">
+    <value>Playlist</value>
+  </data>
+  <data name="GuideControl.PlaylistComboBox.Placeholder" xml:space="preserve">
+    <value>Playlist</value>
+  </data>
+  <data name="GuideControl.SaveMappingsButton.Content" xml:space="preserve">
+    <value>Salva mappature</value>
+  </data>
+  <data name="GuideControl.SaveMappingsButton.ToolTip" xml:space="preserve">
+    <value>Conserva le mappature di questa playlist per la prossima volta</value>
+  </data>
+  <data name="GuideControl.ExportButton.Content" xml:space="preserve">
+    <value>Esporta channels.xml</value>
+  </data>
+  <data name="GuideControl.ExportButton.ToolTip" xml:space="preserve">
+    <value>Scrivere il channels.xml letto dal grabber EPG di iptv-org</value>
+  </data>
+  <data name="GuideControl.MappingGroupBox.Header" xml:space="preserve">
+    <value>Voci</value>
+  </data>
+  <data name="GuideControl.TitleColumn.Header" xml:space="preserve">
+    <value>Titolo</value>
+  </data>
+  <data name="GuideControl.SiteColumn.Header" xml:space="preserve">
+    <value>Sito</value>
+  </data>
+  <data name="GuideControl.SiteIdColumn.Header" xml:space="preserve">
+    <value>ID del sito</value>
+  </data>
+  <data name="GuideControl.LangColumn.Header" xml:space="preserve">
+    <value>Lingua</value>
+  </data>
+  <data name="GuideControl.XmltvIdColumn.Header" xml:space="preserve">
+    <value>ID XMLTV</value>
+  </data>
+  <data name="GuideControl.DisplayNameColumn.Header" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="GuideControl.CompleteColumn.Header" xml:space="preserve">
+    <value>Completo</value>
+  </data>
+  <data name="MainWindow.GuideMenuItem.Header" xml:space="preserve">
+    <value>Esporta _guida</value>
+  </data>
   <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
     <value>Importa avanzamento</value>
   </data>

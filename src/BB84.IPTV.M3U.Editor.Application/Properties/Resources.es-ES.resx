@@ -160,6 +160,21 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Combinar lista de reproducción</value>
   </data>
+  <data name="GuideExportTitle" xml:space="preserve">
+    <value>Exportar channels.xml</value>
+  </data>
+  <data name="GuideExported" xml:space="preserve">
+    <value>{0} canales escritos en &apos;{1}&apos;.</value>
+  </data>
+  <data name="GuideMappingStatus" xml:space="preserve">
+    <value>{0} de {1} entradas se pueden obtener.</value>
+  </data>
+  <data name="GuideMappingsSaved" xml:space="preserve">
+    <value>{0} asignaciones guardadas.</value>
+  </data>
+  <data name="GuideOperationFailed" xml:space="preserve">
+    <value>La operación de la guía ha fallado.</value>
+  </data>
   <data name="LogoCacheCleared" xml:space="preserve">
     <value>{0} logotipos en caché eliminados.</value>
   </data>

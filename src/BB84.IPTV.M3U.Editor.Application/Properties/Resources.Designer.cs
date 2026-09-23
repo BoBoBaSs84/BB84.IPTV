@@ -178,6 +178,51 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export channels.xml.
+        /// </summary>
+        internal static string GuideExportTitle {
+            get {
+                return ResourceManager.GetString("GuideExportTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} channels written to &apos;{1}&apos;..
+        /// </summary>
+        internal static string GuideExported {
+            get {
+                return ResourceManager.GetString("GuideExported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1} entries can be grabbed..
+        /// </summary>
+        internal static string GuideMappingStatus {
+            get {
+                return ResourceManager.GetString("GuideMappingStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} mappings saved..
+        /// </summary>
+        internal static string GuideMappingsSaved {
+            get {
+                return ResourceManager.GetString("GuideMappingsSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The guide operation failed..
+        /// </summary>
+        internal static string GuideOperationFailed {
+            get {
+                return ResourceManager.GetString("GuideOperationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} cached logos deleted..
         /// </summary>
         internal static string LogoCacheCleared {

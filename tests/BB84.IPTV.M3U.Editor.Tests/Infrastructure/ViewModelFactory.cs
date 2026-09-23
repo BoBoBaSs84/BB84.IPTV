@@ -131,6 +131,29 @@ internal static class ViewModelFactory
 	}
 
 	/// <summary>
+	/// Creates the guide screen with two playlists and one mapped and one unmapped entry.
+	/// </summary>
+	public static GuideViewModel CreateGuide()
+	{
+		Mock<IPlaylistService> playlistServiceMock = new();
+		SetupPlaylistService(playlistServiceMock);
+
+		Mock<IGuideService> guideServiceMock = new();
+		guideServiceMock.Setup(x => x.GetMappingsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync(() =>
+			[
+				new GuideMappingResponse { EntryKey = "DasErste.de", Title = "Das Erste", Site = "example.com", SiteId = "100", Lang = "de", XmltvId = "DasErste.de", DisplayName = "Das Erste" },
+				new GuideMappingResponse { EntryKey = "rtsp://192.168.12.1:554", Title = "Local camera" }
+			]);
+
+		return new GuideViewModel(
+			guideServiceMock.Object,
+			playlistServiceMock.Object,
+			new Mock<IFileDialogService>().Object,
+			new Mock<IEventService>().Object);
+	}
+
+	/// <summary>
 	/// Lets the playlist service report two stored playlists and load one with two entries.
 	/// </summary>
 	private static void SetupPlaylistService(Mock<IPlaylistService> playlistServiceMock)

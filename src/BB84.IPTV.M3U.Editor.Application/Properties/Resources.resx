@@ -159,6 +159,21 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Merge Playlist</value>
   </data>
+  <data name="GuideExportTitle" xml:space="preserve">
+    <value>Export channels.xml</value>
+  </data>
+  <data name="GuideExported" xml:space="preserve">
+    <value>{0} channels written to &apos;{1}&apos;.</value>
+  </data>
+  <data name="GuideMappingStatus" xml:space="preserve">
+    <value>{0} of {1} entries can be grabbed.</value>
+  </data>
+  <data name="GuideMappingsSaved" xml:space="preserve">
+    <value>{0} mappings saved.</value>
+  </data>
+  <data name="GuideOperationFailed" xml:space="preserve">
+    <value>The guide operation failed.</value>
+  </data>
   <data name="LogoCacheCleared" xml:space="preserve">
     <value>{0} cached logos deleted.</value>
   </data>

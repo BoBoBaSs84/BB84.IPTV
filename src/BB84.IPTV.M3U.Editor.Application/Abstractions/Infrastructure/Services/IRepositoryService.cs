@@ -38,6 +38,11 @@ public interface IRepositoryService
 	IGuideRepository Guides { get; }
 
 	/// <summary>
+	/// The repository instance for managing the guide mappings of the playlists.
+	/// </summary>
+	IGuideMappingRepository GuideMappings { get; }
+
+	/// <summary>
 	/// The repository instance for managing languages.
 	/// </summary>
 	ILanguageRepository Languages { get; }

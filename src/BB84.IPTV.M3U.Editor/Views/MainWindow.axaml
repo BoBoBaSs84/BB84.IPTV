@@ -2,6 +2,7 @@
 				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
 				xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
 				mc:Ignorable="d"
 				d:DesignWidth="1280"
@@ -108,6 +109,12 @@
 									Click="CatalogMenuItem_Click">
 					<MenuItem.Icon>
 						<Image Source="/Resources/tv.ico" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="{x:Static p:Resources.MainWindow_GuideMenuItem_Header}"
+									Click="GuideMenuItem_Click">
+					<MenuItem.Icon>
+						<Image Source="/Resources/document_view.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="_Database"

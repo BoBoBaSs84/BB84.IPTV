@@ -39,6 +39,8 @@ internal static class ServiceCollectionExtensions
 		services.AddSingleton<ICatalogService, CatalogService>();
 		services.AddSingleton<ICustomChannelService, CustomChannelService>();
 		services.AddSingleton<IDatabaseService, DatabaseService>();
+		services.AddSingleton<IChannelsXmlSerializer, ChannelsXmlSerializer>();
+		services.AddSingleton<IGuideService, GuideService>();
 		services.AddSingleton<ILogoService, LogoService>();
 		services.AddSingleton<IMergeService, MergeService>();
 		services.AddSingleton<INavigationService, NavigationService>();
@@ -62,6 +64,7 @@ internal static class ServiceCollectionExtensions
 		services.AddSingleton<AboutViewModel>();
 		services.AddSingleton<CatalogViewModel>();
 		services.AddSingleton<DatabaseViewModel>();
+		services.AddSingleton<GuideViewModel>();
 		services.AddSingleton<MainViewModel>();
 		services.AddSingleton<MergeViewModel>();
 		services.AddSingleton<PlaylistViewModel>();

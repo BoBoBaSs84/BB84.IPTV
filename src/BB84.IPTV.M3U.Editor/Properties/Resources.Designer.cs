@@ -241,6 +241,141 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Playlist.
+        /// </summary>
+        public static string GuideControl_PlaylistGroupBox_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.PlaylistGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist.
+        /// </summary>
+        public static string GuideControl_PlaylistComboBox_Placeholder {
+            get {
+                return ResourceManager.GetString("GuideControl.PlaylistComboBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Mappings.
+        /// </summary>
+        public static string GuideControl_SaveMappingsButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.SaveMappingsButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep the mappings of this playlist for the next time.
+        /// </summary>
+        public static string GuideControl_SaveMappingsButton_ToolTip {
+            get {
+                return ResourceManager.GetString("GuideControl.SaveMappingsButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export channels.xml.
+        /// </summary>
+        public static string GuideControl_ExportButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.ExportButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write the channels.xml the iptv-org EPG grabber reads.
+        /// </summary>
+        public static string GuideControl_ExportButton_ToolTip {
+            get {
+                return ResourceManager.GetString("GuideControl.ExportButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entries.
+        /// </summary>
+        public static string GuideControl_MappingGroupBox_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.MappingGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string GuideControl_TitleColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.TitleColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site.
+        /// </summary>
+        public static string GuideControl_SiteColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.SiteColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site ID.
+        /// </summary>
+        public static string GuideControl_SiteIdColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.SiteIdColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lang.
+        /// </summary>
+        public static string GuideControl_LangColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.LangColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XMLTV ID.
+        /// </summary>
+        public static string GuideControl_XmltvIdColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.XmltvIdColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string GuideControl_DisplayNameColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.DisplayNameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete.
+        /// </summary>
+        public static string GuideControl_CompleteColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.CompleteColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Guide Export.
+        /// </summary>
+        public static string MainWindow_GuideMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.GuideMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import Progress.
         /// </summary>
         public static string DatabaseControl_ImportProgressGroupBox_Header {
