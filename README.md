@@ -1,5 +1,7 @@
 # BB84.IPTV
 
+[![Build](https://github.com/BoBoBaSs84/BB84.IPTV/actions/workflows/build.yml/badge.svg)](https://github.com/BoBoBaSs84/BB84.IPTV/actions/workflows/build.yml)
+
 A desktop application to view, create, edit and merge IPTV playlists (M3U). Channel data comes from the public [iptv-org API](https://github.com/iptv-org/api), is stored in a local SQLite database and can be combined with your own custom channels. The app can also generate a `channels.xml` for [iptv-org/epg](https://github.com/iptv-org/epg#usage), so that your custom channel list gets matching program guide data.
 
 > **Status:** work in progress. The current version is a cross-platform AvaloniaUI app that imports the iptv-org data into SQLite, stores playlists in the database, edits them (import/export as M3U) and fills them from the channel catalog or from custom channels. This document describes where the project is heading.
@@ -15,11 +17,11 @@ A desktop application to view, create, edit and merge IPTV playlists (M3U). Chan
 
 ## Data sources
 
-| Source                                                                     | Used for                                                                                                                         |
-| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| [`https://iptv-org.github.io/api/*.json`](https://github.com/iptv-org/api) | Channels, feeds, streams, guides, logos, categories, languages, countries. Already imported by `WebService` / `DatabaseService`. |
-| [iptv-org/epg](https://github.com/iptv-org/epg#usage)                      | Format of `channels.xml`.                                                                                                        |
-| `misc/epg-de.xml(.gz)`                                                     | German EPG snapshot, refreshed weekly by `.github/workflows/epg.yml`. Not part of the app.                                       |
+| Source                                                                     | Used for                                                                                                                                   |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`https://iptv-org.github.io/api/*.json`](https://github.com/iptv-org/api) | Channels, feeds, streams, guides, logos, categories, languages, countries. Already imported by `WebService` / `DatabaseService`.           |
+| [iptv-org/epg](https://github.com/iptv-org/epg#usage)                      | Format of `channels.xml`.                                                                                                                  |
+| `misc/epg-de.xml(.gz)`                                                     | German EPG snapshot, refreshed weekly by `.github/workflows/epg.yml` on the `epg` branch, which opens a pull request. Not part of the app. |
 
 ## Architecture
 
@@ -125,7 +127,7 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 - Settings for data paths and logo policy.
 - Consistent error, warning and progress notifications.
-- CI workflow for build and test.
+- CI workflow for build and test (done): `.github/workflows/build.yml` builds the solution and runs the tests on Linux and Windows for every push to `main` and every pull request.
 - Update `CLAUDE.md` to the final architecture.
 
 ## Data model (planned additions)
