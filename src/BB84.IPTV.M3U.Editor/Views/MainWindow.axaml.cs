@@ -80,6 +80,9 @@ public partial class MainWindow : Window
 	private void CatalogMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<CatalogViewModel>();
 
+	private void GuideMenuItem_Click(object? sender, RoutedEventArgs e)
+		=> _navigationService.NavigateTo<GuideViewModel>();
+
 	private void MergeMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<MergeViewModel>();
 

@@ -14,6 +14,6 @@ public class DependencyInjectionInstallerTests
 
 		services.RegisterApplicationServices();
 
-		Assert.HasCount(20, services);
+		Assert.HasCount(23, services);
 	}
 }

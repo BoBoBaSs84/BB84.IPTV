@@ -160,6 +160,21 @@
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Wiedergabeliste zusammenführen</value>
   </data>
+  <data name="GuideExportTitle" xml:space="preserve">
+    <value>channels.xml exportieren</value>
+  </data>
+  <data name="GuideExported" xml:space="preserve">
+    <value>{0} Sender nach &apos;{1}&apos; geschrieben.</value>
+  </data>
+  <data name="GuideMappingStatus" xml:space="preserve">
+    <value>{0} von {1} Einträgen können abgerufen werden.</value>
+  </data>
+  <data name="GuideMappingsSaved" xml:space="preserve">
+    <value>{0} Zuordnungen gespeichert.</value>
+  </data>
+  <data name="GuideOperationFailed" xml:space="preserve">
+    <value>Der Vorgang am Programmführer ist fehlgeschlagen.</value>
+  </data>
   <data name="LogoCacheCleared" xml:space="preserve">
     <value>{0} zwischengespeicherte Logos gelöscht.</value>
   </data>

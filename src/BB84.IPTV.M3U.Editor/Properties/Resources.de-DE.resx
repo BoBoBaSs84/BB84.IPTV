@@ -177,6 +177,51 @@
   <data name="DatabaseControl.ClearLogoCacheButton.ToolTip" xml:space="preserve">
     <value>Alle zwischengespeicherten Logos löschen</value>
   </data>
+  <data name="GuideControl.PlaylistGroupBox.Header" xml:space="preserve">
+    <value>Wiedergabeliste</value>
+  </data>
+  <data name="GuideControl.PlaylistComboBox.Placeholder" xml:space="preserve">
+    <value>Wiedergabeliste</value>
+  </data>
+  <data name="GuideControl.SaveMappingsButton.Content" xml:space="preserve">
+    <value>Zuordnungen speichern</value>
+  </data>
+  <data name="GuideControl.SaveMappingsButton.ToolTip" xml:space="preserve">
+    <value>Die Zuordnungen dieser Wiedergabeliste für das nächste Mal behalten</value>
+  </data>
+  <data name="GuideControl.ExportButton.Content" xml:space="preserve">
+    <value>channels.xml exportieren</value>
+  </data>
+  <data name="GuideControl.ExportButton.ToolTip" xml:space="preserve">
+    <value>Die channels.xml schreiben, die der iptv-org-EPG-Grabber liest</value>
+  </data>
+  <data name="GuideControl.MappingGroupBox.Header" xml:space="preserve">
+    <value>Einträge</value>
+  </data>
+  <data name="GuideControl.TitleColumn.Header" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="GuideControl.SiteColumn.Header" xml:space="preserve">
+    <value>Seite</value>
+  </data>
+  <data name="GuideControl.SiteIdColumn.Header" xml:space="preserve">
+    <value>Seiten-ID</value>
+  </data>
+  <data name="GuideControl.LangColumn.Header" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="GuideControl.XmltvIdColumn.Header" xml:space="preserve">
+    <value>XMLTV-ID</value>
+  </data>
+  <data name="GuideControl.DisplayNameColumn.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="GuideControl.CompleteColumn.Header" xml:space="preserve">
+    <value>Vollständig</value>
+  </data>
+  <data name="MainWindow.GuideMenuItem.Header" xml:space="preserve">
+    <value>_Programmführer-Export</value>
+  </data>
   <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
     <value>Importfortschritt</value>
   </data>

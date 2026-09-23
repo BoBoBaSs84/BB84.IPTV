@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
+						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
+						 mc:Ignorable="d"
+						 d:DesignWidth="1200"
+						 d:DesignHeight="700"
+						 x:Class="BB84.IPTV.M3U.Editor.Controls.GuideControl"
+						 x:DataType="vm:GuideViewModel">
+	<DockPanel>
+		<!-- Playlist and commands -->
+		<HeaderedContentControl DockPanel.Dock="Top"
+														Theme="{StaticResource GroupBox}"
+														Header="{x:Static p:Resources.GuideControl_PlaylistGroupBox_Header}"
+														Margin="4">
+			<StackPanel Spacing="4">
+				<WrapPanel>
+					<ComboBox PlaceholderText="{x:Static p:Resources.GuideControl_PlaylistComboBox_Placeholder}"
+										Width="260"
+										Margin="4"
+										ItemsSource="{Binding Playlists}"
+										SelectedItem="{Binding SelectedPlaylist}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate x:DataType="vm:PlaylistItemViewModel">
+								<TextBlock Text="{Binding Name}" />
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+					<Button Content="{x:Static p:Resources.GuideControl_SaveMappingsButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.GuideControl_SaveMappingsButton_ToolTip}"
+									Margin="4"
+									Command="{Binding SaveCommand}" />
+					<Button Content="{x:Static p:Resources.GuideControl_ExportButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.GuideControl_ExportButton_ToolTip}"
+									Margin="4"
+									Command="{Binding ExportCommand}" />
+				</WrapPanel>
+				<TextBlock Text="{Binding StatusMessage}"
+									 Foreground="#888"
+									 Margin="4,0"
+									 TextWrapping="Wrap" />
+			</StackPanel>
+		</HeaderedContentControl>
+
+		<!-- Mapping of the entries -->
+		<HeaderedContentControl Theme="{StaticResource GroupBox}"
+														Header="{x:Static p:Resources.GuideControl_MappingGroupBox_Header}"
+														Margin="4">
+			<DataGrid x:Name="MappingDataGrid"
+								AutoGenerateColumns="False"
+								IsReadOnly="False"
+								CanUserSortColumns="False"
+								SelectionMode="Single"
+								GridLinesVisibility="All"
+								ItemsSource="{Binding Mappings}">
+				<DataGrid.Columns>
+					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+															Header="{x:Static p:Resources.GuideControl_TitleColumn_Header}"
+															Binding="{Binding Title}"
+															IsReadOnly="True"
+															Width="2*" />
+					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+															Header="{x:Static p:Resources.GuideControl_SiteColumn_Header}"
+															Binding="{Binding Site}"
+															Width="*" />
+					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+															Header="{x:Static p:Resources.GuideControl_SiteIdColumn_Header}"
+															Binding="{Binding SiteId}"
+															Width="*" />
+					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+															Header="{x:Static p:Resources.GuideControl_LangColumn_Header}"
+															Binding="{Binding Lang}"
+															Width="80" />
+					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+															Header="{x:Static p:Resources.GuideControl_XmltvIdColumn_Header}"
+															Binding="{Binding XmltvId}"
+															Width="*" />
+					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+															Header="{x:Static p:Resources.GuideControl_DisplayNameColumn_Header}"
+															Binding="{Binding DisplayName}"
+															Width="*" />
+					<DataGridCheckBoxColumn x:DataType="vm:GuideMappingViewModel"
+																	Header="{x:Static p:Resources.GuideControl_CompleteColumn_Header}"
+																	Binding="{Binding IsComplete}"
+																	IsReadOnly="True"
+																	Width="90" />
+				</DataGrid.Columns>
+			</DataGrid>
+		</HeaderedContentControl>
+	</DockPanel>
+</UserControl>

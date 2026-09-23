@@ -177,6 +177,51 @@
   <data name="DatabaseControl.ClearLogoCacheButton.ToolTip" xml:space="preserve">
     <value>Eliminar todos los logotipos en caché</value>
   </data>
+  <data name="GuideControl.PlaylistGroupBox.Header" xml:space="preserve">
+    <value>Lista de reproducción</value>
+  </data>
+  <data name="GuideControl.PlaylistComboBox.Placeholder" xml:space="preserve">
+    <value>Lista de reproducción</value>
+  </data>
+  <data name="GuideControl.SaveMappingsButton.Content" xml:space="preserve">
+    <value>Guardar asignaciones</value>
+  </data>
+  <data name="GuideControl.SaveMappingsButton.ToolTip" xml:space="preserve">
+    <value>Conservar las asignaciones de esta lista para la próxima vez</value>
+  </data>
+  <data name="GuideControl.ExportButton.Content" xml:space="preserve">
+    <value>Exportar channels.xml</value>
+  </data>
+  <data name="GuideControl.ExportButton.ToolTip" xml:space="preserve">
+    <value>Escribir el channels.xml que lee el grabber EPG de iptv-org</value>
+  </data>
+  <data name="GuideControl.MappingGroupBox.Header" xml:space="preserve">
+    <value>Entradas</value>
+  </data>
+  <data name="GuideControl.TitleColumn.Header" xml:space="preserve">
+    <value>Título</value>
+  </data>
+  <data name="GuideControl.SiteColumn.Header" xml:space="preserve">
+    <value>Sitio</value>
+  </data>
+  <data name="GuideControl.SiteIdColumn.Header" xml:space="preserve">
+    <value>ID del sitio</value>
+  </data>
+  <data name="GuideControl.LangColumn.Header" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="GuideControl.XmltvIdColumn.Header" xml:space="preserve">
+    <value>ID XMLTV</value>
+  </data>
+  <data name="GuideControl.DisplayNameColumn.Header" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="GuideControl.CompleteColumn.Header" xml:space="preserve">
+    <value>Completo</value>
+  </data>
+  <data name="MainWindow.GuideMenuItem.Header" xml:space="preserve">
+    <value>Exportar _guía</value>
+  </data>
   <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
     <value>Progreso de la importación</value>
   </data>

@@ -178,6 +178,51 @@
   <data name="DatabaseControl.ClearLogoCacheButton.ToolTip" xml:space="preserve">
     <value>Delete every cached logo</value>
   </data>
+  <data name="GuideControl.PlaylistGroupBox.Header" xml:space="preserve">
+    <value>Playlist</value>
+  </data>
+  <data name="GuideControl.PlaylistComboBox.Placeholder" xml:space="preserve">
+    <value>Playlist</value>
+  </data>
+  <data name="GuideControl.SaveMappingsButton.Content" xml:space="preserve">
+    <value>Save Mappings</value>
+  </data>
+  <data name="GuideControl.SaveMappingsButton.ToolTip" xml:space="preserve">
+    <value>Keep the mappings of this playlist for the next time</value>
+  </data>
+  <data name="GuideControl.ExportButton.Content" xml:space="preserve">
+    <value>Export channels.xml</value>
+  </data>
+  <data name="GuideControl.ExportButton.ToolTip" xml:space="preserve">
+    <value>Write the channels.xml the iptv-org EPG grabber reads</value>
+  </data>
+  <data name="GuideControl.MappingGroupBox.Header" xml:space="preserve">
+    <value>Entries</value>
+  </data>
+  <data name="GuideControl.TitleColumn.Header" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="GuideControl.SiteColumn.Header" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="GuideControl.SiteIdColumn.Header" xml:space="preserve">
+    <value>Site ID</value>
+  </data>
+  <data name="GuideControl.LangColumn.Header" xml:space="preserve">
+    <value>Lang</value>
+  </data>
+  <data name="GuideControl.XmltvIdColumn.Header" xml:space="preserve">
+    <value>XMLTV ID</value>
+  </data>
+  <data name="GuideControl.DisplayNameColumn.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="GuideControl.CompleteColumn.Header" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="MainWindow.GuideMenuItem.Header" xml:space="preserve">
+    <value>_Guide Export</value>
+  </data>
   <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
     <value>Import Progress</value>
   </data>

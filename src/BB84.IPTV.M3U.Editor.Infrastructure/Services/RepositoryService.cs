@@ -23,6 +23,7 @@ internal sealed class RepositoryService : IRepositoryService
 	private readonly Lazy<ICustomChannelRepository> _customChannelRepository;
 	private readonly Lazy<IFeedRepository> _feedRepository;
 	private readonly Lazy<IGuideRepository> _guideRepository;
+	private readonly Lazy<IGuideMappingRepository> _guideMappingRepository;
 	private readonly Lazy<ILanguageRepository> _languageRepository;
 	private readonly Lazy<ILogoRepository> _logoRepository;
 	private readonly Lazy<IPlaylistRepository> _playlistRepository;
@@ -42,6 +43,7 @@ internal sealed class RepositoryService : IRepositoryService
 		_customChannelRepository = new Lazy<ICustomChannelRepository>(() => new CustomChannelRepository(_context));
 		_feedRepository = new Lazy<IFeedRepository>(() => new FeedRepository(_context));
 		_guideRepository = new Lazy<IGuideRepository>(() => new GuideRepository(_context));
+		_guideMappingRepository = new Lazy<IGuideMappingRepository>(() => new GuideMappingRepository(_context));
 		_languageRepository = new Lazy<ILanguageRepository>(() => new LanguageRepository(_context));
 		_logoRepository = new Lazy<ILogoRepository>(() => new LogoRepository(_context));
 		_playlistRepository = new Lazy<IPlaylistRepository>(() => new PlaylistRepository(_context));
@@ -55,6 +57,7 @@ internal sealed class RepositoryService : IRepositoryService
 	public ICustomChannelRepository CustomChannels => _customChannelRepository.Value;
 	public IFeedRepository Feeds => _feedRepository.Value;
 	public IGuideRepository Guides => _guideRepository.Value;
+	public IGuideMappingRepository GuideMappings => _guideMappingRepository.Value;
 	public ILanguageRepository Languages => _languageRepository.Value;
 	public ILogoRepository Logos => _logoRepository.Value;
 	public IPlaylistRepository Playlists => _playlistRepository.Value;
