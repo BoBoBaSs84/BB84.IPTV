@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 
 using BB84.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persistence;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Infrastructure.Common;
+using BB84.IPTV.M3U.Editor.Infrastructure.Logging;
 using BB84.IPTV.M3U.Editor.Infrastructure.Persistence;
 using BB84.IPTV.M3U.Editor.Infrastructure.Services;
 
@@ -14,9 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
-using Serilog;
-using Serilog.Events;
 
 namespace BB84.IPTV.M3U.Editor.Infrastructure.Extensions;
 
@@ -115,8 +112,10 @@ internal static class ServiceCollectionExtensions
 
 			if (environment.IsProduction())
 			{
-				builder.SetMinimumLevel(settings.LogLevel);
-				builder.AddSerilog(CreateFileLogger(environment, pathService), dispose: true);
+				builder.AddProvider(new FileLoggerProvider(pathService, environment.ApplicationName, settings));
+
+				// The provider decides from the settings, so no rule may filter an entry before it.
+				builder.AddFilter<FileLoggerProvider>(null, LogLevel.Trace);
 			}
 		});
 
@@ -181,23 +180,4 @@ internal static class ServiceCollectionExtensions
 		}
 	}
 
-	/// <summary>
-	/// Creates a cross-platform logger that writes to daily rolling files in the application log directory.
-	/// </summary>
-	/// <remarks>
-	/// The minimum level is left at <see cref="LogEventLevel.Verbose"/>, filtering is done by the
-	/// <see cref="ILoggingBuilder"/> minimum level.
-	/// </remarks>
-	/// <param name="environment">The host environment instance to use.</param>
-	/// <param name="pathService">The service that provides the log directory.</param>
-	/// <returns>The configured Serilog logger.</returns>
-	private static Serilog.Core.Logger CreateFileLogger(IHostEnvironment environment, IPathService pathService)
-	{
-		string filePath = Path.Combine(pathService.LogDirectory, $"{environment.ApplicationName}-.log");
-
-		return new LoggerConfiguration()
-			.MinimumLevel.Verbose()
-			.WriteTo.File(filePath, formatProvider: CultureInfo.InvariantCulture, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7)
-			.CreateLogger();
-	}
 }

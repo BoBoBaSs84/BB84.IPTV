@@ -8,7 +8,9 @@
     <File Path="CODE_OF_CONDUCT.md" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
+    <File Path="dotnet-tools.json" />
     <File Path="LICENSE" />
+    <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/BB84.IPTV.M3U.Editor.Application/BB84.IPTV.M3U.Editor.Application.csproj" />
