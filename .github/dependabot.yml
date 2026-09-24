@@ -14,9 +14,9 @@ updates:
     assignees:
       - "BoBoBaSs84"
     groups:
-		  avalonia-dependencies:
-			  patterns:
-					- "Avalonia*"
+      avalonia-dependencies:
+        patterns:
+          - "Avalonia*"
       bb84-dependencies:
         patterns:
           - "BB84*"
