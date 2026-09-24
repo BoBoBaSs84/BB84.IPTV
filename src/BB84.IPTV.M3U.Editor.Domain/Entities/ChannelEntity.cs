@@ -71,18 +71,18 @@ public sealed class ChannelEntity : EntityBase
 	/// Gets or sets the owners of the channel, which is a collection of strings representing the individuals,
 	/// organizations, or entities that own or operate the channel.
 	/// </summary>
-	public ICollection<string> Owners { get; set; }
+	public ICollection<string> Owners { get; set; } = [];
 
 	/// <summary>
 	/// Gets or sets the alternative names of the channel, which is a collection of strings representing any
 	/// alternative names or aliases that the channel may be known by. This can include former names, nicknames,
 	/// or any other names that are associated with the channel.
 	/// </summary>
-	public ICollection<string> AltNames { get; set; }
+	public ICollection<string> AltNames { get; set; } = [];
 
 	/// <summary>
 	/// Gets or sets the categories of the channel, which is a collection of strings representing the genres, types,
 	/// subjects, or classifications that the channel belongs to.
 	/// </summary>
-	public ICollection<string> Categories { get; set; }
+	public ICollection<string> Categories { get; set; } = [];
 }

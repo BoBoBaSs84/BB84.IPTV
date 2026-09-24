@@ -6,8 +6,8 @@ public sealed class GuideEntity : EntityBase
 {
 	public string? Channel { get; set; }
 	public string? Feed { get; set; }
-	public string Site { get; set; }
-	public string SiteId { get; set; }
-	public string SiteName { get; set; }
-	public string Lang { get; set; }
+	public required string Site { get; set; }
+	public required string SiteId { get; set; }
+	public required string SiteName { get; set; }
+	public required string Lang { get; set; }
 }

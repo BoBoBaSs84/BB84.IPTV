@@ -38,9 +38,9 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	private int _importProgress;
 	private int _importProgressMaximum = 100;
 	private string _importStatusMessage = string.Empty;
-	private IAsyncActionCommand? _checkDatabaseCommand;
-	private IAsyncActionCommand? _createDatabaseCommand;
-	private IAsyncActionCommand? _importDatabaseCommand;
+	private AsyncActionCommand? _checkDatabaseCommand;
+	private AsyncActionCommand? _createDatabaseCommand;
+	private AsyncActionCommand? _importDatabaseCommand;
 	private AsyncActionCommand? _cacheLogosCommand;
 	private ActionCommand? _cancelLogoCacheCommand;
 	private AsyncActionCommand? _clearLogoCacheCommand;
