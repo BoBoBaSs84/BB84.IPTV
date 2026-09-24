@@ -34,8 +34,28 @@ public sealed class FeedEntity : EntityBase
 	/// </summary>
 	public required string Format { get; set; }
 
+	/// <summary>
+	/// Gets or sets the alternative names of the feed, which is a collection of strings representing
+	/// any other names the feed is known by.
+	/// </summary>
 	public ICollection<string> AltNames { get; set; } = [];
+
+	/// <summary>
+	/// Gets or sets the broadcasting area of the feed, which is a collection of codes in the form
+	/// <c>r/&lt;region_code&gt;</c>, <c>c/&lt;country_code&gt;</c>, <c>s/&lt;subdivision_code&gt;</c>
+	/// or <c>ct/&lt;city_code&gt;</c>.
+	/// </summary>
 	public ICollection<string> BroadcastArea { get; set; } = [];
+
+	/// <summary>
+	/// Gets or sets the timezones the feed is broadcast in, which is a collection of timezone
+	/// identifiers.
+	/// </summary>
 	public ICollection<string> Timezones { get; set; } = [];
+
+	/// <summary>
+	/// Gets or sets the languages the feed is broadcast in, which is a collection of ISO 639-3
+	/// codes.
+	/// </summary>
 	public ICollection<string> Languages { get; set; } = [];
 }
