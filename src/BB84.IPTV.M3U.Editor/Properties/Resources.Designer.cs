@@ -718,6 +718,96 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data paths.
+        /// </summary>
+        public static string SettingsControl_PathsGroupBox_Header {
+            get {
+                return ResourceManager.GetString("SettingsControl.PathsGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data directory:.
+        /// </summary>
+        public static string SettingsControl_DataDirectoryTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.DataDirectoryTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo directory:.
+        /// </summary>
+        public static string SettingsControl_LogoDirectoryTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.LogoDirectoryTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log directory:.
+        /// </summary>
+        public static string SettingsControl_LogDirectoryTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.LogDirectoryTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse....
+        /// </summary>
+        public static string SettingsControl_BrowseButton_Content {
+            get {
+                return ResourceManager.GetString("SettingsControl.BrowseButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An empty path uses the default below the data directory. A changed path is used after a restart..
+        /// </summary>
+        public static string SettingsControl_PathsHintTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.PathsHintTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo cache.
+        /// </summary>
+        public static string SettingsControl_LogoGroupBox_Header {
+            get {
+                return ResourceManager.GetString("SettingsControl.LogoGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use cached logo paths on export.
+        /// </summary>
+        public static string SettingsControl_UseLocalPathsOnExportCheckBox_Content {
+            get {
+                return ResourceManager.GetString("SettingsControl.UseLocalPathsOnExportCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Path Style:.
+        /// </summary>
+        public static string SettingsControl_ExportPathStyleTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.ExportPathStyleTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Parallel Downloads:.
+        /// </summary>
+        public static string SettingsControl_MaxParallelDownloadsTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.MaxParallelDownloadsTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warning.
         /// </summary>
         public static string WarningMessageCaptition {

@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Services;
@@ -21,9 +21,14 @@ internal static class ServiceCollectionExtensions
 	/// </summary>
 	/// <param name="services">The service collection to enrich.</param>
 	/// <returns>The enriched service collection.</returns>
+	/// <remarks>
+	/// The settings are registered as the instance the whole application shares, so the intermediate
+	/// service providers the outer layers build while they register their services read the same
+	/// object the application works with later on.
+	/// </remarks>
 	internal static IServiceCollection RegisterSettings(this IServiceCollection services)
 	{
-		services.AddSingleton<ApplicationSettings>();
+		services.AddSingleton(new ApplicationSettings());
 
 		return services;
 	}

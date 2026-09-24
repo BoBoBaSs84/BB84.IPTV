@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ChangedDataPathsRestartApplicationQuestion" xml:space="preserve">
+    <value>Die Datenpfade wurden geändert. Möchten Sie die Anwendung neu starten, um die Änderungen zu übernehmen?</value>
+  </data>
   <data name="ChangedLanguageRestartApplicationQuestion" xml:space="preserve">
     <value>Die Sprache wurde geändert. Möchten Sie die Anwendung neu starten, um die Änderungen zu übernehmen?</value>
   </data>
@@ -142,6 +145,33 @@
   <data name="CustomChannelSaved" xml:space="preserve">
     <value>Eigener Sender &apos;{0}&apos; gespeichert.</value>
   </data>
+  <data name="DatabaseCheckFailed" xml:space="preserve">
+    <value>Die Datenbank konnte nicht geprüft werden.</value>
+  </data>
+  <data name="DatabaseCreateFailed" xml:space="preserve">
+    <value>Die Datenbank konnte nicht erstellt werden.</value>
+  </data>
+  <data name="DatabaseImportFailed" xml:space="preserve">
+    <value>Die Datenbank konnte nicht importiert werden.</value>
+  </data>
+  <data name="DatabaseImportProgressStatus" xml:space="preserve">
+    <value>{0} werden importiert: {1} Datensätze ({2} von {3}).</value>
+  </data>
+  <data name="DatabaseImportStarted" xml:space="preserve">
+    <value>Der Datenbankimport wurde gestartet.</value>
+  </data>
+  <data name="DatabaseImportSucceeded" xml:space="preserve">
+    <value>Der Import ist fertig, insgesamt {0} Datensätze.</value>
+  </data>
+  <data name="DatabaseImportWithoutRecords" xml:space="preserve">
+    <value>Der Import ist fertig, es wurden keine Datensätze importiert.</value>
+  </data>
+  <data name="DataDirectoryDialogTitle" xml:space="preserve">
+    <value>Verzeichnis für die Datenbank auswählen</value>
+  </data>
+  <data name="DataPathIsNotValid" xml:space="preserve">
+    <value>Der Pfad „{0}“ kann nicht verwendet werden, bitte geben Sie einen vollständigen Pfad an.</value>
+  </data>
   <data name="ExitApplicationQuestion" xml:space="preserve">
     <value>Möchten Sie die Anwendung wirklich beenden?</value>
   </data>
@@ -156,6 +186,12 @@
   </data>
   <data name="ImportPlaylistTitle" xml:space="preserve">
     <value>Wiedergabeliste importieren</value>
+  </data>
+  <data name="LogDirectoryDialogTitle" xml:space="preserve">
+    <value>Verzeichnis für die Protokolldateien auswählen</value>
+  </data>
+  <data name="LogoDirectoryDialogTitle" xml:space="preserve">
+    <value>Verzeichnis für die zwischengespeicherten Logos auswählen</value>
   </data>
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Wiedergabeliste zusammenführen</value>
@@ -229,6 +265,24 @@
   <data name="PlaylistExported" xml:space="preserve">
     <value>Wiedergabeliste &apos;{0}&apos; nach &apos;{1}&apos; exportiert.</value>
   </data>
+  <data name="PlaylistFileLoaded" xml:space="preserve">
+    <value>Die Wiedergabeliste in „{0}“ wurde gelesen.</value>
+  </data>
+  <data name="PlaylistFileLoadFailed" xml:space="preserve">
+    <value>Die Wiedergabeliste in „{0}“ konnte nicht gelesen werden.</value>
+  </data>
+  <data name="PlaylistFileLoading" xml:space="preserve">
+    <value>Die Wiedergabeliste in „{0}“ wird gelesen.</value>
+  </data>
+  <data name="PlaylistFileSaved" xml:space="preserve">
+    <value>Die Wiedergabeliste wurde nach „{0}“ geschrieben.</value>
+  </data>
+  <data name="PlaylistFileSaveFailed" xml:space="preserve">
+    <value>Die Wiedergabeliste konnte nicht nach „{0}“ geschrieben werden.</value>
+  </data>
+  <data name="PlaylistFileSaving" xml:space="preserve">
+    <value>Die Wiedergabeliste wird nach „{0}“ geschrieben.</value>
+  </data>
   <data name="PlaylistImported" xml:space="preserve">
     <value>Wiedergabeliste &apos;{0}&apos; importiert.</value>
   </data>
@@ -243,5 +297,17 @@
   </data>
   <data name="SaveChangesQuestion" xml:space="preserve">
     <value>Die Wiedergabeliste &apos;{0}&apos; hat ungespeicherte Änderungen. Sollen sie gespeichert werden?</value>
+  </data>
+  <data name="SettingsLoadFailed" xml:space="preserve">
+    <value>Die Einstellungen konnten nicht gelesen werden.</value>
+  </data>
+  <data name="SettingsOperationFailed" xml:space="preserve">
+    <value>Die Einstellungen konnten nicht verwaltet werden.</value>
+  </data>
+  <data name="SettingsSaveFailed" xml:space="preserve">
+    <value>Die Einstellungen konnten nicht geschrieben werden.</value>
+  </data>
+  <data name="WebRequestFailed" xml:space="preserve">
+    <value>Die Daten konnten nicht von iptv-org gelesen werden.</value>
   </data>
 </root>

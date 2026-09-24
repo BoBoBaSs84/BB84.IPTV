@@ -268,14 +268,23 @@
   <data name="SettingsControl.AutoSaveIntervalTextBlock.Text" xml:space="preserve">
     <value>Auto Save Interval (min):</value>
   </data>
+  <data name="SettingsControl.BrowseButton.Content" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
   <data name="SettingsControl.CommandTimeoutTextBlock.Text" xml:space="preserve">
     <value>Command Timeout (sec):</value>
   </data>
   <data name="SettingsControl.DatabaseGroupBox.Header" xml:space="preserve">
     <value>Database</value>
   </data>
+  <data name="SettingsControl.DataDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Data directory:</value>
+  </data>
   <data name="SettingsControl.EnableLoggingCheckBox.Content" xml:space="preserve">
     <value>Enable Logging</value>
+  </data>
+  <data name="SettingsControl.ExportPathStyleTextBlock.Text" xml:space="preserve">
+    <value>Export Path Style:</value>
   </data>
   <data name="SettingsControl.GeneralGroupBox.Header" xml:space="preserve">
     <value>General</value>
@@ -286,14 +295,35 @@
   <data name="SettingsControl.LoadSettingsButton.Content" xml:space="preserve">
     <value>Load Settings</value>
   </data>
+  <data name="SettingsControl.LogDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Log directory:</value>
+  </data>
   <data name="SettingsControl.LogLevelTextBlock.Text" xml:space="preserve">
     <value>Log Level:</value>
+  </data>
+  <data name="SettingsControl.LogoDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Logo directory:</value>
+  </data>
+  <data name="SettingsControl.LogoGroupBox.Header" xml:space="preserve">
+    <value>Logo cache</value>
   </data>
   <data name="SettingsControl.MaxBatchSizeTextBlock.Text" xml:space="preserve">
     <value>Max Batch Size:</value>
   </data>
+  <data name="SettingsControl.MaxParallelDownloadsTextBlock.Text" xml:space="preserve">
+    <value>Max Parallel Downloads:</value>
+  </data>
+  <data name="SettingsControl.PathsGroupBox.Header" xml:space="preserve">
+    <value>Data paths</value>
+  </data>
+  <data name="SettingsControl.PathsHintTextBlock.Text" xml:space="preserve">
+    <value>An empty path uses the default below the data directory. A changed path is used after a restart.</value>
+  </data>
   <data name="SettingsControl.SaveSettingsButton.Content" xml:space="preserve">
     <value>Save Settings</value>
+  </data>
+  <data name="SettingsControl.UseLocalPathsOnExportCheckBox.Content" xml:space="preserve">
+    <value>Use cached logo paths on export</value>
   </data>
   <data name="ToolTip.Metadata.Censored" xml:space="preserve">
     <value>Indicates that the channel needs to be protected by parental control, if such is present in the device, can take values 0 and 1.</value>

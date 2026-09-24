@@ -26,4 +26,12 @@ public interface IFileDialogService
 	/// <param name="defaultFileName">The default file name.</param>
 	/// <returns>The selected file path, or <see langword="null"/> if cancelled.</returns>
 	Task<string?> ShowSaveFileDialogAsync(string filter, string title, string? defaultFileName = null);
+
+	/// <summary>
+	/// Shows a folder dialog and returns the selected folder path.
+	/// </summary>
+	/// <param name="title">The dialog title.</param>
+	/// <param name="startPath">The folder the dialog opens in, if it is there.</param>
+	/// <returns>The selected folder path, or <see langword="null"/> if cancelled.</returns>
+	Task<string?> ShowOpenFolderDialogAsync(string title, string? startPath = null);
 }

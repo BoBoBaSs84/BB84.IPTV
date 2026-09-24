@@ -1,6 +1,8 @@
 ﻿using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Events;
+using BB84.IPTV.M3U.Editor.Application.Extensions;
+using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 
 using Microsoft.Extensions.Logging;
@@ -19,17 +21,12 @@ internal sealed class FileService(IEventService eventService, ILoggerService<Fil
 	private static readonly Action<ILogger, string, Exception?> LogInformation =
 		LoggerMessage.Define<string>(LogLevel.Information, 0, "{Information}");
 
-	private static readonly Action<ILogger, string, Exception?> LogError =
-		LoggerMessage.Define<string>(LogLevel.Error, 0, "{Error}");
-
 	public async Task<IPlaylist?> LoadAsync(string filePath, CancellationToken cancellationToken = default)
 	{
-		string message;
 		try
 		{
-			message = $"Loading playlist from file: {filePath}";
-			loggerService.Log(LogInformation, message);
-			PublishDelayedStatus(message);
+			loggerService.Log(LogInformation, $"Loading playlist from file: {filePath}");
+			PublishDelayedStatus(Resources.PlaylistFileLoading.FormatMessage(filePath));
 
 			string[] fileLines = await providerService.File
 				.ReadAllLinesAsync(filePath, cancellationToken)
@@ -37,29 +34,25 @@ internal sealed class FileService(IEventService eventService, ILoggerService<Fil
 
 			IPlaylist playlist = serializer.Deserialize(fileLines);
 
-			message = $"Successfully loaded playlist from file: {filePath}";
-			loggerService.Log(LogInformation, message);
-			PublishDelayedStatus(message);
+			loggerService.Log(LogInformation, $"Successfully loaded playlist from file: {filePath}");
+			PublishDelayedStatus(Resources.PlaylistFileLoaded.FormatMessage(filePath));
 
 			return playlist;
 		}
 		catch (Exception ex)
 		{
-			message = $"Failed to load playlist from file: {filePath}";
-			loggerService.Log(LogError, message, ex);
-			PublishErrorNotification(message);
+			// The notification service logs what it shows, so the message is published only.
+			PublishErrorNotification(Resources.PlaylistFileLoadFailed.FormatMessage(filePath), ex);
 			return null;
 		}
 	}
 
 	public async Task Save(IPlaylist playlist, string filePath, CancellationToken cancellationToken = default)
 	{
-		string message;
 		try
 		{
-			message = $"Saving playlist to file: {filePath}";
-			loggerService.Log(LogInformation, message);
-			PublishDelayedStatus(message);
+			loggerService.Log(LogInformation, $"Saving playlist to file: {filePath}");
+			PublishDelayedStatus(Resources.PlaylistFileSaving.FormatMessage(filePath));
 
 			string fileContent = serializer.Serialize(playlist);
 
@@ -67,21 +60,18 @@ internal sealed class FileService(IEventService eventService, ILoggerService<Fil
 				.WriteAllTextAsync(filePath, fileContent, cancellationToken)
 				.ConfigureAwait(false);
 
-			message = $"Successfully saved playlist to file: {filePath}";
-			loggerService.Log(LogInformation, message);
-			PublishDelayedStatus(message);
+			loggerService.Log(LogInformation, $"Successfully saved playlist to file: {filePath}");
+			PublishDelayedStatus(Resources.PlaylistFileSaved.FormatMessage(filePath));
 		}
 		catch (Exception ex)
 		{
-			message = $"Failed to save playlist to file: {filePath}";
-			loggerService.Log(LogError, message, ex);
-			PublishErrorNotification(message);
+			PublishErrorNotification(Resources.PlaylistFileSaveFailed.FormatMessage(filePath), ex);
 		}
 	}
 
 	private void PublishDelayedStatus(string message)
 		=> eventService.Publish(new DelayedStatusChangedEvent(message));
 
-	private void PublishErrorNotification(string message)
-		=> eventService.Publish(new ErrorOccuredEvent(message));
+	private void PublishErrorNotification(string message, Exception exception)
+		=> eventService.Publish(new ErrorOccuredEvent(message, exception));
 }

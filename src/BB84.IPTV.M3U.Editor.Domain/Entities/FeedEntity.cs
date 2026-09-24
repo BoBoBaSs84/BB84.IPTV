@@ -10,17 +10,17 @@ public sealed class FeedEntity : EntityBase
 	/// <summary>
 	/// Gets or sets the channel identifier associated with the feed entity.
 	/// </summary>
-	public string Channel { get; set; }
+	public required string Channel { get; set; }
 
 	/// <summary>
 	/// Gets or sets the feed identifier associated with the feed entity.
 	/// </summary>
-	public string Feed { get; set; }
-	
+	public required string Feed { get; set; }
+
 	/// <summary>
 	/// Gets or sets the name associated with the feed entity.
 	/// </summary>
-	public string Name { get; set; }
+	public required string Name { get; set; }
 
 	/// <summary>
 	/// Gets or sets a value indicating whether this feed entity is the main
@@ -32,10 +32,30 @@ public sealed class FeedEntity : EntityBase
 	/// Gets or sets the format of the feed entity, which may indicate the type
 	/// of content or data format used by the feed.
 	/// </summary>
-	public string Format { get; set; }
+	public required string Format { get; set; }
 
-	public ICollection<string> AltNames { get; set; }
-	public ICollection<string> BroadcastArea { get; set; }
-	public ICollection<string> Timezones { get; set; }
-	public ICollection<string> Languages { get; set; }
+	/// <summary>
+	/// Gets or sets the alternative names of the feed, which is a collection of strings representing
+	/// any other names the feed is known by.
+	/// </summary>
+	public ICollection<string> AltNames { get; set; } = [];
+
+	/// <summary>
+	/// Gets or sets the broadcasting area of the feed, which is a collection of codes in the form
+	/// <c>r/&lt;region_code&gt;</c>, <c>c/&lt;country_code&gt;</c>, <c>s/&lt;subdivision_code&gt;</c>
+	/// or <c>ct/&lt;city_code&gt;</c>.
+	/// </summary>
+	public ICollection<string> BroadcastArea { get; set; } = [];
+
+	/// <summary>
+	/// Gets or sets the timezones the feed is broadcast in, which is a collection of timezone
+	/// identifiers.
+	/// </summary>
+	public ICollection<string> Timezones { get; set; } = [];
+
+	/// <summary>
+	/// Gets or sets the languages the feed is broadcast in, which is a collection of ISO 639-3
+	/// codes.
+	/// </summary>
+	public ICollection<string> Languages { get; set; } = [];
 }

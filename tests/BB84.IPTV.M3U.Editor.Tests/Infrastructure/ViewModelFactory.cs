@@ -9,6 +9,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
+using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 using BB84.IPTV.M3U.Editor.Domain.Models;
@@ -151,6 +152,25 @@ internal static class ViewModelFactory
 			playlistServiceMock.Object,
 			new Mock<IFileDialogService>().Object,
 			new Mock<IEventService>().Object);
+	}
+
+	/// <summary>
+	/// Creates the settings screen, with the data paths the application would work with.
+	/// </summary>
+	public static SettingsViewModel CreateSettings()
+	{
+		Mock<IPathService> pathServiceMock = new();
+		pathServiceMock.SetupGet(x => x.DataDirectory).Returns(Path.Combine(Path.GetTempPath(), "bb84-iptv"));
+		pathServiceMock.SetupGet(x => x.LogoDirectory).Returns(Path.Combine(Path.GetTempPath(), "bb84-iptv", "logos"));
+		pathServiceMock.SetupGet(x => x.LogDirectory).Returns(Path.Combine(Path.GetTempPath(), "bb84-iptv", "logs"));
+		pathServiceMock.Setup(x => x.IsValidDirectory(It.IsAny<string>())).Returns(true);
+
+		return new SettingsViewModel(
+			new Mock<ISettingsService>().Object,
+			new Mock<IEventService>().Object,
+			new Mock<IFileDialogService>().Object,
+			pathServiceMock.Object,
+			new ApplicationSettings());
 	}
 
 	/// <summary>

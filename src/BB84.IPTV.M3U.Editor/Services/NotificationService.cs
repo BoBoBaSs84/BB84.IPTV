@@ -1,9 +1,10 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using Avalonia.Controls;
 using Avalonia.Threading;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
+using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
@@ -11,23 +12,41 @@ using BB84.IPTV.M3U.Editor.Extensions;
 using BB84.IPTV.M3U.Editor.Properties;
 using BB84.IPTV.M3U.Editor.Views;
 
+using Microsoft.Extensions.Logging;
+
 namespace BB84.IPTV.M3U.Editor.Services;
 
 /// <summary>
 /// Represents a service for displaying notifications to the user.
 /// </summary>
+/// <remarks>
+/// Every notification the application publishes is shown here and written to the log, so a
+/// publisher does not have to log what it reports.
+/// </remarks>
 [ExcludeFromCodeCoverage(Justification = "This class is just an abstraction for the message dialog.")]
 internal sealed class NotificationService : INotificationService
 {
 	private readonly IEventService _eventService;
+	private readonly ILoggerService<NotificationService> _loggerService;
+
+	private static readonly Action<ILogger, string, Exception?> LogError =
+		LoggerMessage.Define<string>(LogLevel.Error, 0, "{Error}");
+
+	private static readonly Action<ILogger, string, Exception?> LogWarning =
+		LoggerMessage.Define<string>(LogLevel.Warning, 0, "{Warning}");
+
+	private static readonly Action<ILogger, string, Exception?> LogInformation =
+		LoggerMessage.Define<string>(LogLevel.Information, 0, "{Information}");
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="NotificationService"/> class.
 	/// </summary>
 	/// <param name="eventService">The event service to subscribe to for showing notifications.</param>
-	public NotificationService(IEventService eventService)
+	/// <param name="loggerService">The logger service that writes what is shown to the user.</param>
+	public NotificationService(IEventService eventService, ILoggerService<NotificationService> loggerService)
 	{
 		_eventService = eventService;
+		_loggerService = loggerService;
 		RegisterEventHandlers();
 	}
 
@@ -73,8 +92,22 @@ internal sealed class NotificationService : INotificationService
 
 	private void RegisterEventHandlers()
 	{
-		_eventService.Subscribe<ErrorOccuredEvent>(e => _ = ShowErrorAsync(e.Message));
-		_eventService.Subscribe<InformationOccuredEvent>(e => _ = ShowInformationAsync(e.Message));
-		_eventService.Subscribe<WarningOccuredEvent>(e => _ = ShowWarningAsync(e.Message));
+		_eventService.Subscribe<ErrorOccuredEvent>(e =>
+		{
+			_loggerService.Log(LogError, e.Message, e.Exception);
+			_ = ShowErrorAsync(e.Message);
+		});
+
+		_eventService.Subscribe<InformationOccuredEvent>(e =>
+		{
+			_loggerService.Log(LogInformation, e.Message);
+			_ = ShowInformationAsync(e.Message);
+		});
+
+		_eventService.Subscribe<WarningOccuredEvent>(e =>
+		{
+			_loggerService.Log(LogWarning, e.Message);
+			_ = ShowWarningAsync(e.Message);
+		});
 	}
 }

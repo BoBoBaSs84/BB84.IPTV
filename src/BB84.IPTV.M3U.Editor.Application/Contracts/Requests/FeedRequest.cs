@@ -15,7 +15,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Name">Name of the feed</param>
 /// <param name="AltNames">List of alternative feed names</param>
 /// <param name="IsMain">Indicates if this feed is the main for the channel</param>
-/// <param name="BroadcastArea">List of codes describing the broadcasting area (r/<region_code>, c/<country_code>, s/<subdivision_code>, ct/<city_code>)</param>
+/// <param name="BroadcastArea">List of codes describing the broadcasting area (r/&lt;region_code&gt;, c/&lt;country_code&gt;, s/&lt;subdivision_code&gt;, ct/&lt;city_code&gt;)</param>
 /// <param name="Timezones">List of timezones in which the feed is broadcast</param>
 /// <param name="Languages">List of broadcast languages</param>
 /// <param name="Format">Video format of the feed</param>

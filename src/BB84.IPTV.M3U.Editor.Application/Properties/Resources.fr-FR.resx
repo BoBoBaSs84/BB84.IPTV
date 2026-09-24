@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ChangedDataPathsRestartApplicationQuestion" xml:space="preserve">
+    <value>Les chemins de données ont été modifiés. Voulez-vous redémarrer l’application pour appliquer les modifications ?</value>
+  </data>
   <data name="ChangedLanguageRestartApplicationQuestion" xml:space="preserve">
     <value>La langue a été modifiée. Voulez-vous redémarrer l'application pour appliquer les modifications ?</value>
   </data>
@@ -142,6 +145,33 @@
   <data name="CustomChannelSaved" xml:space="preserve">
     <value>Chaîne personnalisée &apos;{0}&apos; enregistrée.</value>
   </data>
+  <data name="DatabaseCheckFailed" xml:space="preserve">
+    <value>La base de données n’a pas pu être vérifiée.</value>
+  </data>
+  <data name="DatabaseCreateFailed" xml:space="preserve">
+    <value>La base de données n’a pas pu être créée.</value>
+  </data>
+  <data name="DatabaseImportFailed" xml:space="preserve">
+    <value>La base de données n’a pas pu être importée.</value>
+  </data>
+  <data name="DatabaseImportProgressStatus" xml:space="preserve">
+    <value>Import de {0} : {1} enregistrements ({2} sur {3}).</value>
+  </data>
+  <data name="DatabaseImportStarted" xml:space="preserve">
+    <value>L’import de la base de données a commencé.</value>
+  </data>
+  <data name="DatabaseImportSucceeded" xml:space="preserve">
+    <value>L’import est terminé, {0} enregistrements au total.</value>
+  </data>
+  <data name="DatabaseImportWithoutRecords" xml:space="preserve">
+    <value>L’import est terminé, aucun enregistrement n’a été importé.</value>
+  </data>
+  <data name="DataDirectoryDialogTitle" xml:space="preserve">
+    <value>Sélectionner le répertoire qui contient la base de données</value>
+  </data>
+  <data name="DataPathIsNotValid" xml:space="preserve">
+    <value>Le chemin « {0} » ne peut pas être utilisé, veuillez indiquer un chemin complet.</value>
+  </data>
   <data name="ExitApplicationQuestion" xml:space="preserve">
     <value>Etes-vous sûr de vouloir quitter l'application ?</value>
   </data>
@@ -156,6 +186,12 @@
   </data>
   <data name="ImportPlaylistTitle" xml:space="preserve">
     <value>Importer une playlist</value>
+  </data>
+  <data name="LogDirectoryDialogTitle" xml:space="preserve">
+    <value>Sélectionner le répertoire qui contient les fichiers journaux</value>
+  </data>
+  <data name="LogoDirectoryDialogTitle" xml:space="preserve">
+    <value>Sélectionner le répertoire qui contient les logos en cache</value>
   </data>
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Fusionner une playlist</value>
@@ -229,6 +265,24 @@
   <data name="PlaylistExported" xml:space="preserve">
     <value>Playlist &apos;{0}&apos; exportée vers &apos;{1}&apos;.</value>
   </data>
+  <data name="PlaylistFileLoaded" xml:space="preserve">
+    <value>La liste de lecture dans « {0} » a été lue.</value>
+  </data>
+  <data name="PlaylistFileLoadFailed" xml:space="preserve">
+    <value>La liste de lecture dans « {0} » n’a pas pu être lue.</value>
+  </data>
+  <data name="PlaylistFileLoading" xml:space="preserve">
+    <value>Lecture de la liste de lecture dans « {0} ».</value>
+  </data>
+  <data name="PlaylistFileSaved" xml:space="preserve">
+    <value>La liste de lecture a été écrite dans « {0} ».</value>
+  </data>
+  <data name="PlaylistFileSaveFailed" xml:space="preserve">
+    <value>La liste de lecture n’a pas pu être écrite dans « {0} ».</value>
+  </data>
+  <data name="PlaylistFileSaving" xml:space="preserve">
+    <value>Écriture de la liste de lecture dans « {0} ».</value>
+  </data>
   <data name="PlaylistImported" xml:space="preserve">
     <value>Playlist &apos;{0}&apos; importée.</value>
   </data>
@@ -243,5 +297,17 @@
   </data>
   <data name="SaveChangesQuestion" xml:space="preserve">
     <value>La playlist &apos;{0}&apos; contient des modifications non enregistrées. Voulez-vous les enregistrer ?</value>
+  </data>
+  <data name="SettingsLoadFailed" xml:space="preserve">
+    <value>Les paramètres n’ont pas pu être lus.</value>
+  </data>
+  <data name="SettingsOperationFailed" xml:space="preserve">
+    <value>Les paramètres n’ont pas pu être gérés.</value>
+  </data>
+  <data name="SettingsSaveFailed" xml:space="preserve">
+    <value>Les paramètres n’ont pas pu être écrits.</value>
+  </data>
+  <data name="WebRequestFailed" xml:space="preserve">
+    <value>Les données n’ont pas pu être lues depuis iptv-org.</value>
   </data>
 </root>

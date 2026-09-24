@@ -53,9 +53,11 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 
 		NavigationService = navigationService;
 
+		_eventService.Subscribe<StatusChangedEvent>(OnStatusChanged);
 		_eventService.Subscribe<DelayedStatusChangedEvent>(OnStatusChanged);
 		_eventService.Subscribe<ProgressChangedEvent>(OnProgressChanged);
 		_eventService.Subscribe<LanguageChangedEvent>(OnLanguageChanged);
+		_eventService.Subscribe<DataPathsChangedEvent>(OnDataPathsChanged);
 	}
 
 	/// <summary>
@@ -151,7 +153,7 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 	public IActionCommand OpenSettingsCommand
 		=> _openSettingsCommand ??= new ActionCommand(NavigationService.NavigateTo<SettingsViewModel>);
 
-	private void OnStatusChanged(DelayedStatusChangedEvent @event)
+	private void OnStatusChanged(StatusChangedEvent @event)
 	{
 		if (_synchronizationContext is not null)
 			_synchronizationContext.Post(_ => ChangeStatus(@event), null);
@@ -159,7 +161,7 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 			ChangeStatus(@event);
 	}
 
-	private void ChangeStatus(DelayedStatusChangedEvent @event)
+	private void ChangeStatus(StatusChangedEvent @event)
 	{
 		StatusText = @event.Text;
 
@@ -190,6 +192,16 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 	{
 		NotificationResult result = await _notificationService
 			.ShowQuestionAsync(Resources.ChangedLanguageRestartApplicationQuestion)
+			.ConfigureAwait(true);
+
+		if (result == NotificationResult.Yes)
+			_eventService.Publish(new RestartRequestedEvent());
+	}
+
+	private async void OnDataPathsChanged(DataPathsChangedEvent @event)
+	{
+		NotificationResult result = await _notificationService
+			.ShowQuestionAsync(Resources.ChangedDataPathsRestartApplicationQuestion)
 			.ConfigureAwait(true);
 
 		if (result == NotificationResult.Yes)

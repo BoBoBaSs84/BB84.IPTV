@@ -20,7 +20,7 @@ public sealed class CountryEntity : EntityBase
 	/// <summary>
 	/// Gets or sets the list of official languages of the country (ISO 639-3 code).
 	/// </summary>
-	public ICollection<string> Languages { get; set; }
+	public ICollection<string> Languages { get; set; } = [];
 
 	/// <summary>
 	/// Gets or sets the country flag emoji.

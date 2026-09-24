@@ -2,10 +2,8 @@
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Events;
+using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.Settings;
-using BB84.IPTV.M3U.Editor.Infrastructure.Common;
-
-using Microsoft.Extensions.Logging;
 
 namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 
@@ -15,27 +13,24 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 internal sealed class SettingsService : ISettingsService
 {
 	private readonly IEventService _eventService;
-	private readonly ILoggerService<SettingsService> _loggerService;
 	private readonly IProviderService _providerService;
+	private readonly IPathService _pathService;
 	private readonly ApplicationSettings _applicationSettings;
 	private readonly string _settingsFilePath;
-
-	private static readonly Action<ILogger, string, Exception?> LogError =
-		LoggerMessage.Define<string>(LogLevel.Error, 0, "{Error}");
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="SettingsService"/> class.
 	/// </summary>
 	/// <param name="eventService">The service responsible for managing application events.</param>
-	/// <param name="loggerService">The service responsible for logging application information, warnings, and errors.</param>
 	/// <param name="providerService">The service responsible for providing access to various application resources</param>
+	/// <param name="pathService">The service that provides the file system locations of the application.</param>
 	/// <param name="applicationSettings">The current application settings.</param>
-	public SettingsService(IEventService eventService, ILoggerService<SettingsService> loggerService, IProviderService providerService, ApplicationSettings applicationSettings)
+	public SettingsService(IEventService eventService, IProviderService providerService, IPathService pathService, ApplicationSettings applicationSettings)
 	{
 		_eventService = eventService;
-		_loggerService = loggerService;
 		_providerService = providerService;
-		_settingsFilePath = ApplicationPaths.SettingsFilePath;
+		_pathService = pathService;
+		_settingsFilePath = pathService.SettingsFilePath;
 		_applicationSettings = applicationSettings;
 
 		RegisterSettingsChangeHandler();
@@ -65,9 +60,8 @@ internal sealed class SettingsService : ISettingsService
 		}
 		catch (Exception ex)
 		{
-			string message = $"An error occurred while retrieving application settings.";
-			_eventService.Publish(new ErrorOccuredEvent(message, ex));
-			_loggerService.Log(LogError, message, ex);
+			// The notification service logs what it shows, so the message is published only.
+			_eventService.Publish(new ErrorOccuredEvent(Resources.SettingsLoadFailed, ex));
 		}
 	}
 
@@ -77,7 +71,7 @@ internal sealed class SettingsService : ISettingsService
 		{
 			string fileContent = ApplicationSettings.Write(settings);
 
-			_providerService.Directory.CreateDirectory(ApplicationPaths.DataDirectory);
+			_providerService.Directory.CreateDirectory(_pathService.DataDirectory);
 
 			await _providerService.File
 				.WriteAllTextAsync(_settingsFilePath, fileContent, cancellationToken)
@@ -87,9 +81,7 @@ internal sealed class SettingsService : ISettingsService
 		}
 		catch (Exception ex)
 		{
-			string message = $"An error occurred while saving application settings.";
-			_eventService.Publish(new ErrorOccuredEvent(message, ex));
-			_loggerService.Log(LogError, message, ex);
+			_eventService.Publish(new ErrorOccuredEvent(Resources.SettingsSaveFailed, ex));
 		}
 	}
 

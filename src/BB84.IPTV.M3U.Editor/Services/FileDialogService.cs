@@ -52,6 +52,41 @@ internal sealed class FileDialogService : IFileDialogService
 		return file?.TryGetLocalPath();
 	}
 
+	/// <inheritdoc/>
+	public async Task<string?> ShowOpenFolderDialogAsync(string title, string? startPath = null)
+	{
+		IStorageProvider storageProvider = GetStorageProvider();
+
+		FolderPickerOpenOptions options = new()
+		{
+			Title = title,
+			AllowMultiple = false,
+			SuggestedStartLocation = await GetStartLocationAsync(storageProvider, startPath).ConfigureAwait(true)
+		};
+
+		IReadOnlyList<IStorageFolder> folders = await storageProvider
+			.OpenFolderPickerAsync(options)
+			.ConfigureAwait(true);
+
+		return folders.Count > 0 ? folders[0].TryGetLocalPath() : null;
+	}
+
+	/// <summary>
+	/// Reads the folder the dialog opens in, which is left to the platform for a path that is not there.
+	/// </summary>
+	/// <param name="storageProvider">The storage provider that resolves the path.</param>
+	/// <param name="startPath">The path of the folder to open in.</param>
+	/// <returns>The folder to open in, or <see langword="null"/>.</returns>
+	private static async Task<IStorageFolder?> GetStartLocationAsync(IStorageProvider storageProvider, string? startPath)
+	{
+		if (string.IsNullOrWhiteSpace(startPath) || !Directory.Exists(startPath))
+			return null;
+
+		return await storageProvider
+			.TryGetFolderFromPathAsync(startPath)
+			.ConfigureAwait(true);
+	}
+
 	private static IStorageProvider GetStorageProvider()
 		=> ApplicationExtensions.GetActiveWindow()?.StorageProvider
 			?? throw new InvalidOperationException("No window is available to host the file dialog.");

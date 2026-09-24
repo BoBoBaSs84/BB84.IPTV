@@ -4,7 +4,6 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
-using BB84.IPTV.M3U.Editor.Infrastructure.Common;
 
 namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 
@@ -12,10 +11,11 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 /// Represents the store that holds the downloaded logo files.
 /// </summary>
 /// <remarks>
-/// The files live in <c>&lt;app data&gt;/logos/&lt;channel&gt;</c>, so a channel keeps its logos
-/// together and a cleared cache is one directory to delete.
+/// The files live in the logo directory the <see cref="IPathService"/> provides, one folder per
+/// channel, so a channel keeps its logos together and a cleared cache is one directory to delete.
 /// </remarks>
-internal sealed class LogoStoreService : ILogoStoreService
+/// <param name="pathService">The service that provides the file system locations of the application.</param>
+internal sealed class LogoStoreService(IPathService pathService) : ILogoStoreService
 {
 	public async Task<string> SaveAsync(string channel, string fileName, byte[] content, CancellationToken cancellationToken = default)
 	{
@@ -23,7 +23,7 @@ internal sealed class LogoStoreService : ILogoStoreService
 		ArgumentException.ThrowIfNullOrWhiteSpace(fileName);
 		ArgumentNullException.ThrowIfNull(content);
 
-		string directory = Path.Combine(ApplicationPaths.LogoDirectory, MakeSafe(channel));
+		string directory = Path.Combine(pathService.LogoDirectory, MakeSafe(channel));
 		_ = Directory.CreateDirectory(directory);
 
 		string filePath = Path.Combine(directory, MakeSafe(fileName));
@@ -39,11 +39,11 @@ internal sealed class LogoStoreService : ILogoStoreService
 
 	public int Clear()
 	{
-		if (!Directory.Exists(ApplicationPaths.LogoDirectory))
+		if (!Directory.Exists(pathService.LogoDirectory))
 			return 0;
 
-		int deleted = Directory.GetFiles(ApplicationPaths.LogoDirectory, "*", SearchOption.AllDirectories).Length;
-		Directory.Delete(ApplicationPaths.LogoDirectory, true);
+		int deleted = Directory.GetFiles(pathService.LogoDirectory, "*", SearchOption.AllDirectories).Length;
+		Directory.Delete(pathService.LogoDirectory, true);
 
 		return deleted;
 	}

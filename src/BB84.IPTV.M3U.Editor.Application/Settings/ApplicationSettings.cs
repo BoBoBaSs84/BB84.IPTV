@@ -28,4 +28,11 @@ public sealed partial class ApplicationSettings
 	/// </summary>
 	[GenerateIniFileSection]
 	public LogoSettings Logo { get; } = new();
+
+	/// <summary>
+	/// Gets the data path settings of the application, which say where the database, the cached
+	/// logos and the log files are kept.
+	/// </summary>
+	[GenerateIniFileSection]
+	public PathSettings Paths { get; } = new();
 }

@@ -3,11 +3,10 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
+using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Infrastructure.Common;
 using BB84.IPTV.M3U.Editor.Infrastructure.Services;
-
-using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -17,11 +16,11 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Tests.Services;
 public sealed class SettingsServiceTests
 {
 	private readonly Mock<IEventService> _eventServiceMock = new();
-	private readonly Mock<ILoggerService<SettingsService>> _loggerServiceMock = new();
 	private readonly Mock<IProviderService> _providerServiceMock = new();
 	private readonly Mock<IDirectoryProvider> _directoryProviderMock = new();
 	private readonly Mock<IFileProvider> _fileProviderMock = new();
 	private readonly ApplicationSettings _applicationSettings = new();
+	private readonly IPathService _pathService;
 	private readonly SettingsService _sut;
 
 	public SettingsServiceTests()
@@ -31,7 +30,9 @@ public sealed class SettingsServiceTests
 		_providerServiceMock.SetupGet(x => x.File)
 			.Returns(_fileProviderMock.Object);
 
-		_sut = new SettingsService(_eventServiceMock.Object, _loggerServiceMock.Object, _providerServiceMock.Object, _applicationSettings);
+		// The default settings name no path, so the service works with the per-user defaults.
+		_pathService = new PathService(_applicationSettings);
+		_sut = new SettingsService(_eventServiceMock.Object, _providerServiceMock.Object, _pathService, _applicationSettings);
 	}
 
 	[TestMethod]
@@ -99,7 +100,7 @@ public sealed class SettingsServiceTests
 	}
 
 	[TestMethod]
-	public async Task LoadAsyncShouldLogAndPublishErrorOnException()
+	public async Task LoadAsyncShouldPublishErrorOnException()
 	{
 		CancellationToken cancellationToken = CancellationToken.None;
 
@@ -109,8 +110,8 @@ public sealed class SettingsServiceTests
 		await _sut.LoadAsync(cancellationToken)
 			.ConfigureAwait(false);
 
-		_loggerServiceMock.Verify(x => x.Log(It.IsAny<Action<ILogger, string, Exception?>>(), It.IsAny<string>(), It.IsAny<Exception?>()), Times.Once);
-		_eventServiceMock.Verify(x => x.Publish(It.IsAny<ErrorOccuredEvent>()), Times.Once);
+		// The notification service logs what it shows, the service only reports the failure.
+		_eventServiceMock.Verify(x => x.Publish(It.Is<ErrorOccuredEvent>(e => e.Message == Resources.SettingsLoadFailed && e.Exception != null)), Times.Once);
 	}
 
 	[TestMethod]
@@ -134,7 +135,7 @@ public sealed class SettingsServiceTests
 	}
 
 	[TestMethod]
-	public async Task SaveAsyncShouldLogAndPublishErrorOnException()
+	public async Task SaveAsyncShouldPublishErrorOnException()
 	{
 		CancellationToken cancellationToken = CancellationToken.None;
 		ApplicationSettings settings = new();
@@ -145,7 +146,6 @@ public sealed class SettingsServiceTests
 		await _sut.SaveAsync(settings, cancellationToken)
 			.ConfigureAwait(false);
 
-		_loggerServiceMock.Verify(x => x.Log(It.IsAny<Action<ILogger, string, Exception?>>(), It.IsAny<string>(), It.IsAny<Exception?>()), Times.Once);
-		_eventServiceMock.Verify(x => x.Publish(It.IsAny<ErrorOccuredEvent>()), Times.Once);
+		_eventServiceMock.Verify(x => x.Publish(It.Is<ErrorOccuredEvent>(e => e.Message == Resources.SettingsSaveFailed && e.Exception != null)), Times.Once);
 	}
 }

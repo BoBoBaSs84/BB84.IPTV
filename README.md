@@ -123,12 +123,12 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 **Done when:** an exported `channels.xml` is accepted by the iptv-org/epg grabber for a sample playlist.
 
-### Phase 8 – Polish
+### Phase 8 – Polish (done)
 
-- Settings for data paths and logo policy.
-- Consistent error, warning and progress notifications.
-- CI workflow for build and test (done): `.github/workflows/build.yml` builds the solution and runs the tests on Linux and Windows for every push to `main` and every pull request.
-- Update `CLAUDE.md` to the final architecture.
+- Settings for data paths: the `Paths` section of the settings file keeps the directory of the database, of the cached logos and of the log files. An empty value means the default below the per-user data directory, a path that is not fully qualified falls back to it as well, and the settings file itself always stays in the default directory, because it is what tells the application where everything else lives. `IPathService` resolves the paths once while the application starts, the settings screen shows the ones in use and offers a folder dialog per path, and a changed path asks for a restart.
+- Settings for the logo policy: the settings screen holds the `Logo` section as well, so whether an export writes the cached file instead of the URL, whether that path is absolute or relative, and how many logos are downloaded at once are set in the UI, the last one capped at `LogoCacheRequest.MaxParallelLimit`.
+- Consistent error, warning and progress notifications: a failure is reported by publishing `ErrorOccuredEvent`/`WarningOccuredEvent`/`InformationOccuredEvent` with a localized message and, for an error, the exception; `NotificationService` shows it and writes it to the log, so a publisher never logs what it reports. Every long running operation reports `ProgressChangedEvent` as well, so the status bar of the main window follows the database import like it follows the logo cache.
+- CI workflow for build and test: `.github/workflows/build.yml` builds the solution and runs the tests on Linux and Windows for every push to `main` and every pull request.
 
 ## Data model (planned additions)
 

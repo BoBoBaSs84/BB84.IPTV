@@ -1,8 +1,17 @@
+﻿using System.Windows.Input;
+
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
+using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Events;
+using BB84.IPTV.M3U.Editor.Application.Extensions;
+using BB84.IPTV.M3U.Editor.Application.Properties;
+using BB84.IPTV.M3U.Editor.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
+
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -49,5 +58,92 @@ public sealed class DatabaseViewModelTests : IDisposable
 		Assert.IsTrue(_sut.ImportDatabaseCommand.CanExecute());
 		Assert.IsGreaterThan(0, checkChanged);
 		Assert.IsGreaterThan(0, importChanged);
+	}
+
+	[TestMethod]
+	public async Task TheImportShouldReportItsResultWithALocalizedMessage()
+	{
+		_databaseServiceMock.Setup(x => x.CreateDatabaseAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
+		_databaseServiceMock.Setup(x => x.ImportDatabaseAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(new DatabaseImportResponse { CategoriesImported = 3, CountriesImported = 4 });
+
+		await _sut.CreateDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.ImportDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+
+		Assert.AreEqual(Resources.DatabaseImportSucceeded.FormatMessage(7), _sut.ImportStatusMessage);
+	}
+
+	[TestMethod]
+	public async Task TheImportShouldReportAnEmptyResultWithALocalizedMessage()
+	{
+		_databaseServiceMock.Setup(x => x.CreateDatabaseAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
+		_databaseServiceMock.Setup(x => x.ImportDatabaseAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(new DatabaseImportResponse());
+
+		await _sut.CreateDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.ImportDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+
+		Assert.AreEqual(Resources.DatabaseImportWithoutRecords, _sut.ImportStatusMessage);
+	}
+
+	[TestMethod]
+	public async Task AFailedImportShouldPublishALocalizedError()
+	{
+		_databaseServiceMock.Setup(x => x.CreateDatabaseAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
+		_databaseServiceMock.Setup(x => x.ImportDatabaseAsync(It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new InvalidOperationException("no connection"));
+
+		await _sut.CreateDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+		ErrorOccuredEvent reported = await ExecuteAndReadErrorAsync(_sut.ImportDatabaseCommand).ConfigureAwait(false);
+
+		Assert.AreEqual(Resources.DatabaseImportFailed, reported.Message);
+		Assert.IsNotNull(reported.Exception);
+		Assert.AreEqual(Resources.DatabaseImportFailed, _sut.ImportStatusMessage);
+		Assert.AreEqual(0, _sut.ImportProgress);
+	}
+
+	[TestMethod]
+	public async Task AFailedCheckShouldPublishALocalizedError()
+	{
+		_databaseServiceMock.Setup(x => x.CreateDatabaseAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
+		_databaseServiceMock.Setup(x => x.CheckDatabaseAvailabilityAsync(It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new InvalidOperationException("no connection"));
+
+		await _sut.CreateDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+		ErrorOccuredEvent reported = await ExecuteAndReadErrorAsync(_sut.CheckDatabaseCommand).ConfigureAwait(false);
+
+		Assert.AreEqual(Resources.DatabaseCheckFailed, reported.Message);
+		Assert.IsNotNull(reported.Exception);
+	}
+
+	/// <summary>
+	/// Runs the command the way the UI does, which reports a failure to the error handler of the
+	/// command instead of throwing, and reads the published error.
+	/// </summary>
+	/// <param name="command">The command to run.</param>
+	/// <returns>The error the view model published.</returns>
+	private async Task<ErrorOccuredEvent> ExecuteAndReadErrorAsync(ICommand command)
+	{
+		TaskCompletionSource<ErrorOccuredEvent> published = new();
+		_eventServiceMock.Setup(x => x.Publish(It.IsAny<ErrorOccuredEvent>()))
+			.Callback((ErrorOccuredEvent @event) => published.TrySetResult(@event));
+
+		command.Execute(null);
+
+		return await published.Task
+			.WaitAsync(TimeSpan.FromSeconds(5))
+			.ConfigureAwait(false);
+	}
+
+	[TestMethod]
+	public void TheImportProgressShouldBeReportedWithALocalizedMessage()
+	{
+		EventService eventService = new(new Mock<ILoggerService<EventService>>().Object);
+		using DatabaseViewModel viewModel = new(eventService, _databaseServiceMock.Object, _logoServiceMock.Object, new ApplicationSettings());
+
+		eventService.Publish(new DatabaseImportProgressEvent("Channels", 12, 4, 8));
+
+		Assert.AreEqual(50, viewModel.ImportProgress);
+		Assert.AreEqual(Resources.DatabaseImportProgressStatus.FormatMessage("Channels", 12, 4, 8), viewModel.ImportStatusMessage);
 	}
 }
