@@ -27,6 +27,30 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Extensions;
 internal static class ServiceCollectionExtensions
 {
 	/// <summary>
+	/// Registers the path service to the service collection.
+	/// </summary>
+	/// <remarks>
+	/// The settings file is read here already, because the database, the logger and the logo store
+	/// are set up while the services are registered and need to know where they work. A file that
+	/// cannot be read leaves the defaults in place, <see cref="SettingsService.LoadAsync"/> reports
+	/// the error to the user once the application is up.
+	/// </remarks>
+	/// <param name="services">The service collection to enrich.</param>
+	/// <returns>The same <see cref="IServiceCollection"/> instance so that multiple calls can be chained.</returns>
+	internal static IServiceCollection RegisterPathService(this IServiceCollection services)
+	{
+		ApplicationSettings settings = services
+			.BuildServiceProvider()
+			.GetRequiredService<ApplicationSettings>();
+
+		LoadSettingsFile(settings);
+
+		services.AddSingleton<IPathService>(new PathService(settings));
+
+		return services;
+	}
+
+	/// <summary>
 	/// Registers the database context to the service collection.
 	/// </summary>
 	/// <param name="services">The service collection to enrich.</param>
@@ -34,14 +58,14 @@ internal static class ServiceCollectionExtensions
 	/// <returns>The same <see cref="IServiceCollection"/> instance so that multiple calls can be chained.</returns>
 	internal static IServiceCollection RegisterDatabaseContext(this IServiceCollection services, IHostEnvironment environment)
 	{
-		DatabaseSettings settings = services
-			.BuildServiceProvider()
-			.GetRequiredService<ApplicationSettings>().Database;
+		ServiceProvider provider = services.BuildServiceProvider();
+		DatabaseSettings settings = provider.GetRequiredService<ApplicationSettings>().Database;
+		IPathService pathService = provider.GetRequiredService<IPathService>();
 
 		services.AddDbContext<IDatabaseContext, DatabaseContext>(options =>
 		{
-			Directory.CreateDirectory(ApplicationPaths.DataDirectory);
-			string connectionString = $"Data Source={ApplicationPaths.DatabaseFilePath}";
+			Directory.CreateDirectory(pathService.DataDirectory);
+			string connectionString = $"Data Source={pathService.DatabaseFilePath}";
 			options.UseSqlite(connectionString, options =>
 			{
 				options.CommandTimeout(settings.CommandTimeout);
@@ -73,9 +97,9 @@ internal static class ServiceCollectionExtensions
 	/// <returns>The same <see cref="IServiceCollection"/> instance so that multiple calls can be chained.</returns>
 	internal static IServiceCollection RegisterLoggerService(this IServiceCollection services, IHostEnvironment environment)
 	{
-		GeneralSettings settings = services
-			.BuildServiceProvider()
-			.GetRequiredService<ApplicationSettings>().General;
+		ServiceProvider provider = services.BuildServiceProvider();
+		GeneralSettings settings = provider.GetRequiredService<ApplicationSettings>().General;
+		IPathService pathService = provider.GetRequiredService<IPathService>();
 
 		services.TryAddSingleton(typeof(ILoggerService<>), typeof(LoggerService<>));
 
@@ -92,7 +116,7 @@ internal static class ServiceCollectionExtensions
 			if (environment.IsProduction())
 			{
 				builder.SetMinimumLevel(settings.LogLevel);
-				builder.AddSerilog(CreateFileLogger(environment), dispose: true);
+				builder.AddSerilog(CreateFileLogger(environment, pathService), dispose: true);
 			}
 		});
 
@@ -138,6 +162,26 @@ internal static class ServiceCollectionExtensions
 	}
 
 	/// <summary>
+	/// Reads the settings file into <paramref name="settings"/>, if it is there.
+	/// </summary>
+	/// <param name="settings">The settings instance the application shares.</param>
+	private static void LoadSettingsFile(ApplicationSettings settings)
+	{
+		try
+		{
+			if (!File.Exists(ApplicationPaths.SettingsFilePath))
+				return;
+
+			string fileContent = File.ReadAllText(ApplicationPaths.SettingsFilePath);
+			settings.Load(ApplicationSettings.Read(fileContent));
+		}
+		catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or FormatException)
+		{
+			// The defaults are used, the settings service reports the error once the application is up.
+		}
+	}
+
+	/// <summary>
 	/// Creates a cross-platform logger that writes to daily rolling files in the application log directory.
 	/// </summary>
 	/// <remarks>
@@ -145,10 +189,11 @@ internal static class ServiceCollectionExtensions
 	/// <see cref="ILoggingBuilder"/> minimum level.
 	/// </remarks>
 	/// <param name="environment">The host environment instance to use.</param>
+	/// <param name="pathService">The service that provides the log directory.</param>
 	/// <returns>The configured Serilog logger.</returns>
-	private static Serilog.Core.Logger CreateFileLogger(IHostEnvironment environment)
+	private static Serilog.Core.Logger CreateFileLogger(IHostEnvironment environment, IPathService pathService)
 	{
-		string filePath = Path.Combine(ApplicationPaths.LogDirectory, $"{environment.ApplicationName}-.log");
+		string filePath = Path.Combine(pathService.LogDirectory, $"{environment.ApplicationName}-.log");
 
 		return new LoggerConfiguration()
 			.MinimumLevel.Verbose()

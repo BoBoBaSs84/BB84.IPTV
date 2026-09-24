@@ -56,6 +56,7 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 		_eventService.Subscribe<DelayedStatusChangedEvent>(OnStatusChanged);
 		_eventService.Subscribe<ProgressChangedEvent>(OnProgressChanged);
 		_eventService.Subscribe<LanguageChangedEvent>(OnLanguageChanged);
+		_eventService.Subscribe<DataPathsChangedEvent>(OnDataPathsChanged);
 	}
 
 	/// <summary>
@@ -190,6 +191,16 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 	{
 		NotificationResult result = await _notificationService
 			.ShowQuestionAsync(Resources.ChangedLanguageRestartApplicationQuestion)
+			.ConfigureAwait(true);
+
+		if (result == NotificationResult.Yes)
+			_eventService.Publish(new RestartRequestedEvent());
+	}
+
+	private async void OnDataPathsChanged(DataPathsChangedEvent @event)
+	{
+		NotificationResult result = await _notificationService
+			.ShowQuestionAsync(Resources.ChangedDataPathsRestartApplicationQuestion)
 			.ConfigureAwait(true);
 
 		if (result == NotificationResult.Yes)

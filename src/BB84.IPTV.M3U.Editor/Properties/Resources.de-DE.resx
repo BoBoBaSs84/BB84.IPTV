@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -267,11 +267,17 @@
   <data name="SettingsControl.AutoSaveIntervalTextBlock.Text" xml:space="preserve">
     <value>Automatisches Speicherintervall (Min.):</value>
   </data>
+  <data name="SettingsControl.BrowseButton.Content" xml:space="preserve">
+    <value>Durchsuchen...</value>
+  </data>
   <data name="SettingsControl.CommandTimeoutTextBlock.Text" xml:space="preserve">
     <value>Befehls-Timeout (Sek.):</value>
   </data>
   <data name="SettingsControl.DatabaseGroupBox.Header" xml:space="preserve">
     <value>Datenbank</value>
+  </data>
+  <data name="SettingsControl.DataDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Datenverzeichnis:</value>
   </data>
   <data name="SettingsControl.EnableLoggingCheckBox.Content" xml:space="preserve">
     <value>Aktivieren Sie die Protokollierung</value>
@@ -285,11 +291,23 @@
   <data name="SettingsControl.LoadSettingsButton.Content" xml:space="preserve">
     <value>Einstellungen laden</value>
   </data>
+  <data name="SettingsControl.LogDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Protokollverzeichnis:</value>
+  </data>
   <data name="SettingsControl.LogLevelTextBlock.Text" xml:space="preserve">
     <value>Protokollebene:</value>
   </data>
+  <data name="SettingsControl.LogoDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Logoverzeichnis:</value>
+  </data>
   <data name="SettingsControl.MaxBatchSizeTextBlock.Text" xml:space="preserve">
     <value>Maximale Chargengröße:</value>
+  </data>
+  <data name="SettingsControl.PathsGroupBox.Header" xml:space="preserve">
+    <value>Datenpfade</value>
+  </data>
+  <data name="SettingsControl.PathsHintTextBlock.Text" xml:space="preserve">
+    <value>Ein leerer Pfad verwendet die Vorgabe unterhalb des Datenverzeichnisses. Ein geänderter Pfad wird nach einem Neustart verwendet.</value>
   </data>
   <data name="SettingsControl.SaveSettingsButton.Content" xml:space="preserve">
     <value>Einstellungen speichern</value>

@@ -21,7 +21,8 @@ public static class DependencyInjectionInstaller
 	/// <returns>The enriched service collection.</returns>
 	public static IServiceCollection RegisterInfrastructureServices(this IServiceCollection services, IHostEnvironment environment)
 	{
-		services.RegisterLoggerService(environment)
+		services.RegisterPathService()
+			.RegisterLoggerService(environment)
 			.RegisterDatabaseContext(environment)
 			.RegisterHttpClients()
 			.RegisterServices();

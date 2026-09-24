@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -267,11 +267,17 @@
   <data name="SettingsControl.AutoSaveIntervalTextBlock.Text" xml:space="preserve">
     <value>Intervalo de guardado automático (min):</value>
   </data>
+  <data name="SettingsControl.BrowseButton.Content" xml:space="preserve">
+    <value>Examinar...</value>
+  </data>
   <data name="SettingsControl.CommandTimeoutTextBlock.Text" xml:space="preserve">
     <value>Tiempo de espera del comando (s):</value>
   </data>
   <data name="SettingsControl.DatabaseGroupBox.Header" xml:space="preserve">
     <value>Base de datos</value>
+  </data>
+  <data name="SettingsControl.DataDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Directorio de datos:</value>
   </data>
   <data name="SettingsControl.EnableLoggingCheckBox.Content" xml:space="preserve">
     <value>Habilitar registro</value>
@@ -285,11 +291,23 @@
   <data name="SettingsControl.LoadSettingsButton.Content" xml:space="preserve">
     <value>Cargar configuración</value>
   </data>
+  <data name="SettingsControl.LogDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Directorio de registros:</value>
+  </data>
   <data name="SettingsControl.LogLevelTextBlock.Text" xml:space="preserve">
     <value>Nivel de registro:</value>
   </data>
+  <data name="SettingsControl.LogoDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Directorio de logotipos:</value>
+  </data>
   <data name="SettingsControl.MaxBatchSizeTextBlock.Text" xml:space="preserve">
     <value>Tamaño máximo de lote:</value>
+  </data>
+  <data name="SettingsControl.PathsGroupBox.Header" xml:space="preserve">
+    <value>Rutas de datos</value>
+  </data>
+  <data name="SettingsControl.PathsHintTextBlock.Text" xml:space="preserve">
+    <value>Una ruta vacía usa el valor predeterminado bajo el directorio de datos. Una ruta cambiada se usa después de reiniciar.</value>
   </data>
   <data name="SettingsControl.SaveSettingsButton.Content" xml:space="preserve">
     <value>Guardar configuración</value>

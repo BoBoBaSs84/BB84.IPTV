@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ChangedDataPathsRestartApplicationQuestion" xml:space="preserve">
+    <value>Die Datenpfade wurden geändert. Möchten Sie die Anwendung neu starten, um die Änderungen zu übernehmen?</value>
+  </data>
   <data name="ChangedLanguageRestartApplicationQuestion" xml:space="preserve">
     <value>Die Sprache wurde geändert. Möchten Sie die Anwendung neu starten, um die Änderungen zu übernehmen?</value>
   </data>
@@ -142,6 +145,12 @@
   <data name="CustomChannelSaved" xml:space="preserve">
     <value>Eigener Sender &apos;{0}&apos; gespeichert.</value>
   </data>
+  <data name="DataDirectoryDialogTitle" xml:space="preserve">
+    <value>Verzeichnis für die Datenbank auswählen</value>
+  </data>
+  <data name="DataPathIsNotValid" xml:space="preserve">
+    <value>Der Pfad „{0}“ kann nicht verwendet werden, bitte geben Sie einen vollständigen Pfad an.</value>
+  </data>
   <data name="ExitApplicationQuestion" xml:space="preserve">
     <value>Möchten Sie die Anwendung wirklich beenden?</value>
   </data>
@@ -156,6 +165,12 @@
   </data>
   <data name="ImportPlaylistTitle" xml:space="preserve">
     <value>Wiedergabeliste importieren</value>
+  </data>
+  <data name="LogDirectoryDialogTitle" xml:space="preserve">
+    <value>Verzeichnis für die Protokolldateien auswählen</value>
+  </data>
+  <data name="LogoDirectoryDialogTitle" xml:space="preserve">
+    <value>Verzeichnis für die zwischengespeicherten Logos auswählen</value>
   </data>
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Wiedergabeliste zusammenführen</value>

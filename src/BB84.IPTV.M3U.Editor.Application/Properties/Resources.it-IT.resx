@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ChangedDataPathsRestartApplicationQuestion" xml:space="preserve">
+    <value>I percorsi dei dati sono stati modificati. Vuoi riavviare l’applicazione per applicare le modifiche?</value>
+  </data>
   <data name="ChangedLanguageRestartApplicationQuestion" xml:space="preserve">
     <value>La lingua è stata cambiata. Vuoi riavviare l'applicazione per applicare le modifiche?</value>
   </data>
@@ -142,6 +145,12 @@
   <data name="CustomChannelSaved" xml:space="preserve">
     <value>Canale personalizzato &apos;{0}&apos; salvato.</value>
   </data>
+  <data name="DataDirectoryDialogTitle" xml:space="preserve">
+    <value>Seleziona la cartella che contiene il database</value>
+  </data>
+  <data name="DataPathIsNotValid" xml:space="preserve">
+    <value>Il percorso «{0}» non può essere usato, inserisci un percorso completo.</value>
+  </data>
   <data name="ExitApplicationQuestion" xml:space="preserve">
     <value>Sei sicuro di voler uscire dall'applicazione?</value>
   </data>
@@ -156,6 +165,12 @@
   </data>
   <data name="ImportPlaylistTitle" xml:space="preserve">
     <value>Importa playlist</value>
+  </data>
+  <data name="LogDirectoryDialogTitle" xml:space="preserve">
+    <value>Seleziona la cartella che contiene i file di log</value>
+  </data>
+  <data name="LogoDirectoryDialogTitle" xml:space="preserve">
+    <value>Seleziona la cartella che contiene i loghi nella cache</value>
   </data>
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Unisci playlist</value>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -264,11 +264,17 @@
   <data name="SettingsControl.AutoSaveIntervalTextBlock.Text" xml:space="preserve">
     <value>Intervalle de sauvegarde automatique (min) :</value>
   </data>
+  <data name="SettingsControl.BrowseButton.Content" xml:space="preserve">
+    <value>Parcourir...</value>
+  </data>
   <data name="SettingsControl.CommandTimeoutTextBlock.Text" xml:space="preserve">
     <value>Délai d'expiration de la commande (s) :</value>
   </data>
   <data name="SettingsControl.DatabaseGroupBox.Header" xml:space="preserve">
     <value>Base de données</value>
+  </data>
+  <data name="SettingsControl.DataDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Répertoire de données:</value>
   </data>
   <data name="SettingsControl.EnableLoggingCheckBox.Content" xml:space="preserve">
     <value>Activer la journalisation</value>
@@ -282,11 +288,23 @@
   <data name="SettingsControl.LoadSettingsButton.Content" xml:space="preserve">
     <value>Charger les paramètres</value>
   </data>
+  <data name="SettingsControl.LogDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Répertoire des journaux:</value>
+  </data>
   <data name="SettingsControl.LogLevelTextBlock.Text" xml:space="preserve">
     <value>Niveau de journalisation :</value>
   </data>
+  <data name="SettingsControl.LogoDirectoryTextBlock.Text" xml:space="preserve">
+    <value>Répertoire des logos:</value>
+  </data>
   <data name="SettingsControl.MaxBatchSizeTextBlock.Text" xml:space="preserve">
     <value>Taille maximale du lot :</value>
+  </data>
+  <data name="SettingsControl.PathsGroupBox.Header" xml:space="preserve">
+    <value>Chemins de données</value>
+  </data>
+  <data name="SettingsControl.PathsHintTextBlock.Text" xml:space="preserve">
+    <value>Un chemin vide utilise la valeur par défaut sous le répertoire de données. Un chemin modifié est utilisé après un redémarrage.</value>
   </data>
   <data name="SettingsControl.SaveSettingsButton.Content" xml:space="preserve">
     <value>Enregistrer les paramètres</value>

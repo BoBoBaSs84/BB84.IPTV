@@ -22,6 +22,7 @@ public sealed class SettingsServiceTests
 	private readonly Mock<IDirectoryProvider> _directoryProviderMock = new();
 	private readonly Mock<IFileProvider> _fileProviderMock = new();
 	private readonly ApplicationSettings _applicationSettings = new();
+	private readonly IPathService _pathService;
 	private readonly SettingsService _sut;
 
 	public SettingsServiceTests()
@@ -31,7 +32,9 @@ public sealed class SettingsServiceTests
 		_providerServiceMock.SetupGet(x => x.File)
 			.Returns(_fileProviderMock.Object);
 
-		_sut = new SettingsService(_eventServiceMock.Object, _loggerServiceMock.Object, _providerServiceMock.Object, _applicationSettings);
+		// The default settings name no path, so the service works with the per-user defaults.
+		_pathService = new PathService(_applicationSettings);
+		_sut = new SettingsService(_eventServiceMock.Object, _loggerServiceMock.Object, _providerServiceMock.Object, _pathService, _applicationSettings);
 	}
 
 	[TestMethod]

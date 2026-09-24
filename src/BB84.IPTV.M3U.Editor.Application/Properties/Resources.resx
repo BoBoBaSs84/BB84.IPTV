@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChangedDataPathsRestartApplicationQuestion" xml:space="preserve">
+    <value>The data paths have been changed. Do you want to restart the application to apply the changes?</value>
+  </data>
   <data name="ChangedLanguageRestartApplicationQuestion" xml:space="preserve">
     <value>The language has been changed. Do you want to restart the application to apply the changes?</value>
   </data>
@@ -141,6 +144,12 @@
   <data name="CustomChannelSaved" xml:space="preserve">
     <value>Custom channel &apos;{0}&apos; saved.</value>
   </data>
+  <data name="DataDirectoryDialogTitle" xml:space="preserve">
+    <value>Select the directory that holds the database</value>
+  </data>
+  <data name="DataPathIsNotValid" xml:space="preserve">
+    <value>The path '{0}' cannot be used, please enter a full path.</value>
+  </data>
   <data name="ExitApplicationQuestion" xml:space="preserve">
     <value>Are you sure you want to exit the application?</value>
   </data>
@@ -155,6 +164,12 @@
   </data>
   <data name="ImportPlaylistTitle" xml:space="preserve">
     <value>Import Playlist</value>
+  </data>
+  <data name="LogDirectoryDialogTitle" xml:space="preserve">
+    <value>Select the directory that holds the log files</value>
+  </data>
+  <data name="LogoDirectoryDialogTitle" xml:space="preserve">
+    <value>Select the directory that holds the cached logos</value>
   </data>
   <data name="MergePlaylistTitle" xml:space="preserve">
     <value>Merge Playlist</value>

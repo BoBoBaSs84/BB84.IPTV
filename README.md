@@ -125,7 +125,8 @@ The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Ph
 
 ### Phase 8 – Polish
 
-- Settings for data paths and logo policy.
+- Settings for data paths (done): the `Paths` section of the settings file keeps the directory of the database, of the cached logos and of the log files. An empty value means the default below the per-user data directory, a path that is not fully qualified falls back to it as well, and the settings file itself always stays in the default directory, because it is what tells the application where everything else lives. `IPathService` resolves the paths once while the application starts, the settings screen shows the ones in use and offers a folder dialog per path, and a changed path asks for a restart.
+- Settings for the logo policy.
 - Consistent error, warning and progress notifications.
 - CI workflow for build and test (done): `.github/workflows/build.yml` builds the solution and runs the tests on Linux and Windows for every push to `main` and every pull request.
 - Update `CLAUDE.md` to the final architecture.

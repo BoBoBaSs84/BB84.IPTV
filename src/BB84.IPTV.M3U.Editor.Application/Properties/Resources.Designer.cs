@@ -430,6 +430,51 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The data paths have been changed. Do you want to restart the application to apply the changes?.
+        /// </summary>
+        internal static string ChangedDataPathsRestartApplicationQuestion {
+            get {
+                return ResourceManager.GetString("ChangedDataPathsRestartApplicationQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the directory that holds the database.
+        /// </summary>
+        internal static string DataDirectoryDialogTitle {
+            get {
+                return ResourceManager.GetString("DataDirectoryDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The path &apos;{0}&apos; cannot be used, please enter a full path..
+        /// </summary>
+        internal static string DataPathIsNotValid {
+            get {
+                return ResourceManager.GetString("DataPathIsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the directory that holds the log files.
+        /// </summary>
+        internal static string LogDirectoryDialogTitle {
+            get {
+                return ResourceManager.GetString("LogDirectoryDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the directory that holds the cached logos.
+        /// </summary>
+        internal static string LogoDirectoryDialogTitle {
+            get {
+                return ResourceManager.GetString("LogoDirectoryDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The playlist &apos;{0}&apos; has unsaved changes. Do you want to save them?.
         /// </summary>
         internal static string SaveChangesQuestion {
