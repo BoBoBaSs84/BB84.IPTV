@@ -36,7 +36,7 @@ Host (Avalonia)  →  Infrastructure  →  Application  →  Domain
 - **Infrastructure**: EF Core / SQLite, iptv-org HTTP client, file, settings and logging services.
 - **Host**: UI and the presentation service implementations (`IFileDialogService`, `INotificationService`, `IUserService`).
 
-The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Phase 1). See [CLAUDE.md](CLAUDE.md) for the current code layout and conventions.
+The Avalonia host replaced the former WPF host in `src/BB84.IPTV.M3U.Editor` (Phase 1).
 
 ## Roadmap
 
