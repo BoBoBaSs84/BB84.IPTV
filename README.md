@@ -1,6 +1,17 @@
 # BB84.IPTV
 
 [![Build](https://github.com/BoBoBaSs84/BB84.IPTV/actions/workflows/build.yml/badge.svg)](https://github.com/BoBoBaSs84/BB84.IPTV/actions/workflows/build.yml)
+[![Pages](https://github.com/BoBoBaSs84/BB84.IPTV/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/BoBoBaSs84/BB84.IPTV/actions/workflows/pages/pages-build-deployment)
+[![CodeQL](https://github.com/BoBoBaSs84/BB84.IPTV/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/BoBoBaSs84/BB84.IPTV/actions/workflows/github-code-scanning/codeql)
+[![Dependabot Updates](https://github.com/BoBoBaSs84/BB84.IPTV/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/BoBoBaSs84/BB84.IPTV/actions/workflows/dependabot/dependabot-updates)
+
+[![.NET](https://img.shields.io/badge/net10.0-5C2D91?logo=.NET&labelColor=gray)](https://github.com/BoBoBaSs84/BB84.IPTV)
+[![C#](https://img.shields.io/badge/C%23-14.0-239120)](https://github.com/BoBoBaSs84/BB84.IPTV)
+[![Issues](https://img.shields.io/github/issues/BoBoBaSs84/BB84.IPTV)](https://github.com/BoBoBaSs84/BB84.IPTV/issues)
+[![Commit](https://img.shields.io/github/last-commit/BoBoBaSs84/BB84.IPTV)](https://github.com/BoBoBaSs84/BB84.IPTV/commit/main)
+[![Size](https://img.shields.io/github/repo-size/BoBoBaSs84/BB84.IPTV)](https://github.com/BoBoBaSs84/BB84.IPTV)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/BoBoBaSs84/BB84.IPTV)](https://github.com/BoBoBaSs84/BB84.IPTV/releases/latest)
 
 A desktop application to view, create, edit and merge IPTV playlists (M3U). Channel data comes from the public [iptv-org API](https://github.com/iptv-org/api), is stored in a local SQLite database and can be combined with your own custom channels. The app can also generate a `channels.xml` for [iptv-org/epg](https://github.com/iptv-org/epg#usage), so that your custom channel list gets matching program guide data.
 
