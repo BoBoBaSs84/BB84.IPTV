@@ -14,12 +14,12 @@ updates:
     assignees:
       - "BoBoBaSs84"
     groups:
+		  avalonia-dependencies:
+			  patterns:
+					- "Avalonia*"
       bb84-dependencies:
         patterns:
-          - "BB84*"    
-      mstest-dependencies:
-        patterns:
-          - "MSTest*"
+          - "BB84*"
       microsoft-dependencies:
         patterns:
           - "Microsoft*"
