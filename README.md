@@ -6,6 +6,14 @@ A desktop application to view, create, edit and merge IPTV playlists (M3U). Chan
 
 The application is a cross-platform AvaloniaUI app and runs on Windows, Linux and macOS. SQLite is the single store for catalog data, playlists, custom channels, guide mappings and logo cache metadata.
 
+## Screenshots
+
+|                                                                             |                                                                              |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| ![The playlist editor](docs/images/playlists.png)<br>Playlist editor        | ![The channel catalog](docs/images/channels.png)<br>Channel catalog          |
+| ![The merge screen](docs/images/merge.png)<br>Merge playlists               | ![The guide mapping screen](docs/images/guide.png)<br>`channels.xml` mapping |
+| ![The database screen](docs/images/database.png)<br>Database and logo cache | ![The settings screen](docs/images/settings.png)<br>Settings                 |
+
 ## Features
 
 ### Playlists
@@ -66,7 +74,7 @@ The application is a cross-platform AvaloniaUI app and runs on Windows, Linux an
 
 | Source                                                                     | Used for                                                                                                                                   |
 | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`https://iptv-org.github.io/api/*.json`](https://github.com/iptv-org/api) | Channels, feeds, streams, guides, logos, categories, languages, countries. Imported by `WebService` / `DatabaseService`.                    |
+| [`https://iptv-org.github.io/api/*.json`](https://github.com/iptv-org/api) | Channels, feeds, streams, guides, logos, categories, languages, countries. Imported by `WebService` / `DatabaseService`.                   |
 | [iptv-org/epg](https://github.com/iptv-org/epg#usage)                      | Format of `channels.xml`.                                                                                                                  |
 | `misc/epg-de.xml(.gz)`                                                     | German EPG snapshot, refreshed weekly by `.github/workflows/epg.yml` on the `epg` branch, which opens a pull request. Not part of the app. |
 
