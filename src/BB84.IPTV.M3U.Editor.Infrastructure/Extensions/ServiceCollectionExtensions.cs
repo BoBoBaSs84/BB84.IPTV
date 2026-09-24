@@ -151,9 +151,7 @@ internal static class ServiceCollectionExtensions
 		services.AddSingleton<IFileService, FileService>();
 		services.AddSingleton<ILogoStoreService, LogoStoreService>();
 		services.AddSingleton<ISettingsService, SettingsService>();
-
-		services.AddScoped<IDownloadService, DownloadService>();
-
+		services.AddSingleton<IDownloadService, DownloadService>();
 		services.AddScoped<IRepositoryService, RepositoryService>();
 		services.AddScoped<IWebService, WebService>();
 
