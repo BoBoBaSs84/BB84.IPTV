@@ -41,8 +41,8 @@
 		<Authors>$(Author)</Authors>
 		<Company>https://github.com/$(Author)</Company>
 		<Copyright>Copyright © $([System.DateTime]::UtcNow.Year) $(Author)</Copyright>
-		<Description>...</Description>
-		<Product>BB84.IPTV.M3U.Editor</Product>
+		<Description>A desktop application to view, create, edit and merge IPTV playlists (M3U). Channel data comes from the public iptv-org API, is stored in a local SQLite database and can be combined with your own custom channels.</Description>
+		<Product>BB84.IPTV</Product>
 		<Title>$(AssemblyName)</Title>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>http://www.github.com/$(Author)/$(Product)</RepositoryUrl>
