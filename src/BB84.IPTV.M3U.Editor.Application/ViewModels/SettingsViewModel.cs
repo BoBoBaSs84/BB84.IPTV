@@ -2,6 +2,7 @@
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Properties;
@@ -49,6 +50,7 @@ public sealed class SettingsViewModel : ViewModelBase, INavigateable
 
 		General = _applicationSettings.General;
 		Database = _applicationSettings.Database;
+		Logo = _applicationSettings.Logo;
 		Paths = _applicationSettings.Paths;
 	}
 
@@ -63,6 +65,18 @@ public sealed class SettingsViewModel : ViewModelBase, INavigateable
 	/// to configure options related to database connections and storage preferences.
 	/// </summary>
 	public DatabaseSettings Database { get; }
+
+	/// <summary>
+	/// Gets the logo settings for the IPTV M3U Editor application, allowing users to configure how
+	/// many logos are downloaded at once and how an export writes the path of a cached logo.
+	/// </summary>
+	public LogoSettings Logo { get; }
+
+	/// <summary>
+	/// Gets the largest number of logos that may be downloaded at once, as the numeric input of the
+	/// view takes it.
+	/// </summary>
+	public static decimal MaxParallelDownloadsLimit => LogoCacheRequest.MaxParallelLimit;
 
 	/// <summary>
 	/// Gets the data path settings for the IPTV M3U Editor application, allowing users to keep the
@@ -220,8 +234,5 @@ public sealed class SettingsViewModel : ViewModelBase, INavigateable
 	}
 
 	private void OnError(Exception exception)
-	{
-		ErrorOccuredEvent @event = new("An error occurred while managing application settings.", exception);
-		_eventService.Publish(@event);
-	}
+		=> _eventService.Publish(new ErrorOccuredEvent(Resources.SettingsOperationFailed, exception));
 }

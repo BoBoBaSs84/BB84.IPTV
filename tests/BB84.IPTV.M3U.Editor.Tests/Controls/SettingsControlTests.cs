@@ -44,4 +44,32 @@ public sealed class SettingsControlTests
 				Assert.Contains(viewModel.LogDirectoryInUse, placeholders);
 			});
 		}).ConfigureAwait(false);
+
+	[TestMethod]
+	public async Task TheLogoPolicyShouldBeBoundToTheLogoSettings()
+		=> await UiTest.RunAsync(() =>
+		{
+			SettingsViewModel viewModel = ViewModelFactory.CreateSettings();
+			SettingsControl control = new() { DataContext = viewModel };
+
+			UiTest.InWindow(control, _ =>
+			{
+				CheckBox useLocalPaths = control.GetVisualDescendants()
+					.OfType<CheckBox>()
+					.First(box => Equals(box.Content, Properties.Resources.SettingsControl_UseLocalPathsOnExportCheckBox_Content));
+				NumericUpDown maxParallelDownloads = control.GetVisualDescendants()
+					.OfType<NumericUpDown>()
+					.First(input => input.Maximum == SettingsViewModel.MaxParallelDownloadsLimit);
+
+				Assert.AreEqual(viewModel.Logo.UseLocalPathsOnExport, useLocalPaths.IsChecked);
+				Assert.AreEqual(viewModel.Logo.MaxParallelDownloads, (int)maxParallelDownloads.Value!);
+
+				useLocalPaths.IsChecked = false;
+				maxParallelDownloads.Value = 8;
+				UiTest.Settle();
+
+				Assert.IsFalse(viewModel.Logo.UseLocalPathsOnExport);
+				Assert.AreEqual(8, viewModel.Logo.MaxParallelDownloads);
+			});
+		}).ConfigureAwait(false);
 }

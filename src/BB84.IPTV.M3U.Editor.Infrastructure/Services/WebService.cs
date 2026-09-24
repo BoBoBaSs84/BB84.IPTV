@@ -4,6 +4,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Events;
+using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Infrastructure.Common;
 
 using Microsoft.Extensions.Logging;
@@ -18,9 +19,6 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 /// <param name="eventService">The event service to publish events.</param>
 internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerService<WebService> loggerService, IEventService eventService) : IWebService
 {
-	private static readonly Action<ILogger, Exception?> LogException =
-		LoggerMessage.Define(LogLevel.Error, 0, "Exception occured.");
-
 	private static readonly Action<ILogger, string, Exception?> LogInformation =
 		LoggerMessage.Define<string>(LogLevel.Information, 1, "{Information}");
 
@@ -33,8 +31,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -48,8 +45,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -63,8 +59,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -78,8 +73,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -93,8 +87,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -108,8 +101,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -123,8 +115,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -138,8 +129,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -153,8 +143,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -168,8 +157,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -183,8 +171,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -198,8 +185,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -213,8 +199,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 		catch (Exception ex)
 		{
-			loggerService.Log(LogException, ex);
-			ShowErrorNotification(ex.Message);
+			ShowErrorNotification(ex);
 			return [];
 		}
 	}
@@ -249,6 +234,10 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 		}
 	}
 
-	private void ShowErrorNotification(string messsage)
-		=> eventService.Publish(new ErrorOccuredEvent(messsage));
+	/// <summary>
+	/// Reports a failed request, the notification service logs what it shows.
+	/// </summary>
+	/// <param name="exception">The exception the request failed with.</param>
+	private void ShowErrorNotification(Exception exception)
+		=> eventService.Publish(new ErrorOccuredEvent(Resources.WebRequestFailed, exception));
 }

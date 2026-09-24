@@ -772,6 +772,42 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logo cache.
+        /// </summary>
+        public static string SettingsControl_LogoGroupBox_Header {
+            get {
+                return ResourceManager.GetString("SettingsControl.LogoGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use cached logo paths on export.
+        /// </summary>
+        public static string SettingsControl_UseLocalPathsOnExportCheckBox_Content {
+            get {
+                return ResourceManager.GetString("SettingsControl.UseLocalPathsOnExportCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Path Style:.
+        /// </summary>
+        public static string SettingsControl_ExportPathStyleTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.ExportPathStyleTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Parallel Downloads:.
+        /// </summary>
+        public static string SettingsControl_MaxParallelDownloadsTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.MaxParallelDownloadsTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warning.
         /// </summary>
         public static string WarningMessageCaptition {

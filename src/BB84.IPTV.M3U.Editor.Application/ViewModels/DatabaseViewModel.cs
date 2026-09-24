@@ -185,7 +185,7 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 		=> _databaseChecked.IsFalse() && _databaseChecking.IsFalse() && _databaseCreated.IsTrue();
 
 	private void CheckDataBaseFailed(Exception exception)
-		=> _eventService.Publish(new ErrorOccuredEvent("Failed to check database.", exception));
+		=> _eventService.Publish(new ErrorOccuredEvent(Resources.DatabaseCheckFailed, exception));
 
 	private async Task CreateDatabaseAsync()
 	{
@@ -206,7 +206,7 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 		=> _databaseCreated.IsFalse() && _databaseCreating.IsFalse();
 
 	private void CreateDataBaseFailed(Exception exception)
-		=> _eventService.Publish(new ErrorOccuredEvent("Failed to create database.", exception));
+		=> _eventService.Publish(new ErrorOccuredEvent(Resources.DatabaseCreateFailed, exception));
 
 	private async Task ImportDatabaseAsync()
 	{
@@ -214,15 +214,15 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 		{
 			DatabaseImporting = true;
 			ImportProgress = 0;
-			ImportStatusMessage = "Starting database import...";
+			ImportStatusMessage = Resources.DatabaseImportStarted;
 
 			DatabaseImportResponse response = await _databaseService
 				.ImportDatabaseAsync();
 
 			DatabaseImported = response.IsSuccess;
 			ImportStatusMessage = response.IsSuccess
-				? $"Import completed successfully. Total records: {response.TotalImported}"
-				: "Import completed with no records.";
+				? Resources.DatabaseImportSucceeded.FormatMessage(response.TotalImported)
+				: Resources.DatabaseImportWithoutRecords;
 		}
 		finally
 		{
@@ -235,8 +235,8 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 
 	private void ImportDatabaseFailed(Exception exception)
 	{
-		_eventService.Publish(new ErrorOccuredEvent("Failed to import database.", exception));
-		ImportStatusMessage = "Import failed.";
+		_eventService.Publish(new ErrorOccuredEvent(Resources.DatabaseImportFailed, exception));
+		ImportStatusMessage = Resources.DatabaseImportFailed;
 		ImportProgress = 0;
 	}
 
@@ -419,6 +419,7 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	private void UpdateImportProgress(DatabaseImportProgressEvent @event)
 	{
 		ImportProgress = @event.ProgressPercentage;
-		ImportStatusMessage = $"Importing {@event.RepositoryName}: {@event.RecordsImported} records ({@event.CompletedTasks}/{@event.TotalTasks})";
+		ImportStatusMessage = Resources.DatabaseImportProgressStatus
+			.FormatMessage(@event.RepositoryName, @event.RecordsImported, @event.CompletedTasks, @event.TotalTasks);
 	}
 }

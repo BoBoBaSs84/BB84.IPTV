@@ -1,11 +1,11 @@
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace BB84.IPTV.M3U.Editor.Application.Extensions;
 
 /// <summary>
 /// Provides string helpers for user-facing messages.
 /// </summary>
-internal static class StringExtensions
+public static class StringExtensions
 {
 	/// <summary>
 	/// Replaces the placeholders of a localized message format with the <paramref name="args"/>,
@@ -14,6 +14,6 @@ internal static class StringExtensions
 	/// <param name="format">The message format, usually a localized resource.</param>
 	/// <param name="args">The values for the placeholders.</param>
 	/// <returns>The formatted message.</returns>
-	internal static string FormatMessage(this string format, params object[] args)
+	public static string FormatMessage(this string format, params object[] args)
 		=> string.Format(CultureInfo.CurrentCulture, format, args);
 }

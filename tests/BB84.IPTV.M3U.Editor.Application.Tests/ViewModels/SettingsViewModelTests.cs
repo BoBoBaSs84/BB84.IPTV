@@ -1,12 +1,16 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using System.Windows.Input;
+
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Events;
+using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 
@@ -45,7 +49,12 @@ public sealed class SettingsViewModelTests
 		Assert.AreSame(_applicationSettings.General, _sut.General);
 		Assert.AreSame(_applicationSettings.Database, _sut.Database);
 		Assert.AreSame(_applicationSettings.Paths, _sut.Paths);
+		Assert.AreSame(_applicationSettings.Logo, _sut.Logo);
 	}
+
+	[TestMethod]
+	public void TheParallelDownloadLimitShouldBeTheOneOfTheRequest()
+		=> Assert.AreEqual(LogoCacheRequest.MaxParallelLimit, SettingsViewModel.MaxParallelDownloadsLimit);
 
 	[TestMethod]
 	public void ThePathsInUseShouldComeFromThePathService()
@@ -137,6 +146,26 @@ public sealed class SettingsViewModelTests
 		_sut.Paths.DataDirectory = configured;
 		await _sut.BrowseDataDirectoryCommand.ExecuteAsync().ConfigureAwait(false);
 		_fileDialogServiceMock.Verify(x => x.ShowOpenFolderDialogAsync(It.IsAny<string>(), configured), Times.Once);
+	}
+
+	[TestMethod]
+	public async Task AFailedSaveShouldPublishALocalizedError()
+	{
+		TaskCompletionSource<ErrorOccuredEvent> published = new();
+		_eventServiceMock.Setup(x => x.Publish(It.IsAny<ErrorOccuredEvent>()))
+			.Callback((ErrorOccuredEvent @event) => published.TrySetResult(@event));
+		_settingsServiceMock.Setup(x => x.SaveAsync(It.IsAny<ApplicationSettings>(), It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new IOException("no disk"));
+
+		// The UI runs the command, which reports a failure to its error handler instead of throwing.
+		((ICommand)_sut.SaveCommand).Execute(null);
+
+		ErrorOccuredEvent reported = await published.Task
+			.WaitAsync(TimeSpan.FromSeconds(5))
+			.ConfigureAwait(false);
+
+		Assert.AreEqual(Resources.SettingsOperationFailed, reported.Message);
+		Assert.IsNotNull(reported.Exception);
 	}
 
 	[TestMethod]

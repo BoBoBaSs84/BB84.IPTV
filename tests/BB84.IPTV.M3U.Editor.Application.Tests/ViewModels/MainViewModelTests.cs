@@ -1,10 +1,13 @@
 ﻿using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
+using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Events;
+using BB84.IPTV.M3U.Editor.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -49,4 +52,44 @@ public sealed class MainViewModelTests
 
 		eventServiceMock.Verify(x => x.Publish(It.IsAny<ExitRequestedEvent>()), Times.Exactly(expectedPublishCount));
 	}
+
+	[TestMethod]
+	public void TheStatusBarShouldFollowBothStatusEvents()
+	{
+		EventService eventService = new(new Mock<ILoggerService<EventService>>().Object);
+		MainViewModel viewModel = CreateMainViewModel(eventService);
+
+		// A status without auto clear stays, so a long running operation can keep it.
+		eventService.Publish(new StatusChangedEvent("Working"));
+		Assert.AreEqual("Working", viewModel.StatusText);
+
+		eventService.Publish(new DelayedStatusChangedEvent("Done", 10000));
+		Assert.AreEqual("Done", viewModel.StatusText);
+	}
+
+	[TestMethod]
+	public void TheProgressBarShouldFollowTheProgressEvent()
+	{
+		EventService eventService = new(new Mock<ILoggerService<EventService>>().Object);
+		MainViewModel viewModel = CreateMainViewModel(eventService);
+
+		eventService.Publish(new ProgressChangedEvent(25));
+
+		Assert.AreEqual(25, viewModel.ProgressBarValue);
+		Assert.AreEqual(100, viewModel.ProgressBarMaximum);
+		Assert.IsTrue(viewModel.ProgressBarVisible);
+
+		// A finished operation hides the bar again.
+		eventService.Publish(new ProgressChangedEvent(100));
+
+		Assert.IsFalse(viewModel.ProgressBarVisible);
+	}
+
+	private static MainViewModel CreateMainViewModel(IEventService eventService)
+		=> new(
+			eventService,
+			new Mock<IHostEnvironment>().Object,
+			new Mock<INotificationService>().Object,
+			new Mock<IUserService>().Object,
+			new Mock<INavigationService>().Object);
 }

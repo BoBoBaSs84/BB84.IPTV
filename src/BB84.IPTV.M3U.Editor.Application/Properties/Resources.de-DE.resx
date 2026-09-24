@@ -145,6 +145,27 @@
   <data name="CustomChannelSaved" xml:space="preserve">
     <value>Eigener Sender &apos;{0}&apos; gespeichert.</value>
   </data>
+  <data name="DatabaseCheckFailed" xml:space="preserve">
+    <value>Die Datenbank konnte nicht geprüft werden.</value>
+  </data>
+  <data name="DatabaseCreateFailed" xml:space="preserve">
+    <value>Die Datenbank konnte nicht erstellt werden.</value>
+  </data>
+  <data name="DatabaseImportFailed" xml:space="preserve">
+    <value>Die Datenbank konnte nicht importiert werden.</value>
+  </data>
+  <data name="DatabaseImportProgressStatus" xml:space="preserve">
+    <value>{0} werden importiert: {1} Datensätze ({2} von {3}).</value>
+  </data>
+  <data name="DatabaseImportStarted" xml:space="preserve">
+    <value>Der Datenbankimport wurde gestartet.</value>
+  </data>
+  <data name="DatabaseImportSucceeded" xml:space="preserve">
+    <value>Der Import ist fertig, insgesamt {0} Datensätze.</value>
+  </data>
+  <data name="DatabaseImportWithoutRecords" xml:space="preserve">
+    <value>Der Import ist fertig, es wurden keine Datensätze importiert.</value>
+  </data>
   <data name="DataDirectoryDialogTitle" xml:space="preserve">
     <value>Verzeichnis für die Datenbank auswählen</value>
   </data>
@@ -244,6 +265,24 @@
   <data name="PlaylistExported" xml:space="preserve">
     <value>Wiedergabeliste &apos;{0}&apos; nach &apos;{1}&apos; exportiert.</value>
   </data>
+  <data name="PlaylistFileLoaded" xml:space="preserve">
+    <value>Die Wiedergabeliste in „{0}“ wurde gelesen.</value>
+  </data>
+  <data name="PlaylistFileLoadFailed" xml:space="preserve">
+    <value>Die Wiedergabeliste in „{0}“ konnte nicht gelesen werden.</value>
+  </data>
+  <data name="PlaylistFileLoading" xml:space="preserve">
+    <value>Die Wiedergabeliste in „{0}“ wird gelesen.</value>
+  </data>
+  <data name="PlaylistFileSaved" xml:space="preserve">
+    <value>Die Wiedergabeliste wurde nach „{0}“ geschrieben.</value>
+  </data>
+  <data name="PlaylistFileSaveFailed" xml:space="preserve">
+    <value>Die Wiedergabeliste konnte nicht nach „{0}“ geschrieben werden.</value>
+  </data>
+  <data name="PlaylistFileSaving" xml:space="preserve">
+    <value>Die Wiedergabeliste wird nach „{0}“ geschrieben.</value>
+  </data>
   <data name="PlaylistImported" xml:space="preserve">
     <value>Wiedergabeliste &apos;{0}&apos; importiert.</value>
   </data>
@@ -258,5 +297,17 @@
   </data>
   <data name="SaveChangesQuestion" xml:space="preserve">
     <value>Die Wiedergabeliste &apos;{0}&apos; hat ungespeicherte Änderungen. Sollen sie gespeichert werden?</value>
+  </data>
+  <data name="SettingsLoadFailed" xml:space="preserve">
+    <value>Die Einstellungen konnten nicht gelesen werden.</value>
+  </data>
+  <data name="SettingsOperationFailed" xml:space="preserve">
+    <value>Die Einstellungen konnten nicht verwaltet werden.</value>
+  </data>
+  <data name="SettingsSaveFailed" xml:space="preserve">
+    <value>Die Einstellungen konnten nicht geschrieben werden.</value>
+  </data>
+  <data name="WebRequestFailed" xml:space="preserve">
+    <value>Die Daten konnten nicht von iptv-org gelesen werden.</value>
   </data>
 </root>

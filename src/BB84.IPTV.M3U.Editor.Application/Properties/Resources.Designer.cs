@@ -22,7 +22,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BB84.IPTV.M3U.Editor.Application.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} channels added to the playlist &apos;{1}&apos;..
         /// </summary>
-        internal static string CatalogChannelsAdded {
+        public static string CatalogChannelsAdded {
             get {
                 return ResourceManager.GetString("CatalogChannelsAdded", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} channels found..
         /// </summary>
-        internal static string CatalogChannelsFound {
+        public static string CatalogChannelsFound {
             get {
                 return ResourceManager.GetString("CatalogChannelsFound", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to No playlist is open. Open a playlist first, the channels are added to it..
         /// </summary>
-        internal static string CatalogNoPlaylistOpen {
+        public static string CatalogNoPlaylistOpen {
             get {
                 return ResourceManager.GetString("CatalogNoPlaylistOpen", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The channel operation failed..
         /// </summary>
-        internal static string CatalogOperationFailed {
+        public static string CatalogOperationFailed {
             get {
                 return ResourceManager.GetString("CatalogOperationFailed", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Page {0} of {1} — {2} channels found..
         /// </summary>
-        internal static string CatalogPageStatus {
+        public static string CatalogPageStatus {
             get {
                 return ResourceManager.GetString("CatalogPageStatus", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The language has been changed. Do you want to restart the application to apply the changes?.
         /// </summary>
-        internal static string ChangedLanguageRestartApplicationQuestion {
+        public static string ChangedLanguageRestartApplicationQuestion {
             get {
                 return ResourceManager.GetString("ChangedLanguageRestartApplicationQuestion", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to change the application language to &apos;{0}&apos;?.
         /// </summary>
-        internal static string ChangeLanguageQuestion {
+        public static string ChangeLanguageQuestion {
             get {
                 return ResourceManager.GetString("ChangeLanguageQuestion", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Custom channel &apos;{0}&apos; saved..
         /// </summary>
-        internal static string CustomChannelSaved {
+        public static string CustomChannelSaved {
             get {
                 return ResourceManager.GetString("CustomChannelSaved", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Delete the custom channel &apos;{0}&apos;? This cannot be undone..
         /// </summary>
-        internal static string DeleteCustomChannelQuestion {
+        public static string DeleteCustomChannelQuestion {
             get {
                 return ResourceManager.GetString("DeleteCustomChannelQuestion", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Delete the playlist &apos;{0}&apos;? This cannot be undone..
         /// </summary>
-        internal static string DeletePlaylistQuestion {
+        public static string DeletePlaylistQuestion {
             get {
                 return ResourceManager.GetString("DeletePlaylistQuestion", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to exit the application?.
         /// </summary>
-        internal static string ExitApplicationQuestion {
+        public static string ExitApplicationQuestion {
             get {
                 return ResourceManager.GetString("ExitApplicationQuestion", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Export Playlist.
         /// </summary>
-        internal static string ExportPlaylistTitle {
+        public static string ExportPlaylistTitle {
             get {
                 return ResourceManager.GetString("ExportPlaylistTitle", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Import Playlist.
         /// </summary>
-        internal static string ImportPlaylistTitle {
+        public static string ImportPlaylistTitle {
             get {
                 return ResourceManager.GetString("ImportPlaylistTitle", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Export channels.xml.
         /// </summary>
-        internal static string GuideExportTitle {
+        public static string GuideExportTitle {
             get {
                 return ResourceManager.GetString("GuideExportTitle", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} channels written to &apos;{1}&apos;..
         /// </summary>
-        internal static string GuideExported {
+        public static string GuideExported {
             get {
                 return ResourceManager.GetString("GuideExported", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} of {1} entries can be grabbed..
         /// </summary>
-        internal static string GuideMappingStatus {
+        public static string GuideMappingStatus {
             get {
                 return ResourceManager.GetString("GuideMappingStatus", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} mappings saved..
         /// </summary>
-        internal static string GuideMappingsSaved {
+        public static string GuideMappingsSaved {
             get {
                 return ResourceManager.GetString("GuideMappingsSaved", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The guide operation failed..
         /// </summary>
-        internal static string GuideOperationFailed {
+        public static string GuideOperationFailed {
             get {
                 return ResourceManager.GetString("GuideOperationFailed", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} cached logos deleted..
         /// </summary>
-        internal static string LogoCacheCleared {
+        public static string LogoCacheCleared {
             get {
                 return ResourceManager.GetString("LogoCacheCleared", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} logos downloaded..
         /// </summary>
-        internal static string LogoCacheDownloaded {
+        public static string LogoCacheDownloaded {
             get {
                 return ResourceManager.GetString("LogoCacheDownloaded", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The logo cache failed..
         /// </summary>
-        internal static string LogoCacheFailed {
+        public static string LogoCacheFailed {
             get {
                 return ResourceManager.GetString("LogoCacheFailed", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Downloading logos: {0} of {1}..
         /// </summary>
-        internal static string LogoCacheProgress {
+        public static string LogoCacheProgress {
             get {
                 return ResourceManager.GetString("LogoCacheProgress", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} of {1} logos cached..
         /// </summary>
-        internal static string LogoCacheStatus {
+        public static string LogoCacheStatus {
             get {
                 return ResourceManager.GetString("LogoCacheStatus", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} missing.
         /// </summary>
-        internal static string LogoCacheMissing {
+        public static string LogoCacheMissing {
             get {
                 return ResourceManager.GetString("LogoCacheMissing", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Playlist &apos;{0}&apos; created..
         /// </summary>
-        internal static string MergeCompleted {
+        public static string MergeCompleted {
             get {
                 return ResourceManager.GetString("MergeCompleted", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Merged Playlist.
         /// </summary>
-        internal static string MergedPlaylistName {
+        public static string MergedPlaylistName {
             get {
                 return ResourceManager.GetString("MergedPlaylistName", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Select at least two playlists to merge..
         /// </summary>
-        internal static string MergeNeedsTwoPlaylists {
+        public static string MergeNeedsTwoPlaylists {
             get {
                 return ResourceManager.GetString("MergeNeedsTwoPlaylists", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The merge failed..
         /// </summary>
-        internal static string MergeOperationFailed {
+        public static string MergeOperationFailed {
             get {
                 return ResourceManager.GetString("MergeOperationFailed", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Merge Playlist.
         /// </summary>
-        internal static string MergePlaylistTitle {
+        public static string MergePlaylistTitle {
             get {
                 return ResourceManager.GetString("MergePlaylistTitle", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} playlists, {1} entries, {2} duplicates dropped..
         /// </summary>
-        internal static string MergePreviewStatus {
+        public static string MergePreviewStatus {
             get {
                 return ResourceManager.GetString("MergePreviewStatus", resourceCulture);
             }
@@ -333,7 +333,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The merge has no playlists to merge..
         /// </summary>
-        internal static string MergeWithoutSources {
+        public static string MergeWithoutSources {
             get {
                 return ResourceManager.GetString("MergeWithoutSources", resourceCulture);
             }
@@ -342,7 +342,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Channel.
         /// </summary>
-        internal static string NewCustomChannelName {
+        public static string NewCustomChannelName {
             get {
                 return ResourceManager.GetString("NewCustomChannelName", resourceCulture);
             }
@@ -351,7 +351,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Playlist.
         /// </summary>
-        internal static string NewPlaylistName {
+        public static string NewPlaylistName {
             get {
                 return ResourceManager.GetString("NewPlaylistName", resourceCulture);
             }
@@ -360,7 +360,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Page {0} of {1}.
         /// </summary>
-        internal static string PageStatus {
+        public static string PageStatus {
             get {
                 return ResourceManager.GetString("PageStatus", resourceCulture);
             }
@@ -369,7 +369,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The playlist cannot be saved: {0}.
         /// </summary>
-        internal static string PlaylistCannotBeSaved {
+        public static string PlaylistCannotBeSaved {
             get {
                 return ResourceManager.GetString("PlaylistCannotBeSaved", resourceCulture);
             }
@@ -378,7 +378,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} entries have no URL..
         /// </summary>
-        internal static string PlaylistEntriesWithoutUrl {
+        public static string PlaylistEntriesWithoutUrl {
             get {
                 return ResourceManager.GetString("PlaylistEntriesWithoutUrl", resourceCulture);
             }
@@ -387,7 +387,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Playlist &apos;{0}&apos; exported to &apos;{1}&apos;..
         /// </summary>
-        internal static string PlaylistExported {
+        public static string PlaylistExported {
             get {
                 return ResourceManager.GetString("PlaylistExported", resourceCulture);
             }
@@ -396,7 +396,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Playlist &apos;{0}&apos; imported..
         /// </summary>
-        internal static string PlaylistImported {
+        public static string PlaylistImported {
             get {
                 return ResourceManager.GetString("PlaylistImported", resourceCulture);
             }
@@ -405,7 +405,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The playlist needs a name..
         /// </summary>
-        internal static string PlaylistNameRequired {
+        public static string PlaylistNameRequired {
             get {
                 return ResourceManager.GetString("PlaylistNameRequired", resourceCulture);
             }
@@ -414,7 +414,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The playlist operation failed..
         /// </summary>
-        internal static string PlaylistOperationFailed {
+        public static string PlaylistOperationFailed {
             get {
                 return ResourceManager.GetString("PlaylistOperationFailed", resourceCulture);
             }
@@ -423,7 +423,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Playlist &apos;{0}&apos; saved..
         /// </summary>
-        internal static string PlaylistSaved {
+        public static string PlaylistSaved {
             get {
                 return ResourceManager.GetString("PlaylistSaved", resourceCulture);
             }
@@ -432,7 +432,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The data paths have been changed. Do you want to restart the application to apply the changes?.
         /// </summary>
-        internal static string ChangedDataPathsRestartApplicationQuestion {
+        public static string ChangedDataPathsRestartApplicationQuestion {
             get {
                 return ResourceManager.GetString("ChangedDataPathsRestartApplicationQuestion", resourceCulture);
             }
@@ -441,7 +441,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Select the directory that holds the database.
         /// </summary>
-        internal static string DataDirectoryDialogTitle {
+        public static string DataDirectoryDialogTitle {
             get {
                 return ResourceManager.GetString("DataDirectoryDialogTitle", resourceCulture);
             }
@@ -450,7 +450,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The path &apos;{0}&apos; cannot be used, please enter a full path..
         /// </summary>
-        internal static string DataPathIsNotValid {
+        public static string DataPathIsNotValid {
             get {
                 return ResourceManager.GetString("DataPathIsNotValid", resourceCulture);
             }
@@ -459,7 +459,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Select the directory that holds the log files.
         /// </summary>
-        internal static string LogDirectoryDialogTitle {
+        public static string LogDirectoryDialogTitle {
             get {
                 return ResourceManager.GetString("LogDirectoryDialogTitle", resourceCulture);
             }
@@ -468,16 +468,169 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Select the directory that holds the cached logos.
         /// </summary>
-        internal static string LogoDirectoryDialogTitle {
+        public static string LogoDirectoryDialogTitle {
             get {
                 return ResourceManager.GetString("LogoDirectoryDialogTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The database could not be checked..
+        /// </summary>
+        public static string DatabaseCheckFailed {
+            get {
+                return ResourceManager.GetString("DatabaseCheckFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The database could not be created..
+        /// </summary>
+        public static string DatabaseCreateFailed {
+            get {
+                return ResourceManager.GetString("DatabaseCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The database could not be imported..
+        /// </summary>
+        public static string DatabaseImportFailed {
+            get {
+                return ResourceManager.GetString("DatabaseImportFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The database import has started..
+        /// </summary>
+        public static string DatabaseImportStarted {
+            get {
+                return ResourceManager.GetString("DatabaseImportStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Importing {0}: {1} records ({2} of {3})..
+        /// </summary>
+        public static string DatabaseImportProgressStatus {
+            get {
+                return ResourceManager.GetString("DatabaseImportProgressStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The import is done, {0} records in total..
+        /// </summary>
+        public static string DatabaseImportSucceeded {
+            get {
+                return ResourceManager.GetString("DatabaseImportSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The import is done, no records were imported..
+        /// </summary>
+        public static string DatabaseImportWithoutRecords {
+            get {
+                return ResourceManager.GetString("DatabaseImportWithoutRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The playlist in &apos;{0}&apos; could not be read..
+        /// </summary>
+        public static string PlaylistFileLoadFailed {
+            get {
+                return ResourceManager.GetString("PlaylistFileLoadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The playlist in &apos;{0}&apos; has been read..
+        /// </summary>
+        public static string PlaylistFileLoaded {
+            get {
+                return ResourceManager.GetString("PlaylistFileLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading the playlist in &apos;{0}&apos;..
+        /// </summary>
+        public static string PlaylistFileLoading {
+            get {
+                return ResourceManager.GetString("PlaylistFileLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The playlist could not be written to &apos;{0}&apos;..
+        /// </summary>
+        public static string PlaylistFileSaveFailed {
+            get {
+                return ResourceManager.GetString("PlaylistFileSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The playlist has been written to &apos;{0}&apos;..
+        /// </summary>
+        public static string PlaylistFileSaved {
+            get {
+                return ResourceManager.GetString("PlaylistFileSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Writing the playlist to &apos;{0}&apos;..
+        /// </summary>
+        public static string PlaylistFileSaving {
+            get {
+                return ResourceManager.GetString("PlaylistFileSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The settings could not be read..
+        /// </summary>
+        public static string SettingsLoadFailed {
+            get {
+                return ResourceManager.GetString("SettingsLoadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The settings could not be managed..
+        /// </summary>
+        public static string SettingsOperationFailed {
+            get {
+                return ResourceManager.GetString("SettingsOperationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The settings could not be written..
+        /// </summary>
+        public static string SettingsSaveFailed {
+            get {
+                return ResourceManager.GetString("SettingsSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The data could not be read from iptv-org..
+        /// </summary>
+        public static string WebRequestFailed {
+            get {
+                return ResourceManager.GetString("WebRequestFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The playlist &apos;{0}&apos; has unsaved changes. Do you want to save them?.
         /// </summary>
-        internal static string SaveChangesQuestion {
+        public static string SaveChangesQuestion {
             get {
                 return ResourceManager.GetString("SaveChangesQuestion", resourceCulture);
             }

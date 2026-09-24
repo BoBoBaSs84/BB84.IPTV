@@ -29,7 +29,7 @@
 	</UserControl.Styles>
 	<Grid Margin="8"
 				ColumnDefinitions="*,*"
-				RowDefinitions="Auto,Auto,Auto">
+				RowDefinitions="Auto,Auto,Auto,Auto">
 		<HeaderedContentControl Grid.Row="0"
 														Grid.Column="0"
 														Theme="{StaticResource GroupBox}"
@@ -112,6 +112,43 @@
 		<HeaderedContentControl Grid.Row="1"
 														Grid.ColumnSpan="2"
 														Theme="{StaticResource GroupBox}"
+														Header="{x:Static p:Resources.SettingsControl_LogoGroupBox_Header}"
+														Margin="4">
+			<Grid Margin="8"
+						ColumnDefinitions="Auto,*"
+						RowDefinitions="Auto,Auto,Auto">
+				<CheckBox Grid.Row="0"
+									Grid.ColumnSpan="2"
+									Content="{x:Static p:Resources.SettingsControl_UseLocalPathsOnExportCheckBox_Content}"
+									Margin="4"
+									IsChecked="{Binding Logo.UseLocalPathsOnExport}" />
+				<TextBlock Grid.Row="1"
+									 Grid.Column="0"
+									 Text="{x:Static p:Resources.SettingsControl_ExportPathStyleTextBlock_Text}"
+									 Margin="4"
+									 VerticalAlignment="Center" />
+				<ComboBox Grid.Row="1"
+									Grid.Column="1"
+									Margin="4"
+									HorizontalAlignment="Stretch"
+									ItemsSource="{m:EnumValues {x:Type appEnums:LogoPathStyle}}"
+									SelectedItem="{Binding Logo.ExportPathStyle}" />
+				<TextBlock Grid.Row="2"
+									 Grid.Column="0"
+									 Text="{x:Static p:Resources.SettingsControl_MaxParallelDownloadsTextBlock_Text}"
+									 Margin="4"
+									 VerticalAlignment="Center" />
+				<NumericUpDown Grid.Row="2"
+											 Grid.Column="1"
+											 Classes="Integer"
+											 Minimum="1"
+											 Maximum="{x:Static vm:SettingsViewModel.MaxParallelDownloadsLimit}"
+											 Value="{Binding Logo.MaxParallelDownloads}" />
+			</Grid>
+		</HeaderedContentControl>
+		<HeaderedContentControl Grid.Row="2"
+														Grid.ColumnSpan="2"
+														Theme="{StaticResource GroupBox}"
 														Header="{x:Static p:Resources.SettingsControl_PathsGroupBox_Header}"
 														Margin="4">
 			<Grid Margin="8"
@@ -173,7 +210,7 @@
 									 Opacity="0.7" />
 			</Grid>
 		</HeaderedContentControl>
-		<StackPanel Grid.Row="2"
+		<StackPanel Grid.Row="3"
 								Grid.ColumnSpan="2"
 								Orientation="Horizontal"
 								HorizontalAlignment="Right"

@@ -282,6 +282,9 @@
   <data name="SettingsControl.EnableLoggingCheckBox.Content" xml:space="preserve">
     <value>Habilitar registro</value>
   </data>
+  <data name="SettingsControl.ExportPathStyleTextBlock.Text" xml:space="preserve">
+    <value>Estilo de ruta al exportar:</value>
+  </data>
   <data name="SettingsControl.GeneralGroupBox.Header" xml:space="preserve">
     <value>General</value>
   </data>
@@ -300,8 +303,14 @@
   <data name="SettingsControl.LogoDirectoryTextBlock.Text" xml:space="preserve">
     <value>Directorio de logotipos:</value>
   </data>
+  <data name="SettingsControl.LogoGroupBox.Header" xml:space="preserve">
+    <value>Caché de logotipos</value>
+  </data>
   <data name="SettingsControl.MaxBatchSizeTextBlock.Text" xml:space="preserve">
     <value>Tamaño máximo de lote:</value>
+  </data>
+  <data name="SettingsControl.MaxParallelDownloadsTextBlock.Text" xml:space="preserve">
+    <value>Descargas paralelas máximas:</value>
   </data>
   <data name="SettingsControl.PathsGroupBox.Header" xml:space="preserve">
     <value>Rutas de datos</value>
@@ -311,6 +320,9 @@
   </data>
   <data name="SettingsControl.SaveSettingsButton.Content" xml:space="preserve">
     <value>Guardar configuración</value>
+  </data>
+  <data name="SettingsControl.UseLocalPathsOnExportCheckBox.Content" xml:space="preserve">
+    <value>Usar rutas de logotipos en caché al exportar</value>
   </data>
   <data name="ToolTip.Metadata.Censored" xml:space="preserve">
     <value>Indica que el canal necesita estar protegido por control parental, si está presente en el dispositivo, puede tomar valores 0 y 1.</value>

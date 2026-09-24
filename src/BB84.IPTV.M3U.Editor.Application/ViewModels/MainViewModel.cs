@@ -53,6 +53,7 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 
 		NavigationService = navigationService;
 
+		_eventService.Subscribe<StatusChangedEvent>(OnStatusChanged);
 		_eventService.Subscribe<DelayedStatusChangedEvent>(OnStatusChanged);
 		_eventService.Subscribe<ProgressChangedEvent>(OnProgressChanged);
 		_eventService.Subscribe<LanguageChangedEvent>(OnLanguageChanged);
@@ -152,7 +153,7 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 	public IActionCommand OpenSettingsCommand
 		=> _openSettingsCommand ??= new ActionCommand(NavigationService.NavigateTo<SettingsViewModel>);
 
-	private void OnStatusChanged(DelayedStatusChangedEvent @event)
+	private void OnStatusChanged(StatusChangedEvent @event)
 	{
 		if (_synchronizationContext is not null)
 			_synchronizationContext.Post(_ => ChangeStatus(@event), null);
@@ -160,7 +161,7 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 			ChangeStatus(@event);
 	}
 
-	private void ChangeStatus(DelayedStatusChangedEvent @event)
+	private void ChangeStatus(StatusChangedEvent @event)
 	{
 		StatusText = @event.Text;
 

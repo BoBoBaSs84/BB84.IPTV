@@ -78,12 +78,12 @@ internal sealed class DatabaseService(IEventService eventService, IServiceScopeF
 		int recordsImported = await importTask.ConfigureAwait(false);
 		int completed = Interlocked.Increment(ref _completedTasks);
 
-		_eventService.Publish(new DatabaseImportProgressEvent(
-			repositoryName,
-			recordsImported,
-			completed,
-			TotalImportTasks
-		));
+		DatabaseImportProgressEvent progressEvent = new(repositoryName, recordsImported, completed, TotalImportTasks);
+
+		_eventService.Publish(progressEvent);
+
+		// The status bar of the main window follows every long running operation, the logo cache does the same.
+		_eventService.Publish(new ProgressChangedEvent(progressEvent.ProgressPercentage));
 
 		return recordsImported;
 	}

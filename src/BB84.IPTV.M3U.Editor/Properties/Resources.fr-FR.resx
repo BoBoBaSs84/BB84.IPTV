@@ -279,6 +279,9 @@
   <data name="SettingsControl.EnableLoggingCheckBox.Content" xml:space="preserve">
     <value>Activer la journalisation</value>
   </data>
+  <data name="SettingsControl.ExportPathStyleTextBlock.Text" xml:space="preserve">
+    <value>Type de chemin à l’export :</value>
+  </data>
   <data name="SettingsControl.GeneralGroupBox.Header" xml:space="preserve">
     <value>Général</value>
   </data>
@@ -297,8 +300,14 @@
   <data name="SettingsControl.LogoDirectoryTextBlock.Text" xml:space="preserve">
     <value>Répertoire des logos:</value>
   </data>
+  <data name="SettingsControl.LogoGroupBox.Header" xml:space="preserve">
+    <value>Cache des logos</value>
+  </data>
   <data name="SettingsControl.MaxBatchSizeTextBlock.Text" xml:space="preserve">
     <value>Taille maximale du lot :</value>
+  </data>
+  <data name="SettingsControl.MaxParallelDownloadsTextBlock.Text" xml:space="preserve">
+    <value>Téléchargements parallèles maximum :</value>
   </data>
   <data name="SettingsControl.PathsGroupBox.Header" xml:space="preserve">
     <value>Chemins de données</value>
@@ -308,6 +317,9 @@
   </data>
   <data name="SettingsControl.SaveSettingsButton.Content" xml:space="preserve">
     <value>Enregistrer les paramètres</value>
+  </data>
+  <data name="SettingsControl.UseLocalPathsOnExportCheckBox.Content" xml:space="preserve">
+    <value>Utiliser les chemins des logos en cache à l’export</value>
   </data>
   <data name="ToolTip.Metadata.Censored" xml:space="preserve">
     <value>Indique que la chaîne doit être protégée par le contrôle parental, si celui-ci est présent dans l'appareil, peut prendre les valeurs 0 et 1.</value>

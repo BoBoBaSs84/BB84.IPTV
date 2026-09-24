@@ -144,6 +144,27 @@
   <data name="CustomChannelSaved" xml:space="preserve">
     <value>Custom channel &apos;{0}&apos; saved.</value>
   </data>
+  <data name="DatabaseCheckFailed" xml:space="preserve">
+    <value>The database could not be checked.</value>
+  </data>
+  <data name="DatabaseCreateFailed" xml:space="preserve">
+    <value>The database could not be created.</value>
+  </data>
+  <data name="DatabaseImportFailed" xml:space="preserve">
+    <value>The database could not be imported.</value>
+  </data>
+  <data name="DatabaseImportProgressStatus" xml:space="preserve">
+    <value>Importing {0}: {1} records ({2} of {3}).</value>
+  </data>
+  <data name="DatabaseImportStarted" xml:space="preserve">
+    <value>The database import has started.</value>
+  </data>
+  <data name="DatabaseImportSucceeded" xml:space="preserve">
+    <value>The import is done, {0} records in total.</value>
+  </data>
+  <data name="DatabaseImportWithoutRecords" xml:space="preserve">
+    <value>The import is done, no records were imported.</value>
+  </data>
   <data name="DataDirectoryDialogTitle" xml:space="preserve">
     <value>Select the directory that holds the database</value>
   </data>
@@ -243,6 +264,24 @@
   <data name="PlaylistExported" xml:space="preserve">
     <value>Playlist &apos;{0}&apos; exported to &apos;{1}&apos;.</value>
   </data>
+  <data name="PlaylistFileLoaded" xml:space="preserve">
+    <value>The playlist in '{0}' has been read.</value>
+  </data>
+  <data name="PlaylistFileLoadFailed" xml:space="preserve">
+    <value>The playlist in '{0}' could not be read.</value>
+  </data>
+  <data name="PlaylistFileLoading" xml:space="preserve">
+    <value>Reading the playlist in '{0}'.</value>
+  </data>
+  <data name="PlaylistFileSaved" xml:space="preserve">
+    <value>The playlist has been written to '{0}'.</value>
+  </data>
+  <data name="PlaylistFileSaveFailed" xml:space="preserve">
+    <value>The playlist could not be written to '{0}'.</value>
+  </data>
+  <data name="PlaylistFileSaving" xml:space="preserve">
+    <value>Writing the playlist to '{0}'.</value>
+  </data>
   <data name="PlaylistImported" xml:space="preserve">
     <value>Playlist &apos;{0}&apos; imported.</value>
   </data>
@@ -257,5 +296,17 @@
   </data>
   <data name="SaveChangesQuestion" xml:space="preserve">
     <value>The playlist &apos;{0}&apos; has unsaved changes. Do you want to save them?</value>
+  </data>
+  <data name="SettingsLoadFailed" xml:space="preserve">
+    <value>The settings could not be read.</value>
+  </data>
+  <data name="SettingsOperationFailed" xml:space="preserve">
+    <value>The settings could not be managed.</value>
+  </data>
+  <data name="SettingsSaveFailed" xml:space="preserve">
+    <value>The settings could not be written.</value>
+  </data>
+  <data name="WebRequestFailed" xml:space="preserve">
+    <value>The data could not be read from iptv-org.</value>
   </data>
 </root>

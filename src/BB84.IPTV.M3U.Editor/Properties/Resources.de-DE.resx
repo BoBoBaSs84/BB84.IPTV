@@ -282,6 +282,9 @@
   <data name="SettingsControl.EnableLoggingCheckBox.Content" xml:space="preserve">
     <value>Aktivieren Sie die Protokollierung</value>
   </data>
+  <data name="SettingsControl.ExportPathStyleTextBlock.Text" xml:space="preserve">
+    <value>Pfadart beim Export:</value>
+  </data>
   <data name="SettingsControl.GeneralGroupBox.Header" xml:space="preserve">
     <value>Allgemein</value>
   </data>
@@ -300,8 +303,14 @@
   <data name="SettingsControl.LogoDirectoryTextBlock.Text" xml:space="preserve">
     <value>Logoverzeichnis:</value>
   </data>
+  <data name="SettingsControl.LogoGroupBox.Header" xml:space="preserve">
+    <value>Logo-Cache</value>
+  </data>
   <data name="SettingsControl.MaxBatchSizeTextBlock.Text" xml:space="preserve">
     <value>Maximale Chargengröße:</value>
+  </data>
+  <data name="SettingsControl.MaxParallelDownloadsTextBlock.Text" xml:space="preserve">
+    <value>Maximale parallele Downloads:</value>
   </data>
   <data name="SettingsControl.PathsGroupBox.Header" xml:space="preserve">
     <value>Datenpfade</value>
@@ -311,6 +320,9 @@
   </data>
   <data name="SettingsControl.SaveSettingsButton.Content" xml:space="preserve">
     <value>Einstellungen speichern</value>
+  </data>
+  <data name="SettingsControl.UseLocalPathsOnExportCheckBox.Content" xml:space="preserve">
+    <value>Zwischengespeicherte Logopfade beim Export verwenden</value>
   </data>
   <data name="ToolTip.Metadata.Censored" xml:space="preserve">
     <value>Zeigt an, dass der Kanal durch Kindersicherung geschützt werden muss, sofern diese im Gerät vorhanden ist. Kann die Werte 0 und 1 annehmen.</value>
