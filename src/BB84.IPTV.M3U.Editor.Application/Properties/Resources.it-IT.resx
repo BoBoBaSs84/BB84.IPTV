@@ -235,6 +235,9 @@
   <data name="LogoCacheProgress" xml:space="preserve">
     <value>Download dei loghi: {0} di {1}.</value>
   </data>
+  <data name="LogoCacheSkipped" xml:space="preserve">
+    <value>Non è stato possibile memorizzare nella cache {0} loghi, il file di log indica che cosa non ha funzionato.</value>
+  </data>
   <data name="LogoCacheStatus" xml:space="preserve">
     <value>{0} di {1} loghi nella cache.</value>
   </data>

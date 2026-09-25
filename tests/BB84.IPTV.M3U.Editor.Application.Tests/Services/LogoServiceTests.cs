@@ -12,10 +12,13 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Events;
+using BB84.IPTV.M3U.Editor.Application.Extensions;
+using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.Services;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -28,6 +31,7 @@ public sealed class LogoServiceTests
 	private readonly Mock<IDownloadService> _downloadServiceMock = new();
 	private readonly Mock<ILogoStoreService> _logoStoreServiceMock = new();
 	private readonly Mock<IEventService> _eventServiceMock = new();
+	private readonly Mock<ILoggerService<LogoService>> _loggerServiceMock = new();
 	/// <summary>
 	/// The files the store holds; a batch writes them from several threads, like the real store.
 	/// </summary>
@@ -68,7 +72,8 @@ public sealed class LogoServiceTests
 			_downloadServiceMock.Object,
 			_logoStoreServiceMock.Object,
 			new ProviderService(),
-			_eventServiceMock.Object);
+			_eventServiceMock.Object,
+			_loggerServiceMock.Object);
 	}
 
 	[TestMethod]
@@ -80,6 +85,49 @@ public sealed class LogoServiceTests
 		_downloadServiceMock.Verify(x => x.DownloadAsync("https://logo.example/ard.png", null, It.IsAny<CancellationToken>()), Times.Once);
 		_downloadServiceMock.Verify(x => x.DownloadAsync("https://logo.example/zdf.svg", null, It.IsAny<CancellationToken>()), Times.Once);
 		_downloadServiceMock.Verify(x => x.DownloadAsync("https://logo.example/ard-dark.png", It.IsAny<string?>(), It.IsAny<CancellationToken>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task CacheLogosAsyncShouldGoOnWhenALogoCannotBeStored()
+	{
+		_logoStoreServiceMock.Setup(x => x.SaveAsync("DasErste.de", It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new IOException("There is not enough space on the disk."));
+
+		// The disk refused one channel, the other one is still cached and the run comes to an end.
+		int downloaded = await _sut.CacheLogosAsync().ConfigureAwait(false);
+
+		Assert.AreEqual(1, downloaded);
+		Assert.IsNull(_logos[0].LocalPath);
+		Assert.IsNotNull(_logos[2].LocalPath);
+	}
+
+	[TestMethod]
+	public async Task CacheLogosAsyncShouldReportTheLogosItSkippedOnce()
+	{
+		List<WarningOccuredEvent> warnings = [];
+		_eventServiceMock.Setup(x => x.Publish(It.IsAny<WarningOccuredEvent>()))
+			.Callback((WarningOccuredEvent @event) => warnings.Add(@event));
+
+		_logoStoreServiceMock.Setup(x => x.SaveAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new IOException("There is not enough space on the disk."));
+
+		int downloaded = await _sut.CacheLogosAsync().ConfigureAwait(false);
+
+		Assert.AreEqual(0, downloaded);
+		Assert.HasCount(1, warnings, "One report for the whole run, not one per logo.");
+		Assert.AreEqual(Resources.LogoCacheSkipped.FormatMessage(2), warnings[0].Message);
+		_loggerServiceMock.Verify(
+			x => x.Log(It.IsAny<Action<ILogger, string, Exception?>>(), It.IsAny<string>(), It.IsAny<Exception>()),
+			Times.Exactly(2),
+			"Every skipped logo names its reason in the log.");
+	}
+
+	[TestMethod]
+	public async Task CacheLogosAsyncShouldReportNothingWhenEveryLogoWorked()
+	{
+		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+
+		_eventServiceMock.Verify(x => x.Publish(It.IsAny<WarningOccuredEvent>()), Times.Never);
 	}
 
 	[TestMethod]

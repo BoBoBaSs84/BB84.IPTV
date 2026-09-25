@@ -234,6 +234,9 @@
   <data name="LogoCacheProgress" xml:space="preserve">
     <value>Downloading logos: {0} of {1}.</value>
   </data>
+  <data name="LogoCacheSkipped" xml:space="preserve">
+    <value>{0} logos could not be cached, see the log file for what went wrong.</value>
+  </data>
   <data name="LogoCacheStatus" xml:space="preserve">
     <value>{0} of {1} logos cached.</value>
   </data>

@@ -235,6 +235,9 @@
   <data name="LogoCacheProgress" xml:space="preserve">
     <value>Téléchargement des logos : {0} sur {1}.</value>
   </data>
+  <data name="LogoCacheSkipped" xml:space="preserve">
+    <value>{0} logos n'ont pas pu être mis en cache, le fichier journal indique ce qui a échoué.</value>
+  </data>
   <data name="LogoCacheStatus" xml:space="preserve">
     <value>{0} logos sur {1} en cache.</value>
   </data>

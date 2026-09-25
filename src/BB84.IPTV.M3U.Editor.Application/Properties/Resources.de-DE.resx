@@ -235,6 +235,9 @@
   <data name="LogoCacheProgress" xml:space="preserve">
     <value>Logos werden heruntergeladen: {0} von {1}.</value>
   </data>
+  <data name="LogoCacheSkipped" xml:space="preserve">
+    <value>{0} Logos konnten nicht zwischengespeichert werden, die Protokolldatei nennt den Grund.</value>
+  </data>
   <data name="LogoCacheStatus" xml:space="preserve">
     <value>{0} von {1} Logos zwischengespeichert.</value>
   </data>
