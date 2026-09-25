@@ -16,7 +16,6 @@ using BB84.IPTV.M3U.Editor.Infrastructure.Services;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -102,8 +101,6 @@ internal static class ServiceCollectionExtensions
 		ServiceProvider provider = services.BuildServiceProvider();
 		GeneralSettings settings = provider.GetRequiredService<ApplicationSettings>().General;
 		IPathService pathService = provider.GetRequiredService<IPathService>();
-
-		services.TryAddSingleton(typeof(ILoggerService<>), typeof(LoggerService<>));
 
 		services.AddLogging(builder =>
 		{

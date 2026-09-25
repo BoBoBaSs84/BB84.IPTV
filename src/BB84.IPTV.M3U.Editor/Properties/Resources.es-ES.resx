@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApplicationIsExiting" xml:space="preserve">
-    <value>La aplicación está saliendo...</value>
-  </data>
-  <data name="ApplicationIsStarting" xml:space="preserve">
-    <value>La aplicación está comenzando...</value>
-  </data>
   <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
     <value>Consultar base de datos</value>
   </data>
@@ -282,9 +276,6 @@
   <data name="ErrorMessageCaptition" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="ExitRequested" xml:space="preserve">
-    <value>Salida solicitada, intentando salir de la aplicación..</value>
-  </data>
   <data name="InformationMessageCaptition" xml:space="preserve">
     <value>Información</value>
   </data>
@@ -305,9 +296,6 @@
   </data>
   <data name="QuestionMessageCaptition" xml:space="preserve">
     <value>Pregunta</value>
-  </data>
-  <data name="RestartRequested" xml:space="preserve">
-    <value>Reinicio solicitado, intentando reiniciar la aplicación.</value>
   </data>
   <data name="RetryMessageCaptition" xml:space="preserve">
     <value>Rever</value>

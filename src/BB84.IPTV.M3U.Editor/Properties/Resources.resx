@@ -118,12 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ApplicationIsExiting" xml:space="preserve">
-    <value>Application is exiting ...</value>
-  </data>
-  <data name="ApplicationIsStarting" xml:space="preserve">
-    <value>Application is starting ...</value>
-  </data>
   <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
     <value>Check Database</value>
   </data>
@@ -283,9 +277,6 @@
   <data name="ErrorMessageCaptition" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="ExitRequested" xml:space="preserve">
-    <value>Exit requested, trying to exit application ..</value>
-  </data>
   <data name="InformationMessageCaptition" xml:space="preserve">
     <value>Information</value>
   </data>
@@ -306,9 +297,6 @@
   </data>
   <data name="QuestionMessageCaptition" xml:space="preserve">
     <value>Question</value>
-  </data>
-  <data name="RestartRequested" xml:space="preserve">
-    <value>Restart requested, trying to restart application ..</value>
   </data>
   <data name="RetryMessageCaptition" xml:space="preserve">
     <value>Retry</value>

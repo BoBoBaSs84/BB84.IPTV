@@ -5,9 +5,10 @@
 // LICENSE file in the root directory of this source tree.
 using System.Net;
 
-using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Infrastructure.Tests.Common;
 
 using Microsoft.Extensions.Logging;
 
@@ -22,7 +23,7 @@ public sealed class DownloadServiceTests
 	private const string Url = "https://logo.example/ard.png";
 
 	private readonly Mock<IHttpClientFactory> _httpClientFactoryMock = new();
-	private readonly Mock<ILoggerService<DownloadService>> _loggerServiceMock = new();
+	private readonly Mock<ILogger<DownloadService>> _loggerMock = new Mock<ILogger<DownloadService>>().WithLoggingEnabled();
 
 	[TestMethod]
 	public async Task DownloadAsyncShouldSkipTheLogoWhenTheRequestRanIntoTheTimeout()
@@ -35,7 +36,7 @@ public sealed class DownloadServiceTests
 		LogoDownloadResponse? response = await sut.DownloadAsync(Url).ConfigureAwait(false);
 
 		Assert.IsNull(response, "A timeout is a logo that could not be downloaded, not the end of the run.");
-		_loggerServiceMock.Verify(x => x.Log(It.IsAny<Action<ILogger, string, Exception?>>(), Url, It.IsAny<Exception>()), Times.Once);
+		_loggerMock.VerifyLogged(LogLevel.Warning, LogEvents.Logo.DownloadFailed, Times.Once());
 	}
 
 	[TestMethod]
@@ -59,7 +60,7 @@ public sealed class DownloadServiceTests
 		LogoDownloadResponse? response = await sut.DownloadAsync(Url).ConfigureAwait(false);
 
 		Assert.IsNull(response);
-		_loggerServiceMock.Verify(x => x.Log(It.IsAny<Action<ILogger, string, Exception?>>(), Url, null), Times.Once);
+		_loggerMock.VerifyLogged(LogLevel.Warning, LogEvents.Logo.DownloadRefused, Times.Once());
 	}
 
 	[TestMethod]
@@ -95,6 +96,6 @@ public sealed class DownloadServiceTests
 		_httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>()))
 			.Returns(() => new HttpClient(handlerMock.Object, false));
 
-		return new DownloadService(_httpClientFactoryMock.Object, _loggerServiceMock.Object);
+		return new DownloadService(_httpClientFactoryMock.Object, _loggerMock.Object);
 	}
 }

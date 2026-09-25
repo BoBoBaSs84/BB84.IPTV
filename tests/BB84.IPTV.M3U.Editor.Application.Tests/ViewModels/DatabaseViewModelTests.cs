@@ -12,6 +12,7 @@ using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 using Moq;
 
@@ -187,7 +188,7 @@ public sealed class DatabaseViewModelTests : IDisposable
 	[TestMethod]
 	public void TheImportProgressShouldBeReportedWithALocalizedMessage()
 	{
-		EventService eventService = new(new Mock<ILoggerService<EventService>>().Object);
+		EventService eventService = new(NullLogger<EventService>.Instance);
 		using DatabaseViewModel viewModel = new(eventService, _databaseServiceMock.Object, _logoServiceMock.Object, new ApplicationSettings());
 
 		eventService.Publish(new DatabaseImportProgressEvent("Channels", 12, 4, 8));

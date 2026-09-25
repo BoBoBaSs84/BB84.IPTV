@@ -51,7 +51,6 @@ internal sealed class SqliteTestDatabase : IDisposable
 		// The application services need a logger and, since the logo cache, a downloader and a
 		// store; a test that cares about them replaces them through configureServices.
 		services.AddLogging();
-		services.TryAddSingleton(typeof(ILoggerService<>), typeof(LoggerService<>));
 		services.TryAddSingleton<IDownloadService, OfflineDownloadService>();
 		services.TryAddSingleton<ILogoStoreService, EmptyLogoStoreService>();
 

@@ -9,12 +9,14 @@ using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persistence.Repositories;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.Services;
+using BB84.IPTV.M3U.Editor.Application.Tests.Common;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +33,7 @@ public sealed class LogoServiceTests
 	private readonly Mock<IDownloadService> _downloadServiceMock = new();
 	private readonly Mock<ILogoStoreService> _logoStoreServiceMock = new();
 	private readonly Mock<IEventService> _eventServiceMock = new();
-	private readonly Mock<ILoggerService<LogoService>> _loggerServiceMock = new();
+	private readonly Mock<ILogger<LogoService>> _loggerMock = new Mock<ILogger<LogoService>>().WithLoggingEnabled();
 	/// <summary>
 	/// The files the store holds; a batch writes them from several threads, like the real store.
 	/// </summary>
@@ -73,7 +75,7 @@ public sealed class LogoServiceTests
 			_logoStoreServiceMock.Object,
 			new ProviderService(),
 			_eventServiceMock.Object,
-			_loggerServiceMock.Object);
+			_loggerMock.Object);
 	}
 
 	[TestMethod]
@@ -116,9 +118,7 @@ public sealed class LogoServiceTests
 		Assert.AreEqual(0, downloaded);
 		Assert.HasCount(1, warnings, "One report for the whole run, not one per logo.");
 		Assert.AreEqual(Resources.LogoCacheSkipped.FormatMessage(2), warnings[0].Message);
-		_loggerServiceMock.Verify(
-			x => x.Log(It.IsAny<Action<ILogger, string, Exception?>>(), It.IsAny<string>(), It.IsAny<Exception>()),
-			Times.Exactly(2),
+		_loggerMock.VerifyLogged(LogLevel.Warning, LogEvents.Logo.CacheFailed, Times.Exactly(2),
 			"Every skipped logo names its reason in the log.");
 	}
 

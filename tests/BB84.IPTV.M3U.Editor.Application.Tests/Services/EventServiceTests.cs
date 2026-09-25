@@ -1,22 +1,17 @@
-﻿using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
-using BB84.IPTV.M3U.Editor.Application.Events;
+﻿using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Services;
 
-using Moq;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace BB84.IPTV.M3U.Editor.Application.Tests.Services;
 
 [TestClass]
 public sealed class EventServiceTests
 {
-	private readonly Mock<ILoggerService<EventService>> _loggerServiceMock;
 	private readonly EventService _sut;
 
 	public EventServiceTests()
-	{
-		_loggerServiceMock = new();
-		_sut = new(_loggerServiceMock.Object);
-	}
+		=> _sut = new(NullLogger<EventService>.Instance);
 
 	[TestMethod]
 	public void SubscribeShouldInvokeHandlerWhenEventIsPublished()

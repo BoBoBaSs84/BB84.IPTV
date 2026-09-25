@@ -15,6 +15,7 @@ using Avalonia.Threading;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Settings;
@@ -39,16 +40,7 @@ public partial class App : AvaloniaApp
 {
 	private IHost? _host;
 	private IEventService? _eventService;
-	private ILoggerService<App>? _loggerService;
-
-	private static readonly Action<ILogger, string, Exception?> LogInformation =
-		LoggerMessage.Define<string>(LogLevel.Information, 0, "{Information}");
-
-	private static readonly Action<ILogger, string, Exception?> LogError =
-		LoggerMessage.Define<string>(LogLevel.Error, 0, "{Error}");
-
-	private static readonly Action<ILogger, Exception?> LogCritical =
-		LoggerMessage.Define(LogLevel.Critical, 0, string.Empty);
+	private ILogger<App>? _logger;
 
 	/// <inheritdoc/>
 	public override void Initialize()
@@ -61,7 +53,7 @@ public partial class App : AvaloniaApp
 		{
 			_host = CreateHostBuilder(desktop.Args ?? []).Build();
 			_eventService = _host.Services.GetRequiredService<IEventService>();
-			_loggerService = _host.Services.GetRequiredService<ILoggerService<App>>();
+			_logger = _host.Services.GetRequiredService<ILogger<App>>();
 
 			RegisterEventHandlers(desktop);
 		}
@@ -73,14 +65,14 @@ public partial class App : AvaloniaApp
 	{
 		desktop.Startup += async (s, e) => await OnStartupAsync(desktop).ConfigureAwait(true);
 		desktop.Exit += (s, e) => OnExit();
-		Dispatcher.UIThread.UnhandledException += (s, e) => OnUnhandledException(e.Exception);
+		Dispatcher.UIThread.UnhandledException += (s, e) => Log.UnhandledException(_logger!, e.Exception);
 		_eventService!.Subscribe<RestartRequestedEvent>(e => OnRestartRequested(desktop));
 		_eventService.Subscribe<ExitRequestedEvent>(e => OnExitRequested(desktop));
 	}
 
 	private async Task OnStartupAsync(IClassicDesktopStyleApplicationLifetime desktop)
 	{
-		_loggerService!.Log(LogInformation, RESX.ApplicationIsStarting);
+		Log.ApplicationStarting(_logger!);
 
 		await _host!.StartAsync().ConfigureAwait(true);
 
@@ -112,8 +104,8 @@ public partial class App : AvaloniaApp
 		}
 		catch (Exception ex)
 		{
-			// The app still starts, the database view can be used to create the database again.
-			_loggerService!.Log(LogError, RESX.DatabaseMigrationFailed, ex);
+			// The app still starts, the database view can be used to create the database again. The
+			// notification service logs what it shows, so the message is published only.
 			_eventService!.Publish(new ErrorOccuredEvent(RESX.DatabaseMigrationFailed, ex));
 		}
 	}
@@ -133,7 +125,7 @@ public partial class App : AvaloniaApp
 		catch (Exception ex)
 		{
 			// The logos are a convenience, the application runs without them.
-			_loggerService!.Log(LogError, ex.Message, ex);
+			Log.LogoCacheRefreshFailed(_logger!, ex);
 		}
 	}
 
@@ -148,14 +140,15 @@ public partial class App : AvaloniaApp
 		}
 		catch (Exception ex)
 		{
-			_loggerService!.Log(LogError, ex.Message, ex);
+			// The notification service logs what it shows, so the message is published only.
 			_eventService!.Publish(new ErrorOccuredEvent(ex.Message, ex));
 		}
 	}
 
 	private void OnExit()
 	{
-		_loggerService?.Log(LogInformation, RESX.ApplicationIsExiting);
+		if (_logger is not null)
+			Log.ApplicationExiting(_logger);
 
 		if (_host is null)
 			return;
@@ -166,7 +159,7 @@ public partial class App : AvaloniaApp
 
 	private void OnExitRequested(IClassicDesktopStyleApplicationLifetime desktop)
 	{
-		_loggerService!.Log(LogInformation, RESX.ExitRequested);
+		Log.ApplicationExitRequested(_logger!);
 
 		// Closing the main window asks about unsaved changes and ends the application.
 		if (desktop.MainWindow is { } mainWindow)
@@ -177,13 +170,10 @@ public partial class App : AvaloniaApp
 
 	private void OnRestartRequested(IClassicDesktopStyleApplicationLifetime desktop)
 	{
-		_loggerService!.Log(LogInformation, RESX.RestartRequested);
+		Log.ApplicationRestartRequested(_logger!);
 		Process.Start(Environment.ProcessPath!, desktop.Args ?? []);
 		desktop.Shutdown();
 	}
-
-	private void OnUnhandledException(Exception exception)
-		=> _loggerService?.Log(LogCritical, exception);
 
 	private static void ApplyLanguage(Language language)
 	{

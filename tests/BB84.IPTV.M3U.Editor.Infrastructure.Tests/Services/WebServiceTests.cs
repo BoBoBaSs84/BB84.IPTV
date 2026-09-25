@@ -2,9 +2,11 @@
 using System.Text;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
-using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Infrastructure.Common;
 using BB84.IPTV.M3U.Editor.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Infrastructure.Tests.Common;
+
+using Microsoft.Extensions.Logging;
 
 using Moq;
 using Moq.Protected;
@@ -16,7 +18,7 @@ public sealed partial class WebServiceTests
 {
 	private readonly WebService _sut;
 	private Mock<IHttpClientFactory> _httpClientFactoryMock = default!;
-	private Mock<ILoggerService<WebService>> _loggerServiceMock = default!;
+	private Mock<ILogger<WebService>> _loggerMock = default!;
 	private Mock<IEventService> _eventServiceMock = default!;
 	private Mock<HttpMessageHandler> _httpMessageHandler = new();
 
@@ -26,10 +28,10 @@ public sealed partial class WebServiceTests
 	private WebService CreateMockedInstance()
 	{
 		_httpClientFactoryMock = new();
-		_loggerServiceMock = new();
+		_loggerMock = new Mock<ILogger<WebService>>().WithLoggingEnabled();
 		_eventServiceMock = new();
 
-		return new(_httpClientFactoryMock.Object, _loggerServiceMock.Object, _eventServiceMock.Object);
+		return new(_httpClientFactoryMock.Object, _loggerMock.Object, _eventServiceMock.Object);
 	}
 
 	private HttpClient CreateMockedClient(HttpStatusCode statusCode, string? content = null)

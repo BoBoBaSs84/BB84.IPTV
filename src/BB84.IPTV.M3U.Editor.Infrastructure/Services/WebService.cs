@@ -7,6 +7,7 @@ using System.Net.Http.Json;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Properties;
@@ -20,13 +21,10 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 /// The web service class.
 /// </summary>
 /// <param name="httpClientFactory">The http client factory instance to use.</param>
-/// <param name="loggerService">The logger service instance to use.</param>
+/// <param name="logger">The logger instance to use.</param>
 /// <param name="eventService">The event service to publish events.</param>
-internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerService<WebService> loggerService, IEventService eventService) : IWebService
+internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<WebService> logger, IEventService eventService) : IWebService
 {
-	private static readonly Action<ILogger, string, Exception?> LogInformation =
-		LoggerMessage.Define<string>(LogLevel.Information, 1, "{Information}");
-
 	public async Task<IEnumerable<BlocklistRequest>> GetBlocklistsAsync(CancellationToken cancellationToken = default)
 	{
 		try
@@ -215,7 +213,7 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 
 		string requestUrl = $"{httpClient.BaseAddress}/{requestUri}";
 
-		loggerService.Log(LogInformation, $"Sending request to '{requestUrl}'");
+		Log.ApiRequestSent(logger, requestUrl);
 
 		using HttpResponseMessage responseMessage = await httpClient
 			.GetAsync(requestUri, cancellationToken)
@@ -229,12 +227,12 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILoggerSe
 
 		if (result is not null)
 		{
-			loggerService.Log(LogInformation, $"Received {result.Count()} items from '{requestUrl}'");
+			Log.ApiItemsReceived(logger, result.Count(), requestUrl);
 			return result;
 		}
 		else
 		{
-			loggerService.Log(LogInformation, $"Received no items from '{requestUrl}'");
+			Log.ApiNoItemsReceived(logger, requestUrl);
 			return [];
 		}
 	}
