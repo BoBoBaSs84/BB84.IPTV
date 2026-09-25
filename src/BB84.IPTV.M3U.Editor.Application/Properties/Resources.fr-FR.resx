@@ -208,8 +208,20 @@
   <data name="GuideMappingsSaved" xml:space="preserve">
     <value>{0} correspondances enregistrées.</value>
   </data>
+  <data name="GuideNoOptions" xml:space="preserve">
+    <value>Aucun guide n'est connu pour cette entrée.</value>
+  </data>
   <data name="GuideOperationFailed" xml:space="preserve">
     <value>L&apos;opération sur le guide a échoué.</value>
+  </data>
+  <data name="GuideOptionsStatus" xml:space="preserve">
+    <value>{0} guides connus pour cette entrée.</value>
+  </data>
+  <data name="GuideSitePageStatus" xml:space="preserve">
+    <value>Page {0} sur {1}, {2} guides.</value>
+  </data>
+  <data name="GuideSitesStatus" xml:space="preserve">
+    <value>{0} sites connus.</value>
   </data>
   <data name="LogoCacheCleared" xml:space="preserve">
     <value>{0} logos en cache supprimés.</value>

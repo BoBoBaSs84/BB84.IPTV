@@ -143,9 +143,30 @@ internal static class ViewModelFactory
 		guideServiceMock.Setup(x => x.GetMappingsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(() =>
 			[
-				new GuideMappingResponse { EntryKey = "DasErste.de", Title = "Das Erste", Site = "example.com", SiteId = "100", Lang = "de", XmltvId = "DasErste.de", DisplayName = "Das Erste" },
+				new GuideMappingResponse { EntryKey = "DasErste.de", Title = "Das Erste", Site = "example.com", SiteId = "100", Lang = "de", XmltvId = "DasErste.de", DisplayName = "Das Erste", Channel = "DasErste.de" },
 				new GuideMappingResponse { EntryKey = "rtsp://192.168.12.1:554", Title = "Local camera" }
 			]);
+
+		guideServiceMock.Setup(x => x.GetOptionsAsync(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync(() =>
+			[
+				new GuideOptionResponse { Channel = "DasErste.de", Site = "example.com", SiteId = "100", SiteName = "Das Erste", Lang = "de" },
+				new GuideOptionResponse { Channel = "DasErste.de", Site = "other.example", SiteId = "777", SiteName = "Das Erste HD", Lang = "en" }
+			]);
+
+		guideServiceMock.Setup(x => x.GetSitesAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(() =>
+			[
+				new GuideSiteResponse { Site = "example.com", ChannelCount = 2, GuideCount = 3 },
+				new GuideSiteResponse { Site = "other.example", ChannelCount = 1, GuideCount = 1 }
+			]);
+
+		guideServiceMock.Setup(x => x.SearchSiteChannelsAsync(It.IsAny<GuideSiteSearchRequest>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((GuideSiteSearchRequest request, CancellationToken _) => new PagedList<GuideOptionResponse>(
+				[new GuideOptionResponse { Channel = "ZDF.de", Feed = "HD", Site = request.Site, SiteId = "200", SiteName = "ZDF HD", Lang = "de" }],
+				1,
+				request.PageNumber,
+				request.PageSize));
 
 		return new GuideViewModel(
 			guideServiceMock.Object,

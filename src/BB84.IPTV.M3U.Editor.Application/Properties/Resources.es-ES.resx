@@ -208,8 +208,20 @@
   <data name="GuideMappingsSaved" xml:space="preserve">
     <value>{0} asignaciones guardadas.</value>
   </data>
+  <data name="GuideNoOptions" xml:space="preserve">
+    <value>No se conoce ninguna guía para esta entrada.</value>
+  </data>
   <data name="GuideOperationFailed" xml:space="preserve">
     <value>La operación de la guía ha fallado.</value>
+  </data>
+  <data name="GuideOptionsStatus" xml:space="preserve">
+    <value>{0} guías conocidas para esta entrada.</value>
+  </data>
+  <data name="GuideSitePageStatus" xml:space="preserve">
+    <value>Página {0} de {1}, {2} guías.</value>
+  </data>
+  <data name="GuideSitesStatus" xml:space="preserve">
+    <value>{0} sitios conocidos.</value>
   </data>
   <data name="LogoCacheCleared" xml:space="preserve">
     <value>{0} logotipos en caché eliminados.</value>

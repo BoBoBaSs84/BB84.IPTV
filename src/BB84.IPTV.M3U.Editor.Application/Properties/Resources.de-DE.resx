@@ -208,8 +208,20 @@
   <data name="GuideMappingsSaved" xml:space="preserve">
     <value>{0} Zuordnungen gespeichert.</value>
   </data>
+  <data name="GuideNoOptions" xml:space="preserve">
+    <value>Für diesen Eintrag ist kein Programmführer bekannt.</value>
+  </data>
   <data name="GuideOperationFailed" xml:space="preserve">
     <value>Der Vorgang am Programmführer ist fehlgeschlagen.</value>
+  </data>
+  <data name="GuideOptionsStatus" xml:space="preserve">
+    <value>{0} Programmführer für diesen Eintrag bekannt.</value>
+  </data>
+  <data name="GuideSitePageStatus" xml:space="preserve">
+    <value>Seite {0} von {1}, {2} Programmführer.</value>
+  </data>
+  <data name="GuideSitesStatus" xml:space="preserve">
+    <value>{0} Websites bekannt.</value>
   </data>
   <data name="LogoCacheCleared" xml:space="preserve">
     <value>{0} zwischengespeicherte Logos gelöscht.</value>

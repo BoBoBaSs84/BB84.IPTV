@@ -219,6 +219,57 @@
   <data name="GuideControl.CompleteColumn.Header" xml:space="preserve">
     <value>Vollständig</value>
   </data>
+  <data name="GuideControl.GuidesGroupBox.Header" xml:space="preserve">
+    <value>Programmführer</value>
+  </data>
+  <data name="GuideControl.OptionsHeader.Text" xml:space="preserve">
+    <value>Programmführer für den gewählten Eintrag</value>
+  </data>
+  <data name="GuideControl.ApplyOptionButton.Content" xml:space="preserve">
+    <value>Übernehmen</value>
+  </data>
+  <data name="GuideControl.ApplyOptionButton.ToolTip" xml:space="preserve">
+    <value>Übernimmt Website, Kennung und Sprache des gewählten Programmführers in die gewählte Zeile.</value>
+  </data>
+  <data name="GuideControl.SitesHeader.Text" xml:space="preserve">
+    <value>Websites</value>
+  </data>
+  <data name="GuideControl.RefreshSitesButton.Content" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="GuideControl.SiteSearchTextBox.Placeholder" xml:space="preserve">
+    <value>Sender, Kennung oder Name</value>
+  </data>
+  <data name="GuideControl.SearchSiteChannelsButton.Content" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
+  <data name="GuideControl.ApplySiteChannelButton.Content" xml:space="preserve">
+    <value>In Zeile übernehmen</value>
+  </data>
+  <data name="GuideControl.ApplySiteChannelButton.ToolTip" xml:space="preserve">
+    <value>Übernimmt den gewählten Programmführer der Website in die gewählte Zeile.</value>
+  </data>
+  <data name="GuideControl.PreviousPageButton.Content" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
+  <data name="GuideControl.NextPageButton.Content" xml:space="preserve">
+    <value>Weiter</value>
+  </data>
+  <data name="GuideControl.ChannelColumn.Header" xml:space="preserve">
+    <value>Sender</value>
+  </data>
+  <data name="GuideControl.FeedColumn.Header" xml:space="preserve">
+    <value>Feed</value>
+  </data>
+  <data name="GuideControl.SiteNameColumn.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="GuideControl.ChannelNameColumn.Header" xml:space="preserve">
+    <value>Katalogname</value>
+  </data>
+  <data name="GuideControl.CountryColumn.Header" xml:space="preserve">
+    <value>Land</value>
+  </data>
   <data name="MainWindow.GuideMenuItem.Header" xml:space="preserve">
     <value>_Programmführer-Export</value>
   </data>

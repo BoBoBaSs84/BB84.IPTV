@@ -3,10 +3,14 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using System.Linq.Expressions;
+
 using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 using BB84.IPTV.M3U.Editor.Domain.Models;
@@ -28,6 +32,12 @@ internal sealed class GuideService(
 	IChannelsXmlSerializer channelsXmlSerializer,
 	IProviderService providerService) : IGuideService
 {
+	/// <summary>
+	/// The number of channel identifiers per <c>IN</c> clause, so the parameter limit of SQLite is
+	/// never reached.
+	/// </summary>
+	private const int ChannelChunkSize = 500;
+
 	public async Task<IReadOnlyList<GuideMappingResponse>> GetMappingsAsync(int playlistId, CancellationToken cancellationToken = default)
 	{
 		IPlaylist? playlist = await playlistService
@@ -125,6 +135,95 @@ internal sealed class GuideService(
 		return toWrite.Count(mapping => mapping.IsComplete);
 	}
 
+	public async Task<IReadOnlyList<GuideOptionResponse>> GetOptionsAsync(string channel, string? feed = null, CancellationToken cancellationToken = default)
+	{
+		ArgumentException.ThrowIfNullOrWhiteSpace(channel);
+
+		using IServiceScope scope = serviceScopeFactory.CreateScope();
+		IRepositoryService repositoryService = GetRepositoryService(scope);
+
+		IReadOnlyList<GuideEntity> guides = await repositoryService.Guides
+			.GetListAsync(new Query<GuideEntity> { Where = guide => guide.Channel == channel }, cancellationToken)
+			.ConfigureAwait(false);
+
+		return [.. OrderCandidates(guides, feed).Select(guide => ToOption(guide))];
+	}
+
+	public async Task<IReadOnlyList<GuideSiteResponse>> GetSitesAsync(CancellationToken cancellationToken = default)
+	{
+		using IServiceScope scope = serviceScopeFactory.CreateScope();
+		IRepositoryService repositoryService = GetRepositoryService(scope);
+
+		// Only the two columns the list is built from are read, the table holds tens of thousands of rows.
+		IReadOnlyList<SiteChannel> pairs = await repositoryService.Guides
+			.GetListAsync(guide => new SiteChannel(guide.Site, guide.Channel), new Query<GuideEntity>(), cancellationToken)
+			.ConfigureAwait(false);
+
+		return [.. pairs
+			.GroupBy(pair => pair.Site, StringComparer.OrdinalIgnoreCase)
+			.Select(group => new GuideSiteResponse
+			{
+				Site = group.Key,
+				ChannelCount = group
+					.Select(pair => pair.Channel)
+					.Where(channel => !string.IsNullOrWhiteSpace(channel))
+					.Distinct(StringComparer.OrdinalIgnoreCase)
+					.Count(),
+				GuideCount = group.Count()
+			})
+			.OrderBy(site => site.Site, StringComparer.OrdinalIgnoreCase)];
+	}
+
+	public async Task<IPagedList<GuideOptionResponse>> SearchSiteChannelsAsync(GuideSiteSearchRequest request, CancellationToken cancellationToken = default)
+	{
+		ArgumentNullException.ThrowIfNull(request);
+
+		using IServiceScope scope = serviceScopeFactory.CreateScope();
+		IRepositoryService repositoryService = GetRepositoryService(scope);
+
+		string site = request.Site;
+		string? text = Clean(request.SearchText);
+
+		Expression<Func<GuideEntity, bool>> filter = guide => guide.Site == site;
+
+		if (text is not null)
+		{
+			filter = guide => guide.Site == site
+				&& ((guide.Channel != null && guide.Channel.Contains(text)) || guide.SiteId.Contains(text) || guide.SiteName.Contains(text));
+		}
+
+		int total = await repositoryService.Guides
+			.CountAsync(new Query<GuideEntity> { Where = filter }, cancellationToken)
+			.ConfigureAwait(false);
+
+		// Only the page is read, a site of the catalog can hold thousands of guides.
+		IReadOnlyList<GuideEntity> page = await repositoryService.Guides
+			.GetListAsync(
+				new Query<GuideEntity>
+				{
+					Where = filter,
+					OrderBy = query => query.OrderBy(guide => guide.Channel).ThenBy(guide => guide.Feed),
+					Skip = request.Skip,
+					Take = request.PageSize
+				},
+				cancellationToken)
+			.ConfigureAwait(false);
+
+		// What the catalog knows about the channels of the page, so a row can be recognised.
+		List<string> channels = [.. page
+			.Select(guide => guide.Channel)
+			.OfType<string>()
+			.Distinct(StringComparer.OrdinalIgnoreCase)];
+
+		Dictionary<string, ChannelInfo> channelsById = await LoadChannelsAsync(repositoryService, channels, cancellationToken)
+			.ConfigureAwait(false);
+
+		IEnumerable<GuideOptionResponse> options = page
+			.Select(guide => ToOption(guide, Lookup(channelsById, guide.Channel)));
+
+		return new PagedList<GuideOptionResponse>(options, total, request.PageNumber, request.PageSize);
+	}
+
 	/// <summary>
 	/// Loads the guides of the channels the playlist knows, by the channel identifier.
 	/// </summary>
@@ -153,10 +252,7 @@ internal sealed class GuideService(
 		string channel = GetChannelKey(entry);
 		GuideEntity? guide = string.IsNullOrWhiteSpace(channel)
 			? null
-			: guidesByChannel[channel]
-				.OrderBy(guide => MatchesFeed(guide, entry.Feed) ? 0 : 1)
-				.ThenBy(guide => guide.Site, StringComparer.OrdinalIgnoreCase)
-				.FirstOrDefault();
+			: OrderCandidates(guidesByChannel[channel], entry.Feed).FirstOrDefault();
 
 		return new GuideMappingResponse
 		{
@@ -167,6 +263,8 @@ internal sealed class GuideService(
 			Lang = guide?.Lang,
 			XmltvId = entry.Metadata.TvgId,
 			DisplayName = entry.Title,
+			Channel = ChannelOrNull(entry),
+			Feed = entry.Feed,
 			IsStored = false
 		};
 	}
@@ -180,6 +278,8 @@ internal sealed class GuideService(
 		Lang = entity.Lang,
 		XmltvId = entity.XmltvId,
 		DisplayName = entity.DisplayName ?? entry.Title,
+		Channel = ChannelOrNull(entry),
+		Feed = entry.Feed,
 		IsStored = true
 	};
 
@@ -215,6 +315,70 @@ internal sealed class GuideService(
 
 	private static string? Clean(string? value)
 		=> string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+
+	/// <summary>
+	/// Orders the guides of a channel the way a mapping is prefilled: the one of the feed first, then
+	/// by site, so the picker and the prefill can never disagree.
+	/// </summary>
+	private static IEnumerable<GuideEntity> OrderCandidates(IEnumerable<GuideEntity> guides, string? feed)
+		=> guides
+			.OrderBy(guide => MatchesFeed(guide, feed) ? 0 : 1)
+			.ThenBy(guide => guide.Site, StringComparer.OrdinalIgnoreCase);
+
+	private static GuideOptionResponse ToOption(GuideEntity guide, ChannelInfo? channel = null) => new()
+	{
+		Channel = guide.Channel,
+		Feed = guide.Feed,
+		Site = guide.Site,
+		SiteId = guide.SiteId,
+		SiteName = guide.SiteName,
+		Lang = guide.Lang,
+		ChannelName = channel?.Name,
+		Country = channel?.Country
+	};
+
+	/// <summary>
+	/// Gets the iptv-org channel of the entry, <see langword="null"/> if it names none.
+	/// </summary>
+	private static string? ChannelOrNull(EntryModel entry)
+		=> Clean(GetChannelKey(entry));
+
+	/// <summary>
+	/// Loads what the catalog knows about the given channels, in chunks, so the query stays within
+	/// the parameter limit of SQLite.
+	/// </summary>
+	private static async Task<Dictionary<string, ChannelInfo>> LoadChannelsAsync(IRepositoryService repositoryService, IReadOnlyList<string> channels, CancellationToken cancellationToken)
+	{
+		Dictionary<string, ChannelInfo> channelsById = new(StringComparer.OrdinalIgnoreCase);
+
+		foreach (string[] chunk in channels.Chunk(ChannelChunkSize))
+		{
+			IReadOnlyList<ChannelInfo> loaded = await repositoryService.Channels
+				.GetListAsync(
+					channel => new ChannelInfo(channel.Channel, channel.Name, channel.Country),
+					new Query<ChannelEntity> { Where = channel => chunk.Contains(channel.Channel) },
+					cancellationToken)
+				.ConfigureAwait(false);
+
+			foreach (ChannelInfo info in loaded)
+				channelsById[info.Channel] = info;
+		}
+
+		return channelsById;
+	}
+
+	private static ChannelInfo? Lookup(Dictionary<string, ChannelInfo> channelsById, string? channel)
+		=> channel is not null && channelsById.TryGetValue(channel, out ChannelInfo? info) ? info : null;
+
+	/// <summary>
+	/// The two columns the site list is built from.
+	/// </summary>
+	private sealed record SiteChannel(string Site, string? Channel);
+
+	/// <summary>
+	/// What the catalog knows about a channel of the site browser.
+	/// </summary>
+	private sealed record ChannelInfo(string Channel, string Name, string Country);
 
 	private static IRepositoryService GetRepositoryService(IServiceScope scope)
 		=> scope.ServiceProvider.GetRequiredService<IRepositoryService>();

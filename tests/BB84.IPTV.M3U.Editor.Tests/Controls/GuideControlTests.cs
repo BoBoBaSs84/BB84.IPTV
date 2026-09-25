@@ -60,4 +60,61 @@ public sealed class GuideControlTests
 				Assert.IsFalse(export.IsEffectivelyEnabled, "Without a playlist there is nothing to export.");
 			});
 		}).ConfigureAwait(false);
+
+	[TestMethod]
+	public async Task ShouldShowTheGuidesOfTheSelectedRowWithoutBindingErrors()
+		=> await UiTest.RunAsync(() =>
+		{
+			GuideViewModel viewModel = ViewModelFactory.CreateGuide();
+			GuideControl control = new() { DataContext = viewModel };
+
+			UiTest.InWindow(control, sink =>
+			{
+				UiTest.Settle();
+
+				viewModel.SelectedMapping = viewModel.Mappings[0];
+				viewModel.LoadOptionsAsync().GetAwaiter().GetResult();
+				UiTest.Settle();
+
+				ListBox options = control.GetControl<ListBox>("OptionListBox");
+
+				Assert.IsEmpty(sink.Messages, string.Join(Environment.NewLine, sink.Messages));
+				Assert.HasCount(2, viewModel.Options);
+				Assert.AreEqual(2, options.ItemsSource!.Cast<object>().Count());
+			});
+		}).ConfigureAwait(false);
+
+	[TestMethod]
+	public async Task TheSiteBrowserShouldApplyAGuideToTheSelectedRow()
+		=> await UiTest.RunAsync(() =>
+		{
+			GuideViewModel viewModel = ViewModelFactory.CreateGuide();
+			GuideControl control = new() { DataContext = viewModel };
+
+			UiTest.InWindow(control, sink =>
+			{
+				// The control loads the playlists and the sites when it gets its data context.
+				UiTest.Settle();
+
+				viewModel.SelectedMapping = viewModel.Mappings[1];
+				viewModel.SelectedSite = viewModel.Sites[0];
+				viewModel.LoadSiteChannelsAsync(1).GetAwaiter().GetResult();
+				UiTest.Settle();
+
+				viewModel.SelectedSiteChannel = viewModel.SiteChannels[0];
+				UiTest.Settle();
+
+				Button apply = control.GetVisualDescendants()
+					.OfType<Button>()
+					.First(button => Equals(button.Content, Properties.Resources.GuideControl_ApplySiteChannelButton_Content));
+
+				Assert.IsTrue(apply.IsEffectivelyEnabled);
+
+				viewModel.ApplySiteChannelCommand.Execute();
+
+				Assert.IsEmpty(sink.Messages, string.Join(Environment.NewLine, sink.Messages));
+				Assert.AreEqual("example.com", viewModel.Mappings[1].Site);
+				Assert.AreEqual("200", viewModel.Mappings[1].SiteId);
+			});
+		}).ConfigureAwait(false);
 }

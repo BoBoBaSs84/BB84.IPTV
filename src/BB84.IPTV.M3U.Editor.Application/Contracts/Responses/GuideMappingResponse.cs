@@ -46,6 +46,20 @@ public sealed class GuideMappingResponse
 	public string? DisplayName { get; init; }
 
 	/// <summary>
+	/// Gets or initializes the iptv-org channel the entry was matched to, <see langword="null"/> if
+	/// the entry holds nothing that names one.
+	/// </summary>
+	/// <remarks>
+	/// What the guides of the entry are looked up with.
+	/// </remarks>
+	public string? Channel { get; init; }
+
+	/// <summary>
+	/// Gets or initializes the iptv-org feed the entry was created from, if any.
+	/// </summary>
+	public string? Feed { get; init; }
+
+	/// <summary>
 	/// Indicates whether the mapping was taken from a stored one instead of the imported guides.
 	/// </summary>
 	public bool IsStored { get; init; }

@@ -36,12 +36,24 @@ public sealed class GuideMappingViewModel : ViewModelBase
 		_lang = mapping.Lang;
 		_xmltvId = mapping.XmltvId;
 		_displayName = mapping.DisplayName;
+		Channel = mapping.Channel;
+		Feed = mapping.Feed;
 	}
 
 	/// <summary>
 	/// Gets what identifies the entry: its <c>tvg-id</c>, or its URL if it has none.
 	/// </summary>
 	public string EntryKey { get; }
+
+	/// <summary>
+	/// Gets the iptv-org channel the entry was matched to, <see langword="null"/> if it names none.
+	/// </summary>
+	public string? Channel { get; }
+
+	/// <summary>
+	/// Gets the iptv-org feed the entry was created from, if any.
+	/// </summary>
+	public string? Feed { get; }
 
 	/// <summary>
 	/// Gets the title of the entry.
@@ -108,6 +120,20 @@ public sealed class GuideMappingViewModel : ViewModelBase
 		=> ToResponse().IsComplete;
 
 	/// <summary>
+	/// Takes the site, the site identifier and the language of a guide, the rest of the row stays
+	/// as it is.
+	/// </summary>
+	/// <param name="option">The guide that was picked.</param>
+	public void Apply(GuideOptionResponse option)
+	{
+		ArgumentNullException.ThrowIfNull(option);
+
+		Site = option.Site;
+		SiteId = option.SiteId;
+		Lang = option.Lang;
+	}
+
+	/// <summary>
 	/// Creates the mapping as it is edited.
 	/// </summary>
 	/// <returns>The mapping of the entry.</returns>
@@ -120,6 +146,8 @@ public sealed class GuideMappingViewModel : ViewModelBase
 		Lang = Lang,
 		XmltvId = XmltvId,
 		DisplayName = DisplayName,
+		Channel = Channel,
+		Feed = Feed,
 		IsStored = IsStored
 	};
 }

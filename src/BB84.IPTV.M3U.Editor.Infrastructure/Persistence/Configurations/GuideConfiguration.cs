@@ -21,6 +21,9 @@ internal sealed class GuideConfiguration : ConfigurationBase<GuideEntity>
 		builder.HasIndex(i => i.Feed)
 			.IsUnique(false);
 
+		builder.HasIndex(i => i.Site)
+			.IsUnique(false);
+
 		base.Configure(builder);
 	}
 }

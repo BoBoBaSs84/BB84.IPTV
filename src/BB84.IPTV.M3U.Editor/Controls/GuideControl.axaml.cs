@@ -4,6 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using Avalonia.Controls;
+using Avalonia.Input;
 
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 
@@ -31,5 +32,15 @@ public partial class GuideControl : UserControl
 
 		if (DataContext is GuideViewModel viewModel)
 			_ = viewModel.LoadAndReportAsync();
+	}
+
+	/// <summary>
+	/// Takes the guide a row of the site browser holds into the selected mapping, so a double click
+	/// does what the apply button does.
+	/// </summary>
+	private void OnSiteChannelDoubleTapped(object? sender, TappedEventArgs e)
+	{
+		if (DataContext is GuideViewModel viewModel && viewModel.ApplySiteChannelCommand.CanExecute())
+			viewModel.ApplySiteChannelCommand.Execute();
 	}
 }
