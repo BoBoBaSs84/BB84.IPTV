@@ -184,6 +184,59 @@ public sealed class GuidePersistenceTests
 		Assert.IsNull(mappings[2].Channel, "A custom channel names none.");
 	}
 
+	[TestMethod]
+	public async Task GetMappingsAsyncShouldHoldOneRowPerKey()
+	{
+		int playlistId = await CreateDuplicatePlaylistAsync().ConfigureAwait(false);
+
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(playlistId).ConfigureAwait(false);
+
+		// Both entries carry the same tvg-id, the mapping belongs to the tvg-id.
+		Assert.HasCount(1, mappings);
+		Assert.AreEqual("DasErste.de", mappings[0].EntryKey);
+		Assert.AreEqual("Das Erste", mappings[0].Title, "The first entry of the key names the row.");
+	}
+
+	[TestMethod]
+	public async Task SaveMappingsAsyncShouldStoreAPlaylistWithADuplicateTvgId()
+	{
+		int playlistId = await CreateDuplicatePlaylistAsync().ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(playlistId).ConfigureAwait(false);
+
+		int saved = await _sut.SaveMappingsAsync(playlistId, mappings).ConfigureAwait(false);
+
+		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(playlistId).ConfigureAwait(false);
+
+		Assert.AreEqual(1, saved);
+		Assert.HasCount(1, stored);
+		Assert.IsTrue(stored[0].IsStored);
+	}
+
+	[TestMethod]
+	public async Task SaveMappingsAsyncShouldStoreOneRowPerKeyWhenItIsGivenDuplicates()
+	{
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+		GuideMappingResponse duplicate = Override(mappings[0], site: "other.example", siteId: "42");
+
+		int saved = await _sut.SaveMappingsAsync(_playlistId, [mappings[0], duplicate]).ConfigureAwait(false);
+
+		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+
+		Assert.AreEqual(1, saved, "The key of the playlist is unique, the first row of a key wins.");
+		Assert.AreEqual("example.com", stored[0].Site);
+	}
+
+	/// <summary>
+	/// Creates a playlist that holds the same tvg-id twice, as a playlist of two streams of the
+	/// same channel does.
+	/// </summary>
+	private async Task<int> CreateDuplicatePlaylistAsync()
+		=> await _playlistService.CreateAsync("Doubled", new PlaylistModel(new PlaylistModel(),
+		[
+			new EntryModel("Das Erste", "https://example.com/ard.m3u8", metadata: new MetadataModel { TvgId = "DasErste.de" }),
+			new EntryModel("Das Erste (backup)", "https://backup.example.com/ard.m3u8", metadata: new MetadataModel { TvgId = "DasErste.de" })
+		])).ConfigureAwait(false);
+
 	private static GuideMappingResponse Override(GuideMappingResponse mapping, string? site = null, string? siteId = null, string? xmltvId = null) => new()
 	{
 		EntryKey = mapping.EntryKey,
