@@ -235,6 +235,9 @@
   <data name="LogoCacheProgress" xml:space="preserve">
     <value>Descargando logotipos: {0} de {1}.</value>
   </data>
+  <data name="LogoCacheSkipped" xml:space="preserve">
+    <value>No se han podido almacenar en caché {0} logotipos; consulte el archivo de registro para saber qué ha fallado.</value>
+  </data>
   <data name="LogoCacheStatus" xml:space="preserve">
     <value>{0} de {1} logotipos en caché.</value>
   </data>

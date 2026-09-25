@@ -295,6 +295,15 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} logos could not be cached, see the log file for what went wrong..
+        /// </summary>
+        public static string LogoCacheSkipped {
+            get {
+                return ResourceManager.GetString("LogoCacheSkipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} of {1} logos cached..
         /// </summary>
         public static string LogoCacheStatus {
