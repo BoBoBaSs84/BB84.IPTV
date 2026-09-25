@@ -17,7 +17,8 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Logging;
 /// </summary>
 /// <remarks>
 /// The settings are asked for every entry, so a level that is changed in the settings screen is
-/// followed right away, and so is logging that is turned on or off.
+/// followed right away, and so is logging that is turned on or off. An entry names its event id
+/// after the level, so the log says which of the entries of the application it is.
 /// </remarks>
 /// <param name="writer">The writer that holds the log file.</param>
 /// <param name="settings">The general settings that say what is logged.</param>
@@ -59,8 +60,17 @@ internal sealed class FileLogger(FileLogWriter writer, GeneralSettings settings)
 		_ = builder.Append(DateTimeOffset.Now.ToString(TimestampFormat, CultureInfo.InvariantCulture))
 			.Append(" [")
 			.Append(GetLevelToken(logLevel))
-			.Append("] ")
-			.Append(message);
+			.Append("] ");
+
+		// An entry without an id, e.g. one the framework writes, keeps the short form.
+		if (eventId.Id is not 0)
+		{
+			_ = builder.Append('[')
+				.Append(eventId.Id.ToString(CultureInfo.InvariantCulture))
+				.Append("] ");
+		}
+
+		_ = builder.Append(message);
 
 		if (exception is not null)
 			_ = builder.Append(Environment.NewLine).Append(exception);

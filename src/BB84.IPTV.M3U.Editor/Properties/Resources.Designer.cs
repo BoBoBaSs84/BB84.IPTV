@@ -61,24 +61,6 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application is exiting ....
-        /// </summary>
-        public static string ApplicationIsExiting {
-            get {
-                return ResourceManager.GetString("ApplicationIsExiting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Application is starting ....
-        /// </summary>
-        public static string ApplicationIsStarting {
-            get {
-                return ResourceManager.GetString("ApplicationIsStarting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string DatabaseControl_CancelLogoCacheButton_Content {
@@ -264,15 +246,6 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string ErrorMessageCaptition {
             get {
                 return ResourceManager.GetString("ErrorMessageCaptition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exit requested, trying to exit application ...
-        /// </summary>
-        public static string ExitRequested {
-            get {
-                return ResourceManager.GetString("ExitRequested", resourceCulture);
             }
         }
         
@@ -624,15 +597,6 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string QuestionMessageCaptition {
             get {
                 return ResourceManager.GetString("QuestionMessageCaptition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restart requested, trying to restart application ...
-        /// </summary>
-        public static string RestartRequested {
-            get {
-                return ResourceManager.GetString("RestartRequested", resourceCulture);
             }
         }
         

@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApplicationIsExiting" xml:space="preserve">
-    <value>L'applicazione è in uscita...</value>
-  </data>
-  <data name="ApplicationIsStarting" xml:space="preserve">
-    <value>L'applicazione sta partendo...</value>
-  </data>
   <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
     <value>Controlla il database</value>
   </data>
@@ -282,9 +276,6 @@
   <data name="ErrorMessageCaptition" xml:space="preserve">
     <value>Errore</value>
   </data>
-  <data name="ExitRequested" xml:space="preserve">
-    <value>Richiesta uscita, tentativo di uscire dall'applicazione..</value>
-  </data>
   <data name="InformationMessageCaptition" xml:space="preserve">
     <value>Informazioni</value>
   </data>
@@ -302,9 +293,6 @@
   </data>
   <data name="MessageDialog.YesButton.Content" xml:space="preserve">
     <value>Sì</value>
-  </data>
-  <data name="RestartRequested" xml:space="preserve">
-    <value>Riavvio richiesto, tentativo di riavviare l'applicazione..</value>
   </data>
   <data name="RetryMessageCaptition" xml:space="preserve">
     <value>Riprova</value>

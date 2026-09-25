@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http.Headers;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Infrastructure.Common;
 
@@ -23,12 +24,9 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 /// never fails a whole run.
 /// </remarks>
 /// <param name="httpClientFactory">The http client factory instance to use.</param>
-/// <param name="loggerService">The logger service instance to use.</param>
-internal sealed class DownloadService(IHttpClientFactory httpClientFactory, ILoggerService<DownloadService> loggerService) : IDownloadService
+/// <param name="logger">The logger instance to use.</param>
+internal sealed class DownloadService(IHttpClientFactory httpClientFactory, ILogger<DownloadService> logger) : IDownloadService
 {
-	private static readonly Action<ILogger, string, Exception?> LogDownloadFailed =
-		LoggerMessage.Define<string>(LogLevel.Warning, 0, "The file at '{Url}' could not be downloaded.");
-
 	public async Task<LogoDownloadResponse?> DownloadAsync(string url, string? eTag = null, CancellationToken cancellationToken = default)
 	{
 		if (!Uri.TryCreate(url, UriKind.Absolute, out Uri? uri) || uri.Scheme is not ("http" or "https"))
@@ -51,7 +49,7 @@ internal sealed class DownloadService(IHttpClientFactory httpClientFactory, ILog
 
 			if (!response.IsSuccessStatusCode)
 			{
-				loggerService.Log(LogDownloadFailed, url, null);
+				Log.LogoDownloadRefused(logger, url, (int)response.StatusCode);
 				return null;
 			}
 
@@ -71,7 +69,7 @@ internal sealed class DownloadService(IHttpClientFactory httpClientFactory, ILog
 		}
 		catch (Exception exception)
 		{
-			loggerService.Log(LogDownloadFailed, url, exception);
+			Log.LogoDownloadFailed(logger, url, exception);
 			return null;
 		}
 	}

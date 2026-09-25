@@ -5,6 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.RegularExpressions;
 
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Infrastructure.Logging;
 
@@ -59,6 +60,23 @@ public sealed class FileLoggerTests
 		Assert.IsTrue(
 			Regex.IsMatch(lines[0], @"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3} [+-]\d{2}:\d{2} \[INF\] the message$"),
 			$"'{lines[0]}' does not have the expected format.");
+	}
+
+	[TestMethod]
+	public void EntryShouldNameItsEventId()
+	{
+		using TestLogDirectory directory = new();
+		using FileLogWriter writer = new(directory.Path, ApplicationName);
+		GeneralSettings settings = new() { EnableLogging = true, LogLevel = LogLevel.Information };
+		FileLogger sut = new(writer, settings);
+
+		sut.Log(LogLevel.Information, new EventId(LogEvents.Web.ApiRequestSent), "the message", null, (state, exception) => state);
+
+		string[] lines = TestLogDirectory.ReadAllLines(writer.GetFilePath(DateOnly.FromDateTime(DateTime.Now)));
+		Assert.HasCount(1, lines);
+		Assert.IsTrue(
+			Regex.IsMatch(lines[0], @"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3} [+-]\d{2}:\d{2} \[INF\] \[4001\] the message$"),
+			$"'{lines[0]}' does not name the event id of the entry.");
 	}
 
 	[TestMethod]

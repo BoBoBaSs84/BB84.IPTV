@@ -5,6 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Properties;
@@ -18,19 +19,16 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 /// Represents the file service for loading and saving playlists.
 /// </summary>
 /// <param name="eventService">The event service instance to use for publishing events.</param>
-/// <param name="loggerService">The logger service instance to use for logging.</param>
+/// <param name="logger">The logger instance to use for logging.</param>
 /// <param name="providerService">The provider service instance to use for file operations.</param>
 /// <param name="serializer">The serializer service instance to use for playlist serialization and deserialization.</param>
-internal sealed class FileService(IEventService eventService, ILoggerService<FileService> loggerService, IProviderService providerService, ISerializerService serializer) : IFileService
+internal sealed class FileService(IEventService eventService, ILogger<FileService> logger, IProviderService providerService, ISerializerService serializer) : IFileService
 {
-	private static readonly Action<ILogger, string, Exception?> LogInformation =
-		LoggerMessage.Define<string>(LogLevel.Information, 0, "{Information}");
-
 	public async Task<IPlaylist?> LoadAsync(string filePath, CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			loggerService.Log(LogInformation, $"Loading playlist from file: {filePath}");
+			Log.PlaylistFileLoading(logger, filePath);
 			PublishDelayedStatus(Resources.PlaylistFileLoading.FormatMessage(filePath));
 
 			string[] fileLines = await providerService.File
@@ -39,7 +37,7 @@ internal sealed class FileService(IEventService eventService, ILoggerService<Fil
 
 			IPlaylist playlist = serializer.Deserialize(fileLines);
 
-			loggerService.Log(LogInformation, $"Successfully loaded playlist from file: {filePath}");
+			Log.PlaylistFileLoaded(logger, filePath);
 			PublishDelayedStatus(Resources.PlaylistFileLoaded.FormatMessage(filePath));
 
 			return playlist;
@@ -56,7 +54,7 @@ internal sealed class FileService(IEventService eventService, ILoggerService<Fil
 	{
 		try
 		{
-			loggerService.Log(LogInformation, $"Saving playlist to file: {filePath}");
+			Log.PlaylistFileSaving(logger, filePath);
 			PublishDelayedStatus(Resources.PlaylistFileSaving.FormatMessage(filePath));
 
 			string fileContent = serializer.Serialize(playlist);
@@ -65,7 +63,7 @@ internal sealed class FileService(IEventService eventService, ILoggerService<Fil
 				.WriteAllTextAsync(filePath, fileContent, cancellationToken)
 				.ConfigureAwait(false);
 
-			loggerService.Log(LogInformation, $"Successfully saved playlist to file: {filePath}");
+			Log.PlaylistFileSaved(logger, filePath);
 			PublishDelayedStatus(Resources.PlaylistFileSaved.FormatMessage(filePath));
 		}
 		catch (Exception ex)

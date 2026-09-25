@@ -29,6 +29,16 @@ public sealed class ServiceCollectionExtensionsTests
 	}
 
 	[TestMethod]
+	public void RegistrationShouldBringTheLoggerOfACategory()
+	{
+		using ServiceProvider provider = BuildProvider(Environments.Production);
+
+		ILogger<FileLogger> logger = provider.GetRequiredService<ILogger<FileLogger>>();
+
+		Assert.IsNotNull(logger, "Every class asks for its own logger, nothing wraps it any more.");
+	}
+
+	[TestMethod]
 	public void DevelopmentShouldNotWriteToTheLogFile()
 	{
 		using ServiceProvider provider = BuildProvider(Environments.Development);

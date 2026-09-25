@@ -8,6 +8,7 @@ using BB84.IPTV.M3U.Editor.Application.ViewModels;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 using Moq;
 
@@ -56,7 +57,7 @@ public sealed class MainViewModelTests
 	[TestMethod]
 	public void TheStatusBarShouldFollowBothStatusEvents()
 	{
-		EventService eventService = new(new Mock<ILoggerService<EventService>>().Object);
+		EventService eventService = new(NullLogger<EventService>.Instance);
 		MainViewModel viewModel = CreateMainViewModel(eventService);
 
 		// A status without auto clear stays, so a long running operation can keep it.
@@ -70,7 +71,7 @@ public sealed class MainViewModelTests
 	[TestMethod]
 	public void TheProgressBarShouldFollowTheProgressEvent()
 	{
-		EventService eventService = new(new Mock<ILoggerService<EventService>>().Object);
+		EventService eventService = new(NullLogger<EventService>.Instance);
 		MainViewModel viewModel = CreateMainViewModel(eventService);
 
 		eventService.Publish(new ProgressChangedEvent(25));

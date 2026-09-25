@@ -34,18 +34,15 @@ namespace BB84.IPTV.M3U.Editor.Application.Services;
 /// <param name="logoStoreService">The store that holds the downloaded files.</param>
 /// <param name="providerService">The provider service used for file access.</param>
 /// <param name="eventService">The service that publishes the progress.</param>
-/// <param name="loggerService">The logger service that writes what went wrong with a single logo.</param>
+/// <param name="logger">The logger that writes what went wrong with a single logo.</param>
 internal sealed class LogoService(
 	IServiceScopeFactory serviceScopeFactory,
 	IDownloadService downloadService,
 	ILogoStoreService logoStoreService,
 	IProviderService providerService,
 	IEventService eventService,
-	ILoggerService<LogoService> loggerService) : ILogoService
+	ILogger<LogoService> logger) : ILogoService
 {
-	private static readonly Action<ILogger, string, Exception?> LogCacheFailed =
-		LoggerMessage.Define<string>(LogLevel.Warning, 0, "The logo at '{Url}' could not be cached.");
-
 	public async Task<LogoCacheStatusResponse> GetStatusAsync(CancellationToken cancellationToken = default)
 	{
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
@@ -233,7 +230,7 @@ internal sealed class LogoService(
 		{
 			// Writing the file failed, e.g. the disk is full or the path is refused. One logo is
 			// not worth ending the run for: the row keeps what it had and the next run tries again.
-			loggerService.Log(LogCacheFailed, logo.Url, exception);
+			Log.LogoCacheFailed(logger, logo.Url, exception);
 			return LogoResult.Failure;
 		}
 	}

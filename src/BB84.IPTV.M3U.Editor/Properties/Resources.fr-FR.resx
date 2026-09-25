@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApplicationIsExiting" xml:space="preserve">
-    <value>L'application est en cours de fermeture...</value>
-  </data>
-  <data name="ApplicationIsStarting" xml:space="preserve">
-    <value>L'application démarre...</value>
-  </data>
   <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
     <value>Vérifier la base de données</value>
   </data>
@@ -282,9 +276,6 @@
   <data name="ErrorMessageCaptition" xml:space="preserve">
     <value>Erreur</value>
   </data>
-  <data name="ExitRequested" xml:space="preserve">
-    <value>Sortie demandée, tentative de sortie de l'application ..</value>
-  </data>
   <data name="InformationMessageCaptition" xml:space="preserve">
     <value>Information</value>
   </data>
@@ -302,9 +293,6 @@
   </data>
   <data name="MessageDialog.YesButton.Content" xml:space="preserve">
     <value>Oui</value>
-  </data>
-  <data name="RestartRequested" xml:space="preserve">
-    <value>Redémarrage demandé, tentative de redémarrage de l'application.</value>
   </data>
   <data name="RetryMessageCaptition" xml:space="preserve">
     <value>Réessayer</value>

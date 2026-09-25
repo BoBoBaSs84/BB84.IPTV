@@ -9,8 +9,8 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
-using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Extensions;
@@ -32,26 +32,17 @@ namespace BB84.IPTV.M3U.Editor.Services;
 internal sealed class NotificationService : INotificationService
 {
 	private readonly IEventService _eventService;
-	private readonly ILoggerService<NotificationService> _loggerService;
-
-	private static readonly Action<ILogger, string, Exception?> LogError =
-		LoggerMessage.Define<string>(LogLevel.Error, 0, "{Error}");
-
-	private static readonly Action<ILogger, string, Exception?> LogWarning =
-		LoggerMessage.Define<string>(LogLevel.Warning, 0, "{Warning}");
-
-	private static readonly Action<ILogger, string, Exception?> LogInformation =
-		LoggerMessage.Define<string>(LogLevel.Information, 0, "{Information}");
+	private readonly ILogger<NotificationService> _logger;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="NotificationService"/> class.
 	/// </summary>
 	/// <param name="eventService">The event service to subscribe to for showing notifications.</param>
-	/// <param name="loggerService">The logger service that writes what is shown to the user.</param>
-	public NotificationService(IEventService eventService, ILoggerService<NotificationService> loggerService)
+	/// <param name="logger">The logger that writes what is shown to the user.</param>
+	public NotificationService(IEventService eventService, ILogger<NotificationService> logger)
 	{
 		_eventService = eventService;
-		_loggerService = loggerService;
+		_logger = logger;
 		RegisterEventHandlers();
 	}
 
@@ -99,19 +90,19 @@ internal sealed class NotificationService : INotificationService
 	{
 		_eventService.Subscribe<ErrorOccuredEvent>(e =>
 		{
-			_loggerService.Log(LogError, e.Message, e.Exception);
+			Log.NotificationError(_logger, e.Message, e.Exception);
 			_ = ShowErrorAsync(e.Message);
 		});
 
 		_eventService.Subscribe<InformationOccuredEvent>(e =>
 		{
-			_loggerService.Log(LogInformation, e.Message);
+			Log.NotificationInformation(_logger, e.Message);
 			_ = ShowInformationAsync(e.Message);
 		});
 
 		_eventService.Subscribe<WarningOccuredEvent>(e =>
 		{
-			_loggerService.Log(LogWarning, e.Message);
+			Log.NotificationWarning(_logger, e.Message);
 			_ = ShowWarningAsync(e.Message);
 		});
 	}
