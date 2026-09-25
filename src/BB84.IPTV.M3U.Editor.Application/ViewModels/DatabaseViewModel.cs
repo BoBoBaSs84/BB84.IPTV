@@ -23,7 +23,6 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	private readonly IDatabaseService _databaseService;
 	private readonly ILogoService _logoService;
 	private readonly ApplicationSettings _settings;
-	private readonly SynchronizationContext? _synchronizationContext;
 	private CancellationTokenSource? _logoCacheCancellation;
 	private LogoCacheStatusResponse _logoCacheStatus = new();
 	private bool _logosCaching;
@@ -58,7 +57,6 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 		_databaseService = databaseService;
 		_logoService = logoService;
 		_settings = settings;
-		_synchronizationContext = SynchronizationContext.Current;
 
 		_eventService.Subscribe<DatabaseImportProgressEvent>(OnDatabaseImportProgress);
 		_eventService.Subscribe<LogoCacheProgressEvent>(OnLogoCacheProgress);
@@ -236,8 +234,12 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	private void ImportDatabaseFailed(Exception exception)
 	{
 		_eventService.Publish(new ErrorOccuredEvent(Resources.DatabaseImportFailed, exception));
-		ImportStatusMessage = Resources.DatabaseImportFailed;
-		ImportProgress = 0;
+
+		Invoke(() =>
+		{
+			ImportStatusMessage = Resources.DatabaseImportFailed;
+			ImportProgress = 0;
+		});
 	}
 
 	private void RaiseCommandStatesChanged()
@@ -386,17 +388,16 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	private void LogoOperationFailed(Exception exception)
 	{
 		_eventService.Publish(new ErrorOccuredEvent(Resources.LogoCacheFailed, exception));
-		LogoStatusMessage = Resources.LogoCacheFailed;
-		LogoProgress = 0;
+
+		Invoke(() =>
+		{
+			LogoStatusMessage = Resources.LogoCacheFailed;
+			LogoProgress = 0;
+		});
 	}
 
 	private void OnLogoCacheProgress(LogoCacheProgressEvent @event)
-	{
-		if (_synchronizationContext is not null)
-			_synchronizationContext.Post(_ => UpdateLogoProgress(@event), null);
-		else
-			UpdateLogoProgress(@event);
-	}
+		=> Invoke(() => UpdateLogoProgress(@event));
 
 	private void UpdateLogoProgress(LogoCacheProgressEvent @event)
 	{
@@ -405,16 +406,7 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	}
 
 	private void OnDatabaseImportProgress(DatabaseImportProgressEvent @event)
-	{
-		if (_synchronizationContext is not null)
-		{
-			_synchronizationContext.Post(_ => UpdateImportProgress(@event), null);
-		}
-		else
-		{
-			UpdateImportProgress(@event);
-		}
-	}
+		=> Invoke(() => UpdateImportProgress(@event));
 
 	private void UpdateImportProgress(DatabaseImportProgressEvent @event)
 	{
