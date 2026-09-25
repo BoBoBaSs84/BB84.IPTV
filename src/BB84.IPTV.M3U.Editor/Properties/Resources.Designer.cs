@@ -79,11 +79,47 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string DatabaseControl_CancelLogoCacheButton_Content {
+            get {
+                return ResourceManager.GetString("DatabaseControl.CancelLogoCacheButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop the download, the logos downloaded so far are kept.
+        /// </summary>
+        public static string DatabaseControl_CancelLogoCacheButton_ToolTip {
+            get {
+                return ResourceManager.GetString("DatabaseControl.CancelLogoCacheButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check Database.
         /// </summary>
         public static string DatabaseControl_CheckDatabaseButton_Content {
             get {
                 return ResourceManager.GetString("DatabaseControl.CheckDatabaseButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string DatabaseControl_ClearLogoCacheButton_Content {
+            get {
+                return ResourceManager.GetString("DatabaseControl.ClearLogoCacheButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete every cached logo.
+        /// </summary>
+        public static string DatabaseControl_ClearLogoCacheButton_ToolTip {
+            get {
+                return ResourceManager.GetString("DatabaseControl.ClearLogoCacheButton.ToolTip", resourceCulture);
             }
         }
         
@@ -169,24 +205,6 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import Database.
-        /// </summary>
-        public static string DatabaseControl_ImportDatabaseButton_Content {
-            get {
-                return ResourceManager.GetString("DatabaseControl.ImportDatabaseButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Logo Cache.
-        /// </summary>
-        public static string DatabaseControl_LogoCacheGroupBox_Header {
-            get {
-                return ResourceManager.GetString("DatabaseControl.LogoCacheGroupBox.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Download Logos.
         /// </summary>
         public static string DatabaseControl_DownloadLogosButton_Content {
@@ -205,326 +223,11 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
+        ///   Looks up a localized string similar to Import Database.
         /// </summary>
-        public static string DatabaseControl_CancelLogoCacheButton_Content {
+        public static string DatabaseControl_ImportDatabaseButton_Content {
             get {
-                return ResourceManager.GetString("DatabaseControl.CancelLogoCacheButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stop the download, the logos downloaded so far are kept.
-        /// </summary>
-        public static string DatabaseControl_CancelLogoCacheButton_ToolTip {
-            get {
-                return ResourceManager.GetString("DatabaseControl.CancelLogoCacheButton.ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clear.
-        /// </summary>
-        public static string DatabaseControl_ClearLogoCacheButton_Content {
-            get {
-                return ResourceManager.GetString("DatabaseControl.ClearLogoCacheButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete every cached logo.
-        /// </summary>
-        public static string DatabaseControl_ClearLogoCacheButton_ToolTip {
-            get {
-                return ResourceManager.GetString("DatabaseControl.ClearLogoCacheButton.ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Playlist.
-        /// </summary>
-        public static string GuideControl_PlaylistGroupBox_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.PlaylistGroupBox.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Playlist.
-        /// </summary>
-        public static string GuideControl_PlaylistComboBox_Placeholder {
-            get {
-                return ResourceManager.GetString("GuideControl.PlaylistComboBox.Placeholder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save Mappings.
-        /// </summary>
-        public static string GuideControl_SaveMappingsButton_Content {
-            get {
-                return ResourceManager.GetString("GuideControl.SaveMappingsButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keep the mappings of this playlist for the next time.
-        /// </summary>
-        public static string GuideControl_SaveMappingsButton_ToolTip {
-            get {
-                return ResourceManager.GetString("GuideControl.SaveMappingsButton.ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export channels.xml.
-        /// </summary>
-        public static string GuideControl_ExportButton_Content {
-            get {
-                return ResourceManager.GetString("GuideControl.ExportButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Write the channels.xml the iptv-org EPG grabber reads.
-        /// </summary>
-        public static string GuideControl_ExportButton_ToolTip {
-            get {
-                return ResourceManager.GetString("GuideControl.ExportButton.ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Entries.
-        /// </summary>
-        public static string GuideControl_MappingGroupBox_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.MappingGroupBox.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Title.
-        /// </summary>
-        public static string GuideControl_TitleColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.TitleColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Site.
-        /// </summary>
-        public static string GuideControl_SiteColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.SiteColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Site ID.
-        /// </summary>
-        public static string GuideControl_SiteIdColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.SiteIdColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Lang.
-        /// </summary>
-        public static string GuideControl_LangColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.LangColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to XMLTV ID.
-        /// </summary>
-        public static string GuideControl_XmltvIdColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.XmltvIdColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string GuideControl_DisplayNameColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.DisplayNameColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Complete.
-        /// </summary>
-        public static string GuideControl_CompleteColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.CompleteColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Guides.
-        /// </summary>
-        public static string GuideControl_GuidesGroupBox_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.GuidesGroupBox.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Guides for the selected entry.
-        /// </summary>
-        public static string GuideControl_OptionsHeader_Text {
-            get {
-                return ResourceManager.GetString("GuideControl.OptionsHeader.Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Apply.
-        /// </summary>
-        public static string GuideControl_ApplyOptionButton_Content {
-            get {
-                return ResourceManager.GetString("GuideControl.ApplyOptionButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Takes the site, the identifier and the language of the picked guide into the selected row.
-        /// </summary>
-        public static string GuideControl_ApplyOptionButton_ToolTip {
-            get {
-                return ResourceManager.GetString("GuideControl.ApplyOptionButton.ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sites.
-        /// </summary>
-        public static string GuideControl_SitesHeader_Text {
-            get {
-                return ResourceManager.GetString("GuideControl.SitesHeader.Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refresh.
-        /// </summary>
-        public static string GuideControl_RefreshSitesButton_Content {
-            get {
-                return ResourceManager.GetString("GuideControl.RefreshSitesButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Channel, identifier or name.
-        /// </summary>
-        public static string GuideControl_SiteSearchTextBox_Placeholder {
-            get {
-                return ResourceManager.GetString("GuideControl.SiteSearchTextBox.Placeholder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search.
-        /// </summary>
-        public static string GuideControl_SearchSiteChannelsButton_Content {
-            get {
-                return ResourceManager.GetString("GuideControl.SearchSiteChannelsButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Apply to row.
-        /// </summary>
-        public static string GuideControl_ApplySiteChannelButton_Content {
-            get {
-                return ResourceManager.GetString("GuideControl.ApplySiteChannelButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Takes the selected guide of the site into the selected row.
-        /// </summary>
-        public static string GuideControl_ApplySiteChannelButton_ToolTip {
-            get {
-                return ResourceManager.GetString("GuideControl.ApplySiteChannelButton.ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Previous.
-        /// </summary>
-        public static string GuideControl_PreviousPageButton_Content {
-            get {
-                return ResourceManager.GetString("GuideControl.PreviousPageButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Next.
-        /// </summary>
-        public static string GuideControl_NextPageButton_Content {
-            get {
-                return ResourceManager.GetString("GuideControl.NextPageButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Channel.
-        /// </summary>
-        public static string GuideControl_ChannelColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.ChannelColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Feed.
-        /// </summary>
-        public static string GuideControl_FeedColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.FeedColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string GuideControl_SiteNameColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.SiteNameColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Catalog name.
-        /// </summary>
-        public static string GuideControl_ChannelNameColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.ChannelNameColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Country.
-        /// </summary>
-        public static string GuideControl_CountryColumn_Header {
-            get {
-                return ResourceManager.GetString("GuideControl.CountryColumn.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Guide Export.
-        /// </summary>
-        public static string MainWindow_GuideMenuItem_Header {
-            get {
-                return ResourceManager.GetString("MainWindow.GuideMenuItem.Header", resourceCulture);
+                return ResourceManager.GetString("DatabaseControl.ImportDatabaseButton.Content", resourceCulture);
             }
         }
         
@@ -534,6 +237,15 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string DatabaseControl_ImportProgressGroupBox_Header {
             get {
                 return ResourceManager.GetString("DatabaseControl.ImportProgressGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo Cache.
+        /// </summary>
+        public static string DatabaseControl_LogoCacheGroupBox_Header {
+            get {
+                return ResourceManager.GetString("DatabaseControl.LogoCacheGroupBox.Header", resourceCulture);
             }
         }
         
@@ -565,6 +277,285 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        public static string GuideControl_ApplyOptionButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.ApplyOptionButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Takes the site, the identifier and the language of the picked guide into the selected row..
+        /// </summary>
+        public static string GuideControl_ApplyOptionButton_ToolTip {
+            get {
+                return ResourceManager.GetString("GuideControl.ApplyOptionButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply to row.
+        /// </summary>
+        public static string GuideControl_ApplySiteChannelButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.ApplySiteChannelButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Takes the selected guide of the site into the selected row..
+        /// </summary>
+        public static string GuideControl_ApplySiteChannelButton_ToolTip {
+            get {
+                return ResourceManager.GetString("GuideControl.ApplySiteChannelButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel.
+        /// </summary>
+        public static string GuideControl_ChannelColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.ChannelColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Catalog name.
+        /// </summary>
+        public static string GuideControl_ChannelNameColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.ChannelNameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete.
+        /// </summary>
+        public static string GuideControl_CompleteColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.CompleteColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string GuideControl_CountryColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.CountryColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string GuideControl_DisplayNameColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.DisplayNameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export channels.xml.
+        /// </summary>
+        public static string GuideControl_ExportButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.ExportButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write the channels.xml the iptv-org EPG grabber reads.
+        /// </summary>
+        public static string GuideControl_ExportButton_ToolTip {
+            get {
+                return ResourceManager.GetString("GuideControl.ExportButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed.
+        /// </summary>
+        public static string GuideControl_FeedColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.FeedColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guides.
+        /// </summary>
+        public static string GuideControl_GuidesGroupBox_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.GuidesGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lang.
+        /// </summary>
+        public static string GuideControl_LangColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.LangColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entries.
+        /// </summary>
+        public static string GuideControl_MappingGroupBox_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.MappingGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string GuideControl_NextPageButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.NextPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guides for the selected entry.
+        /// </summary>
+        public static string GuideControl_OptionsHeader_Text {
+            get {
+                return ResourceManager.GetString("GuideControl.OptionsHeader.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist.
+        /// </summary>
+        public static string GuideControl_PlaylistComboBox_Placeholder {
+            get {
+                return ResourceManager.GetString("GuideControl.PlaylistComboBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist.
+        /// </summary>
+        public static string GuideControl_PlaylistGroupBox_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.PlaylistGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string GuideControl_PreviousPageButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.PreviousPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string GuideControl_RefreshSitesButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.RefreshSitesButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Mappings.
+        /// </summary>
+        public static string GuideControl_SaveMappingsButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.SaveMappingsButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep the mappings of this playlist for the next time.
+        /// </summary>
+        public static string GuideControl_SaveMappingsButton_ToolTip {
+            get {
+                return ResourceManager.GetString("GuideControl.SaveMappingsButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string GuideControl_SearchSiteChannelsButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.SearchSiteChannelsButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site.
+        /// </summary>
+        public static string GuideControl_SiteColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.SiteColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site ID.
+        /// </summary>
+        public static string GuideControl_SiteIdColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.SiteIdColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string GuideControl_SiteNameColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.SiteNameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel, identifier or name.
+        /// </summary>
+        public static string GuideControl_SiteSearchTextBox_Placeholder {
+            get {
+                return ResourceManager.GetString("GuideControl.SiteSearchTextBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sites.
+        /// </summary>
+        public static string GuideControl_SitesHeader_Text {
+            get {
+                return ResourceManager.GetString("GuideControl.SitesHeader.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string GuideControl_TitleColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.TitleColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XMLTV ID.
+        /// </summary>
+        public static string GuideControl_XmltvIdColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.XmltvIdColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Information.
         /// </summary>
         public static string InformationMessageCaptition {
@@ -579,6 +570,15 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string LanguageSetTo {
             get {
                 return ResourceManager.GetString("LanguageSetTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Guide Export.
+        /// </summary>
+        public static string MainWindow_GuideMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.GuideMenuItem.Header", resourceCulture);
             }
         }
         
@@ -664,6 +664,15 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse....
+        /// </summary>
+        public static string SettingsControl_BrowseButton_Content {
+            get {
+                return ResourceManager.GetString("SettingsControl.BrowseButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command Timeout (sec):.
         /// </summary>
         public static string SettingsControl_CommandTimeoutTextBlock_Text {
@@ -682,11 +691,29 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data directory:.
+        /// </summary>
+        public static string SettingsControl_DataDirectoryTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.DataDirectoryTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable Logging.
         /// </summary>
         public static string SettingsControl_EnableLoggingCheckBox_Content {
             get {
                 return ResourceManager.GetString("SettingsControl.EnableLoggingCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Path Style:.
+        /// </summary>
+        public static string SettingsControl_ExportPathStyleTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.ExportPathStyleTextBlock.Text", resourceCulture);
             }
         }
         
@@ -718,11 +745,38 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log directory:.
+        /// </summary>
+        public static string SettingsControl_LogDirectoryTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.LogDirectoryTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log Level:.
         /// </summary>
         public static string SettingsControl_LogLevelTextBlock_Text {
             get {
                 return ResourceManager.GetString("SettingsControl.LogLevelTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo directory:.
+        /// </summary>
+        public static string SettingsControl_LogoDirectoryTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.LogoDirectoryTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo cache.
+        /// </summary>
+        public static string SettingsControl_LogoGroupBox_Header {
+            get {
+                return ResourceManager.GetString("SettingsControl.LogoGroupBox.Header", resourceCulture);
             }
         }
         
@@ -736,11 +790,47 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max Parallel Downloads:.
+        /// </summary>
+        public static string SettingsControl_MaxParallelDownloadsTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.MaxParallelDownloadsTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data paths.
+        /// </summary>
+        public static string SettingsControl_PathsGroupBox_Header {
+            get {
+                return ResourceManager.GetString("SettingsControl.PathsGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An empty path uses the default below the data directory. A changed path is used after a restart..
+        /// </summary>
+        public static string SettingsControl_PathsHintTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.PathsHintTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save Settings.
         /// </summary>
         public static string SettingsControl_SaveSettingsButton_Content {
             get {
                 return ResourceManager.GetString("SettingsControl.SaveSettingsButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use cached logo paths on export.
+        /// </summary>
+        public static string SettingsControl_UseLocalPathsOnExportCheckBox_Content {
+            get {
+                return ResourceManager.GetString("SettingsControl.UseLocalPathsOnExportCheckBox.Content", resourceCulture);
             }
         }
         
@@ -867,96 +957,6 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string ToolTip_Track_Title {
             get {
                 return ResourceManager.GetString("ToolTip.Track.Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data paths.
-        /// </summary>
-        public static string SettingsControl_PathsGroupBox_Header {
-            get {
-                return ResourceManager.GetString("SettingsControl.PathsGroupBox.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data directory:.
-        /// </summary>
-        public static string SettingsControl_DataDirectoryTextBlock_Text {
-            get {
-                return ResourceManager.GetString("SettingsControl.DataDirectoryTextBlock.Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Logo directory:.
-        /// </summary>
-        public static string SettingsControl_LogoDirectoryTextBlock_Text {
-            get {
-                return ResourceManager.GetString("SettingsControl.LogoDirectoryTextBlock.Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Log directory:.
-        /// </summary>
-        public static string SettingsControl_LogDirectoryTextBlock_Text {
-            get {
-                return ResourceManager.GetString("SettingsControl.LogDirectoryTextBlock.Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Browse....
-        /// </summary>
-        public static string SettingsControl_BrowseButton_Content {
-            get {
-                return ResourceManager.GetString("SettingsControl.BrowseButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An empty path uses the default below the data directory. A changed path is used after a restart..
-        /// </summary>
-        public static string SettingsControl_PathsHintTextBlock_Text {
-            get {
-                return ResourceManager.GetString("SettingsControl.PathsHintTextBlock.Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Logo cache.
-        /// </summary>
-        public static string SettingsControl_LogoGroupBox_Header {
-            get {
-                return ResourceManager.GetString("SettingsControl.LogoGroupBox.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use cached logo paths on export.
-        /// </summary>
-        public static string SettingsControl_UseLocalPathsOnExportCheckBox_Content {
-            get {
-                return ResourceManager.GetString("SettingsControl.UseLocalPathsOnExportCheckBox.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export Path Style:.
-        /// </summary>
-        public static string SettingsControl_ExportPathStyleTextBlock_Text {
-            get {
-                return ResourceManager.GetString("SettingsControl.ExportPathStyleTextBlock.Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Max Parallel Downloads:.
-        /// </summary>
-        public static string SettingsControl_MaxParallelDownloadsTextBlock_Text {
-            get {
-                return ResourceManager.GetString("SettingsControl.MaxParallelDownloadsTextBlock.Text", resourceCulture);
             }
         }
         
