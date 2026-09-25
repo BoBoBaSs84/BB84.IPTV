@@ -84,9 +84,20 @@ internal sealed class LogoService(
 			if (cancellationToken.IsCancellationRequested)
 				break;
 
-			LogoUpdate?[] updates = await Task
-				.WhenAll(batch.Select(logo => DownloadAsync(logo, cancellationToken)))
-				.ConfigureAwait(false);
+			LogoUpdate?[] updates;
+
+			try
+			{
+				updates = await Task
+					.WhenAll(batch.Select(logo => DownloadAsync(logo, cancellationToken)))
+					.ConfigureAwait(false);
+			}
+			catch (OperationCanceledException)
+			{
+				// Stopping a run is not a failure: what the batches before committed is kept, and
+				// the next run goes on from there.
+				break;
+			}
 
 			for (int index = 0; index < batch.Length; index++)
 			{

@@ -83,6 +83,27 @@ public sealed class LogoServiceTests
 	}
 
 	[TestMethod]
+	public async Task CacheLogosAsyncShouldKeepWhatItHasWhenTheRunIsStopped()
+	{
+		using CancellationTokenSource cancellation = new();
+
+		_downloadServiceMock.Setup(x => x.DownloadAsync(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CancellationToken>()))
+			.Returns(async (string url, string? eTag, CancellationToken token) =>
+			{
+				await cancellation.CancelAsync().ConfigureAwait(false);
+				token.ThrowIfCancellationRequested();
+				return new LogoDownloadResponse { Content = [1, 2, 3] };
+			});
+
+		// Stopping a run reports what it kept, it is not a failure the user gets a dialog for.
+		int downloaded = await _sut
+			.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 1 }, cancellation.Token)
+			.ConfigureAwait(false);
+
+		Assert.AreEqual(0, downloaded);
+	}
+
+	[TestMethod]
 	public async Task CacheLogosAsyncShouldStoreWhatItDownloaded()
 	{
 		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);

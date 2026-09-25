@@ -136,6 +136,55 @@ public sealed class DatabaseViewModelTests : IDisposable
 	}
 
 	[TestMethod]
+	public async Task AFailedLogoCacheShouldReachTheUserInterfaceThread()
+	{
+		_logoServiceMock.Setup(x => x.GetStatusAsync(It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new InvalidOperationException("no database"));
+
+		RecordingContext context = new();
+		SynchronizationContext? previous = SynchronizationContext.Current;
+		DatabaseViewModel viewModel;
+
+		try
+		{
+			SynchronizationContext.SetSynchronizationContext(context);
+			viewModel = new(_eventServiceMock.Object, _databaseServiceMock.Object, _logoServiceMock.Object, new ApplicationSettings());
+		}
+		finally
+		{
+			SynchronizationContext.SetSynchronizationContext(previous);
+		}
+
+		using (viewModel)
+		{
+			// The error callback of a command runs on a thread pool thread; a bound property set
+			// there ends the application, so it has to go back to the thread of the interface.
+			await Task.Run(viewModel.LoadLogoCacheStatusAndReportAsync).ConfigureAwait(false);
+
+			Assert.AreEqual(1, context.Posts);
+			Assert.AreEqual(Resources.LogoCacheFailed, viewModel.LogoStatusMessage);
+			Assert.AreEqual(0, viewModel.LogoProgress);
+		}
+	}
+
+	/// <summary>
+	/// Counts what was posted to it and runs it straight away, so a test does not have to wait.
+	/// </summary>
+	private sealed class RecordingContext : SynchronizationContext
+	{
+		private int _posts;
+
+		public int Posts
+			=> _posts;
+
+		public override void Post(SendOrPostCallback d, object? state)
+		{
+			_ = Interlocked.Increment(ref _posts);
+			d(state);
+		}
+	}
+
+	[TestMethod]
 	public void TheImportProgressShouldBeReportedWithALocalizedMessage()
 	{
 		EventService eventService = new(new Mock<ILoggerService<EventService>>().Object);

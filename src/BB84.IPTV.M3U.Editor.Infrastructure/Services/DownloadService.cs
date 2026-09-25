@@ -62,7 +62,10 @@ internal sealed class DownloadService(IHttpClientFactory httpClientFactory, ILog
 				ContentType = response.Content.Headers.ContentType?.ToString()
 			};
 		}
-		catch (OperationCanceledException)
+		// Only a run the user stopped is passed on. A request that ran into the timeout of the
+		// client also reports itself as cancelled, but nothing asked for it: that is a logo which
+		// could not be downloaded, and it must not end the run.
+		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
 		{
 			throw;
 		}

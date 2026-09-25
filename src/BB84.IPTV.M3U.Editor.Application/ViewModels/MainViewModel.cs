@@ -21,7 +21,6 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 	private readonly IHostEnvironment _hostEnvironment;
 	private readonly INotificationService _notificationService;
 	private readonly IUserService _userService;
-	private readonly SynchronizationContext? _synchronizationContext;
 	private IActionCommand? _showAboutControl;
 	private IAsyncActionCommand? _exitApplicationCommand;
 	private IActionCommand? _openSettingsCommand;
@@ -47,7 +46,6 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 		_hostEnvironment = hostEnvironment;
 		_notificationService = notificationService;
 		_userService = userService;
-		_synchronizationContext = SynchronizationContext.Current;
 		_applicationTitle = $"{_hostEnvironment.ApplicationName} - {_hostEnvironment.EnvironmentName}";
 		_statusText = string.Empty;
 
@@ -154,12 +152,7 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 		=> _openSettingsCommand ??= new ActionCommand(NavigationService.NavigateTo<SettingsViewModel>);
 
 	private void OnStatusChanged(StatusChangedEvent @event)
-	{
-		if (_synchronizationContext is not null)
-			_synchronizationContext.Post(_ => ChangeStatus(@event), null);
-		else
-			ChangeStatus(@event);
-	}
+		=> Invoke(() => ChangeStatus(@event));
 
 	private void ChangeStatus(StatusChangedEvent @event)
 	{
@@ -167,18 +160,13 @@ public sealed class MainViewModel : ViewModelBase, INavigateable
 
 		if (@event.AutoClear)
 		{
-			Task.Delay(@event.Duration)
-				.ContinueWith(_ => StatusText = string.Empty);
+			_ = Task.Delay(@event.Duration)
+				.ContinueWith(_ => Invoke(() => StatusText = string.Empty), TaskScheduler.Default);
 		}
 	}
 
 	private void OnProgressChanged(ProgressChangedEvent @event)
-	{
-		if (_synchronizationContext is not null)
-			_synchronizationContext.Post(_ => ChangeProgress(@event), null);
-		else
-			ChangeProgress(@event);
-	}
+		=> Invoke(() => ChangeProgress(@event));
 
 	private void ChangeProgress(ProgressChangedEvent @event)
 	{
