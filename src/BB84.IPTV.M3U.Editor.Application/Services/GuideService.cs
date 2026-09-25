@@ -62,12 +62,20 @@ internal sealed class GuideService(
 			.ConfigureAwait(false);
 
 		List<GuideMappingResponse> mappings = [];
+		HashSet<string> keys = new(StringComparer.OrdinalIgnoreCase);
 
 		foreach (EntryModel entry in playlist.Entries)
 		{
 			string key = GetEntryKey(entry);
 
 			if (string.IsNullOrWhiteSpace(key))
+				continue;
+
+			// A playlist can hold the same tvg-id more than once. The mapping belongs to the key,
+			// not to the entry, so the first entry of a key gets the row and the ones after it are
+			// left out: a further row would be an editable copy that cannot be stored next to the
+			// first one, and it would be written into the channels.xml twice.
+			if (!keys.Add(key))
 				continue;
 
 			mappings.Add(storedByKey.TryGetValue(key, out GuideMappingEntity? entity)
@@ -91,8 +99,12 @@ internal sealed class GuideService(
 			.ExecuteDeleteAsync(mapping => mapping.PlaylistId == playlistId, cancellationToken)
 			.ConfigureAwait(false);
 
+		// One mapping per key, whatever the caller passes: the key is unique per playlist, so a
+		// playlist that holds the same tvg-id twice would otherwise break the insert.
 		List<GuideMappingEntity> entities = [.. mappings
 			.Where(HoldsSomething)
+			.GroupBy(mapping => mapping.EntryKey, StringComparer.OrdinalIgnoreCase)
+			.Select(group => group.First())
 			.Select(mapping => new GuideMappingEntity
 			{
 				PlaylistId = playlistId,
