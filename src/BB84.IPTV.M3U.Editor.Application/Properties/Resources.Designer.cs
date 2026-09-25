@@ -214,11 +214,47 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No guide is known for this entry..
+        /// </summary>
+        public static string GuideNoOptions {
+            get {
+                return ResourceManager.GetString("GuideNoOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The guide operation failed..
         /// </summary>
         public static string GuideOperationFailed {
             get {
                 return ResourceManager.GetString("GuideOperationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} guides known for this entry..
+        /// </summary>
+        public static string GuideOptionsStatus {
+            get {
+                return ResourceManager.GetString("GuideOptionsStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page {0} of {1}, {2} guides..
+        /// </summary>
+        public static string GuideSitePageStatus {
+            get {
+                return ResourceManager.GetString("GuideSitePageStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} sites known..
+        /// </summary>
+        public static string GuideSitesStatus {
+            get {
+                return ResourceManager.GetString("GuideSitesStatus", resourceCulture);
             }
         }
         

@@ -3,7 +3,9 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Features;
 
 namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 
@@ -43,4 +45,28 @@ public interface IGuideService
 	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
 	/// <returns>The number of written channels.</returns>
 	Task<int> ExportAsync(int playlistId, string filePath, IEnumerable<GuideMappingResponse>? mappings = null, CancellationToken cancellationToken = default);
+
+	/// <summary>
+	/// Gets the guides the catalog knows for a channel, the ones of the feed first.
+	/// </summary>
+	/// <param name="channel">The iptv-org channel identifier, e.g. <c>DasErste.de</c>.</param>
+	/// <param name="feed">The iptv-org feed identifier the entry was created from, if any.</param>
+	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
+	/// <returns>The guides, empty if no guide is known for the channel.</returns>
+	Task<IReadOnlyList<GuideOptionResponse>> GetOptionsAsync(string channel, string? feed = null, CancellationToken cancellationToken = default);
+
+	/// <summary>
+	/// Gets the sites the program guides are grabbed from, with what each of them covers.
+	/// </summary>
+	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
+	/// <returns>The sites, ordered by name, empty if no guides were imported.</returns>
+	Task<IReadOnlyList<GuideSiteResponse>> GetSitesAsync(CancellationToken cancellationToken = default);
+
+	/// <summary>
+	/// Searches the guides of one site, so the channels and feeds it covers can be looked through.
+	/// </summary>
+	/// <param name="request">The site to look at and what to search for.</param>
+	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
+	/// <returns>The page of guides the site holds.</returns>
+	Task<IPagedList<GuideOptionResponse>> SearchSiteChannelsAsync(GuideSiteSearchRequest request, CancellationToken cancellationToken = default);
 }

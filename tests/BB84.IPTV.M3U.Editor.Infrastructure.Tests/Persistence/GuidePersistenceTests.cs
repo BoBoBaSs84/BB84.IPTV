@@ -171,6 +171,19 @@ public sealed class GuidePersistenceTests
 		Assert.DoesNotContain("DasErste.de", content);
 	}
 
+	[TestMethod]
+	public async Task GetMappingsAsyncShouldCarryTheChannelOfTheEntry()
+	{
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+
+		// What the guides of a row are looked up with, also for an entry that only holds a tvg-id.
+		Assert.AreEqual("DasErste.de", mappings[0].Channel);
+		Assert.IsNull(mappings[0].Feed);
+		Assert.AreEqual("ZDF.de", mappings[1].Channel);
+		Assert.AreEqual("HD", mappings[1].Feed);
+		Assert.IsNull(mappings[2].Channel, "A custom channel names none.");
+	}
+
 	private static GuideMappingResponse Override(GuideMappingResponse mapping, string? site = null, string? siteId = null, string? xmltvId = null) => new()
 	{
 		EntryKey = mapping.EntryKey,

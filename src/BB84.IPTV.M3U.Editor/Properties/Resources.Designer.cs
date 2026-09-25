@@ -367,6 +367,159 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guides.
+        /// </summary>
+        public static string GuideControl_GuidesGroupBox_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.GuidesGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guides for the selected entry.
+        /// </summary>
+        public static string GuideControl_OptionsHeader_Text {
+            get {
+                return ResourceManager.GetString("GuideControl.OptionsHeader.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        public static string GuideControl_ApplyOptionButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.ApplyOptionButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Takes the site, the identifier and the language of the picked guide into the selected row.
+        /// </summary>
+        public static string GuideControl_ApplyOptionButton_ToolTip {
+            get {
+                return ResourceManager.GetString("GuideControl.ApplyOptionButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sites.
+        /// </summary>
+        public static string GuideControl_SitesHeader_Text {
+            get {
+                return ResourceManager.GetString("GuideControl.SitesHeader.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string GuideControl_RefreshSitesButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.RefreshSitesButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel, identifier or name.
+        /// </summary>
+        public static string GuideControl_SiteSearchTextBox_Placeholder {
+            get {
+                return ResourceManager.GetString("GuideControl.SiteSearchTextBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string GuideControl_SearchSiteChannelsButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.SearchSiteChannelsButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply to row.
+        /// </summary>
+        public static string GuideControl_ApplySiteChannelButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.ApplySiteChannelButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Takes the selected guide of the site into the selected row.
+        /// </summary>
+        public static string GuideControl_ApplySiteChannelButton_ToolTip {
+            get {
+                return ResourceManager.GetString("GuideControl.ApplySiteChannelButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string GuideControl_PreviousPageButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.PreviousPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string GuideControl_NextPageButton_Content {
+            get {
+                return ResourceManager.GetString("GuideControl.NextPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel.
+        /// </summary>
+        public static string GuideControl_ChannelColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.ChannelColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed.
+        /// </summary>
+        public static string GuideControl_FeedColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.FeedColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string GuideControl_SiteNameColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.SiteNameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Catalog name.
+        /// </summary>
+        public static string GuideControl_ChannelNameColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.ChannelNameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string GuideControl_CountryColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideControl.CountryColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Guide Export.
         /// </summary>
         public static string MainWindow_GuideMenuItem_Header {

@@ -3,6 +3,7 @@
 						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
+						 xmlns:r="using:BB84.IPTV.M3U.Editor.Application.Contracts.Responses"
 						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
 						 mc:Ignorable="d"
 						 d:DesignWidth="1200"
@@ -44,50 +45,192 @@
 			</StackPanel>
 		</HeaderedContentControl>
 
-		<!-- Mapping of the entries -->
-		<HeaderedContentControl Theme="{StaticResource GroupBox}"
-														Header="{x:Static p:Resources.GuideControl_MappingGroupBox_Header}"
-														Margin="4">
-			<DataGrid x:Name="MappingDataGrid"
-								AutoGenerateColumns="False"
-								IsReadOnly="False"
-								CanUserSortColumns="False"
-								SelectionMode="Single"
-								GridLinesVisibility="All"
-								ItemsSource="{Binding Mappings}">
-				<DataGrid.Columns>
-					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
-															Header="{x:Static p:Resources.GuideControl_TitleColumn_Header}"
-															Binding="{Binding Title}"
-															IsReadOnly="True"
-															Width="2*" />
-					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
-															Header="{x:Static p:Resources.GuideControl_SiteColumn_Header}"
-															Binding="{Binding Site}"
-															Width="*" />
-					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
-															Header="{x:Static p:Resources.GuideControl_SiteIdColumn_Header}"
-															Binding="{Binding SiteId}"
-															Width="*" />
-					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
-															Header="{x:Static p:Resources.GuideControl_LangColumn_Header}"
-															Binding="{Binding Lang}"
-															Width="80" />
-					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
-															Header="{x:Static p:Resources.GuideControl_XmltvIdColumn_Header}"
-															Binding="{Binding XmltvId}"
-															Width="*" />
-					<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
-															Header="{x:Static p:Resources.GuideControl_DisplayNameColumn_Header}"
-															Binding="{Binding DisplayName}"
-															Width="*" />
-					<DataGridCheckBoxColumn x:DataType="vm:GuideMappingViewModel"
-																	Header="{x:Static p:Resources.GuideControl_CompleteColumn_Header}"
-																	Binding="{Binding IsComplete}"
-																	IsReadOnly="True"
+		<Grid ColumnDefinitions="*,Auto,440">
+			<!-- Mapping of the entries -->
+			<HeaderedContentControl Grid.Column="0"
+															Theme="{StaticResource GroupBox}"
+															Header="{x:Static p:Resources.GuideControl_MappingGroupBox_Header}"
+															Margin="4">
+				<DataGrid x:Name="MappingDataGrid"
+									AutoGenerateColumns="False"
+									IsReadOnly="False"
+									CanUserSortColumns="False"
+									SelectionMode="Single"
+									GridLinesVisibility="All"
+									ItemsSource="{Binding Mappings}"
+									SelectedItem="{Binding SelectedMapping}">
+					<DataGrid.Columns>
+						<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+																Header="{x:Static p:Resources.GuideControl_TitleColumn_Header}"
+																Binding="{Binding Title}"
+																IsReadOnly="True"
+																Width="2*" />
+						<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+																Header="{x:Static p:Resources.GuideControl_SiteColumn_Header}"
+																Binding="{Binding Site}"
+																Width="*" />
+						<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+																Header="{x:Static p:Resources.GuideControl_SiteIdColumn_Header}"
+																Binding="{Binding SiteId}"
+																Width="*" />
+						<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+																Header="{x:Static p:Resources.GuideControl_LangColumn_Header}"
+																Binding="{Binding Lang}"
+																Width="80" />
+						<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+																Header="{x:Static p:Resources.GuideControl_XmltvIdColumn_Header}"
+																Binding="{Binding XmltvId}"
+																Width="*" />
+						<DataGridTextColumn x:DataType="vm:GuideMappingViewModel"
+																Header="{x:Static p:Resources.GuideControl_DisplayNameColumn_Header}"
+																Binding="{Binding DisplayName}"
+																Width="*" />
+						<DataGridCheckBoxColumn x:DataType="vm:GuideMappingViewModel"
+																		Header="{x:Static p:Resources.GuideControl_CompleteColumn_Header}"
+																		Binding="{Binding IsComplete}"
+																		IsReadOnly="True"
+																		Width="90" />
+					</DataGrid.Columns>
+				</DataGrid>
+			</HeaderedContentControl>
+
+			<GridSplitter Grid.Column="1"
+										Width="4"
+										ResizeDirection="Columns" />
+
+			<!-- What the catalog knows: the guides of the row and the sites -->
+			<HeaderedContentControl Grid.Column="2"
+															Theme="{StaticResource GroupBox}"
+															Header="{x:Static p:Resources.GuideControl_GuidesGroupBox_Header}"
+															Margin="4">
+				<DockPanel>
+					<!-- The guides of the selected entry -->
+					<StackPanel DockPanel.Dock="Top"
+											Spacing="4"
+											Margin="0,0,0,8">
+						<TextBlock Text="{x:Static p:Resources.GuideControl_OptionsHeader_Text}"
+											 FontWeight="Bold" />
+						<ListBox x:Name="OptionListBox"
+										 Height="120"
+										 ItemsSource="{Binding Options}"
+										 SelectedItem="{Binding SelectedOption}">
+							<ListBox.ItemTemplate>
+								<DataTemplate x:DataType="r:GuideOptionResponse">
+									<StackPanel Orientation="Horizontal"
+															Spacing="8">
+										<TextBlock Text="{Binding Site}" />
+										<TextBlock Text="{Binding SiteName}"
+															 Foreground="#888" />
+										<TextBlock Text="{Binding Lang}"
+															 Foreground="#888" />
+									</StackPanel>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+						<WrapPanel>
+							<Button Content="{x:Static p:Resources.GuideControl_ApplyOptionButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.GuideControl_ApplyOptionButton_ToolTip}"
+											Margin="0,0,4,0"
+											Command="{Binding ApplyOptionCommand}" />
+							<TextBlock Text="{Binding OptionsStatusMessage}"
+												 Foreground="#888"
+												 VerticalAlignment="Center"
+												 TextWrapping="Wrap" />
+						</WrapPanel>
+					</StackPanel>
+
+					<!-- The sites and what they cover -->
+					<TextBlock DockPanel.Dock="Top"
+										 Text="{x:Static p:Resources.GuideControl_SitesHeader_Text}"
+										 FontWeight="Bold" />
+					<WrapPanel DockPanel.Dock="Top"
+										 Margin="0,4">
+						<TextBox PlaceholderText="{x:Static p:Resources.GuideControl_SiteSearchTextBox_Placeholder}"
+										 Width="200"
+										 Margin="0,0,4,0"
+										 Text="{Binding SiteSearchText}" />
+						<Button Content="{x:Static p:Resources.GuideControl_SearchSiteChannelsButton_Content}"
+										Margin="0,0,4,0"
+										Command="{Binding SearchSiteChannelsCommand}" />
+						<Button Content="{x:Static p:Resources.GuideControl_RefreshSitesButton_Content}"
+										Command="{Binding RefreshSitesCommand}" />
+					</WrapPanel>
+					<ListBox x:Name="SiteListBox"
+									 DockPanel.Dock="Top"
+									 Height="120"
+									 ItemsSource="{Binding Sites}"
+									 SelectedItem="{Binding SelectedSite}">
+						<ListBox.ItemTemplate>
+							<DataTemplate x:DataType="r:GuideSiteResponse">
+								<StackPanel Orientation="Horizontal"
+														Spacing="8">
+									<TextBlock Text="{Binding Site}" />
+									<TextBlock Text="{Binding ChannelCount}"
+														 Foreground="#888" />
+								</StackPanel>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+					<WrapPanel DockPanel.Dock="Bottom"
+										 Margin="0,4,0,0">
+						<Button Content="{x:Static p:Resources.GuideControl_PreviousPageButton_Content}"
+										Margin="0,0,4,0"
+										Command="{Binding PreviousSiteChannelPageCommand}" />
+						<Button Content="{x:Static p:Resources.GuideControl_NextPageButton_Content}"
+										Margin="0,0,4,0"
+										Command="{Binding NextSiteChannelPageCommand}" />
+						<Button Content="{x:Static p:Resources.GuideControl_ApplySiteChannelButton_Content}"
+										ToolTip.Tip="{x:Static p:Resources.GuideControl_ApplySiteChannelButton_ToolTip}"
+										Command="{Binding ApplySiteChannelCommand}" />
+					</WrapPanel>
+					<TextBlock DockPanel.Dock="Bottom"
+										 Text="{Binding SiteStatusMessage}"
+										 Foreground="#888"
+										 Margin="0,4,0,0"
+										 TextWrapping="Wrap" />
+					<DataGrid x:Name="SiteChannelDataGrid"
+										Margin="0,4,0,0"
+										AutoGenerateColumns="False"
+										IsReadOnly="True"
+										CanUserSortColumns="False"
+										SelectionMode="Single"
+										GridLinesVisibility="All"
+										DoubleTapped="OnSiteChannelDoubleTapped"
+										ItemsSource="{Binding SiteChannels}"
+										SelectedItem="{Binding SelectedSiteChannel}">
+						<DataGrid.Columns>
+							<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																	Header="{x:Static p:Resources.GuideControl_ChannelColumn_Header}"
+																	Binding="{Binding Channel}"
+																	Width="*" />
+							<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																	Header="{x:Static p:Resources.GuideControl_FeedColumn_Header}"
+																	Binding="{Binding Feed}"
+																	Width="70" />
+							<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																	Header="{x:Static p:Resources.GuideControl_SiteIdColumn_Header}"
+																	Binding="{Binding SiteId}"
 																	Width="90" />
-				</DataGrid.Columns>
-			</DataGrid>
-		</HeaderedContentControl>
+							<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																	Header="{x:Static p:Resources.GuideControl_SiteNameColumn_Header}"
+																	Binding="{Binding SiteName}"
+																	Width="*" />
+							<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																	Header="{x:Static p:Resources.GuideControl_ChannelNameColumn_Header}"
+																	Binding="{Binding ChannelName}"
+																	Width="*" />
+							<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																	Header="{x:Static p:Resources.GuideControl_CountryColumn_Header}"
+																	Binding="{Binding Country}"
+																	Width="70" />
+							<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																	Header="{x:Static p:Resources.GuideControl_LangColumn_Header}"
+																	Binding="{Binding Lang}"
+																	Width="60" />
+						</DataGrid.Columns>
+					</DataGrid>
+				</DockPanel>
+			</HeaderedContentControl>
+		</Grid>
 	</DockPanel>
 </UserControl>

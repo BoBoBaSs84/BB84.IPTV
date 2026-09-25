@@ -207,8 +207,20 @@
   <data name="GuideMappingsSaved" xml:space="preserve">
     <value>{0} mappings saved.</value>
   </data>
+  <data name="GuideNoOptions" xml:space="preserve">
+    <value>No guide is known for this entry.</value>
+  </data>
   <data name="GuideOperationFailed" xml:space="preserve">
     <value>The guide operation failed.</value>
+  </data>
+  <data name="GuideOptionsStatus" xml:space="preserve">
+    <value>{0} guides known for this entry.</value>
+  </data>
+  <data name="GuideSitePageStatus" xml:space="preserve">
+    <value>Page {0} of {1}, {2} guides.</value>
+  </data>
+  <data name="GuideSitesStatus" xml:space="preserve">
+    <value>{0} sites known.</value>
   </data>
   <data name="LogoCacheCleared" xml:space="preserve">
     <value>{0} cached logos deleted.</value>

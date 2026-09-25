@@ -220,6 +220,57 @@
   <data name="GuideControl.CompleteColumn.Header" xml:space="preserve">
     <value>Complete</value>
   </data>
+  <data name="GuideControl.GuidesGroupBox.Header" xml:space="preserve">
+    <value>Guides</value>
+  </data>
+  <data name="GuideControl.OptionsHeader.Text" xml:space="preserve">
+    <value>Guides for the selected entry</value>
+  </data>
+  <data name="GuideControl.ApplyOptionButton.Content" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="GuideControl.ApplyOptionButton.ToolTip" xml:space="preserve">
+    <value>Takes the site, the identifier and the language of the picked guide into the selected row.</value>
+  </data>
+  <data name="GuideControl.SitesHeader.Text" xml:space="preserve">
+    <value>Sites</value>
+  </data>
+  <data name="GuideControl.RefreshSitesButton.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="GuideControl.SiteSearchTextBox.Placeholder" xml:space="preserve">
+    <value>Channel, identifier or name</value>
+  </data>
+  <data name="GuideControl.SearchSiteChannelsButton.Content" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="GuideControl.ApplySiteChannelButton.Content" xml:space="preserve">
+    <value>Apply to row</value>
+  </data>
+  <data name="GuideControl.ApplySiteChannelButton.ToolTip" xml:space="preserve">
+    <value>Takes the selected guide of the site into the selected row.</value>
+  </data>
+  <data name="GuideControl.PreviousPageButton.Content" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="GuideControl.NextPageButton.Content" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="GuideControl.ChannelColumn.Header" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="GuideControl.FeedColumn.Header" xml:space="preserve">
+    <value>Feed</value>
+  </data>
+  <data name="GuideControl.SiteNameColumn.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="GuideControl.ChannelNameColumn.Header" xml:space="preserve">
+    <value>Catalog name</value>
+  </data>
+  <data name="GuideControl.CountryColumn.Header" xml:space="preserve">
+    <value>Country</value>
+  </data>
   <data name="MainWindow.GuideMenuItem.Header" xml:space="preserve">
     <value>_Guide Export</value>
   </data>
