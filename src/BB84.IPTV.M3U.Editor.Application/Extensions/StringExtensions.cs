@@ -21,4 +21,12 @@ public static class StringExtensions
 	/// <returns>The formatted message.</returns>
 	public static string FormatMessage(this string format, params object[] args)
 		=> string.Format(CultureInfo.CurrentCulture, format, args);
-}
+
+	/// <summary>
+	/// Trims the <paramref name="value"/>, a blank value becomes <see langword="null"/>.
+	/// </summary>
+	/// <param name="value">The value to trim.</param>
+	/// <returns>The trimmed value, or <see langword="null"/> if it is blank.</returns>
+	internal static string? TrimToNull(this string? value)
+		=> string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+}

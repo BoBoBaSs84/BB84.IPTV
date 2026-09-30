@@ -3,17 +3,24 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using System.Linq.Expressions;
+
+using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 using BB84.IPTV.M3U.Editor.Domain.Models;
 
-namespace BB84.IPTV.M3U.Editor.Application.Extensions;
+namespace BB84.IPTV.M3U.Editor.Application.Common;
 
-/// <summary>
-/// Maps playlists between the domain models and the database entities.
-/// </summary>
-internal static class PlaylistExtensions
+internal static partial class Mappings
 {
+	/// <summary>
+	/// Gets the projection of a <see cref="PlaylistEntity"/> to a <see cref="PlaylistSummaryResponse"/>,
+	/// the entries are counted by the database.
+	/// </summary>
+	internal static Expression<Func<PlaylistEntity, PlaylistSummaryResponse>> PlaylistToSummary { get; }
+		= playlist => new PlaylistSummaryResponse { Id = playlist.Id, Name = playlist.Name, EntryCount = playlist.Entries.Count };
+
 	/// <summary>
 	/// Creates a new playlist entity with its entries from the <paramref name="playlist"/>.
 	/// </summary>

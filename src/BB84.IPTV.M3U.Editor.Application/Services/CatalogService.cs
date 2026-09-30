@@ -42,21 +42,21 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 
 		IReadOnlyList<CatalogFilterValue> countries = await repositoryService.Countries
 			.GetListAsync(
-				c => new CatalogFilterValue(c.Code, c.Name),
+				Mappings.CountryToFilterValue,
 				new Query<CountryEntity> { OrderBy = q => q.OrderBy(c => c.Name) },
 				cancellationToken)
 			.ConfigureAwait(false);
 
 		IReadOnlyList<CatalogFilterValue> languages = await repositoryService.Languages
 			.GetListAsync(
-				l => new CatalogFilterValue(l.Code, l.Name),
+				Mappings.LanguageToFilterValue,
 				new Query<LanguageEntity> { OrderBy = q => q.OrderBy(l => l.Name) },
 				cancellationToken)
 			.ConfigureAwait(false);
 
 		IReadOnlyList<CatalogFilterValue> categories = await repositoryService.Categories
 			.GetListAsync(
-				c => new CatalogFilterValue(c.Category, c.Name),
+				Mappings.CategoryToFilterValue,
 				new Query<CategoryEntity> { OrderBy = q => q.OrderBy(c => c.Name) },
 				cancellationToken)
 			.ConfigureAwait(false);
@@ -220,20 +220,12 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 	{
 		StreamEntity? stream = SelectStream(streams);
 		LogoEntity? logo = LogoSelector.Select(logos, stream?.Feed);
+		IEnumerable<string> languages = feeds
+			.SelectMany(feed => Values(feed.Languages))
+			.Distinct(StringComparer.OrdinalIgnoreCase)
+			.Order(StringComparer.OrdinalIgnoreCase);
 
-		return new CatalogChannelResponse
-		{
-			Channel = channel.Channel,
-			Feed = stream?.Feed,
-			Name = channel.Name,
-			Country = channel.Country,
-			Languages = [.. feeds.SelectMany(feed => Values(feed.Languages)).Distinct(StringComparer.OrdinalIgnoreCase).Order(StringComparer.OrdinalIgnoreCase)],
-			Categories = [.. Values(channel.Categories)],
-			IsNsfw = channel.IsNsfw,
-			StreamUrl = stream?.Url,
-			Quality = stream?.Quality,
-			LogoUrl = logo?.Url
-		};
+		return channel.ToResponse(stream, logo, languages);
 	}
 
 	/// <summary>
@@ -276,4 +268,4 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 		protected override Expression VisitParameter(ParameterExpression node)
 			=> ReferenceEquals(node, source) ? target : base.VisitParameter(node);
 	}
-}
+}

@@ -3,15 +3,14 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
-using BB84.IPTV.M3U.Editor.Application.Extensions;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 using BB84.IPTV.M3U.Editor.Domain.Enumerators;
 using BB84.IPTV.M3U.Editor.Domain.Models;
 
-namespace BB84.IPTV.M3U.Editor.Application.Tests.Extensions;
+namespace BB84.IPTV.M3U.Editor.Application.Tests.Common;
 
-[TestClass]
-public sealed class PlaylistExtensionsTests
+public sealed partial class MappingsTests
 {
 	[TestMethod]
 	public void ToEntityShouldMapHeaderAndNumberEntries()
@@ -99,4 +98,4 @@ public sealed class PlaylistExtensionsTests
 
 		return new PlaylistModel(header, [first, second]);
 	}
-}
+}

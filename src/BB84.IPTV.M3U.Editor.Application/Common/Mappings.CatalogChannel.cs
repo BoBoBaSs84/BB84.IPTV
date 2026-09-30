@@ -6,12 +6,9 @@
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Models;
 
-namespace BB84.IPTV.M3U.Editor.Application.Extensions;
+namespace BB84.IPTV.M3U.Editor.Application.Common;
 
-/// <summary>
-/// Maps catalog channels and user defined channels to playlist entries.
-/// </summary>
-internal static class CatalogExtensions
+internal static partial class Mappings
 {
 	/// <summary>
 	/// Creates a playlist entry from a catalog channel.
@@ -34,24 +31,6 @@ internal static class CatalogExtensions
 			Channel = channel.Channel,
 			Feed = channel.Feed
 		};
-	}
-
-	/// <summary>
-	/// Creates a playlist entry from a user defined channel.
-	/// </summary>
-	/// <param name="channel">The custom channel to map.</param>
-	/// <returns>The new playlist entry.</returns>
-	internal static EntryModel ToEntry(this CustomChannelResponse channel)
-	{
-		MetadataModel metadata = new()
-		{
-			TvgId = channel.TvgId,
-			TvgName = channel.Name,
-			TvgLogo = channel.TvgLogo,
-			GroupTitle = channel.GroupTitle
-		};
-
-		return new EntryModel(channel.Name, channel.Url, metadata: metadata);
 	}
 
 	/// <summary>
