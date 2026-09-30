@@ -33,7 +33,7 @@ public sealed class DownloadServiceTests
 			"The request was canceled due to the configured HttpClient.Timeout of 30 seconds elapsing.",
 			new TimeoutException()));
 
-		LogoDownloadResponse? response = await sut.DownloadAsync(Url).ConfigureAwait(false);
+		LogoDownloadResponse? response = await sut.DownloadAsync(Url, cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsNull(response, "A timeout is a logo that could not be downloaded, not the end of the run.");
 		_loggerMock.VerifyLogged(LogLevel.Warning, LogEvents.Logo.DownloadFailed, Times.Once());
@@ -57,7 +57,7 @@ public sealed class DownloadServiceTests
 	{
 		DownloadService sut = CreateSut(new HttpResponseMessage(HttpStatusCode.Forbidden));
 
-		LogoDownloadResponse? response = await sut.DownloadAsync(Url).ConfigureAwait(false);
+		LogoDownloadResponse? response = await sut.DownloadAsync(Url, cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsNull(response);
 		_loggerMock.VerifyLogged(LogLevel.Warning, LogEvents.Logo.DownloadRefused, Times.Once());
@@ -71,7 +71,7 @@ public sealed class DownloadServiceTests
 
 		DownloadService sut = CreateSut(message);
 
-		LogoDownloadResponse? response = await sut.DownloadAsync(Url).ConfigureAwait(false);
+		LogoDownloadResponse? response = await sut.DownloadAsync(Url, cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsNotNull(response);
 		Assert.HasCount(3, response.Content);
@@ -98,4 +98,6 @@ public sealed class DownloadServiceTests
 
 		return new DownloadService(_httpClientFactoryMock.Object, _loggerMock.Object);
 	}
+
+	public TestContext TestContext { get; set; }
 }

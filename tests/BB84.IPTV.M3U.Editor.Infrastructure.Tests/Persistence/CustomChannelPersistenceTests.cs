@@ -38,10 +38,10 @@ public sealed class CustomChannelPersistenceTests
 	public async Task CreateAsyncShouldStoreTheChannelWithAnyUrlScheme()
 	{
 		int id = await _sut
-			.CreateAsync(CreateChannel("Local camera", "rtsp://192.168.12.1:554"))
+			.CreateAsync(CreateChannel("Local camera", "rtsp://192.168.12.1:554"), TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
-		IPagedList<CustomChannelResponse> channels = await _sut.GetChannelsAsync().ConfigureAwait(false);
+		IPagedList<CustomChannelResponse> channels = await _sut.GetChannelsAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsGreaterThan(0, id);
 		Assert.HasCount(1, channels);
@@ -53,10 +53,10 @@ public sealed class CustomChannelPersistenceTests
 	[TestMethod]
 	public async Task GetChannelsAsyncShouldOrderByName()
 	{
-		_ = await _sut.CreateAsync(CreateChannel("Zebra", "udp://239.0.0.1:1234")).ConfigureAwait(false);
-		_ = await _sut.CreateAsync(CreateChannel("Alpha", "http://alpha.example")).ConfigureAwait(false);
+		_ = await _sut.CreateAsync(CreateChannel("Zebra", "udp://239.0.0.1:1234"), TestContext.CancellationToken).ConfigureAwait(false);
+		_ = await _sut.CreateAsync(CreateChannel("Alpha", "http://alpha.example"), TestContext.CancellationToken).ConfigureAwait(false);
 
-		IPagedList<CustomChannelResponse> channels = await _sut.GetChannelsAsync().ConfigureAwait(false);
+		IPagedList<CustomChannelResponse> channels = await _sut.GetChannelsAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual("Alpha", channels[0].Name);
 		Assert.AreEqual("Zebra", channels[1].Name);
@@ -66,14 +66,14 @@ public sealed class CustomChannelPersistenceTests
 	public async Task GetChannelsAsyncShouldPageInTheDatabase()
 	{
 		for (int number = 1; number <= 150; number++)
-			_ = await _sut.CreateAsync(CreateChannel($"Camera {number:000}", $"rtsp://192.168.12.{number}:554")).ConfigureAwait(false);
+			_ = await _sut.CreateAsync(CreateChannel($"Camera {number:000}", $"rtsp://192.168.12.{number}:554"), TestContext.CancellationToken).ConfigureAwait(false);
 
 		IPagedList<CustomChannelResponse> firstPage = await _sut
-			.GetChannelsAsync(new CustomChannelSearchRequest { PageSize = 100 })
+			.GetChannelsAsync(new CustomChannelSearchRequest { PageSize = 100 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		IPagedList<CustomChannelResponse> secondPage = await _sut
-			.GetChannelsAsync(new CustomChannelSearchRequest { PageNumber = 2, PageSize = 100 })
+			.GetChannelsAsync(new CustomChannelSearchRequest { PageNumber = 2, PageSize = 100 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(100, firstPage);
@@ -91,13 +91,13 @@ public sealed class CustomChannelPersistenceTests
 	[TestMethod]
 	public async Task UpdateAsyncShouldReplaceTheStoredValues()
 	{
-		int id = await _sut.CreateAsync(CreateChannel("Camera", "rtsp://192.168.12.1:554")).ConfigureAwait(false);
+		int id = await _sut.CreateAsync(CreateChannel("Camera", "rtsp://192.168.12.1:554"), TestContext.CancellationToken).ConfigureAwait(false);
 
 		bool updated = await _sut
-			.UpdateAsync(new CustomChannelResponse { Id = id, Name = "Garden", Url = "rtsp://192.168.12.2:554", TvgId = "garden" })
+			.UpdateAsync(new CustomChannelResponse { Id = id, Name = "Garden", Url = "rtsp://192.168.12.2:554", TvgId = "garden" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
-		IPagedList<CustomChannelResponse> channels = await _sut.GetChannelsAsync().ConfigureAwait(false);
+		IPagedList<CustomChannelResponse> channels = await _sut.GetChannelsAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsTrue(updated);
 		Assert.HasCount(1, channels);
@@ -111,7 +111,7 @@ public sealed class CustomChannelPersistenceTests
 	public async Task UpdateAsyncShouldReportAnUnknownChannel()
 	{
 		bool updated = await _sut
-			.UpdateAsync(new CustomChannelResponse { Id = 42, Name = "Ghost", Url = "http://ghost.example" })
+			.UpdateAsync(new CustomChannelResponse { Id = 42, Name = "Ghost", Url = "http://ghost.example" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.IsFalse(updated);
@@ -120,18 +120,18 @@ public sealed class CustomChannelPersistenceTests
 	[TestMethod]
 	public async Task DeleteAsyncShouldRemoveTheChannel()
 	{
-		int id = await _sut.CreateAsync(CreateChannel("Camera", "rtsp://192.168.12.1:554")).ConfigureAwait(false);
+		int id = await _sut.CreateAsync(CreateChannel("Camera", "rtsp://192.168.12.1:554"), TestContext.CancellationToken).ConfigureAwait(false);
 
-		bool deleted = await _sut.DeleteAsync(id).ConfigureAwait(false);
+		bool deleted = await _sut.DeleteAsync(id, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsTrue(deleted);
-		Assert.IsEmpty(await _sut.GetChannelsAsync().ConfigureAwait(false));
+		Assert.IsEmpty(await _sut.GetChannelsAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false));
 	}
 
 	[TestMethod]
 	public async Task ResetCatalogAsyncShouldKeepTheCustomChannels()
 	{
-		_ = await _sut.CreateAsync(CreateChannel("Camera", "rtsp://192.168.12.1:554")).ConfigureAwait(false);
+		_ = await _sut.CreateAsync(CreateChannel("Camera", "rtsp://192.168.12.1:554"), TestContext.CancellationToken).ConfigureAwait(false);
 		await _database.WithRepositoryAsync(async repository =>
 		{
 			await repository.Channels.CreateAsync(new ChannelEntity
@@ -142,17 +142,17 @@ public sealed class CustomChannelPersistenceTests
 				AltNames = [],
 				Categories = [],
 				Owners = []
-			}).ConfigureAwait(false);
+			}, TestContext.CancellationToken).ConfigureAwait(false);
 
-			_ = await repository.CommitChangesAsync().ConfigureAwait(false);
+			_ = await repository.CommitChangesAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		}).ConfigureAwait(false);
 
 		int deleted = await _database
-			.WithRepositoryAsync(r => r.ResetCatalogAsync())
+			.WithRepositoryAsync(r => r.ResetCatalogAsync(TestContext.CancellationToken))
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(1, deleted);
-		Assert.HasCount(1, await _sut.GetChannelsAsync().ConfigureAwait(false));
+		Assert.HasCount(1, await _sut.GetChannelsAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false));
 	}
 
 	private static CustomChannelResponse CreateChannel(string name, string url) => new()
@@ -161,4 +161,6 @@ public sealed class CustomChannelPersistenceTests
 		Url = url,
 		GroupTitle = "Local"
 	};
+
+	public TestContext TestContext { get; set; }
 }

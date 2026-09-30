@@ -59,11 +59,11 @@ public sealed class PlaylistPersistenceTests
 		string sourcePath = WriteFile("source.m3u", SampleM3u, withByteOrderMark: true);
 		string exportPath = Path.Combine(_directory, "export.m3u");
 
-		int id = await _sut.ImportAsync(sourcePath).ConfigureAwait(false);
-		bool exported = await _sut.ExportAsync(id, exportPath).ConfigureAwait(false);
+		int id = await _sut.ImportAsync(sourcePath, cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+		bool exported = await _sut.ExportAsync(id, exportPath, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsTrue(exported);
-		Assert.AreEqual(SampleM3u, await File.ReadAllTextAsync(exportPath).ConfigureAwait(false));
+		Assert.AreEqual(SampleM3u, await File.ReadAllTextAsync(exportPath, TestContext.CancellationToken).ConfigureAwait(false));
 	}
 
 	[TestMethod]
@@ -71,8 +71,8 @@ public sealed class PlaylistPersistenceTests
 	{
 		string sourcePath = WriteFile("German TV.m3u8", SampleM3u);
 
-		int id = await _sut.ImportAsync(sourcePath).ConfigureAwait(false);
-		IPagedList<PlaylistSummaryResponse> playlists = await _sut.GetPlaylistsAsync().ConfigureAwait(false);
+		int id = await _sut.ImportAsync(sourcePath, cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+		IPagedList<PlaylistSummaryResponse> playlists = await _sut.GetPlaylistsAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		PlaylistSummaryResponse summary = playlists.Single();
 		Assert.AreEqual(id, summary.Id);
@@ -83,19 +83,19 @@ public sealed class PlaylistPersistenceTests
 	[TestMethod]
 	public async Task UpdateAsyncShouldReplaceAndReorderEntries()
 	{
-		int id = await _sut.ImportAsync(WriteFile("source.m3u", SampleM3u)).ConfigureAwait(false);
-		IPlaylist playlist = (await _sut.LoadAsync(id).ConfigureAwait(false))!;
+		int id = await _sut.ImportAsync(WriteFile("source.m3u", SampleM3u), cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+		IPlaylist playlist = (await _sut.LoadAsync(id, TestContext.CancellationToken).ConfigureAwait(false))!;
 
 		// Reversed order keeps the positions but swaps the entries, which must not violate the unique position index.
 		List<EntryModel> entries = [.. playlist.Entries.Reverse().Skip(1), new EntryModel("New", "https://example.com/new")];
 		PlaylistModel changed = new(playlist, entries) { UrlTvg = "https://changed.example" };
 
-		bool updated = await _sut.UpdateAsync(id, "Renamed", changed).ConfigureAwait(false);
-		IPlaylist reloaded = (await _sut.LoadAsync(id).ConfigureAwait(false))!;
+		bool updated = await _sut.UpdateAsync(id, "Renamed", changed, TestContext.CancellationToken).ConfigureAwait(false);
+		IPlaylist reloaded = (await _sut.LoadAsync(id, TestContext.CancellationToken).ConfigureAwait(false))!;
 
 		Assert.IsTrue(updated);
 		Assert.AreEqual("https://changed.example", reloaded.UrlTvg);
-		Assert.AreEqual("Renamed", (await _sut.GetPlaylistsAsync().ConfigureAwait(false)).Single().Name);
+		Assert.AreEqual("Renamed", (await _sut.GetPlaylistsAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false)).Single().Name);
 		Assert.AreEqual("ZDF|Das Erste, HD|New", string.Join('|', reloaded.Entries.Select(e => e.Title)));
 		Assert.AreEqual(3, _database.Scalar("SELECT COUNT(*) FROM PlaylistEntries"));
 	}
@@ -103,20 +103,20 @@ public sealed class PlaylistPersistenceTests
 	[TestMethod]
 	public async Task RenameAsyncShouldChangeTheName()
 	{
-		int id = await _sut.CreateAsync("Old", new PlaylistModel()).ConfigureAwait(false);
+		int id = await _sut.CreateAsync("Old", new PlaylistModel(), TestContext.CancellationToken).ConfigureAwait(false);
 
-		bool renamed = await _sut.RenameAsync(id, " New ").ConfigureAwait(false);
+		bool renamed = await _sut.RenameAsync(id, " New ", TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsTrue(renamed);
-		Assert.AreEqual("New", (await _sut.GetPlaylistsAsync().ConfigureAwait(false)).Single().Name);
+		Assert.AreEqual("New", (await _sut.GetPlaylistsAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false)).Single().Name);
 	}
 
 	[TestMethod]
 	public async Task DeleteAsyncShouldDeleteThePlaylistWithItsEntries()
 	{
-		int id = await _sut.ImportAsync(WriteFile("source.m3u", SampleM3u)).ConfigureAwait(false);
+		int id = await _sut.ImportAsync(WriteFile("source.m3u", SampleM3u), cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
-		bool deleted = await _sut.DeleteAsync(id).ConfigureAwait(false);
+		bool deleted = await _sut.DeleteAsync(id, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsTrue(deleted);
 		Assert.AreEqual(0, _database.Scalar("SELECT COUNT(*) FROM Playlists"));
@@ -126,28 +126,28 @@ public sealed class PlaylistPersistenceTests
 	[TestMethod]
 	public async Task MissingPlaylistShouldBeReported()
 	{
-		Assert.IsNull(await _sut.LoadAsync(42).ConfigureAwait(false));
-		Assert.IsFalse(await _sut.UpdateAsync(42, "Name", new PlaylistModel()).ConfigureAwait(false));
-		Assert.IsFalse(await _sut.RenameAsync(42, "Name").ConfigureAwait(false));
-		Assert.IsFalse(await _sut.DeleteAsync(42).ConfigureAwait(false));
-		Assert.IsFalse(await _sut.ExportAsync(42, Path.Combine(_directory, "missing.m3u")).ConfigureAwait(false));
+		Assert.IsNull(await _sut.LoadAsync(42, TestContext.CancellationToken).ConfigureAwait(false));
+		Assert.IsFalse(await _sut.UpdateAsync(42, "Name", new PlaylistModel(), TestContext.CancellationToken).ConfigureAwait(false));
+		Assert.IsFalse(await _sut.RenameAsync(42, "Name", TestContext.CancellationToken).ConfigureAwait(false));
+		Assert.IsFalse(await _sut.DeleteAsync(42, TestContext.CancellationToken).ConfigureAwait(false));
+		Assert.IsFalse(await _sut.ExportAsync(42, Path.Combine(_directory, "missing.m3u"), TestContext.CancellationToken).ConfigureAwait(false));
 	}
 
 	[TestMethod]
 	public async Task ResetCatalogAsyncShouldKeepPlaylists()
 	{
-		int id = await _sut.ImportAsync(WriteFile("source.m3u", SampleM3u)).ConfigureAwait(false);
+		int id = await _sut.ImportAsync(WriteFile("source.m3u", SampleM3u), cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		await _database.WithRepositoryAsync(async r =>
 		{
-			await r.Channels.CreateAsync(new ChannelEntity { Channel = "DasErste.de", Name = "Das Erste", Country = "DE", Owners = [], AltNames = [], Categories = [] }).ConfigureAwait(false);
-			await r.CommitChangesAsync().ConfigureAwait(false);
+			await r.Channels.CreateAsync(new ChannelEntity { Channel = "DasErste.de", Name = "Das Erste", Country = "DE", Owners = [], AltNames = [], Categories = [] }, TestContext.CancellationToken).ConfigureAwait(false);
+			await r.CommitChangesAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		}).ConfigureAwait(false);
 
-		int deleted = await _database.WithRepositoryAsync(r => r.ResetCatalogAsync()).ConfigureAwait(false);
+		int deleted = await _database.WithRepositoryAsync(r => r.ResetCatalogAsync(TestContext.CancellationToken)).ConfigureAwait(false);
 
 		Assert.AreEqual(1, deleted);
 		Assert.AreEqual(0, _database.Scalar("SELECT COUNT(*) FROM Channels"));
-		Assert.HasCount(3, (await _sut.LoadAsync(id).ConfigureAwait(false))!.Entries);
+		Assert.HasCount(3, (await _sut.LoadAsync(id, TestContext.CancellationToken).ConfigureAwait(false))!.Entries);
 	}
 
 	private string WriteFile(string fileName, string content, bool withByteOrderMark = false)
@@ -156,4 +156,6 @@ public sealed class PlaylistPersistenceTests
 		File.WriteAllText(filePath, content, new UTF8Encoding(withByteOrderMark));
 		return filePath;
 	}
+
+	public TestContext TestContext { get; set; }
 }

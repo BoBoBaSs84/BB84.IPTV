@@ -53,7 +53,7 @@ public sealed class GuideControlTests
 				Assert.IsTrue(export.IsEffectivelyEnabled);
 
 				viewModel.SelectedPlaylist = null;
-				viewModel.LoadMappingsAsync().GetAwaiter().GetResult();
+				viewModel.LoadMappingsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 				UiTest.Settle();
 
 				Assert.IsEmpty(viewModel.Mappings);
@@ -73,7 +73,7 @@ public sealed class GuideControlTests
 				UiTest.Settle();
 
 				viewModel.SelectedMapping = viewModel.Mappings[0];
-				viewModel.LoadOptionsAsync().GetAwaiter().GetResult();
+				viewModel.LoadOptionsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 				UiTest.Settle();
 
 				ListBox options = control.GetControl<ListBox>("OptionListBox");
@@ -98,7 +98,7 @@ public sealed class GuideControlTests
 
 				viewModel.SelectedMapping = viewModel.Mappings[1];
 				viewModel.SelectedSite = viewModel.Sites[0];
-				viewModel.LoadSiteChannelsAsync(1).GetAwaiter().GetResult();
+				viewModel.LoadSiteChannelsAsync(1, TestContext.CancellationToken).GetAwaiter().GetResult();
 				UiTest.Settle();
 
 				viewModel.SelectedSiteChannel = viewModel.SiteChannels[0];
@@ -117,4 +117,6 @@ public sealed class GuideControlTests
 				Assert.AreEqual("200", viewModel.Mappings[1].SiteId);
 			});
 		}).ConfigureAwait(false);
+
+	public TestContext TestContext { get; set; }
 }

@@ -57,13 +57,13 @@ public sealed class MergePersistenceTests
 				PlaylistIds = [_firstId, _secondId],
 				Name = "Everything",
 				DuplicateMode = MergeDuplicateMode.ByTvgId
-			})
+			}, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
-		IPlaylist merged = (await _playlistService.LoadAsync(mergedId).ConfigureAwait(false))!;
-		IPlaylist first = (await _playlistService.LoadAsync(_firstId).ConfigureAwait(false))!;
-		IPlaylist second = (await _playlistService.LoadAsync(_secondId).ConfigureAwait(false))!;
-		IPagedList<PlaylistSummaryResponse> playlists = await _playlistService.GetPlaylistsAsync().ConfigureAwait(false);
+		IPlaylist merged = (await _playlistService.LoadAsync(mergedId, TestContext.CancellationToken).ConfigureAwait(false))!;
+		IPlaylist first = (await _playlistService.LoadAsync(_firstId, TestContext.CancellationToken).ConfigureAwait(false))!;
+		IPlaylist second = (await _playlistService.LoadAsync(_secondId, TestContext.CancellationToken).ConfigureAwait(false))!;
+		IPagedList<PlaylistSummaryResponse> playlists = await _playlistService.GetPlaylistsAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreNotEqual(_firstId, mergedId);
 		Assert.AreNotEqual(_secondId, mergedId);
@@ -82,11 +82,11 @@ public sealed class MergePersistenceTests
 				PlaylistIds = [_firstId, _secondId],
 				Name = "Remapped",
 				GroupMappings = new Dictionary<string, string> { ["Public"] = "Öffentlich" }
-			})
+			}, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
-		IPlaylist merged = (await _playlistService.LoadAsync(mergedId).ConfigureAwait(false))!;
-		IPlaylist first = (await _playlistService.LoadAsync(_firstId).ConfigureAwait(false))!;
+		IPlaylist merged = (await _playlistService.LoadAsync(mergedId, TestContext.CancellationToken).ConfigureAwait(false))!;
+		IPlaylist first = (await _playlistService.LoadAsync(_firstId, TestContext.CancellationToken).ConfigureAwait(false))!;
 
 		Assert.AreEqual("https://tvg.example", merged.UrlTvg);
 		Assert.AreEqual(500, merged.Cache);
@@ -98,11 +98,11 @@ public sealed class MergePersistenceTests
 	public async Task MergeAsyncShouldMergeAPlaylistWithItself()
 	{
 		int mergedId = await _sut
-			.MergeAsync(new MergeRequest { PlaylistIds = [_firstId, _firstId], Name = "Doubled" })
+			.MergeAsync(new MergeRequest { PlaylistIds = [_firstId, _firstId], Name = "Doubled" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
-		IPlaylist merged = (await _playlistService.LoadAsync(mergedId).ConfigureAwait(false))!;
-		IPlaylist first = (await _playlistService.LoadAsync(_firstId).ConfigureAwait(false))!;
+		IPlaylist merged = (await _playlistService.LoadAsync(mergedId, TestContext.CancellationToken).ConfigureAwait(false))!;
+		IPlaylist first = (await _playlistService.LoadAsync(_firstId, TestContext.CancellationToken).ConfigureAwait(false))!;
 
 		Assert.HasCount(4, merged.Entries.ToList());
 		Assert.HasCount(2, first.Entries.ToList());
@@ -113,4 +113,6 @@ public sealed class MergePersistenceTests
 
 	private static EntryModel CreateEntry(string title, string url, string? tvgId, string groupTitle)
 		=> new(title, url, metadata: new MetadataModel { TvgId = tvgId, GroupTitle = groupTitle });
+
+	public TestContext TestContext { get; set; }
 }

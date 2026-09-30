@@ -54,7 +54,7 @@ public sealed class MainViewModelTests
 
 		MainViewModel viewModel = new(eventServiceMock.Object, new Mock<IHostEnvironment>().Object, notificationServiceMock.Object, new Mock<IUserService>().Object, new Mock<INavigationService>().Object);
 
-		await viewModel.ExitApplicationCommand.ExecuteAsync().ConfigureAwait(false);
+		await viewModel.ExitApplicationCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		eventServiceMock.Verify(x => x.Publish(It.IsAny<ExitRequestedEvent>()), Times.Exactly(expectedPublishCount));
 	}
@@ -98,4 +98,6 @@ public sealed class MainViewModelTests
 			new Mock<INotificationService>().Object,
 			new Mock<IUserService>().Object,
 			new Mock<INavigationService>().Object);
+
+	public TestContext TestContext { get; set; }
 }

@@ -64,7 +64,7 @@ public sealed class GuidePersistenceTests
 	[TestMethod]
 	public async Task GetMappingsAsyncShouldPrefillFromTheImportedGuides()
 	{
-		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(3, mappings);
 
@@ -87,16 +87,16 @@ public sealed class GuidePersistenceTests
 	[TestMethod]
 	public async Task SaveMappingsAsyncShouldWinOverThePrefilledOnes()
 	{
-		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
 		int saved = await _sut.SaveMappingsAsync(_playlistId,
 		[
 			Override(mappings[0], site: "mine.example", siteId: "999"),
 			mappings[1],
 			Override(mappings[2], site: "camera.example", siteId: "1", xmltvId: "Camera.local")
-		]).ConfigureAwait(false);
+		], TestContext.CancellationToken).ConfigureAwait(false);
 
-		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(3, saved);
 		Assert.AreEqual("mine.example", stored[0].Site);
@@ -109,14 +109,14 @@ public sealed class GuidePersistenceTests
 	[TestMethod]
 	public async Task SaveMappingsAsyncShouldSurviveSavingThePlaylist()
 	{
-		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
-		_ = await _sut.SaveMappingsAsync(_playlistId, [Override(mappings[0], site: "mine.example", siteId: "999")]).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
+		_ = await _sut.SaveMappingsAsync(_playlistId, [Override(mappings[0], site: "mine.example", siteId: "999")], TestContext.CancellationToken).ConfigureAwait(false);
 
 		// Saving a playlist replaces all its entries, the mappings must still be found.
-		Domain.Abstractions.Models.IPlaylist playlist = (await _playlistService.LoadAsync(_playlistId).ConfigureAwait(false))!;
-		_ = await _playlistService.UpdateAsync(_playlistId, "Mine", playlist).ConfigureAwait(false);
+		Domain.Abstractions.Models.IPlaylist playlist = (await _playlistService.LoadAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false))!;
+		_ = await _playlistService.UpdateAsync(_playlistId, "Mine", playlist, TestContext.CancellationToken).ConfigureAwait(false);
 
-		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual("mine.example", stored[0].Site);
 		Assert.IsTrue(stored[0].IsStored);
@@ -125,15 +125,15 @@ public sealed class GuidePersistenceTests
 	[TestMethod]
 	public async Task SaveMappingsAsyncShouldReplaceWhatWasStoredBefore()
 	{
-		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
-		_ = await _sut.SaveMappingsAsync(_playlistId, mappings).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
+		_ = await _sut.SaveMappingsAsync(_playlistId, mappings, TestContext.CancellationToken).ConfigureAwait(false);
 
 		// A row the user emptied completely, language included, is not worth storing.
 		GuideMappingResponse emptied = new() { EntryKey = mappings[0].EntryKey, Title = mappings[0].Title };
 
-		int saved = await _sut.SaveMappingsAsync(_playlistId, [emptied]).ConfigureAwait(false);
+		int saved = await _sut.SaveMappingsAsync(_playlistId, [emptied], TestContext.CancellationToken).ConfigureAwait(false);
 
-		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(0, saved, "A row without any value is not stored.");
 		Assert.IsFalse(stored.Any(mapping => mapping.IsStored));
@@ -144,9 +144,9 @@ public sealed class GuidePersistenceTests
 	{
 		string filePath = Path.Combine(_directory, "channels.xml");
 
-		int written = await _sut.ExportAsync(_playlistId, filePath).ConfigureAwait(false);
+		int written = await _sut.ExportAsync(_playlistId, filePath, cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
-		string content = await File.ReadAllTextAsync(filePath).ConfigureAwait(false);
+		string content = await File.ReadAllTextAsync(filePath, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(2, written, "The custom channel is not mapped, so it is not written.");
 		Assert.Contains("<channel site=\"example.com\" site_id=\"100\" lang=\"de\" xmltv_id=\"DasErste.de\">Das Erste</channel>", content);
@@ -158,13 +158,13 @@ public sealed class GuidePersistenceTests
 	public async Task ExportAsyncShouldWriteTheMappingsItIsGiven()
 	{
 		string filePath = Path.Combine(_directory, "channels.xml");
-		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
 		int written = await _sut
-			.ExportAsync(_playlistId, filePath, [Override(mappings[2], site: "camera.example", siteId: "1", xmltvId: "Camera.local")])
+			.ExportAsync(_playlistId, filePath, [Override(mappings[2], site: "camera.example", siteId: "1", xmltvId: "Camera.local")], TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
-		string content = await File.ReadAllTextAsync(filePath).ConfigureAwait(false);
+		string content = await File.ReadAllTextAsync(filePath, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, written);
 		Assert.Contains("xmltv_id=\"Camera.local\"", content);
@@ -174,7 +174,7 @@ public sealed class GuidePersistenceTests
 	[TestMethod]
 	public async Task GetMappingsAsyncShouldCarryTheChannelOfTheEntry()
 	{
-		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
 		// What the guides of a row are looked up with, also for an entry that only holds a tvg-id.
 		Assert.AreEqual("DasErste.de", mappings[0].Channel);
@@ -189,7 +189,7 @@ public sealed class GuidePersistenceTests
 	{
 		int playlistId = await CreateDuplicatePlaylistAsync().ConfigureAwait(false);
 
-		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
 		// Both entries carry the same tvg-id, the mapping belongs to the tvg-id.
 		Assert.HasCount(1, mappings);
@@ -201,11 +201,11 @@ public sealed class GuidePersistenceTests
 	public async Task SaveMappingsAsyncShouldStoreAPlaylistWithADuplicateTvgId()
 	{
 		int playlistId = await CreateDuplicatePlaylistAsync().ConfigureAwait(false);
-		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
-		int saved = await _sut.SaveMappingsAsync(playlistId, mappings).ConfigureAwait(false);
+		int saved = await _sut.SaveMappingsAsync(playlistId, mappings, TestContext.CancellationToken).ConfigureAwait(false);
 
-		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, saved);
 		Assert.HasCount(1, stored);
@@ -215,12 +215,12 @@ public sealed class GuidePersistenceTests
 	[TestMethod]
 	public async Task SaveMappingsAsyncShouldStoreOneRowPerKeyWhenItIsGivenDuplicates()
 	{
-		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 		GuideMappingResponse duplicate = Override(mappings[0], site: "other.example", siteId: "42");
 
-		int saved = await _sut.SaveMappingsAsync(_playlistId, [mappings[0], duplicate]).ConfigureAwait(false);
+		int saved = await _sut.SaveMappingsAsync(_playlistId, [mappings[0], duplicate], TestContext.CancellationToken).ConfigureAwait(false);
 
-		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId).ConfigureAwait(false);
+		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, saved, "The key of the playlist is unique, the first row of a key wins.");
 		Assert.AreEqual("example.com", stored[0].Site);
@@ -247,4 +247,6 @@ public sealed class GuidePersistenceTests
 		XmltvId = xmltvId ?? mapping.XmltvId,
 		DisplayName = mapping.DisplayName
 	};
+
+	public TestContext TestContext { get; set; }
 }

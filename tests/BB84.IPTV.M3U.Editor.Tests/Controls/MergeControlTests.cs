@@ -42,7 +42,7 @@ public sealed class MergeControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			MergeViewModel viewModel = ViewModelFactory.CreateMerge();
-			viewModel.LoadAsync().GetAwaiter().GetResult();
+			viewModel.LoadAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 
 			MergeControl control = new() { DataContext = viewModel };
 
@@ -75,7 +75,7 @@ public sealed class MergeControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			MergeViewModel viewModel = ViewModelFactory.CreateMerge();
-			viewModel.LoadAsync().GetAwaiter().GetResult();
+			viewModel.LoadAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 			viewModel.Sources[0].IsSelected = true;
 			viewModel.Sources[1].IsSelected = true;
 
@@ -83,7 +83,7 @@ public sealed class MergeControlTests
 
 			UiTest.InWindow(control, sink =>
 			{
-				viewModel.PreviewAsync().GetAwaiter().GetResult();
+				viewModel.PreviewAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 				UiTest.Settle();
 
 				DataGrid[] grids = [.. control.GetVisualDescendants().OfType<DataGrid>()];
@@ -104,7 +104,7 @@ public sealed class MergeControlTests
 		{
 			Mock<IMergeService> mergeServiceMock = new();
 			MergeViewModel viewModel = ViewModelFactory.CreateMerge(mergeServiceMock);
-			viewModel.LoadAsync().GetAwaiter().GetResult();
+			viewModel.LoadAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 			viewModel.Sources[0].IsSelected = true;
 			viewModel.Sources[1].IsSelected = true;
 
@@ -112,11 +112,11 @@ public sealed class MergeControlTests
 
 			UiTest.InWindow(control, _ =>
 			{
-				viewModel.PreviewAsync().GetAwaiter().GetResult();
+				viewModel.PreviewAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 				UiTest.Settle();
 
 				viewModel.GroupMappings[0].TargetGroup = "Öffentlich";
-				viewModel.MergeCommand.ExecuteAsync().GetAwaiter().GetResult();
+				viewModel.MergeCommand.ExecuteAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 				UiTest.Settle();
 
 				mergeServiceMock.Verify(x => x.MergeAsync(
@@ -130,7 +130,7 @@ public sealed class MergeControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			MergeViewModel viewModel = ViewModelFactory.CreateMerge();
-			viewModel.LoadAsync().GetAwaiter().GetResult();
+			viewModel.LoadAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 
 			MergeControl control = new() { DataContext = viewModel };
 
@@ -154,4 +154,6 @@ public sealed class MergeControlTests
 		=> control.GetVisualDescendants()
 			.OfType<Button>()
 			.First(button => Equals(button.Content, content));
+
+	public TestContext TestContext { get; set; }
 }

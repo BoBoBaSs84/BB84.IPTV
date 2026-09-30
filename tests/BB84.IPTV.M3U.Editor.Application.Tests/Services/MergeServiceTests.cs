@@ -42,7 +42,7 @@ public sealed class MergeServiceTests
 	public async Task PreviewAsyncShouldAppendInTheRequestedOrder()
 	{
 		MergePreviewResponse preview = await _sut
-			.PreviewAsync(new MergeRequest { PlaylistIds = [2, 1] })
+			.PreviewAsync(new MergeRequest { PlaylistIds = [2, 1] }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(2, preview.SourceCount);
@@ -55,7 +55,7 @@ public sealed class MergeServiceTests
 	public async Task PreviewAsyncShouldKeepTheHeaderOfTheFirstSource()
 	{
 		MergePreviewResponse preview = await _sut
-			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 2] })
+			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 2] }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual("https://tvg.example/1", preview.Playlist.UrlTvg);
@@ -66,7 +66,7 @@ public sealed class MergeServiceTests
 	public async Task PreviewAsyncShouldDropDuplicatesByTvgIdAndKeepTheFirst()
 	{
 		MergePreviewResponse preview = await _sut
-			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 2], DuplicateMode = MergeDuplicateMode.ByTvgId })
+			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 2], DuplicateMode = MergeDuplicateMode.ByTvgId }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(1, preview.DuplicateCount);
@@ -83,7 +83,7 @@ public sealed class MergeServiceTests
 				PlaylistIds = [1, 2],
 				DuplicateMode = MergeDuplicateMode.ByTvgId,
 				DuplicateResolution = MergeDuplicateResolution.KeepLast
-			})
+			}, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(1, preview.DuplicateCount);
@@ -96,7 +96,7 @@ public sealed class MergeServiceTests
 		SetupPlaylist(3, CreatePlaylist(CreateEntry("Copy of first", "http://one", "Other.de", "News")));
 
 		MergePreviewResponse preview = await _sut
-			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 3], DuplicateMode = MergeDuplicateMode.ByUrl })
+			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 3], DuplicateMode = MergeDuplicateMode.ByUrl }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(1, preview.DuplicateCount);
@@ -111,7 +111,7 @@ public sealed class MergeServiceTests
 			CreateEntry("Same id", "http://elsewhere", "ZDF.de", "News")));
 
 		MergePreviewResponse preview = await _sut
-			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 3], DuplicateMode = MergeDuplicateMode.ByTvgIdOrUrl })
+			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 3], DuplicateMode = MergeDuplicateMode.ByTvgIdOrUrl }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(2, preview.DuplicateCount);
@@ -126,7 +126,7 @@ public sealed class MergeServiceTests
 			CreateEntry("No id either", "http://b", null, "News")));
 
 		MergePreviewResponse preview = await _sut
-			.PreviewAsync(new MergeRequest { PlaylistIds = [3], DuplicateMode = MergeDuplicateMode.ByTvgId })
+			.PreviewAsync(new MergeRequest { PlaylistIds = [3], DuplicateMode = MergeDuplicateMode.ByTvgId }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(0, preview.DuplicateCount);
@@ -141,7 +141,7 @@ public sealed class MergeServiceTests
 			{
 				PlaylistIds = [1, 2],
 				GroupMappings = new Dictionary<string, string> { ["News"] = "Nachrichten", ["Private"] = string.Empty }
-			})
+			}, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreSequenceEqual(["Nachrichten", "Nachrichten", "Public", null!], preview.Playlist.Entries.Select(entry => entry.Metadata.GroupTitle));
@@ -152,7 +152,7 @@ public sealed class MergeServiceTests
 	public async Task PreviewAsyncShouldSkipAPlaylistThatIsGone()
 	{
 		MergePreviewResponse preview = await _sut
-			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 99] })
+			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 99] }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(1, preview.SourceCount);
@@ -163,12 +163,12 @@ public sealed class MergeServiceTests
 	public async Task PreviewAsyncShouldNotTouchTheSources()
 	{
 		MergePreviewResponse preview = await _sut
-			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 2], GroupMappings = new Dictionary<string, string> { ["News"] = "Renamed" } })
+			.PreviewAsync(new MergeRequest { PlaylistIds = [1, 2], GroupMappings = new Dictionary<string, string> { ["News"] = "Renamed" } }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		preview.Playlist.Entries.First().Title = "Changed in the preview";
 
-		IPlaylist source = (await _playlistServiceMock.Object.LoadAsync(1).ConfigureAwait(false))!;
+		IPlaylist source = (await _playlistServiceMock.Object.LoadAsync(1, TestContext.CancellationToken).ConfigureAwait(false))!;
 
 		Assert.AreEqual("First", source.Entries.First().Title);
 		Assert.AreEqual("News", source.Entries.First().Metadata.GroupTitle);
@@ -179,7 +179,7 @@ public sealed class MergeServiceTests
 	public async Task MergeAsyncShouldStoreTheResultAsANewPlaylist()
 	{
 		int id = await _sut
-			.MergeAsync(new MergeRequest { PlaylistIds = [1, 2], Name = " Everything " })
+			.MergeAsync(new MergeRequest { PlaylistIds = [1, 2], Name = " Everything " }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(42, id);
@@ -193,7 +193,7 @@ public sealed class MergeServiceTests
 	public async Task MergeAsyncShouldUseTheDefaultNameWhenNoneIsGiven()
 	{
 		_ = await _sut
-			.MergeAsync(new MergeRequest { PlaylistIds = [1, 2] })
+			.MergeAsync(new MergeRequest { PlaylistIds = [1, 2] }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		_playlistServiceMock.Verify(x => x.CreateAsync(
@@ -206,7 +206,7 @@ public sealed class MergeServiceTests
 	public async Task MergeAsyncShouldFailWithoutSources()
 	{
 		_ = await Assert.ThrowsExactlyAsync<InvalidOperationException>(
-			() => _sut.MergeAsync(new MergeRequest { PlaylistIds = [99] })).ConfigureAwait(false);
+			() => _sut.MergeAsync(new MergeRequest { PlaylistIds = [99] }, TestContext.CancellationToken)).ConfigureAwait(false);
 
 		_playlistServiceMock.Verify(x => x.CreateAsync(It.IsAny<string>(), It.IsAny<IPlaylist>(), It.IsAny<CancellationToken>()), Times.Never);
 	}
@@ -224,4 +224,6 @@ public sealed class MergeServiceTests
 
 	private static EntryModel CreateEntry(string title, string url, string? tvgId, string? groupTitle)
 		=> new(title, url, metadata: new MetadataModel { TvgId = tvgId, GroupTitle = groupTitle });
+
+	public TestContext TestContext { get; set; }
 }

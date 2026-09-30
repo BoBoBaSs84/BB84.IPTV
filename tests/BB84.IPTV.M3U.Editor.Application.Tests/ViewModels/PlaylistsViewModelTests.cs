@@ -50,10 +50,10 @@ public sealed class PlaylistsViewModelTests
 	[TestMethod]
 	public async Task LoadPlaylistsAsyncShouldKeepTheOpenPlaylist()
 	{
-		await _sut.LoadPlaylistsAsync().ConfigureAwait(false);
+		await _sut.LoadPlaylistsAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		await _sut.OpenAsync(_sut.Playlists[1]).ConfigureAwait(false);
 
-		await _sut.LoadPlaylistsAsync().ConfigureAwait(false);
+		await _sut.LoadPlaylistsAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(2, _sut.Playlists);
 		Assert.AreEqual(2, _sut.CurrentPlaylist!.Id);
@@ -63,7 +63,7 @@ public sealed class PlaylistsViewModelTests
 	[TestMethod]
 	public async Task OpenAsyncShouldLoadThePlaylistIntoTheEditor()
 	{
-		await _sut.LoadPlaylistsAsync().ConfigureAwait(false);
+		await _sut.LoadPlaylistsAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		bool opened = await _sut.OpenAsync(_sut.Playlists[0]).ConfigureAwait(false);
 
@@ -131,9 +131,9 @@ public sealed class PlaylistsViewModelTests
 	{
 		SetupPlaylists(new PlaylistSummaryResponse { Id = 1, Name = "New Playlist", EntryCount = 0 });
 		_playlistServiceMock.Setup(x => x.CreateAsync(It.IsAny<string>(), It.IsAny<IPlaylist>(), It.IsAny<CancellationToken>())).ReturnsAsync(7);
-		await _sut.LoadPlaylistsAsync().ConfigureAwait(false);
+		await _sut.LoadPlaylistsAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
-		await _sut.NewCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.NewCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_playlistServiceMock.Verify(x => x.CreateAsync("New Playlist (2)", It.IsAny<IPlaylist>(), It.IsAny<CancellationToken>()), Times.Once);
 		Assert.AreEqual(7, _sut.CurrentPlaylist!.Id);
@@ -145,11 +145,11 @@ public sealed class PlaylistsViewModelTests
 	[DataRow(NotificationResult.No, false)]
 	public async Task DeleteCommandShouldDeleteOnlyWhenConfirmed(NotificationResult answer, bool deleted)
 	{
-		await _sut.LoadPlaylistsAsync().ConfigureAwait(false);
+		await _sut.LoadPlaylistsAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		await _sut.OpenAsync(_sut.Playlists[0]).ConfigureAwait(false);
 		_notificationServiceMock.Setup(x => x.ShowQuestionAsync(It.IsAny<string>())).ReturnsAsync(answer);
 
-		await _sut.DeleteCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.DeleteCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_playlistServiceMock.Verify(x => x.DeleteAsync(1, It.IsAny<CancellationToken>()), deleted ? Times.Once() : Times.Never());
 		Assert.HasCount(deleted ? 1 : 2, _sut.Playlists);
@@ -162,7 +162,7 @@ public sealed class PlaylistsViewModelTests
 		_fileDialogServiceMock.Setup(x => x.ShowOpenFileDialogAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync("tv.m3u");
 		_playlistServiceMock.Setup(x => x.ImportAsync("tv.m3u", null, It.IsAny<CancellationToken>())).ReturnsAsync(2);
 
-		await _sut.ImportCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.ImportCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(2, _sut.CurrentPlaylist!.Id);
 		Assert.AreEqual("Second", _sut.Editor.Name);
@@ -176,7 +176,7 @@ public sealed class PlaylistsViewModelTests
 		_fileDialogServiceMock.Setup(x => x.ShowSaveFileDialogAsync(It.IsAny<string>(), It.IsAny<string>(), "First changed.m3u")).ReturnsAsync("out.m3u");
 		_playlistServiceMock.Setup(x => x.ExportAsync(1, "out.m3u", It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
-		await _sut.ExportCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.ExportCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_playlistServiceMock.Verify(x => x.UpdateAsync(1, "First changed", It.IsAny<IPlaylist>(), It.IsAny<CancellationToken>()), Times.Once);
 		_playlistServiceMock.Verify(x => x.ExportAsync(1, "out.m3u", It.IsAny<CancellationToken>()), Times.Once);
@@ -186,7 +186,7 @@ public sealed class PlaylistsViewModelTests
 	[TestMethod]
 	public async Task SaveCommandShouldBeEnabledOnlyForValidChanges()
 	{
-		await _sut.LoadPlaylistsAsync().ConfigureAwait(false);
+		await _sut.LoadPlaylistsAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		await _sut.OpenAsync(_sut.Playlists[0]).ConfigureAwait(false);
 		int changed = 0;
 		_sut.SaveCommand.CanExecuteChanged += (s, e) => changed++;
@@ -224,4 +224,6 @@ public sealed class PlaylistsViewModelTests
 		_playlistServiceMock.Setup(x => x.DeleteAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync((int id, CancellationToken _) => _storedPlaylists.RemoveAll(playlist => playlist.Id == id) > 0);
 	}
+
+	public TestContext TestContext { get; set; }
 }

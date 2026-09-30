@@ -57,7 +57,7 @@ public sealed class DatabaseViewModelTests : IDisposable
 		Assert.IsFalse(_sut.CheckDatabaseCommand.CanExecute());
 		Assert.IsFalse(_sut.ImportDatabaseCommand.CanExecute());
 
-		await _sut.CreateDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.CreateDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsTrue(_sut.DatabaseCreated);
 		Assert.IsTrue(_sut.CheckDatabaseCommand.CanExecute());
@@ -73,8 +73,8 @@ public sealed class DatabaseViewModelTests : IDisposable
 		_databaseServiceMock.Setup(x => x.ImportDatabaseAsync(It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new DatabaseImportResponse { CategoriesImported = 3, CountriesImported = 4 });
 
-		await _sut.CreateDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
-		await _sut.ImportDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.CreateDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.ImportDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(Resources.DatabaseImportSucceeded.FormatMessage(7), _sut.ImportStatusMessage);
 	}
@@ -86,8 +86,8 @@ public sealed class DatabaseViewModelTests : IDisposable
 		_databaseServiceMock.Setup(x => x.ImportDatabaseAsync(It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new DatabaseImportResponse());
 
-		await _sut.CreateDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
-		await _sut.ImportDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.CreateDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.ImportDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(Resources.DatabaseImportWithoutRecords, _sut.ImportStatusMessage);
 	}
@@ -99,7 +99,7 @@ public sealed class DatabaseViewModelTests : IDisposable
 		_databaseServiceMock.Setup(x => x.ImportDatabaseAsync(It.IsAny<CancellationToken>()))
 			.ThrowsAsync(new InvalidOperationException("no connection"));
 
-		await _sut.CreateDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.CreateDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		ErrorOccuredEvent reported = await ExecuteAndReadErrorAsync(_sut.ImportDatabaseCommand).ConfigureAwait(false);
 
 		Assert.AreEqual(Resources.DatabaseImportFailed, reported.Message);
@@ -115,7 +115,7 @@ public sealed class DatabaseViewModelTests : IDisposable
 		_databaseServiceMock.Setup(x => x.CheckDatabaseAvailabilityAsync(It.IsAny<CancellationToken>()))
 			.ThrowsAsync(new InvalidOperationException("no connection"));
 
-		await _sut.CreateDatabaseCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.CreateDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		ErrorOccuredEvent reported = await ExecuteAndReadErrorAsync(_sut.CheckDatabaseCommand).ConfigureAwait(false);
 
 		Assert.AreEqual(Resources.DatabaseCheckFailed, reported.Message);
@@ -165,7 +165,7 @@ public sealed class DatabaseViewModelTests : IDisposable
 		{
 			// The error callback of a command runs on a thread pool thread; a bound property set
 			// there ends the application, so it has to go back to the thread of the interface.
-			await Task.Run(viewModel.LoadLogoCacheStatusAndReportAsync).ConfigureAwait(false);
+			await Task.Run(viewModel.LoadLogoCacheStatusAndReportAsync, TestContext.CancellationToken).ConfigureAwait(false);
 
 			Assert.AreEqual(1, context.Posts);
 			Assert.AreEqual(Resources.LogoCacheFailed, viewModel.LogoStatusMessage);
@@ -201,4 +201,6 @@ public sealed class DatabaseViewModelTests : IDisposable
 		Assert.AreEqual(50, viewModel.ImportProgress);
 		Assert.AreEqual(Resources.DatabaseImportProgressStatus.FormatMessage("Channels", 12, 4, 8), viewModel.ImportStatusMessage);
 	}
+
+	public TestContext TestContext { get; set; }
 }

@@ -75,7 +75,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldTellWhatTheCatalogKnows()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "hd.example.com" })
+			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "hd.example.com" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, page);
@@ -87,7 +87,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldLeaveAnUnknownChannelWithoutAName()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "big.example.com", SearchText = "Channel001" })
+			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "big.example.com", SearchText = "Channel001" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, page, "Only Channel001 matches, the catalog does not know it.");
@@ -98,7 +98,7 @@ public sealed class GuideOptionTests
 	[TestMethod]
 	public async Task GetOptionsAsyncShouldReturnTheGuideOfTheFeedFirst()
 	{
-		IReadOnlyList<GuideOptionResponse> options = await _sut.GetOptionsAsync("ZDF.de", "HD").ConfigureAwait(false);
+		IReadOnlyList<GuideOptionResponse> options = await _sut.GetOptionsAsync("ZDF.de", "HD", TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(3, options);
 		Assert.AreEqual("hd.example.com", options[0].Site);
@@ -112,7 +112,7 @@ public sealed class GuideOptionTests
 	[TestMethod]
 	public async Task GetOptionsAsyncShouldOrderBySiteWithoutAFeed()
 	{
-		IReadOnlyList<GuideOptionResponse> options = await _sut.GetOptionsAsync("ZDF.de").ConfigureAwait(false);
+		IReadOnlyList<GuideOptionResponse> options = await _sut.GetOptionsAsync("ZDF.de", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual("example.com", options[0].Site);
 		Assert.AreEqual("hd.example.com", options[1].Site);
@@ -122,7 +122,7 @@ public sealed class GuideOptionTests
 	[TestMethod]
 	public async Task GetOptionsAsyncShouldBeEmptyForAnUnknownChannel()
 	{
-		IReadOnlyList<GuideOptionResponse> options = await _sut.GetOptionsAsync("Unknown.de").ConfigureAwait(false);
+		IReadOnlyList<GuideOptionResponse> options = await _sut.GetOptionsAsync("Unknown.de", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsEmpty(options);
 	}
@@ -130,7 +130,7 @@ public sealed class GuideOptionTests
 	[TestMethod]
 	public async Task GetSitesAsyncShouldCountWhatASiteCovers()
 	{
-		IReadOnlyList<GuideSiteResponse> sites = await _sut.GetSitesAsync().ConfigureAwait(false);
+		IReadOnlyList<GuideSiteResponse> sites = await _sut.GetSitesAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(4, sites);
 		Assert.AreEqual("big.example.com", sites[0].Site, "The sites are ordered by name.");
@@ -146,7 +146,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldPageTheGuidesOfTheSite()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "big.example.com", PageNumber = 2, PageSize = 100 })
+			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "big.example.com", PageNumber = 2, PageSize = 100 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(50, page);
@@ -159,7 +159,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldFilterBySearchText()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "big.example.com", SearchText = "Channel01" })
+			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "big.example.com", SearchText = "Channel01" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(10, page, "Channel010 to Channel019 are the ones that match.");
@@ -170,7 +170,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldFindTheSiteName()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "hd.example.com", SearchText = "ZDF HD" })
+			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "hd.example.com", SearchText = "ZDF HD" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, page);
@@ -182,9 +182,11 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldBeEmptyForAnUnknownSite()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "nowhere.example.com" })
+			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "nowhere.example.com" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.IsEmpty(page);
 	}
+
+	public TestContext TestContext { get; set; }
 }

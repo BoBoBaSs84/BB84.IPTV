@@ -116,7 +116,7 @@ public sealed class MainWindowTests
 				Assert.IsFalse(playlists.SaveCommand.CanExecute());
 				Assert.IsFalse(save.IsEffectivelyEnabled, "Nothing is open, so there is nothing to save.");
 
-				playlists.LoadPlaylistsAsync().GetAwaiter().GetResult();
+				playlists.LoadPlaylistsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 				playlists.OpenAsync(playlists.Playlists[0]).GetAwaiter().GetResult();
 				playlists.Editor.Name = "Changed";
 				UiTest.Settle();
@@ -164,4 +164,6 @@ public sealed class MainWindowTests
 
 		return (new MainWindow(navigationService, mainViewModel, playlists), navigationService, playlists);
 	}
+
+	public TestContext TestContext { get; set; }
 }

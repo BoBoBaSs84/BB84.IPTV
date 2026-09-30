@@ -16,7 +16,7 @@ public sealed class ViewModelBaseTests
 		RecordingContext context = new();
 		TestViewModel sut = WithContext(context, () => new TestViewModel());
 
-		await Task.Run(() => sut.Run()).ConfigureAwait(false);
+		await Task.Run(() => sut.Run(), TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, context.Posts, "The error callback of a command runs on a thread pool thread.");
 		Assert.AreEqual(1, sut.Calls);
@@ -91,4 +91,6 @@ public sealed class ViewModelBaseTests
 		public void Run()
 			=> Invoke(() => Calls++);
 	}
+
+	public TestContext TestContext { get; set; }
 }
