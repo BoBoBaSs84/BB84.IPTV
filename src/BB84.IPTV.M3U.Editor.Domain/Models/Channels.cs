@@ -22,7 +22,7 @@ public sealed class Channels
 	/// Gets or sets the list of channels contained in this collection.
 	/// </summary>
 	[XmlElement("channel", Form = XmlSchemaForm.Unqualified, IsNullable = true)]
-	public List<Channel> Items { get; set; } = default!;
+	public List<Channel> Items { get; set; } = [];
 }
 
 /// <summary>
@@ -38,29 +38,35 @@ public sealed class Channel
 	/// Gets or sets the site associated with this channel, represented as a string attribute in the XML.
 	/// </summary>
 	[XmlAttribute("site", DataType = "string", Form = XmlSchemaForm.Unqualified)]
-	public string Site { get; set; } = default!;
-
-	/// <summary>
-	/// Gets or sets the language associated with this channel, represented as a string attribute in the XML.
-	/// </summary>
-	[XmlAttribute("lang", DataType = "string", Form = XmlSchemaForm.Unqualified)]
-	public string Lang { get; set; } = default!;
-
-	/// <summary>
-	/// Gets or sets the XMLTV ID associated with this channel, represented as a string attribute in the XML.
-	/// </summary>
-	[XmlAttribute("xmltv_id", DataType = "string", Form = XmlSchemaForm.Unqualified)]
-	public string XmltvId { get; set; } = default!;
+	public required string Site { get; set; }
 
 	/// <summary>
 	/// Gets or sets the site ID associated with this channel, represented as a string attribute in the XML.
 	/// </summary>
 	[XmlAttribute("site_id", DataType = "string", Form = XmlSchemaForm.Unqualified)]
-	public string SiteId { get; set; } = default!;
+	public required string SiteId { get; set; }
+
+	/// <summary>
+	/// Gets or sets the language associated with this channel, represented as a string attribute in the XML.
+	/// </summary>
+	[XmlAttribute("lang", DataType = "string", Form = XmlSchemaForm.Unqualified)]
+	public string? Lang { get; set; }
+
+	/// <summary>
+	/// Gets or sets the XMLTV ID associated with this channel, represented as a string attribute in the XML.
+	/// </summary>
+	[XmlAttribute("xmltv_id", DataType = "string", Form = XmlSchemaForm.Unqualified)]
+	public required string XmltvId { get; set; }
 
 	/// <summary>
 	/// Gets or sets the value of this channel, represented as the text content of the XML element.
 	/// </summary>
 	[XmlText(DataType = "string")]
-	public string Value { get; set; } = default!;
+	public required string Value { get; set; }
+
+	/// <summary>
+	/// Determines whether the <c>Lang</c> property should be serialized.
+	/// This method is used by the XML serializer to conditionally include the <c>lang</c> attribute in the output XML.
+	/// </summary>
+	public bool ShouldSerializeLang() => !string.IsNullOrWhiteSpace(Lang);
 }

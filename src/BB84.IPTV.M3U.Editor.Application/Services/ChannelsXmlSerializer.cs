@@ -6,8 +6,10 @@
 using System.Text;
 using System.Xml;
 
+using BB84.Extensions.Serialization;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Domain.Models;
 
 namespace BB84.IPTV.M3U.Editor.Application.Services;
 
@@ -21,59 +23,37 @@ namespace BB84.IPTV.M3U.Editor.Application.Services;
 /// </remarks>
 internal sealed class ChannelsXmlSerializer : IChannelsXmlSerializer
 {
+	private static readonly XmlWriterSettings WriterSettings = new()
+	{
+		Encoding = new UTF8Encoding(false),
+		Indent = true,
+		IndentChars = "  ",
+		NewLineChars = "\n",
+		OmitXmlDeclaration = false
+	};
+
 	public string Serialize(IEnumerable<GuideMappingResponse> mappings)
 	{
 		ArgumentNullException.ThrowIfNull(mappings);
 
-		XmlWriterSettings settings = new()
+		Channels channels = new();
+
+		// Only a mapping that names a site, an identifier on it and an XMLTV identifier can be
+		// grabbed; an incomplete one is left out instead of being written as a broken entry.
+		foreach (GuideMappingResponse mapping in mappings.Where(mapping => mapping.IsComplete))
 		{
-			Encoding = new UTF8Encoding(false),
-			Indent = true,
-			IndentChars = "  ",
-			NewLineChars = "\n",
-			OmitXmlDeclaration = false
-		};
-
-		StringBuilderWriter output = new();
-
-		using (XmlWriter writer = XmlWriter.Create(output, settings))
-		{
-			writer.WriteStartDocument();
-			writer.WriteStartElement("channels");
-
-			// Only a mapping that names a site, an identifier on it and an XMLTV identifier can be
-			// grabbed; an incomplete one is left out instead of being written as a broken entry.
-			foreach (GuideMappingResponse mapping in mappings.Where(mapping => mapping.IsComplete))
+			Channel channel = new()
 			{
-				writer.WriteStartElement("channel");
-				writer.WriteAttributeString("site", mapping.Site!.Trim());
-				writer.WriteAttributeString("site_id", mapping.SiteId!.Trim());
+				Site = mapping.Site!.Trim(),
+				SiteId = mapping.SiteId!.Trim(),
+				Lang = mapping.Lang?.Trim(),
+				XmltvId = mapping.XmltvId!.Trim(),
+				Value = string.IsNullOrWhiteSpace(mapping.DisplayName) ? mapping.Title : mapping.DisplayName.Trim()
+			};
 
-				if (!string.IsNullOrWhiteSpace(mapping.Lang))
-					writer.WriteAttributeString("lang", mapping.Lang.Trim());
-
-				writer.WriteAttributeString("xmltv_id", mapping.XmltvId!.Trim());
-				writer.WriteString(string.IsNullOrWhiteSpace(mapping.DisplayName) ? mapping.Title : mapping.DisplayName.Trim());
-				writer.WriteEndElement();
-			}
-
-			writer.WriteEndElement();
-			writer.WriteEndDocument();
+			channels.Items.Add(channel);
 		}
 
-		return output.ToString();
-	}
-
-	/// <summary>
-	/// Collects what the writer produces, with the encoding the declaration announces.
-	/// </summary>
-	/// <remarks>
-	/// A <see cref="StringWriter"/> reports UTF-16, which would end up in the declaration, but the
-	/// grabber expects UTF-8.
-	/// </remarks>
-	private sealed class StringBuilderWriter : StringWriter
-	{
-		public override Encoding Encoding
-			=> new UTF8Encoding(false);
+		return channels.ToXml(settings: WriterSettings);
 	}
 }

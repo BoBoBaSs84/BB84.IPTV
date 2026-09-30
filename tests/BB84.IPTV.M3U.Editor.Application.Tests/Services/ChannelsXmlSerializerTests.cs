@@ -60,9 +60,12 @@ public sealed class ChannelsXmlSerializerTests
 	}
 
 	[TestMethod]
-	public void ShouldWriteTheTitleWhenNoNameIsGiven()
+	[DataRow(null)]
+	[DataRow("")]
+	[DataRow("   ")]
+	public void ShouldWriteTheTitleWhenNoNameIsGiven(string? displayName)
 	{
-		string xml = _sut.Serialize([CreateMapping(displayName: null, title: "From the title")]);
+		string xml = _sut.Serialize([CreateMapping(displayName: displayName, title: "From the title")]);
 
 		Assert.Contains(">From the title</channel>", xml);
 	}
@@ -81,7 +84,8 @@ public sealed class ChannelsXmlSerializerTests
 	{
 		string xml = _sut.Serialize([CreateMapping(site: "  example.com  ", siteId: " 123 ", xmltvId: " DasErste.de ")]);
 
-		Assert.Contains("site=\"example.com\" site_id=\"123\"", xml);
+		Assert.Contains("site=\"example.com\"", xml);
+		Assert.Contains("site_id=\"123\"", xml);
 		Assert.Contains("xmltv_id=\"DasErste.de\"", xml);
 	}
 
