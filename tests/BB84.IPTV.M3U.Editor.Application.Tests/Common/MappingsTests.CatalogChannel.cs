@@ -4,13 +4,12 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
-using BB84.IPTV.M3U.Editor.Application.Extensions;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Domain.Models;
 
-namespace BB84.IPTV.M3U.Editor.Application.Tests.Extensions;
+namespace BB84.IPTV.M3U.Editor.Application.Tests.Common;
 
-[TestClass]
-public sealed class CatalogExtensionsTests
+public sealed partial class MappingsTests
 {
 	[TestMethod]
 	public void ToEntryShouldMapACatalogChannelWithItsFeed()
@@ -57,29 +56,5 @@ public sealed class CatalogExtensionsTests
 		Assert.AreEqual(string.Empty, entry.FilePath);
 		Assert.IsTrue(entry.Metadata.Censored);
 		Assert.IsNull(entry.Feed);
-	}
-
-	[TestMethod]
-	public void ToEntryShouldMapACustomChannel()
-	{
-		CustomChannelResponse channel = new()
-		{
-			Id = 1,
-			Name = "Local camera",
-			Url = "rtsp://192.168.12.1:554",
-			GroupTitle = "Local",
-			TvgId = "camera",
-			TvgLogo = "/logos/camera.png"
-		};
-
-		EntryModel entry = channel.ToEntry();
-
-		Assert.AreEqual("Local camera", entry.Title);
-		Assert.AreEqual("rtsp://192.168.12.1:554", entry.FilePath);
-		Assert.AreEqual("camera", entry.Metadata.TvgId);
-		Assert.AreEqual("Local camera", entry.Metadata.TvgName);
-		Assert.AreEqual("/logos/camera.png", entry.Metadata.TvgLogo);
-		Assert.AreEqual("Local", entry.Metadata.GroupTitle);
-		Assert.IsNull(entry.Channel);
 	}
 }

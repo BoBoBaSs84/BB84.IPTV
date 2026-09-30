@@ -6,6 +6,7 @@
 using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -34,15 +35,7 @@ internal sealed class CustomChannelService(IServiceScopeFactory serviceScopeFact
 
 		IReadOnlyList<CustomChannelResponse> channels = await repositoryService.CustomChannels
 			.GetListAsync(
-				c => new CustomChannelResponse
-				{
-					Id = c.Id,
-					Name = c.Name,
-					Url = c.Url,
-					GroupTitle = c.GroupTitle,
-					TvgId = c.TvgId,
-					TvgLogo = c.TvgLogo
-				},
+				Mappings.CustomChannelToResponse,
 				new Query<CustomChannelEntity> { OrderBy = q => q.OrderBy(c => c.Name), Skip = request.Skip, Take = request.PageSize },
 				cancellationToken)
 			.ConfigureAwait(false);
@@ -59,14 +52,7 @@ internal sealed class CustomChannelService(IServiceScopeFactory serviceScopeFact
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
 
-		CustomChannelEntity entity = new()
-		{
-			Name = channel.Name.Trim(),
-			Url = channel.Url.Trim(),
-			GroupTitle = channel.GroupTitle,
-			TvgId = channel.TvgId,
-			TvgLogo = channel.TvgLogo
-		};
+		CustomChannelEntity entity = channel.ToEntity();
 
 		await repositoryService.CustomChannels
 			.CreateAsync(entity, cancellationToken)
@@ -95,11 +81,7 @@ internal sealed class CustomChannelService(IServiceScopeFactory serviceScopeFact
 		if (entity is null)
 			return false;
 
-		entity.Name = channel.Name.Trim();
-		entity.Url = channel.Url.Trim();
-		entity.GroupTitle = channel.GroupTitle;
-		entity.TvgId = channel.TvgId;
-		entity.TvgLogo = channel.TvgLogo;
+		entity.Apply(channel);
 
 		await repositoryService
 			.CommitChangesAsync(cancellationToken)
@@ -122,4 +104,4 @@ internal sealed class CustomChannelService(IServiceScopeFactory serviceScopeFact
 
 	private static IRepositoryService GetRepositoryService(IServiceScope scope)
 		=> scope.ServiceProvider.GetRequiredService<IRepositoryService>();
-}
+}

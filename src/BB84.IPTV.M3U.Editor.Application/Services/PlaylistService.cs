@@ -10,7 +10,7 @@ using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Features;
-using BB84.IPTV.M3U.Editor.Application.Extensions;
+using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
@@ -48,7 +48,7 @@ internal sealed class PlaylistService(
 
 		IReadOnlyList<PlaylistSummaryResponse> summaries = await repositoryService.Playlists
 			.GetListAsync(
-				p => new PlaylistSummaryResponse { Id = p.Id, Name = p.Name, EntryCount = p.Entries.Count },
+				Mappings.PlaylistToSummary,
 				new Query<PlaylistEntity> { OrderBy = q => q.OrderBy(p => p.Name), Skip = request.Skip, Take = request.PageSize },
 				cancellationToken)
 			.ConfigureAwait(false);
@@ -213,4 +213,4 @@ internal sealed class PlaylistService(
 
 	private static IRepositoryService GetRepositoryService(IServiceScope scope)
 		=> scope.ServiceProvider.GetRequiredService<IRepositoryService>();
-}
+}
