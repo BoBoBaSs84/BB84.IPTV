@@ -53,7 +53,7 @@ public sealed class MergeViewModelTests
 	[TestMethod]
 	public async Task LoadAsyncShouldFillTheSources()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(3, _sut.Sources);
 		Assert.AreEqual("First", _sut.Sources[0].Name);
@@ -76,10 +76,10 @@ public sealed class MergeViewModelTests
 	[TestMethod]
 	public async Task LoadAsyncShouldKeepTheSelection()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.Sources[1].IsSelected = true;
 
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsTrue(_sut.Sources[1].IsSelected);
 		Assert.AreEqual(1, _sut.SelectedCount);
@@ -88,7 +88,7 @@ public sealed class MergeViewModelTests
 	[TestMethod]
 	public async Task MergeShouldNeedTwoPlaylists()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsFalse(_sut.IsValid);
 		Assert.IsFalse(_sut.PreviewCommand.CanExecute());
@@ -122,7 +122,7 @@ public sealed class MergeViewModelTests
 		_sut.DuplicateMode = MergeDuplicateMode.ByTvgIdOrUrl;
 		_sut.DuplicateResolution = MergeDuplicateResolution.KeepLast;
 
-		await _sut.PreviewCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.PreviewCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_mergeServiceMock.Verify(x => x.PreviewAsync(
 			It.Is<MergeRequest>(request
@@ -139,10 +139,10 @@ public sealed class MergeViewModelTests
 	public async Task PreviewCommandShouldKeepTheGroupRenamingsOfTheUser()
 	{
 		await SelectTwoAsync().ConfigureAwait(false);
-		await _sut.PreviewCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.PreviewCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.GroupMappings[0].TargetGroup = "Nachrichten";
 
-		await _sut.PreviewCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.PreviewCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual("Nachrichten", _sut.GroupMappings[0].TargetGroup);
 		_mergeServiceMock.Verify(x => x.PreviewAsync(
@@ -153,7 +153,7 @@ public sealed class MergeViewModelTests
 	[TestMethod]
 	public async Task MoveCommandsShouldChangeTheOrderOfTheSources()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.SelectedSource = _sut.Sources[0];
 
 		Assert.IsFalse(_sut.MoveUpCommand.CanExecute());
@@ -171,7 +171,7 @@ public sealed class MergeViewModelTests
 		await SelectTwoAsync().ConfigureAwait(false);
 		_sut.Name = "Everything";
 
-		await _sut.MergeCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.MergeCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_mergeServiceMock.Verify(x => x.MergeAsync(It.Is<MergeRequest>(request => request.Name == "Everything"), It.IsAny<CancellationToken>()), Times.Once);
 		_playlistServiceMock.Verify(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
@@ -201,4 +201,6 @@ public sealed class MergeViewModelTests
 			Groups = ["News", "Public"]
 		};
 	}
+
+	public TestContext TestContext { get; set; }
 }

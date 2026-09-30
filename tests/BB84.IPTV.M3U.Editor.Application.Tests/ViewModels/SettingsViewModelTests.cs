@@ -67,7 +67,7 @@ public sealed class SettingsViewModelTests
 	[TestMethod]
 	public async Task SaveShouldStoreTheSettings()
 	{
-		await _sut.SaveCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SaveCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_settingsServiceMock.Verify(x => x.SaveAsync(_applicationSettings, It.IsAny<CancellationToken>()), Times.Once);
 	}
@@ -77,7 +77,7 @@ public sealed class SettingsViewModelTests
 	{
 		_pathServiceMock.Setup(x => x.HasPendingChanges()).Returns(true);
 
-		await _sut.SaveCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SaveCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_eventServiceMock.Verify(x => x.Publish(It.IsAny<DataPathsChangedEvent>()), Times.Once);
 	}
@@ -87,7 +87,7 @@ public sealed class SettingsViewModelTests
 	{
 		_pathServiceMock.Setup(x => x.HasPendingChanges()).Returns(false);
 
-		await _sut.SaveCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SaveCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_eventServiceMock.Verify(x => x.Publish(It.IsAny<DataPathsChangedEvent>()), Times.Never);
 	}
@@ -98,7 +98,7 @@ public sealed class SettingsViewModelTests
 		_sut.Paths.DataDirectory = "relative/directory";
 		_pathServiceMock.Setup(x => x.IsValidDirectory("relative/directory")).Returns(false);
 
-		await _sut.SaveCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SaveCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_eventServiceMock.Verify(x => x.Publish(It.IsAny<WarningOccuredEvent>()), Times.Once);
 		_settingsServiceMock.Verify(x => x.SaveAsync(It.IsAny<ApplicationSettings>(), It.IsAny<CancellationToken>()), Times.Never);
@@ -111,9 +111,9 @@ public sealed class SettingsViewModelTests
 		_fileDialogServiceMock.Setup(x => x.ShowOpenFolderDialogAsync(It.IsAny<string>(), It.IsAny<string?>()))
 			.ReturnsAsync(picked);
 
-		await _sut.BrowseDataDirectoryCommand.ExecuteAsync().ConfigureAwait(false);
-		await _sut.BrowseLogoDirectoryCommand.ExecuteAsync().ConfigureAwait(false);
-		await _sut.BrowseLogDirectoryCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.BrowseDataDirectoryCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.BrowseLogoDirectoryCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.BrowseLogDirectoryCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(picked, _sut.Paths.DataDirectory);
 		Assert.AreEqual(picked, _sut.Paths.LogoDirectory);
@@ -128,7 +128,7 @@ public sealed class SettingsViewModelTests
 		_fileDialogServiceMock.Setup(x => x.ShowOpenFolderDialogAsync(It.IsAny<string>(), It.IsAny<string?>()))
 			.ReturnsAsync((string?)null);
 
-		await _sut.BrowseDataDirectoryCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.BrowseDataDirectoryCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(configured, _sut.Paths.DataDirectory);
 	}
@@ -140,11 +140,11 @@ public sealed class SettingsViewModelTests
 		_fileDialogServiceMock.Setup(x => x.ShowOpenFolderDialogAsync(It.IsAny<string>(), It.IsAny<string?>()))
 			.ReturnsAsync((string?)null);
 
-		await _sut.BrowseDataDirectoryCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.BrowseDataDirectoryCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_fileDialogServiceMock.Verify(x => x.ShowOpenFolderDialogAsync(It.IsAny<string>(), _sut.DataDirectoryInUse), Times.Once);
 
 		_sut.Paths.DataDirectory = configured;
-		await _sut.BrowseDataDirectoryCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.BrowseDataDirectoryCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_fileDialogServiceMock.Verify(x => x.ShowOpenFolderDialogAsync(It.IsAny<string>(), configured), Times.Once);
 	}
 
@@ -161,7 +161,7 @@ public sealed class SettingsViewModelTests
 		((ICommand)_sut.SaveCommand).Execute(null);
 
 		ErrorOccuredEvent reported = await published.Task
-			.WaitAsync(TimeSpan.FromSeconds(5))
+			.WaitAsync(TimeSpan.FromSeconds(5), TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(Resources.SettingsOperationFailed, reported.Message);
@@ -171,8 +171,10 @@ public sealed class SettingsViewModelTests
 	[TestMethod]
 	public async Task LoadShouldReadTheSettings()
 	{
-		await _sut.LoadCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.LoadCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_settingsServiceMock.Verify(x => x.LoadAsync(It.IsAny<CancellationToken>()), Times.Once);
 	}
+
+	public TestContext TestContext { get; set; }
 }

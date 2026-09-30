@@ -73,10 +73,10 @@ public sealed class LogoCachePersistenceTests
 	[TestMethod]
 	public async Task CacheLogosAsyncShouldWriteTheFileAndRememberIt()
 	{
-		int downloaded = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		int downloaded = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
-		LogoCacheStatusResponse status = await _sut.GetStatusAsync().ConfigureAwait(false);
-		string? path = await _sut.GetLocalPathAsync("DasErste.de").ConfigureAwait(false);
+		LogoCacheStatusResponse status = await _sut.GetStatusAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		string? path = await _sut.GetLocalPathAsync("DasErste.de", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, downloaded);
 		Assert.AreEqual(1, status.CachedCount);
@@ -88,9 +88,9 @@ public sealed class LogoCachePersistenceTests
 	[TestMethod]
 	public async Task CacheLogosAsyncShouldBeResumable()
 	{
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
-		int again = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		int again = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(0, again, "Nothing is missing, so nothing is downloaded again.");
 	}
@@ -98,15 +98,15 @@ public sealed class LogoCachePersistenceTests
 	[TestMethod]
 	public async Task ExportShouldWriteTheCachedFileAsTheLogo()
 	{
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		int id = await CreatePlaylistAsync().ConfigureAwait(false);
 		string exportPath = Path.Combine(_directory, "export.m3u");
 
-		_ = await _playlistService.ExportAsync(id, exportPath).ConfigureAwait(false);
+		_ = await _playlistService.ExportAsync(id, exportPath, TestContext.CancellationToken).ConfigureAwait(false);
 
-		string content = await File.ReadAllTextAsync(exportPath).ConfigureAwait(false);
-		string? cachedPath = await _sut.GetLocalPathAsync("DasErste.de").ConfigureAwait(false);
-		IPlaylist stored = (await _playlistService.LoadAsync(id).ConfigureAwait(false))!;
+		string content = await File.ReadAllTextAsync(exportPath, TestContext.CancellationToken).ConfigureAwait(false);
+		string? cachedPath = await _sut.GetLocalPathAsync("DasErste.de", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+		IPlaylist stored = (await _playlistService.LoadAsync(id, TestContext.CancellationToken).ConfigureAwait(false))!;
 
 		Assert.Contains(cachedPath!, content);
 		Assert.DoesNotContain(LogoUrl, content);
@@ -117,14 +117,14 @@ public sealed class LogoCachePersistenceTests
 	public async Task ExportShouldWriteARelativePathWhenAsked()
 	{
 		_settings.Logo.ExportPathStyle = Application.Enumerators.LogoPathStyle.Relative;
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		int id = await CreatePlaylistAsync().ConfigureAwait(false);
 		string exportPath = Path.Combine(_directory, "export.m3u");
 
-		_ = await _playlistService.ExportAsync(id, exportPath).ConfigureAwait(false);
+		_ = await _playlistService.ExportAsync(id, exportPath, TestContext.CancellationToken).ConfigureAwait(false);
 
-		string content = await File.ReadAllTextAsync(exportPath).ConfigureAwait(false);
-		string? cachedPath = await _sut.GetLocalPathAsync("DasErste.de").ConfigureAwait(false);
+		string content = await File.ReadAllTextAsync(exportPath, TestContext.CancellationToken).ConfigureAwait(false);
+		string? cachedPath = await _sut.GetLocalPathAsync("DasErste.de", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.Contains(Path.GetRelativePath(_directory, cachedPath!), content);
 		Assert.DoesNotContain(_directory, content);
@@ -134,27 +134,27 @@ public sealed class LogoCachePersistenceTests
 	public async Task ExportShouldKeepTheUrlWhenLocalPathsAreOff()
 	{
 		_settings.Logo.UseLocalPathsOnExport = false;
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		int id = await CreatePlaylistAsync().ConfigureAwait(false);
 		string exportPath = Path.Combine(_directory, "export.m3u");
 
-		_ = await _playlistService.ExportAsync(id, exportPath).ConfigureAwait(false);
+		_ = await _playlistService.ExportAsync(id, exportPath, TestContext.CancellationToken).ConfigureAwait(false);
 
-		Assert.Contains(LogoUrl, await File.ReadAllTextAsync(exportPath).ConfigureAwait(false));
+		Assert.Contains(LogoUrl, await File.ReadAllTextAsync(exportPath, TestContext.CancellationToken).ConfigureAwait(false));
 	}
 
 	[TestMethod]
 	public async Task ClearAsyncShouldDeleteTheFilesAndForgetThem()
 	{
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
-		int deleted = await _sut.ClearAsync().ConfigureAwait(false);
+		int deleted = await _sut.ClearAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
-		LogoCacheStatusResponse status = await _sut.GetStatusAsync().ConfigureAwait(false);
+		LogoCacheStatusResponse status = await _sut.GetStatusAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, deleted);
 		Assert.AreEqual(0, status.CachedCount);
-		Assert.IsNull(await _sut.GetLocalPathAsync("DasErste.de").ConfigureAwait(false));
+		Assert.IsNull(await _sut.GetLocalPathAsync("DasErste.de", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false));
 	}
 
 	private async Task<int> CreatePlaylistAsync()
@@ -203,4 +203,6 @@ public sealed class LogoCachePersistenceTests
 			return deleted;
 		}
 	}
+
+	public TestContext TestContext { get; set; }
 }

@@ -38,7 +38,7 @@ public sealed class CatalogControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			CatalogViewModel viewModel = ViewModelFactory.CreateCatalog();
-			viewModel.LoadAsync().GetAwaiter().GetResult();
+			viewModel.LoadAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 
 			CatalogControl control = new() { DataContext = viewModel };
 
@@ -59,7 +59,7 @@ public sealed class CatalogControlTests
 		{
 			// Two pages: the mock reports more channels than fit on one page.
 			CatalogViewModel viewModel = ViewModelFactory.CreateCatalog(CatalogViewModel.PageSize + 1);
-			viewModel.LoadAsync().GetAwaiter().GetResult();
+			viewModel.LoadAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 
 			CatalogControl control = new() { DataContext = viewModel };
 
@@ -71,13 +71,13 @@ public sealed class CatalogControlTests
 				Assert.IsFalse(previous.IsEffectivelyEnabled);
 				Assert.IsFalse(next.IsEffectivelyEnabled);
 
-				viewModel.SearchCommand.ExecuteAsync().GetAwaiter().GetResult();
+				viewModel.SearchCommand.ExecuteAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 				UiTest.Settle();
 
 				Assert.IsFalse(previous.IsEffectivelyEnabled);
 				Assert.IsTrue(next.IsEffectivelyEnabled);
 
-				viewModel.NextPageCommand.ExecuteAsync().GetAwaiter().GetResult();
+				viewModel.NextPageCommand.ExecuteAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 				UiTest.Settle();
 
 				Assert.AreEqual(2, viewModel.PageNumber);
@@ -92,8 +92,8 @@ public sealed class CatalogControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			CatalogViewModel viewModel = ViewModelFactory.CreateCatalog();
-			viewModel.LoadAsync().GetAwaiter().GetResult();
-			viewModel.SearchCommand.ExecuteAsync().GetAwaiter().GetResult();
+			viewModel.LoadAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
+			viewModel.SearchCommand.ExecuteAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 
 			CatalogControl control = new() { DataContext = viewModel };
 
@@ -103,7 +103,7 @@ public sealed class CatalogControlTests
 
 				Assert.IsFalse(add.IsEffectivelyEnabled);
 
-				viewModel.Editor.LoadAsync(1, "Mine").GetAwaiter().GetResult();
+				viewModel.Editor.LoadAsync(1, "Mine", TestContext.CancellationToken).GetAwaiter().GetResult();
 				UiTest.Settle();
 
 				Assert.IsTrue(add.IsEffectivelyEnabled);
@@ -115,7 +115,7 @@ public sealed class CatalogControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			CatalogViewModel viewModel = ViewModelFactory.CreateCatalog();
-			viewModel.LoadAsync().GetAwaiter().GetResult();
+			viewModel.LoadAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 
 			CatalogControl control = new() { DataContext = viewModel };
 
@@ -135,4 +135,6 @@ public sealed class CatalogControlTests
 		=> control.GetVisualDescendants()
 			.OfType<Button>()
 			.First(button => Equals(button.Content, content));
+
+	public TestContext TestContext { get; set; }
 }

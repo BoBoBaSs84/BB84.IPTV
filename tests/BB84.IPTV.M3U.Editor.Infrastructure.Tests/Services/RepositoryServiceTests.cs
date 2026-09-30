@@ -18,7 +18,7 @@ public sealed class RepositoryServiceTests
 	{
 		using SqliteTestDatabase database = SqliteTestDatabase.InFile();
 
-		await database.WithRepositoryAsync(r => r.MigrateDatabaseAsync()).ConfigureAwait(false);
+		await database.WithRepositoryAsync(r => r.MigrateDatabaseAsync(TestContext.CancellationToken)).ConfigureAwait(false);
 
 		Assert.AreEqual(2, database.Scalar(CountPlaylistTables));
 		Assert.IsGreaterThan(0L, database.Scalar(CountHistory));
@@ -28,10 +28,10 @@ public sealed class RepositoryServiceTests
 	public async Task MigrateDatabaseAsyncShouldKeepDataOfAMigratedDatabase()
 	{
 		using SqliteTestDatabase database = SqliteTestDatabase.InFile();
-		await database.WithRepositoryAsync(r => r.MigrateDatabaseAsync()).ConfigureAwait(false);
+		await database.WithRepositoryAsync(r => r.MigrateDatabaseAsync(TestContext.CancellationToken)).ConfigureAwait(false);
 		database.Execute("INSERT INTO Playlists (Name, Cache, Deinterlace, Refresh) VALUES ('Mine', 0, 0, 0)");
 
-		await database.WithRepositoryAsync(r => r.MigrateDatabaseAsync()).ConfigureAwait(false);
+		await database.WithRepositoryAsync(r => r.MigrateDatabaseAsync(TestContext.CancellationToken)).ConfigureAwait(false);
 
 		Assert.AreEqual(1, database.Scalar("SELECT COUNT(*) FROM Playlists"));
 	}
@@ -44,10 +44,12 @@ public sealed class RepositoryServiceTests
 		database.Execute("CREATE TABLE Channels (Id INTEGER PRIMARY KEY, Channel TEXT NOT NULL)");
 		database.Execute("INSERT INTO Channels (Channel) VALUES ('DasErste.de')");
 
-		await database.WithRepositoryAsync(r => r.MigrateDatabaseAsync()).ConfigureAwait(false);
+		await database.WithRepositoryAsync(r => r.MigrateDatabaseAsync(TestContext.CancellationToken)).ConfigureAwait(false);
 
 		Assert.AreEqual(2, database.Scalar(CountPlaylistTables));
 		Assert.AreEqual(0, database.Scalar("SELECT COUNT(*) FROM Channels"));
 		Assert.IsGreaterThan(0L, database.Scalar(CountHistory));
 	}
+
+	public TestContext TestContext { get; set; }
 }

@@ -43,7 +43,7 @@ public sealed class PlaylistViewModelTests
 		await LoadAsync(new EntryModel("First", "http://first")).ConfigureAwait(false);
 		_playlistServiceMock.Setup(x => x.LoadAsync(2, It.IsAny<CancellationToken>())).ReturnsAsync((IPlaylist?)null);
 
-		bool loaded = await _sut.LoadAsync(2, "Missing").ConfigureAwait(false);
+		bool loaded = await _sut.LoadAsync(2, "Missing", TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsFalse(loaded);
 		Assert.IsFalse(_sut.HasPlaylist);
@@ -138,7 +138,7 @@ public sealed class PlaylistViewModelTests
 			.Callback<int, string, IPlaylist, CancellationToken>((id, name, playlist, token) => saved = playlist)
 			.ReturnsAsync(true);
 
-		bool result = await _sut.SaveAsync().ConfigureAwait(false);
+		bool result = await _sut.SaveAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsTrue(result);
 		Assert.IsFalse(_sut.IsDirty);
@@ -151,7 +151,7 @@ public sealed class PlaylistViewModelTests
 		await LoadAsync().ConfigureAwait(false);
 		_sut.AddEntry();
 
-		bool result = await _sut.SaveAsync().ConfigureAwait(false);
+		bool result = await _sut.SaveAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsFalse(result);
 		Assert.IsTrue(_sut.IsDirty);
@@ -166,7 +166,7 @@ public sealed class PlaylistViewModelTests
 		merged.SetupGet(x => x.Entries).Returns([new EntryModel("Second", "http://second"), new EntryModel("Third", "http://third")]);
 		_fileServiceMock.Setup(x => x.LoadAsync("other.m3u", It.IsAny<CancellationToken>())).ReturnsAsync(merged.Object);
 
-		int appended = await _sut.MergeFileAsync("other.m3u").ConfigureAwait(false);
+		int appended = await _sut.MergeFileAsync("other.m3u", TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(2, appended);
 		Assert.HasCount(3, _sut.Entries);
@@ -180,4 +180,6 @@ public sealed class PlaylistViewModelTests
 
 		await _sut.LoadAsync(1, "My Playlist").ConfigureAwait(false);
 	}
+
+	public TestContext TestContext { get; set; }
 }

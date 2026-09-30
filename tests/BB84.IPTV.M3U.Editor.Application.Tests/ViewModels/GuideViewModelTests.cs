@@ -75,10 +75,10 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task SelectingARowShouldLoadTheGuidesOfItsChannel()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_sut.SelectedMapping = _sut.Mappings[0];
-		await _sut.LoadOptionsAsync().ConfigureAwait(false);
+		await _sut.LoadOptionsAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(2, _sut.Options);
 		Assert.AreEqual("example.com", _sut.SelectedOption?.Site, "The guide the row holds is picked.");
@@ -88,10 +88,10 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task SelectingARowWithoutAChannelShouldLeaveTheGuidesEmpty()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_sut.SelectedMapping = _sut.Mappings[1];
-		await _sut.LoadOptionsAsync().ConfigureAwait(false);
+		await _sut.LoadOptionsAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsEmpty(_sut.Options);
 		Assert.IsNull(_sut.SelectedOption);
@@ -101,9 +101,9 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task ApplyOptionCommandShouldOnlyFillTheSiteTheIdentifierAndTheLanguage()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.SelectedMapping = _sut.Mappings[0];
-		await _sut.LoadOptionsAsync().ConfigureAwait(false);
+		await _sut.LoadOptionsAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.SelectedOption = _sut.Options[1];
 
 		_sut.ApplyOptionCommand.Execute();
@@ -122,8 +122,8 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task LoadSitesAsyncShouldReadTheSitesOnlyOnce()
 	{
-		await _sut.LoadSitesAsync().ConfigureAwait(false);
-		await _sut.LoadSitesAsync().ConfigureAwait(false);
+		await _sut.LoadSitesAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.LoadSitesAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(2, _sut.Sites);
 		_guideServiceMock.Verify(x => x.GetSitesAsync(It.IsAny<CancellationToken>()), Times.Once);
@@ -132,9 +132,9 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task RefreshSitesCommandShouldReadThemAgain()
 	{
-		await _sut.LoadSitesAsync().ConfigureAwait(false);
+		await _sut.LoadSitesAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
-		await _sut.RefreshSitesCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.RefreshSitesCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_guideServiceMock.Verify(x => x.GetSitesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
 	}
@@ -142,10 +142,10 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task SelectingASiteShouldLoadItsGuides()
 	{
-		await _sut.LoadSitesAsync().ConfigureAwait(false);
+		await _sut.LoadSitesAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		_sut.SelectedSite = _sut.Sites[0];
-		await _sut.LoadSiteChannelsAsync(1).ConfigureAwait(false);
+		await _sut.LoadSiteChannelsAsync(1, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(1, _sut.SiteChannels);
 		Assert.AreEqual(1, _sut.SiteChannelPageNumber);
@@ -157,11 +157,11 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task NextSiteChannelPageCommandShouldShowTheNextPage()
 	{
-		await _sut.LoadSitesAsync().ConfigureAwait(false);
+		await _sut.LoadSitesAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.SelectedSite = _sut.Sites[0];
-		await _sut.LoadSiteChannelsAsync(1).ConfigureAwait(false);
+		await _sut.LoadSiteChannelsAsync(1, TestContext.CancellationToken).ConfigureAwait(false);
 
-		await _sut.NextSiteChannelPageCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.NextSiteChannelPageCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(2, _sut.SiteChannelPageNumber);
 		Assert.IsTrue(_sut.HasPreviousSiteChannelPage);
@@ -170,11 +170,11 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task SearchSiteChannelsCommandShouldPassTheSearchText()
 	{
-		await _sut.LoadSitesAsync().ConfigureAwait(false);
+		await _sut.LoadSitesAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.SelectedSite = _sut.Sites[0];
 		_sut.SiteSearchText = "ZDF";
 
-		await _sut.SearchSiteChannelsCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SearchSiteChannelsCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_guideServiceMock.Verify(x => x.SearchSiteChannelsAsync(It.Is<GuideSiteSearchRequest>(request => request.SearchText == "ZDF"), It.IsAny<CancellationToken>()), Times.AtLeastOnce);
 	}
@@ -182,11 +182,11 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task ApplySiteChannelCommandShouldFillTheSelectedRow()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
-		await _sut.LoadSitesAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.LoadSitesAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.SelectedMapping = _sut.Mappings[1];
 		_sut.SelectedSite = _sut.Sites[0];
-		await _sut.LoadSiteChannelsAsync(1).ConfigureAwait(false);
+		await _sut.LoadSiteChannelsAsync(1, TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.SelectedSiteChannel = _sut.SiteChannels[0];
 
 		_sut.ApplySiteChannelCommand.Execute();
@@ -200,7 +200,7 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task LoadAsyncShouldSelectTheFirstPlaylistAndMapIt()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(2, _sut.Playlists);
 		Assert.AreEqual(1, _sut.SelectedPlaylist?.Id);
@@ -212,11 +212,11 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task SelectingAnotherPlaylistShouldMapIt()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_guideServiceMock.Invocations.Clear();
 
 		_sut.SelectedPlaylist = _sut.Playlists[1];
-		await _sut.LoadMappingsAsync().ConfigureAwait(false);
+		await _sut.LoadMappingsAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_guideServiceMock.Verify(x => x.GetMappingsAsync(2, It.IsAny<CancellationToken>()), Times.AtLeastOnce);
 	}
@@ -224,7 +224,7 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task FillingARowShouldCountItAsComplete()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, _sut.CompleteCount);
 
@@ -239,10 +239,10 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task SaveCommandShouldPassWhatTheRowsHold()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.Mappings[0].SiteId = "changed";
 
-		await _sut.SaveCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SaveCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_guideServiceMock.Verify(x => x.SaveMappingsAsync(
 			1,
@@ -256,8 +256,8 @@ public sealed class GuideViewModelTests
 		_fileDialogServiceMock.Setup(x => x.ShowSaveFileDialogAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
 			.ReturnsAsync("/tmp/channels.xml");
 
-		await _sut.LoadAsync().ConfigureAwait(false);
-		await _sut.ExportCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.ExportCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_fileDialogServiceMock.Verify(x => x.ShowSaveFileDialogAsync(It.IsAny<string>(), It.IsAny<string>(), GuideViewModel.ChannelsFileName), Times.Once);
 		_guideServiceMock.Verify(x => x.ExportAsync(1, "/tmp/channels.xml", It.IsAny<IEnumerable<GuideMappingResponse>?>(), It.IsAny<CancellationToken>()), Times.Once);
@@ -269,8 +269,8 @@ public sealed class GuideViewModelTests
 		_fileDialogServiceMock.Setup(x => x.ShowSaveFileDialogAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
 			.ReturnsAsync((string?)null);
 
-		await _sut.LoadAsync().ConfigureAwait(false);
-		await _sut.ExportCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.ExportCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_guideServiceMock.Verify(x => x.ExportAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<GuideMappingResponse>?>(), It.IsAny<CancellationToken>()), Times.Never);
 	}
@@ -293,4 +293,6 @@ public sealed class GuideViewModelTests
 		_eventServiceMock.Verify(x => x.Publish(It.IsAny<Application.Events.ErrorOccuredEvent>()), Times.Once);
 		Assert.IsFalse(_sut.IsBusy);
 	}
+
+	public TestContext TestContext { get; set; }
 }

@@ -40,7 +40,7 @@ public sealed class CatalogSearchTests
 	public async Task SearchAsyncShouldFindByNameAndSkipChannelsWithoutStream()
 	{
 		IPagedList<CatalogChannelResponse> channels = await _sut
-			.SearchAsync(new CatalogSearchRequest { SearchText = "Erste" })
+			.SearchAsync(new CatalogSearchRequest { SearchText = "Erste" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, channels);
@@ -55,7 +55,7 @@ public sealed class CatalogSearchTests
 	public async Task SearchAsyncShouldReturnChannelsWithoutStreamWhenAsked()
 	{
 		IPagedList<CatalogChannelResponse> channels = await _sut
-			.SearchAsync(new CatalogSearchRequest { SearchText = "Offline", IncludeWithoutStream = true })
+			.SearchAsync(new CatalogSearchRequest { SearchText = "Offline", IncludeWithoutStream = true }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, channels);
@@ -66,15 +66,15 @@ public sealed class CatalogSearchTests
 	public async Task SearchAsyncShouldFilterByCountryLanguageAndCategory()
 	{
 		IPagedList<CatalogChannelResponse> byCountry = await _sut
-			.SearchAsync(new CatalogSearchRequest { Country = "FR" })
+			.SearchAsync(new CatalogSearchRequest { Country = "FR" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		IPagedList<CatalogChannelResponse> byLanguage = await _sut
-			.SearchAsync(new CatalogSearchRequest { Language = "fra" })
+			.SearchAsync(new CatalogSearchRequest { Language = "fra" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		IPagedList<CatalogChannelResponse> byCategory = await _sut
-			.SearchAsync(new CatalogSearchRequest { Category = "news" })
+			.SearchAsync(new CatalogSearchRequest { Category = "news" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, byCountry);
@@ -88,11 +88,11 @@ public sealed class CatalogSearchTests
 	public async Task SearchAsyncShouldSkipNsfwChannelsUnlessAsked()
 	{
 		IPagedList<CatalogChannelResponse> without = await _sut
-			.SearchAsync(new CatalogSearchRequest())
+			.SearchAsync(new CatalogSearchRequest(), TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		IPagedList<CatalogChannelResponse> with = await _sut
-			.SearchAsync(new CatalogSearchRequest { IncludeNsfw = true })
+			.SearchAsync(new CatalogSearchRequest { IncludeNsfw = true }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.IsFalse(without.Any(channel => channel.IsNsfw));
@@ -103,7 +103,7 @@ public sealed class CatalogSearchTests
 	public async Task SearchAsyncShouldPageTheResultAndReportTheTotalCount()
 	{
 		IPagedList<CatalogChannelResponse> firstPage = await _sut
-			.SearchAsync(new CatalogSearchRequest { IncludeWithoutStream = true, IncludeNsfw = true, PageSize = 100 })
+			.SearchAsync(new CatalogSearchRequest { IncludeWithoutStream = true, IncludeNsfw = true, PageSize = 100 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(4, firstPage);
@@ -119,7 +119,7 @@ public sealed class CatalogSearchTests
 		// The page size is clamped to at least 100, so the whole catalog is one page here; the
 		// second page is empty, but still reports the total.
 		IPagedList<CatalogChannelResponse> secondPage = await _sut
-			.SearchAsync(new CatalogSearchRequest { IncludeWithoutStream = true, IncludeNsfw = true, PageNumber = 2 })
+			.SearchAsync(new CatalogSearchRequest { IncludeWithoutStream = true, IncludeNsfw = true, PageNumber = 2 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.IsEmpty(secondPage);
@@ -132,7 +132,7 @@ public sealed class CatalogSearchTests
 	public async Task GetFiltersAsyncShouldReturnTheImportedValues()
 	{
 		CatalogFilterResponse filters = await _sut
-			.GetFiltersAsync()
+			.GetFiltersAsync(TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(2, filters.Countries);
@@ -217,4 +217,6 @@ public sealed class CatalogSearchTests
 		BroadcastArea = [],
 		Timezones = []
 	};
+
+	public TestContext TestContext { get; set; }
 }

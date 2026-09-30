@@ -76,7 +76,7 @@ public sealed class CatalogViewModelTests
 	[TestMethod]
 	public async Task LoadAsyncShouldFillTheFiltersAndTheCustomChannels()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(1, _sut.Countries);
 		Assert.HasCount(1, _sut.Languages);
@@ -100,8 +100,8 @@ public sealed class CatalogViewModelTests
 	[TestMethod]
 	public async Task LoadAsyncShouldReadTheFiltersOnlyOnceWhenTheyAreKnown()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_catalogServiceMock.Verify(x => x.GetFiltersAsync(It.IsAny<CancellationToken>()), Times.Once);
 	}
@@ -111,8 +111,8 @@ public sealed class CatalogViewModelTests
 	{
 		_catalogServiceMock.Setup(x => x.GetFiltersAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new CatalogFilterResponse());
 
-		await _sut.LoadAsync().ConfigureAwait(false);
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_catalogServiceMock.Verify(x => x.GetFiltersAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
 	}
@@ -120,14 +120,14 @@ public sealed class CatalogViewModelTests
 	[TestMethod]
 	public async Task SearchCommandShouldPassTheFilterAndFillTheResult()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.SearchText = "Erste";
 		_sut.SelectedCountry = _sut.Countries[0];
 		_sut.SelectedLanguage = _sut.Languages[0];
 		_sut.SelectedCategory = _sut.Categories[0];
 		_sut.IncludeNsfw = true;
 
-		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SearchCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_catalogServiceMock.Verify(x => x.SearchAsync(
 			It.Is<CatalogSearchRequest>(r => r.SearchText == "Erste" && r.Country == "DE" && r.Language == "deu" && r.Category == "news" && r.IncludeNsfw),
@@ -140,9 +140,9 @@ public sealed class CatalogViewModelTests
 	[TestMethod]
 	public async Task SearchCommandShouldReportThePageAndStartAtTheFirstOne()
 	{
-		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
-		await _sut.NextPageCommand.ExecuteAsync().ConfigureAwait(false);
-		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SearchCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.NextPageCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.SearchCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, _sut.PageNumber);
 		Assert.AreEqual(2, _sut.TotalPages);
@@ -154,18 +154,18 @@ public sealed class CatalogViewModelTests
 	[TestMethod]
 	public async Task NextAndPreviousPageCommandsShouldRequestTheNeighbouringPages()
 	{
-		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SearchCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsFalse(_sut.PreviousPageCommand.CanExecute());
 
-		await _sut.NextPageCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.NextPageCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(2, _sut.PageNumber);
 		Assert.IsFalse(_sut.HasNextPage);
 		Assert.IsTrue(_sut.PreviousPageCommand.CanExecute());
 		_catalogServiceMock.Verify(x => x.SearchAsync(It.Is<CatalogSearchRequest>(r => r.PageNumber == 2), It.IsAny<CancellationToken>()), Times.Once);
 
-		await _sut.PreviousPageCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.PreviousPageCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, _sut.PageNumber);
 		_catalogServiceMock.Verify(x => x.SearchAsync(It.Is<CatalogSearchRequest>(r => r.PageNumber == 1), It.IsAny<CancellationToken>()), Times.Exactly(2));
@@ -174,7 +174,7 @@ public sealed class CatalogViewModelTests
 	[TestMethod]
 	public async Task ResetFiltersCommandShouldClearTheFilterAndTheResult()
 	{
-		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SearchCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.SearchText = "Erste";
 
 		_sut.ResetFiltersCommand.Execute();
@@ -191,7 +191,7 @@ public sealed class CatalogViewModelTests
 	public async Task AddChannelCommandShouldAppendTheChannelToTheOpenPlaylist()
 	{
 		await OpenPlaylistAsync().ConfigureAwait(false);
-		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SearchCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_sut.AddChannelCommand.Execute();
 
@@ -209,7 +209,7 @@ public sealed class CatalogViewModelTests
 	[TestMethod]
 	public async Task AddChannelCommandShouldBeDisabledWithoutAnOpenPlaylist()
 	{
-		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SearchCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsFalse(_sut.AddChannelCommand.CanExecute());
 		Assert.IsFalse(_sut.AddAllChannelsCommand.CanExecute());
@@ -219,7 +219,7 @@ public sealed class CatalogViewModelTests
 	public async Task AddAllChannelsCommandShouldAppendEveryFoundChannel()
 	{
 		await OpenPlaylistAsync().ConfigureAwait(false);
-		await _sut.SearchCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SearchCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_sut.AddAllChannelsCommand.Execute();
 
@@ -230,7 +230,7 @@ public sealed class CatalogViewModelTests
 	public async Task AddCustomChannelCommandShouldAppendTheCustomChannel()
 	{
 		await OpenPlaylistAsync().ConfigureAwait(false);
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_sut.AddCustomChannelCommand.Execute();
 
@@ -256,7 +256,7 @@ public sealed class CatalogViewModelTests
 		_sut.SelectedCustomChannel!.Url = "rtsp://192.168.12.1:554";
 
 		Assert.IsTrue(_sut.SaveCustomChannelCommand.CanExecute());
-		await _sut.SaveCustomChannelCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SaveCustomChannelCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_customChannelServiceMock.Verify(x => x.CreateAsync(It.IsAny<CustomChannelResponse>(), It.IsAny<CancellationToken>()), Times.Once);
 		Assert.HasCount(2, _sut.CustomChannels);
@@ -267,10 +267,10 @@ public sealed class CatalogViewModelTests
 	[TestMethod]
 	public async Task SaveCustomChannelCommandShouldUpdateAStoredChannel()
 	{
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 		_sut.SelectedCustomChannel!.Name = "Garden camera";
 
-		await _sut.SaveCustomChannelCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.SaveCustomChannelCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_customChannelServiceMock.Verify(x => x.UpdateAsync(It.Is<CustomChannelResponse>(c => c.Id == 1 && c.Name == "Garden camera"), It.IsAny<CancellationToken>()), Times.Once);
 	}
@@ -279,9 +279,9 @@ public sealed class CatalogViewModelTests
 	public async Task DeleteCustomChannelCommandShouldAskBeforeDeleting()
 	{
 		_notificationServiceMock.Setup(x => x.ShowQuestionAsync(It.IsAny<string>())).ReturnsAsync(NotificationResult.No);
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
-		await _sut.DeleteCustomChannelCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.DeleteCustomChannelCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_customChannelServiceMock.Verify(x => x.DeleteAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
 		Assert.HasCount(1, _sut.CustomChannels);
@@ -291,9 +291,9 @@ public sealed class CatalogViewModelTests
 	public async Task DeleteCustomChannelCommandShouldRemoveTheConfirmedChannel()
 	{
 		_notificationServiceMock.Setup(x => x.ShowQuestionAsync(It.IsAny<string>())).ReturnsAsync(NotificationResult.Yes);
-		await _sut.LoadAsync().ConfigureAwait(false);
+		await _sut.LoadAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
-		await _sut.DeleteCustomChannelCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.DeleteCustomChannelCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_customChannelServiceMock.Verify(x => x.DeleteAsync(1, It.IsAny<CancellationToken>()), Times.Once);
 		Assert.IsEmpty(_sut.CustomChannels);
@@ -305,7 +305,7 @@ public sealed class CatalogViewModelTests
 	{
 		_sut.NewCustomChannelCommand.Execute();
 
-		await _sut.DeleteCustomChannelCommand.ExecuteAsync().ConfigureAwait(false);
+		await _sut.DeleteCustomChannelCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_notificationServiceMock.Verify(x => x.ShowQuestionAsync(It.IsAny<string>()), Times.Never);
 		Assert.IsEmpty(_sut.CustomChannels);
@@ -326,4 +326,6 @@ public sealed class CatalogViewModelTests
 		Quality = "1080p",
 		LogoUrl = "https://logo.example/ard.png"
 	};
+
+	public TestContext TestContext { get; set; }
 }

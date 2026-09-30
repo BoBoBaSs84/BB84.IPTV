@@ -81,7 +81,7 @@ public sealed class LogoServiceTests
 	[TestMethod]
 	public async Task CacheLogosAsyncShouldDownloadOneLogoPerChannel()
 	{
-		int downloaded = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		int downloaded = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(2, downloaded);
 		_downloadServiceMock.Verify(x => x.DownloadAsync("https://logo.example/ard.png", null, It.IsAny<CancellationToken>()), Times.Once);
@@ -96,7 +96,7 @@ public sealed class LogoServiceTests
 			.ThrowsAsync(new IOException("There is not enough space on the disk."));
 
 		// The disk refused one channel, the other one is still cached and the run comes to an end.
-		int downloaded = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		int downloaded = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, downloaded);
 		Assert.IsNull(_logos[0].LocalPath);
@@ -113,7 +113,7 @@ public sealed class LogoServiceTests
 		_logoStoreServiceMock.Setup(x => x.SaveAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<CancellationToken>()))
 			.ThrowsAsync(new IOException("There is not enough space on the disk."));
 
-		int downloaded = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		int downloaded = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(0, downloaded);
 		Assert.HasCount(1, warnings, "One report for the whole run, not one per logo.");
@@ -125,7 +125,7 @@ public sealed class LogoServiceTests
 	[TestMethod]
 	public async Task CacheLogosAsyncShouldReportNothingWhenEveryLogoWorked()
 	{
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		_eventServiceMock.Verify(x => x.Publish(It.IsAny<WarningOccuredEvent>()), Times.Never);
 	}
@@ -154,7 +154,7 @@ public sealed class LogoServiceTests
 	[TestMethod]
 	public async Task CacheLogosAsyncShouldStoreWhatItDownloaded()
 	{
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		LogoEntity logo = _logos[0];
 
@@ -168,10 +168,10 @@ public sealed class LogoServiceTests
 	[TestMethod]
 	public async Task CacheLogosAsyncShouldSkipWhatIsAlreadyCached()
 	{
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		_downloadServiceMock.Invocations.Clear();
 
-		int downloaded = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		int downloaded = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(0, downloaded);
 		_downloadServiceMock.Verify(x => x.DownloadAsync(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CancellationToken>()), Times.Never);
@@ -180,11 +180,11 @@ public sealed class LogoServiceTests
 	[TestMethod]
 	public async Task CacheLogosAsyncShouldAskWithTheEntityTagWhenRefreshing()
 	{
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		_downloadServiceMock.Setup(x => x.DownloadAsync(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new LogoDownloadResponse { NotModified = true, ETag = "\"tag\"" });
 
-		int downloaded = await _sut.CacheLogosAsync(new LogoCacheRequest { RefreshCached = true }).ConfigureAwait(false);
+		int downloaded = await _sut.CacheLogosAsync(new LogoCacheRequest { RefreshCached = true }, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(0, downloaded);
 		_downloadServiceMock.Verify(x => x.DownloadAsync("https://logo.example/ard.png", "\"tag\"", It.IsAny<CancellationToken>()), Times.Once);
@@ -218,14 +218,14 @@ public sealed class LogoServiceTests
 			.Returns(async () =>
 			{
 				highWaterMark = Math.Max(highWaterMark, Interlocked.Increment(ref running));
-				await Task.Delay(20).ConfigureAwait(false);
+				await Task.Delay(20, TestContext.CancellationToken).ConfigureAwait(false);
 				_ = Interlocked.Decrement(ref running);
 
 				return new LogoDownloadResponse { Content = [1], ContentType = "image/png" };
 			});
 
 		int downloaded = await _sut
-			.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 4 })
+			.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 4 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(2, downloaded);
@@ -242,14 +242,14 @@ public sealed class LogoServiceTests
 			.Returns(async () =>
 			{
 				highWaterMark = Math.Max(highWaterMark, Interlocked.Increment(ref running));
-				await Task.Delay(20).ConfigureAwait(false);
+				await Task.Delay(20, TestContext.CancellationToken).ConfigureAwait(false);
 				_ = Interlocked.Decrement(ref running);
 
 				return new LogoDownloadResponse { Content = [1], ContentType = "image/png" };
 			});
 
 		_ = await _sut
-			.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 1 })
+			.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 1 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(1, highWaterMark);
@@ -271,7 +271,7 @@ public sealed class LogoServiceTests
 			.Callback((LogoCacheProgressEvent @event) => progress.Add(@event));
 
 		// One logo at a time, so every logo reports on its own.
-		_ = await _sut.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 1 }).ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 1 }, TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(2, progress);
 		Assert.AreEqual(50, progress[0].ProgressPercentage);
@@ -283,7 +283,7 @@ public sealed class LogoServiceTests
 	[TestMethod]
 	public async Task CacheLogosAsyncShouldReportOnceForABatchThatHoldsEverything()
 	{
-		_ = await _sut.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 4 }).ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 4 }, TestContext.CancellationToken).ConfigureAwait(false);
 
 		_eventServiceMock.Verify(x => x.Publish(It.IsAny<LogoCacheProgressEvent>()), Times.Once);
 	}
@@ -292,7 +292,7 @@ public sealed class LogoServiceTests
 	public async Task CacheLogosAsyncShouldSkipAChannelThatIsNotAsked()
 	{
 		int downloaded = await _sut
-			.CacheLogosAsync(new LogoCacheRequest { Channels = ["ZDF.de"] })
+			.CacheLogosAsync(new LogoCacheRequest { Channels = ["ZDF.de"] }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(1, downloaded);
@@ -302,9 +302,9 @@ public sealed class LogoServiceTests
 	[TestMethod]
 	public async Task GetStatusAsyncShouldCountOneLogoPerChannel()
 	{
-		LogoCacheStatusResponse before = await _sut.GetStatusAsync().ConfigureAwait(false);
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
-		LogoCacheStatusResponse after = await _sut.GetStatusAsync().ConfigureAwait(false);
+		LogoCacheStatusResponse before = await _sut.GetStatusAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+		LogoCacheStatusResponse after = await _sut.GetStatusAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(2, before.TotalCount);
 		Assert.AreEqual(0, before.CachedCount);
@@ -316,10 +316,10 @@ public sealed class LogoServiceTests
 	[TestMethod]
 	public async Task GetPathsByUrlAsyncShouldOnlyReportFilesThatAreThere()
 	{
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		_ = _filesOnDisk.TryRemove(_logos[2].LocalPath!, out _);
 
-		IReadOnlyDictionary<string, string> paths = await _sut.GetPathsByUrlAsync().ConfigureAwait(false);
+		IReadOnlyDictionary<string, string> paths = await _sut.GetPathsByUrlAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.HasCount(1, paths);
 		Assert.IsTrue(paths.ContainsKey("https://logo.example/ard.png"));
@@ -328,10 +328,10 @@ public sealed class LogoServiceTests
 	[TestMethod]
 	public async Task GetLocalPathAsyncShouldReturnTheCachedLogoOfTheChannel()
 	{
-		_ = await _sut.CacheLogosAsync().ConfigureAwait(false);
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
-		string? path = await _sut.GetLocalPathAsync("DasErste.de").ConfigureAwait(false);
-		string? unknown = await _sut.GetLocalPathAsync("Unknown.de").ConfigureAwait(false);
+		string? path = await _sut.GetLocalPathAsync("DasErste.de", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+		string? unknown = await _sut.GetLocalPathAsync("Unknown.de", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(Path.Combine("logos", "DasErste.de", "DasErste.de.png"), path);
 		Assert.IsNull(unknown);
@@ -366,4 +366,6 @@ public sealed class LogoServiceTests
 
 		return scopeFactoryMock.Object;
 	}
+
+	public TestContext TestContext { get; set; }
 }

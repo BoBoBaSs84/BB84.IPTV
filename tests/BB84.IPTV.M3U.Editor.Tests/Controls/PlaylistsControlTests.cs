@@ -25,7 +25,7 @@ public sealed class PlaylistsControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			PlaylistsViewModel viewModel = ViewModelFactory.CreatePlaylists();
-			viewModel.LoadPlaylistsAsync().GetAwaiter().GetResult();
+			viewModel.LoadPlaylistsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 
 			PlaylistsControl control = new() { DataContext = viewModel };
 
@@ -44,7 +44,7 @@ public sealed class PlaylistsControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			PlaylistsViewModel viewModel = ViewModelFactory.CreatePlaylists();
-			viewModel.LoadPlaylistsAsync().GetAwaiter().GetResult();
+			viewModel.LoadPlaylistsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 
 			PlaylistsControl control = new() { DataContext = viewModel };
 
@@ -72,7 +72,7 @@ public sealed class PlaylistsControlTests
 			notificationServiceMock.Setup(x => x.ShowQuestionAsync(It.IsAny<string>())).ReturnsAsync(NotificationResult.Cancel);
 
 			PlaylistsViewModel viewModel = ViewModelFactory.CreatePlaylists(notificationServiceMock: notificationServiceMock);
-			viewModel.LoadPlaylistsAsync().GetAwaiter().GetResult();
+			viewModel.LoadPlaylistsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 
 			PlaylistsControl control = new() { DataContext = viewModel };
 
@@ -100,7 +100,7 @@ public sealed class PlaylistsControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			PlaylistsViewModel viewModel = ViewModelFactory.CreatePlaylists();
-			viewModel.LoadPlaylistsAsync().GetAwaiter().GetResult();
+			viewModel.LoadPlaylistsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 
 			PlaylistsControl control = new() { DataContext = viewModel };
 
@@ -117,7 +117,7 @@ public sealed class PlaylistsControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			PlaylistsViewModel viewModel = ViewModelFactory.CreatePlaylists();
-			viewModel.LoadPlaylistsAsync().GetAwaiter().GetResult();
+			viewModel.LoadPlaylistsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 			viewModel.OpenAsync(viewModel.Playlists[0]).GetAwaiter().GetResult();
 
 			PlaylistControl editor = new() { DataContext = viewModel.Editor };
@@ -137,7 +137,7 @@ public sealed class PlaylistsControlTests
 		=> await UiTest.RunAsync(() =>
 		{
 			PlaylistsViewModel viewModel = ViewModelFactory.CreatePlaylists();
-			viewModel.LoadPlaylistsAsync().GetAwaiter().GetResult();
+			viewModel.LoadPlaylistsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
 			viewModel.OpenAsync(viewModel.Playlists[0]).GetAwaiter().GetResult();
 
 			PlaylistControl editor = new() { DataContext = viewModel.Editor };
@@ -155,4 +155,6 @@ public sealed class PlaylistsControlTests
 					.Any(block => block.Text == viewModel.Editor.ValidationMessage && block.IsEffectivelyVisible));
 			});
 		}).ConfigureAwait(false);
+
+	public TestContext TestContext { get; set; }
 }
