@@ -21,7 +21,8 @@ namespace BB84.IPTV.M3U.Editor.Application.Services;
 /// Attributes and directives without a dedicated model property are kept in <c>AdditionalAttributes</c>
 /// and <c>Directives</c>, so a playlist survives a deserialize/serialize round trip.
 /// </remarks>
-public sealed partial class SerializerService : ISerializerService
+/// <param name="providerService">The provider service used for file access.</param>
+public sealed partial class SerializerService(IProviderService providerService) : ISerializerService
 {
 	private const string ExtM3u = "#EXTM3U";
 	private const string ExtInf = "#EXTINF:";
@@ -31,7 +32,7 @@ public sealed partial class SerializerService : ISerializerService
 	/// <inheritdoc/>
 	public IPlaylist Deserialize(string filePath)
 	{
-		byte[] fileContent = File.ReadAllBytes(filePath);
+		byte[] fileContent = providerService.File.ReadAllBytes(filePath);
 		return Deserialize(fileContent);
 	}
 

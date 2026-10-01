@@ -24,6 +24,7 @@ namespace BB84.IPTV.M3U.Editor.Services;
 public sealed class LogoImageService
 {
 	private readonly ILogoService _logoService;
+	private readonly IProviderService _providerService;
 	private readonly ConcurrentDictionary<string, IImage?> _imagesByPath = new(StringComparer.OrdinalIgnoreCase);
 	private IReadOnlyDictionary<string, string> _pathsByUrl = new Dictionary<string, string>();
 
@@ -32,11 +33,13 @@ public sealed class LogoImageService
 	/// </summary>
 	/// <param name="logoService">The service that knows which logos are cached.</param>
 	/// <param name="eventService">The service that reports a changed logo cache.</param>
-	public LogoImageService(ILogoService logoService, IEventService eventService)
+	/// <param name="providerService">The provider service used for file access.</param>
+	public LogoImageService(ILogoService logoService, IEventService eventService, IProviderService providerService)
 	{
 		ArgumentNullException.ThrowIfNull(eventService);
 
 		_logoService = logoService;
+		_providerService = providerService;
 
 		eventService.Subscribe<LogoCacheChangedEvent>(OnLogoCacheChanged);
 	}
@@ -77,7 +80,7 @@ public sealed class LogoImageService
 
 		string? path = _pathsByUrl.TryGetValue(logo, out string? cached) ? cached : logo;
 
-		return !File.Exists(path)
+		return !_providerService.File.Exists(path)
 			? null
 			: _imagesByPath.GetOrAdd(path, Load);
 	}
@@ -85,11 +88,11 @@ public sealed class LogoImageService
 	/// <summary>
 	/// Loads a cached file, an SVG through the Skia based SVG image, everything else as a bitmap.
 	/// </summary>
-	private static IImage? Load(string path)
+	private IImage? Load(string path)
 	{
 		try
 		{
-			if (Path.GetExtension(path).Equals(".svg", StringComparison.OrdinalIgnoreCase))
+			if (string.Equals(_providerService.Path.GetExtension(path), ".svg", StringComparison.OrdinalIgnoreCase))
 				return new SvgImage { Source = SvgSource.Load(path) };
 
 			return new Bitmap(path);
