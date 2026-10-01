@@ -17,7 +17,7 @@ public sealed class SerializerServiceTests
 	private readonly SerializerService _sut;
 
 	public SerializerServiceTests()
-		=> _sut = new();
+		=> _sut = new(new ProviderService());
 
 	[TestMethod]
 	public void DeserializeShouldThrowInvalidDataExceptionWhenFileIsNotValidM3U()

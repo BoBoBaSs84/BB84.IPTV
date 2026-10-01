@@ -153,7 +153,7 @@ internal sealed class PlaylistService(
 
 		IPlaylist playlist = serializerService.Deserialize(fileLines);
 
-		return await CreateAsync(name ?? Path.GetFileNameWithoutExtension(filePath), playlist, cancellationToken)
+		return await CreateAsync(name ?? providerService.Path.GetFileNameWithoutExtension(filePath)!, playlist, cancellationToken)
 			.ConfigureAwait(false);
 	}
 
@@ -198,7 +198,7 @@ internal sealed class PlaylistService(
 		if (pathsByUrl.Count is 0)
 			return;
 
-		string? directory = Path.GetDirectoryName(Path.GetFullPath(filePath));
+		string? directory = providerService.Path.GetDirectoryName(providerService.Path.GetFullPath(filePath));
 
 		foreach (EntryModel entry in playlist.Entries)
 		{
@@ -206,7 +206,7 @@ internal sealed class PlaylistService(
 				continue;
 
 			entry.Metadata.TvgLogo = settings.Logo.ExportPathStyle is LogoPathStyle.Relative && directory is not null
-				? Path.GetRelativePath(directory, localPath)
+				? providerService.Path.GetRelativePath(directory, localPath)
 				: localPath;
 		}
 	}

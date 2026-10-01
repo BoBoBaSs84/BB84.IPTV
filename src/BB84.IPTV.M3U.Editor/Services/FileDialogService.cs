@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Avalonia.Platform.Storage;
 
+using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Extensions;
 
@@ -15,8 +16,9 @@ namespace BB84.IPTV.M3U.Editor.Services;
 /// <summary>
 /// The file dialog service class, backed by the Avalonia storage provider.
 /// </summary>
+/// <param name="providerService">The provider service used for file access.</param>
 [ExcludeFromCodeCoverage(Justification = "This class wraps Avalonia file pickers which require a UI thread.")]
-internal sealed class FileDialogService : IFileDialogService
+internal sealed class FileDialogService(IProviderService providerService) : IFileDialogService
 {
 	/// <inheritdoc/>
 	public async Task<string?> ShowOpenFileDialogAsync(string filter, string title)
@@ -77,9 +79,9 @@ internal sealed class FileDialogService : IFileDialogService
 	/// <param name="storageProvider">The storage provider that resolves the path.</param>
 	/// <param name="startPath">The path of the folder to open in.</param>
 	/// <returns>The folder to open in, or <see langword="null"/>.</returns>
-	private static async Task<IStorageFolder?> GetStartLocationAsync(IStorageProvider storageProvider, string? startPath)
+	private async Task<IStorageFolder?> GetStartLocationAsync(IStorageProvider storageProvider, string? startPath)
 	{
-		if (string.IsNullOrWhiteSpace(startPath) || !Directory.Exists(startPath))
+		if (string.IsNullOrWhiteSpace(startPath) || !providerService.Directory.Exists(startPath))
 			return null;
 
 		return await storageProvider

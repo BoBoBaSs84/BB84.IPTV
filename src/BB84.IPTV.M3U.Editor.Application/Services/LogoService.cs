@@ -291,7 +291,7 @@ internal sealed class LogoService(
 	/// Builds the file name of a logo: the feed or the channel, with the extension of the URL, of
 	/// the media type the server reported or of the format the catalog knows.
 	/// </summary>
-	private static string BuildFileName(LogoEntity logo, string? contentType)
+	private string BuildFileName(LogoEntity logo, string? contentType)
 	{
 		string name = string.IsNullOrWhiteSpace(logo.Feed) ? logo.Channel : $"{logo.Channel}@{logo.Feed}";
 		string extension = GetExtension(logo, contentType);
@@ -299,9 +299,9 @@ internal sealed class LogoService(
 		return $"{name}{extension}";
 	}
 
-	private static string GetExtension(LogoEntity logo, string? contentType)
+	private string GetExtension(LogoEntity logo, string? contentType)
 	{
-		string fromUrl = Path.GetExtension(new Uri(logo.Url, UriKind.RelativeOrAbsolute).IsAbsoluteUri
+		string? fromUrl = providerService.Path.GetExtension(new Uri(logo.Url, UriKind.RelativeOrAbsolute).IsAbsoluteUri
 			? new Uri(logo.Url).AbsolutePath
 			: logo.Url);
 
