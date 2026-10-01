@@ -63,13 +63,11 @@ public sealed partial class SerializerService : ISerializerService
 			}
 			else if (line.StartsWith(ExtGrp, StringComparison.OrdinalIgnoreCase))
 			{
-				if (currentEntry is not null)
-					currentEntry.Grouping = line[ExtGrp.Length..];
+				currentEntry?.Grouping = line[ExtGrp.Length..];
 			}
 			else if (line.StartsWith('#'))
 			{
-				if (currentEntry is not null)
-					currentEntry.Directives = currentEntry.Directives is null ? line : $"{currentEntry.Directives}\n{line}";
+				currentEntry?.Directives = currentEntry.Directives is null ? line : $"{currentEntry.Directives}\n{line}";
 			}
 			else
 			{

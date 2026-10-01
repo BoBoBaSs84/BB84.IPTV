@@ -265,8 +265,7 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 		get => _selectedCustomChannel;
 		set
 		{
-			if (_selectedCustomChannel is not null)
-				_selectedCustomChannel.PropertyChanged -= OnCustomChannelPropertyChanged;
+			_selectedCustomChannel?.PropertyChanged -= OnCustomChannelPropertyChanged;
 
 			if (SetProperty(ref _selectedCustomChannel, value) && value is not null)
 				value.PropertyChanged += OnCustomChannelPropertyChanged;

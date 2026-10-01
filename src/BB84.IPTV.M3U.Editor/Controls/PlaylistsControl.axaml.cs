@@ -34,13 +34,11 @@ public partial class PlaylistsControl : UserControl
 	{
 		base.OnDataContextChanged(e);
 
-		if (_viewModel is not null)
-			_viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+		_viewModel?.PropertyChanged -= OnViewModelPropertyChanged;
 
 		_viewModel = DataContext as PlaylistsViewModel;
 
-		if (_viewModel is not null)
-			_viewModel.PropertyChanged += OnViewModelPropertyChanged;
+		_viewModel?.PropertyChanged += OnViewModelPropertyChanged;
 
 		SynchronizeSelection();
 	}
