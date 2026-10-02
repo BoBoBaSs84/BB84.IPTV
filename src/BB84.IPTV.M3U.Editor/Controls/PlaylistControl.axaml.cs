@@ -5,8 +5,10 @@
 // LICENSE file in the root directory of this source tree.
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
+using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 
 namespace BB84.IPTV.M3U.Editor.Controls;
 
@@ -38,6 +40,23 @@ public partial class PlaylistControl : UserControl
 
 	private void MoveDownButton_Click(object? sender, RoutedEventArgs e)
 		=> ShowSelectedEntry(vm => vm.MoveSelectedEntry(1));
+
+	// The grid applies the sort after the event and drops the selection, so both are handled afterwards.
+	private void OnEntriesSorting(object? sender, DataGridColumnEventArgs e)
+	{
+		IEntry? selected = ViewModel?.SelectedEntry;
+		Dispatcher.UIThread.Post(() => UpdateSortState(selected));
+	}
+
+	// A sorted view no longer shows the playlist order, so reordering is off while it is sorted.
+	private void UpdateSortState(IEntry? selected)
+	{
+		if (ViewModel is not { } viewModel)
+			return;
+
+		viewModel.IsSorted = EntriesDataGrid.CollectionView?.SortDescriptions.Count > 0;
+		viewModel.SelectedEntry ??= selected;
+	}
 
 	private void ShowSelectedEntry(Action<PlaylistViewModel> action)
 	{
