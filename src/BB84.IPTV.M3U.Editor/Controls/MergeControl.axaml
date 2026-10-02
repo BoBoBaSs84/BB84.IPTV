@@ -124,7 +124,7 @@
 											 Margin="4" />
 						<DataGrid MaxHeight="220"
 											AutoGenerateColumns="False"
-											CanUserSortColumns="False"
+											CanUserSortColumns="True"
 											GridLinesVisibility="All"
 											ItemsSource="{Binding GroupMappings}">
 							<DataGrid.Columns>
@@ -181,7 +181,7 @@
 															Margin="4">
 				<DataGrid AutoGenerateColumns="False"
 									IsReadOnly="True"
-									CanUserSortColumns="False"
+									CanUserSortColumns="True"
 									SelectionMode="Single"
 									GridLinesVisibility="All"
 									ItemsSource="{Binding PreviewEntries}">

@@ -37,6 +37,7 @@ public sealed class PlaylistViewModel : ViewModelBase
 	private IEntry? _selectedEntry;
 	private bool _isDirty;
 	private bool _isBusy;
+	private bool _isSorted;
 	private bool _suppressDirtyTracking;
 
 	/// <summary>
@@ -133,6 +134,26 @@ public sealed class PlaylistViewModel : ViewModelBase
 	/// Gets the collection of playlist entries.
 	/// </summary>
 	public ObservableCollection<IEntry> Entries { get; }
+
+	/// <summary>
+	/// Gets or sets a value indicating whether the view shows the entries in a sort order of its own.
+	/// </summary>
+	/// <remarks>
+	/// Sorting a view does not change the order of <see cref="Entries"/>, which is the order the
+	/// playlist is written in, so the entries are not reordered while a sort is applied.
+	/// </remarks>
+	[NotifyChanged(nameof(CanReorderEntries))]
+	public bool IsSorted
+	{
+		get => _isSorted;
+		set => SetProperty(ref _isSorted, value);
+	}
+
+	/// <summary>
+	/// Indicates whether the entries can be reordered, which needs the row order to be the playlist order.
+	/// </summary>
+	public bool CanReorderEntries
+		=> !IsSorted;
 
 	/// <summary>
 	/// Indicates whether the playlist has unsaved changes.
@@ -395,12 +416,12 @@ public sealed class PlaylistViewModel : ViewModelBase
 	}
 
 	/// <summary>
-	/// Moves the selected entry within the list.
+	/// Moves the selected entry within the list, unless the view is sorted.
 	/// </summary>
 	/// <param name="direction">-1 for up, +1 for down.</param>
 	public void MoveSelectedEntry(int direction)
 	{
-		if (SelectedEntry is null || direction == 0)
+		if (SelectedEntry is null || direction == 0 || !CanReorderEntries)
 			return;
 
 		int index = Entries.IndexOf(SelectedEntry);

@@ -129,6 +129,25 @@ public sealed class PlaylistViewModelTests
 	}
 
 	[TestMethod]
+	public async Task MoveSelectedEntryShouldDoNothingWhileTheViewIsSorted()
+	{
+		await LoadAsync(new EntryModel("First", "http://first"), new EntryModel("Second", "http://second")).ConfigureAwait(false);
+		IEntry first = _sut.Entries[0];
+		_sut.IsSorted = true;
+
+		_sut.MoveSelectedEntry(1);
+
+		Assert.IsFalse(_sut.CanReorderEntries);
+		Assert.AreSame(first, _sut.Entries[0]);
+
+		_sut.IsSorted = false;
+		_sut.MoveSelectedEntry(1);
+
+		Assert.IsTrue(_sut.CanReorderEntries);
+		Assert.AreSame(first, _sut.Entries[1]);
+	}
+
+	[TestMethod]
 	public async Task SaveAsyncShouldStoreNameAndEntriesAndClearDirty()
 	{
 		await LoadAsync(new EntryModel("First", "http://first")).ConfigureAwait(false);

@@ -41,10 +41,12 @@
 							ToolTip.Tip="Remove Entry"
 							Click="RemoveButton_Click" />
 			<Button Content="Move Up"
-							ToolTip.Tip="Move Entry Up"
+							ToolTip.Tip="Move Entry Up, off while the grid is sorted"
+							IsEnabled="{Binding CanReorderEntries}"
 							Click="MoveUpButton_Click" />
 			<Button Content="Move Down"
-							ToolTip.Tip="Move Entry Down"
+							ToolTip.Tip="Move Entry Down, off while the grid is sorted"
+							IsEnabled="{Binding CanReorderEntries}"
 							Click="MoveDownButton_Click" />
 			<TextBlock Text="Unsaved changes"
 								 Foreground="#888"
@@ -76,12 +78,12 @@
 				<DataGrid x:Name="EntriesDataGrid"
 									AutoGenerateColumns="False"
 									IsReadOnly="False"
-									CanUserSortColumns="False"
+									CanUserSortColumns="True"
 									SelectionMode="Single"
 									GridLinesVisibility="All"
 									ItemsSource="{Binding Entries}"
-									SelectedItem="{Binding SelectedEntry}">
-					<!-- Sorting is off, the row order is the playlist order. -->
+									SelectedItem="{Binding SelectedEntry}"
+									Sorting="OnEntriesSorting">
 					<DataGrid.Columns>
 						<!-- Only cached logos are shown, a missing one stays empty. -->
 						<DataGridTemplateColumn Header="Logo"
@@ -216,50 +218,50 @@
 																	Header="Metadata"
 																	IsVisible="{Binding SelectedEntryVisible}">
 						<Grid Classes="Detail"
-									DataContext="{Binding SelectedEntry.Metadata}"
-									x:DataType="models:IMetadata"
+									DataContext="{Binding SelectedEntry}"
+									x:DataType="models:IEntry"
 									ColumnDefinitions="Auto,*"
 									RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
 							<TextBlock Grid.Row="0"
 												 Text="TVG ID:" />
 							<TextBox Grid.Row="0"
 											 Grid.Column="1"
-											 Text="{Binding TvgId}" />
+											 Text="{Binding Metadata.TvgId}" />
 
 							<TextBlock Grid.Row="1"
 												 Text="TVG Name:"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_Name}" />
 							<TextBox Grid.Row="1"
 											 Grid.Column="1"
-											 Text="{Binding TvgName}" />
+											 Text="{Binding Metadata.TvgName}" />
 
 							<TextBlock Grid.Row="2"
 												 Text="TVG Logo:"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_Logo}" />
 							<TextBox Grid.Row="2"
 											 Grid.Column="1"
-											 Text="{Binding TvgLogo}" />
+											 Text="{Binding Metadata.TvgLogo}" />
 
 							<TextBlock Grid.Row="3"
 												 Text="Group ID:"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_GroupId}" />
 							<TextBox Grid.Row="3"
 											 Grid.Column="1"
-											 Text="{Binding GroupId}" />
+											 Text="{Binding Metadata.GroupId}" />
 
 							<TextBlock Grid.Row="4"
 												 Text="Group Title:"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_GroupTitle}" />
 							<TextBox Grid.Row="4"
 											 Grid.Column="1"
-											 Text="{Binding GroupTitle}" />
+											 Text="{Binding Metadata.GroupTitle}" />
 
 							<CheckBox Grid.Row="5"
 												Grid.ColumnSpan="2"
 												Content="Censored"
 												Margin="4"
 												ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_Censored}"
-												IsChecked="{Binding Censored}" />
+												IsChecked="{Binding Metadata.Censored}" />
 						</Grid>
 					</HeaderedContentControl>
 				</StackPanel>
