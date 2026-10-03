@@ -40,9 +40,10 @@ internal static class ServiceCollectionExtensions
 	/// <returns>The same <see cref="IServiceCollection"/> instance so that multiple calls can be chained.</returns>
 	internal static IServiceCollection RegisterPathService(this IServiceCollection services)
 	{
-		ApplicationSettings settings = services
-			.BuildServiceProvider()
-			.GetRequiredService<ApplicationSettings>();
+		// The provider is only there to read the shared settings, so it is released right away.
+		using ServiceProvider provider = services.BuildServiceProvider();
+
+		ApplicationSettings settings = provider.GetRequiredService<ApplicationSettings>();
 
 		LoadSettingsFile(settings);
 
@@ -59,7 +60,9 @@ internal static class ServiceCollectionExtensions
 	/// <returns>The same <see cref="IServiceCollection"/> instance so that multiple calls can be chained.</returns>
 	internal static IServiceCollection RegisterDatabaseContext(this IServiceCollection services, IHostEnvironment environment)
 	{
-		ServiceProvider provider = services.BuildServiceProvider();
+		// The provider is only there to read the settings and the paths, so it is released right away.
+		using ServiceProvider provider = services.BuildServiceProvider();
+
 		DatabaseSettings settings = provider.GetRequiredService<ApplicationSettings>().Database;
 		IPathService pathService = provider.GetRequiredService<IPathService>();
 
@@ -98,7 +101,9 @@ internal static class ServiceCollectionExtensions
 	/// <returns>The same <see cref="IServiceCollection"/> instance so that multiple calls can be chained.</returns>
 	internal static IServiceCollection RegisterLoggerService(this IServiceCollection services, IHostEnvironment environment)
 	{
-		ServiceProvider provider = services.BuildServiceProvider();
+		// The provider is only there to read the settings and the paths, so it is released right away.
+		using ServiceProvider provider = services.BuildServiceProvider();
+
 		GeneralSettings settings = provider.GetRequiredService<ApplicationSettings>().General;
 		IPathService pathService = provider.GetRequiredService<IPathService>();
 
@@ -114,7 +119,10 @@ internal static class ServiceCollectionExtensions
 
 			if (environment.IsProduction())
 			{
-				builder.AddProvider(new FileLoggerProvider(pathService, environment.ApplicationName, settings));
+				// Registered by factory, not as an instance: a provider the container built is a
+				// provider the container closes again, together with the log file it writes.
+				string applicationName = environment.ApplicationName;
+				builder.Services.AddSingleton<ILoggerProvider>(_ => new FileLoggerProvider(pathService, applicationName, settings));
 
 				// The provider decides from the settings, so no rule may filter an entry before it.
 				builder.AddFilter<FileLoggerProvider>(null, LogLevel.Trace);

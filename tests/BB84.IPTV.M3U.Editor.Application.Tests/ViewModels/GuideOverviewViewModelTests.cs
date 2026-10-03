@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -16,7 +16,7 @@ using Moq;
 namespace BB84.IPTV.M3U.Editor.Application.Tests.ViewModels;
 
 [TestClass]
-public sealed class GuideOverviewViewModelTests
+public sealed class GuideOverviewViewModelTests : IDisposable
 {
 	private const int TotalGuides = 250;
 
@@ -49,6 +49,12 @@ public sealed class GuideOverviewViewModelTests
 
 		_sut = new GuideOverviewViewModel(_guideServiceMock.Object, _eventServiceMock.Object);
 	}
+
+	/// <summary>
+	/// The view model releases the source of a search that is still running when it is disposed.
+	/// </summary>
+	public void Dispose()
+		=> _sut.Dispose();
 
 	[TestMethod]
 	public async Task LoadAndReportAsyncShouldShowTheProvidersAndTheFirstPage()

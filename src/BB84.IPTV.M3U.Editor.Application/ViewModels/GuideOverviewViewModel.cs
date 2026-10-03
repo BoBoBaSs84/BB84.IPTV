@@ -28,7 +28,7 @@ namespace BB84.IPTV.M3U.Editor.Application.ViewModels;
 /// <remarks>
 /// The screen only reads. The mapping of a playlist stays with <see cref="GuideViewModel"/>.
 /// </remarks>
-public sealed class GuideOverviewViewModel : ViewModelBase, INavigateable
+public sealed class GuideOverviewViewModel : ViewModelBase, INavigateable, IDisposable
 {
 	/// <summary>
 	/// The number of guides that are shown at once.
@@ -342,7 +342,21 @@ public sealed class GuideOverviewViewModel : ViewModelBase, INavigateable
 		finally
 		{
 			IsBusy = false;
+
+			// Nothing is cancelled any more, unless a newer search already took the field over.
+			if (Interlocked.CompareExchange(ref _loadTokenSource, null, tokenSource) == tokenSource)
+				tokenSource.Dispose();
 		}
+	}
+
+	/// <summary>
+	/// Releases what a search that is still running needs.
+	/// </summary>
+	public void Dispose()
+	{
+		CancellationTokenSource? tokenSource = Interlocked.Exchange(ref _loadTokenSource, null);
+
+		tokenSource?.Dispose();
 	}
 
 	/// <summary>
