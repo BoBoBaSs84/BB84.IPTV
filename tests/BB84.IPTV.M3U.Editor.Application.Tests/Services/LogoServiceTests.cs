@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -39,6 +39,11 @@ public sealed class LogoServiceTests
 	/// </summary>
 	private readonly ConcurrentDictionary<string, byte> _filesOnDisk = new(StringComparer.OrdinalIgnoreCase);
 	private readonly List<LogoEntity> _logos = [];
+
+	/// <summary>
+	/// The queries the service ran, so a test can tell what it read and how it read it.
+	/// </summary>
+	private readonly List<Query<LogoEntity>> _queries = [];
 	private readonly LogoService _sut;
 
 	public LogoServiceTests()
@@ -51,9 +56,15 @@ public sealed class LogoServiceTests
 		]);
 
 		_logoRepositoryMock.Setup(x => x.GetListAsync(It.IsAny<Query<LogoEntity>>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((Query<LogoEntity> query, CancellationToken token) => query.Where is null
-				? _logos
-				: [.. _logos.Where(query.Where.Compile())]);
+			.ReturnsAsync((Query<LogoEntity> query, CancellationToken token) =>
+			{
+				lock (_queries)
+					_queries.Add(query);
+
+				return query.Where is null
+					? [.. _logos]
+					: [.. _logos.Where(query.Where.Compile())];
+			});
 
 		_logoStoreServiceMock.Setup(x => x.Exists(It.IsAny<string>()))
 			.Returns((string? path) => path is not null && _filesOnDisk.ContainsKey(path));
@@ -262,6 +273,63 @@ public sealed class LogoServiceTests
 	[DataRow(99, LogoCacheRequest.MaxParallelLimit)]
 	public void MaxParallelDownloadsShouldStayWithinTheAllowedRange(int value, int expected)
 		=> Assert.AreEqual(expected, new LogoCacheRequest { MaxParallelDownloads = value }.MaxParallelDownloads);
+
+	[TestMethod]
+	public async Task CacheLogosAsyncShouldNeverReadTheWholeTableTracked()
+	{
+		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+
+		// The selection reads every row, but untracked: a tracked read is always one batch.
+		Assert.IsEmpty(
+			_queries.Where(query => query.TrackChanges && query.Where is null),
+			"The whole table was read tracked, which holds every row until the run is through.");
+
+		Assert.IsNotEmpty(_queries.Where(query => query.TrackChanges && query.Where is not null));
+	}
+
+	[TestMethod]
+	public async Task CacheLogosAsyncShouldLoadOnlyTheRowsOfTheBatchForWriting()
+	{
+		// One logo at a time, so every batch writes one row.
+		_ = await _sut.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 1 }, TestContext.CancellationToken).ConfigureAwait(false);
+
+		List<Query<LogoEntity>> tracked = [.. _queries.Where(query => query.TrackChanges)];
+
+		Assert.HasCount(2, tracked, "One tracked read per batch, and one batch per logo.");
+
+		foreach (Query<LogoEntity> query in tracked)
+			Assert.HasCount(1, _logos.Where(query.Where!.Compile()));
+	}
+
+	[TestMethod]
+	public async Task CacheLogosAsyncShouldNotReadARowWhenNothingCameBack()
+	{
+		_downloadServiceMock.Setup(x => x.DownloadAsync(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((LogoDownloadResponse?)null);
+
+		int downloaded = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+
+		Assert.AreEqual(0, downloaded);
+		Assert.IsEmpty(_queries.Where(query => query.TrackChanges), "Nothing was downloaded, so no row has to be written.");
+	}
+
+	[TestMethod]
+	public async Task CacheLogosAsyncShouldSkipALogoWhoseRowIsGone()
+	{
+		_logoStoreServiceMock.Setup(x => x.SaveAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((string channel, string fileName, byte[] content, CancellationToken token) =>
+			{
+				// The catalog was synchronized while the run was going on and dropped the row.
+				lock (_logos)
+					_ = _logos.RemoveAll(logo => logo.Channel == channel);
+
+				return Path.Combine("logos", channel, fileName);
+			});
+
+		int downloaded = await _sut.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = 1 }, TestContext.CancellationToken).ConfigureAwait(false);
+
+		Assert.AreEqual(0, downloaded, "A row that is gone is left alone instead of ending the run.");
+	}
 
 	[TestMethod]
 	public async Task CacheLogosAsyncShouldReportTheProgressPerBatch()
