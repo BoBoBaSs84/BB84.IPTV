@@ -3,10 +3,7 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
-using System.Reflection;
 
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -16,7 +13,6 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
@@ -76,6 +72,10 @@ public partial class App : AvaloniaApp
 
 		await _host!.StartAsync().ConfigureAwait(true);
 
+		// The settings file is already read while the services are registered, so the language is
+		// applied before the first message can be shown in the wrong one.
+		ApplyLanguage();
+
 		// Resolved before the settings are loaded, so that load errors are shown to the user.
 		_ = _host.Services.GetRequiredService<INotificationService>();
 
@@ -83,7 +83,8 @@ public partial class App : AvaloniaApp
 			.LoadAsync()
 			.ConfigureAwait(true);
 
-		ApplyLanguage(_host.Services.GetRequiredService<ApplicationSettings>().General.Language);
+		// The file may name another language than the one the registration could read.
+		ApplyLanguage();
 
 		await MigrateDatabaseAsync().ConfigureAwait(true);
 		await LoadLogoCacheAsync().ConfigureAwait(true);
@@ -199,17 +200,12 @@ public partial class App : AvaloniaApp
 		desktop.Shutdown();
 	}
 
-	private static void ApplyLanguage(Language language)
-	{
-		string cultureName = typeof(Language)
-			.GetField(language.ToString())?
-			.GetCustomAttribute<DescriptionAttribute>()?
-			.Description ?? "en-US";
-
-		CultureInfo culture = CultureInfo.GetCultureInfo(cultureName);
-		CultureInfo.CurrentUICulture = culture;
-		CultureInfo.DefaultThreadCurrentUICulture = culture;
-	}
+	/// <summary>
+	/// Applies the language the settings name to the culture the localized resources are read with.
+	/// </summary>
+	private void ApplyLanguage()
+		=> _host!.Services.GetRequiredService<ILanguageService>()
+			.ApplyLanguage(_host.Services.GetRequiredService<ApplicationSettings>().General.Language);
 
 	private static IHostBuilder CreateHostBuilder(string[] args)
 	{

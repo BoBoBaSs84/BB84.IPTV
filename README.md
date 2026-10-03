@@ -90,7 +90,7 @@ The application is a cross-platform AvaloniaUI app and runs on Windows, Linux an
 
 - Data paths: the directory of the database, of the cached logos and of the log files are configurable, with a folder dialog per path. An empty or not fully qualified value falls back to the per-user data directory, and a changed path asks for a restart. The settings file itself always stays in the default directory, because it is what tells the application where everything else lives.
 - Logo policy: whether an export writes the cached file instead of the URL, whether that path is absolute or relative, and how many logos are downloaded at once.
-- General: interface language, logging and log level, auto save and its interval. The user interface is localized in English, German, Spanish, French and Italian.
+- General: interface language, logging and log level, auto save and its interval. The user interface is localized in English, German, Spanish, French and Italian. A changed language is applied after a restart, which the application asks for once the settings are saved.
 - Errors, warnings and information are reported through one notification path, which shows the message and writes the log entry.
 
 ## Data sources

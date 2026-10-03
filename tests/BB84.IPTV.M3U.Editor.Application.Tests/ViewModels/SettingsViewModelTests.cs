@@ -9,6 +9,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.Settings;
@@ -24,6 +25,7 @@ public sealed class SettingsViewModelTests
 	private readonly Mock<ISettingsService> _settingsServiceMock = new();
 	private readonly Mock<IEventService> _eventServiceMock = new();
 	private readonly Mock<IFileDialogService> _fileDialogServiceMock = new();
+	private readonly Mock<ILanguageService> _languageServiceMock = new();
 	private readonly Mock<IPathService> _pathServiceMock = new();
 	private readonly ApplicationSettings _applicationSettings = new();
 	private readonly SettingsViewModel _sut;
@@ -39,6 +41,7 @@ public sealed class SettingsViewModelTests
 			_settingsServiceMock.Object,
 			_eventServiceMock.Object,
 			_fileDialogServiceMock.Object,
+			_languageServiceMock.Object,
 			_pathServiceMock.Object,
 			_applicationSettings);
 	}
@@ -90,6 +93,53 @@ public sealed class SettingsViewModelTests
 		await _sut.SaveCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_eventServiceMock.Verify(x => x.Publish(It.IsAny<DataPathsChangedEvent>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task SaveShouldAskForARestartWhenTheLanguageWasChanged()
+	{
+		_languageServiceMock.Setup(x => x.HasPendingChanges()).Returns(true);
+
+		await _sut.SaveCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+
+		_eventServiceMock.Verify(x => x.Publish(It.IsAny<LanguageChangedEvent>()), Times.Once);
+	}
+
+	[TestMethod]
+	public async Task SaveShouldReportTheCultureOfTheNewLanguage()
+	{
+		LanguageChangedEvent? reported = null;
+		_languageServiceMock.Setup(x => x.HasPendingChanges()).Returns(true);
+		_eventServiceMock.Setup(x => x.Publish(It.IsAny<LanguageChangedEvent>()))
+			.Callback((LanguageChangedEvent @event) => reported = @event);
+		_sut.General.Language = Language.German;
+
+		await _sut.SaveCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+
+		Assert.IsNotNull(reported);
+		Assert.AreEqual("de-DE", reported.Language);
+	}
+
+	[TestMethod]
+	public async Task SaveShouldNotAskForARestartWhenTheLanguageStayed()
+	{
+		_languageServiceMock.Setup(x => x.HasPendingChanges()).Returns(false);
+
+		await _sut.SaveCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+
+		_eventServiceMock.Verify(x => x.Publish(It.IsAny<LanguageChangedEvent>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task SaveShouldNotAskForARestartWhenTheFileCouldNotBeWritten()
+	{
+		_languageServiceMock.Setup(x => x.HasPendingChanges()).Returns(true);
+		_sut.Paths.DataDirectory = "relative/directory";
+		_pathServiceMock.Setup(x => x.IsValidDirectory("relative/directory")).Returns(false);
+
+		await _sut.SaveCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+
+		_eventServiceMock.Verify(x => x.Publish(It.IsAny<LanguageChangedEvent>()), Times.Never);
 	}
 
 	[TestMethod]
