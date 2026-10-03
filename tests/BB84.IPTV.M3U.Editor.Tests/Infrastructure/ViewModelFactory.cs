@@ -132,6 +132,35 @@ internal static class ViewModelFactory
 	}
 
 	/// <summary>
+	/// Creates the guide overview screen with three providers and one page of guides.
+	/// </summary>
+	/// <param name="guideServiceMock">The guide service the screen searches with.</param>
+	public static GuideOverviewViewModel CreateGuideOverview(Mock<IGuideService>? guideServiceMock = null)
+	{
+		guideServiceMock ??= new Mock<IGuideService>();
+
+		guideServiceMock.Setup(x => x.GetSitesAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(() =>
+			[
+				new GuideSiteResponse { Site = "hoerzu.de", ChannelCount = 2, GuideCount = 4 },
+				new GuideSiteResponse { Site = "magentatv.de", ChannelCount = 1, GuideCount = 1 },
+				new GuideSiteResponse { Site = "tvtoday.de", ChannelCount = 1, GuideCount = 1 }
+			]);
+
+		guideServiceMock.Setup(x => x.SearchGuidesAsync(It.IsAny<GuideSearchRequest>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((GuideSearchRequest request, CancellationToken _) => new PagedList<GuideOptionResponse>(
+				[
+					new GuideOptionResponse { Channel = "DasErste.de", ChannelName = "Das Erste", Country = "DE", Site = "hoerzu.de", SiteId = "ard", SiteName = "ARD", Lang = "de" },
+					new GuideOptionResponse { Channel = "DasErste.de", ChannelName = "Das Erste", Country = "DE", Feed = "HD", Site = "magentatv.de", SiteId = "ard-hd", SiteName = "Das Erste HD", Lang = "de" }
+				],
+				2,
+				request.PageNumber,
+				request.PageSize));
+
+		return new GuideOverviewViewModel(guideServiceMock.Object, new Mock<IEventService>().Object);
+	}
+
+	/// <summary>
 	/// Creates the guide screen with two playlists and one mapped and one unmapped entry.
 	/// </summary>
 	public static GuideViewModel CreateGuide()

@@ -220,6 +220,12 @@
   <data name="GuideSitePageStatus" xml:space="preserve">
     <value>Página {0} de {1}, {2} guías.</value>
   </data>
+  <data name="GuideOverviewProvidersStatus" xml:space="preserve">
+    <value>{0} de {1} proveedores.</value>
+  </data>
+  <data name="GuideOverviewNoResult" xml:space="preserve">
+    <value>Ninguna guía coincide con la búsqueda.</value>
+  </data>
   <data name="GuideSitesStatus" xml:space="preserve">
     <value>{0} sitios conocidos.</value>
   </data>

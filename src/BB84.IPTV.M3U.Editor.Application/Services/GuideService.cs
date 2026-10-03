@@ -179,6 +179,28 @@ internal sealed class GuideService(
 			.OrderBy(site => site.Site, StringComparer.OrdinalIgnoreCase)];
 	}
 
+	public async Task<IPagedList<GuideOptionResponse>> SearchGuidesAsync(GuideSearchRequest request, CancellationToken cancellationToken = default)
+	{
+		ArgumentNullException.ThrowIfNull(request);
+
+		using IServiceScope scope = serviceScopeFactory.CreateScope();
+		IRepositoryService repositoryService = GetRepositoryService(scope);
+
+		// The repository joins the catalog channels and orders in the database, see IGuideRepository.
+		(IReadOnlyList<GuideOptionResponse> guides, int total) = await repositoryService.Guides
+			.SearchAsync(
+				request.SearchText.TrimToNull(),
+				request.Site.TrimToNull(),
+				request.SortBy,
+				request.Descending,
+				request.Skip,
+				request.PageSize,
+				cancellationToken)
+			.ConfigureAwait(false);
+
+		return new PagedList<GuideOptionResponse>(guides, total, request.PageNumber, request.PageSize);
+	}
+
 	public async Task<IPagedList<GuideOptionResponse>> SearchSiteChannelsAsync(GuideSiteSearchRequest request, CancellationToken cancellationToken = default)
 	{
 		ArgumentNullException.ThrowIfNull(request);

@@ -68,6 +68,13 @@ The application is a cross-platform AvaloniaUI app and runs on Windows, Linux an
 
 - Every playlist entry is mapped to `site`, `site_id`, `lang` and `xmltv_id` (the entry's `tvg-id`). The mapping is prefilled from the imported guide data, every value can be overridden, and custom channels are mapped by hand.
 
+### Guide overview
+
+- A read-only screen next to the mapping, for the question which providers carry a guide for a channel: one row per guide, with channel, channel name, feed, provider, site id, site name, language and country.
+- One search term matches the channel name, the channel id, the provider, the site id, the site name and the language; the form `channel@feed`, as a `channels.xml` holds it, finds that one guide.
+- The provider list on the left shows what each provider covers and can be filtered by name; picking one limits the result to it.
+- Every column sorts in the database, so the order covers the whole result and not only the page that is shown, and the result is paged.
+
 ### Database
 
 - The schema is managed by EF Core migrations, applied while the application starts.

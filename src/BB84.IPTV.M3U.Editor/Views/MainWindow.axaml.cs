@@ -88,6 +88,9 @@ public partial class MainWindow : Window
 	private void GuideMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<GuideViewModel>();
 
+	private void GuideOverviewMenuItem_Click(object? sender, RoutedEventArgs e)
+		=> _navigationService.NavigateTo<GuideOverviewViewModel>();
+
 	private void MergeMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<MergeViewModel>();
 

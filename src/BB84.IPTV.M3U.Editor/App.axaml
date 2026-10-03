@@ -47,6 +47,9 @@
 		<DataTemplate DataType="vm:DatabaseViewModel">
 			<c:DatabaseControl />
 		</DataTemplate>
+		<DataTemplate DataType="vm:GuideOverviewViewModel">
+			<c:GuideOverviewControl />
+		</DataTemplate>
 		<DataTemplate DataType="vm:GuideViewModel">
 			<c:GuideControl />
 		</DataTemplate>

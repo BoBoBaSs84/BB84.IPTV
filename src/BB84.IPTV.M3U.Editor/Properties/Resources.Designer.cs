@@ -547,6 +547,168 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guide _Overview.
+        /// </summary>
+        public static string MainWindow_GuideOverviewMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.GuideOverviewMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Providers.
+        /// </summary>
+        public static string GuideOverviewControl_ProvidersGroupBox_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ProvidersGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter providers.
+        /// </summary>
+        public static string GuideOverviewControl_ProviderSearchTextBox_Placeholder {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ProviderSearchTextBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string GuideOverviewControl_RefreshProvidersButton_Content {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.RefreshProvidersButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All providers.
+        /// </summary>
+        public static string GuideOverviewControl_ClearProviderButton_Content {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ClearProviderButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guides.
+        /// </summary>
+        public static string GuideOverviewControl_ResultGroupBox_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ResultGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel, provider, identifier or language.
+        /// </summary>
+        public static string GuideOverviewControl_SearchTextBox_Placeholder {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.SearchTextBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string GuideOverviewControl_SearchButton_Content {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.SearchButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string GuideOverviewControl_PreviousPageButton_Content {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.PreviousPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string GuideOverviewControl_NextPageButton_Content {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.NextPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel.
+        /// </summary>
+        public static string GuideOverviewControl_ChannelColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ChannelColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string GuideOverviewControl_ChannelNameColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ChannelNameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed.
+        /// </summary>
+        public static string GuideOverviewControl_FeedColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.FeedColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provider.
+        /// </summary>
+        public static string GuideOverviewControl_ProviderColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ProviderColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site ID.
+        /// </summary>
+        public static string GuideOverviewControl_SiteIdColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.SiteIdColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site name.
+        /// </summary>
+        public static string GuideOverviewControl_SiteNameColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.SiteNameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string GuideOverviewControl_LangColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.LangColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string GuideOverviewControl_CountryColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.CountryColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Guide Export.
         /// </summary>
         public static string MainWindow_GuideMenuItem_Header {

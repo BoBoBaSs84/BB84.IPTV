@@ -219,6 +219,12 @@
   <data name="GuideSitePageStatus" xml:space="preserve">
     <value>Page {0} of {1}, {2} guides.</value>
   </data>
+  <data name="GuideOverviewProvidersStatus" xml:space="preserve">
+    <value>{0} of {1} providers.</value>
+  </data>
+  <data name="GuideOverviewNoResult" xml:space="preserve">
+    <value>No guide matches the search.</value>
+  </data>
   <data name="GuideSitesStatus" xml:space="preserve">
     <value>{0} sites known.</value>
   </data>
