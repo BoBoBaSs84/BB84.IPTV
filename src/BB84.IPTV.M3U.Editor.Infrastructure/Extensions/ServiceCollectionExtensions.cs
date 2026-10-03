@@ -159,6 +159,7 @@ internal static class ServiceCollectionExtensions
 	internal static IServiceCollection RegisterServices(this IServiceCollection services)
 	{
 		services.AddSingleton<IFileService, FileService>();
+		services.AddSingleton<ILanguageService, LanguageService>();
 		services.AddSingleton<ILogoStoreService, LogoStoreService>();
 		services.AddSingleton<ISettingsService, SettingsService>();
 		services.AddSingleton<IDownloadService, DownloadService>();

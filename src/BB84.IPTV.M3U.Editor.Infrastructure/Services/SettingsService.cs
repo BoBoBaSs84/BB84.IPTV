@@ -37,8 +37,6 @@ internal sealed class SettingsService : ISettingsService
 		_pathService = pathService;
 		_settingsFilePath = pathService.SettingsFilePath;
 		_applicationSettings = applicationSettings;
-
-		RegisterSettingsChangeHandler();
 	}
 
 	public async Task LoadAsync(CancellationToken cancellationToken = default)
@@ -88,14 +86,5 @@ internal sealed class SettingsService : ISettingsService
 		{
 			_eventService.Publish(new ErrorOccuredEvent(Resources.SettingsSaveFailed, ex));
 		}
-	}
-
-	private void RegisterSettingsChangeHandler()
-	{
-		_applicationSettings.General.PropertyChanged += (sender, args) =>
-		{
-			if (args.PropertyName is nameof(GeneralSettings.Language))
-				_eventService.Publish(new LanguageChangedEvent(args.PropertyName));
-		};
 	}
 }

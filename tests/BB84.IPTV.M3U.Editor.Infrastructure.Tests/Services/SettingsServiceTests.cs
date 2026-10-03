@@ -41,17 +41,11 @@ public sealed class SettingsServiceTests
 	}
 
 	[TestMethod]
-	public void ChangingLanguageShouldPublishLanguageChangedEvent()
+	public void ChangingLanguageShouldNotPublishLanguageChangedEvent()
 	{
+		// A restart that comes before the save would read the old language from the file again,
+		// so the view model reports the change once the file holds it.
 		_applicationSettings.General.Language = Language.German;
-
-		_eventServiceMock.Verify(x => x.Publish(It.IsAny<LanguageChangedEvent>()), Times.Once);
-	}
-
-	[TestMethod]
-	public void ChangingOtherSettingsShouldNotPublishLanguageChangedEvent()
-	{
-		_applicationSettings.General.AutoSave = false;
 
 		_eventServiceMock.Verify(x => x.Publish(It.IsAny<LanguageChangedEvent>()), Times.Never);
 	}

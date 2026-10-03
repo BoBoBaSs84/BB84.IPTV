@@ -8,6 +8,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Properties;
@@ -27,6 +28,7 @@ public sealed class SettingsViewModel : ViewModelBase, INavigateable
 	private readonly ISettingsService _settingsService;
 	private readonly IEventService _eventService;
 	private readonly IFileDialogService _fileDialogService;
+	private readonly ILanguageService _languageService;
 	private readonly IPathService _pathService;
 	private readonly ApplicationSettings _applicationSettings;
 	private bool _canLoadSettings = true;
@@ -43,13 +45,15 @@ public sealed class SettingsViewModel : ViewModelBase, INavigateable
 	/// <param name="settingsService">The service responsible for managing application settings.</param>
 	/// <param name="eventService">The service responsible for managing application events.</param>
 	/// <param name="fileDialogService">The service that shows the folder dialog of the data paths.</param>
+	/// <param name="languageService">The service that provides the language in use.</param>
 	/// <param name="pathService">The service that provides the file system locations in use.</param>
 	/// <param name="applicationSettings">The current application settings.</param>
-	public SettingsViewModel(ISettingsService settingsService, IEventService eventService, IFileDialogService fileDialogService, IPathService pathService, ApplicationSettings applicationSettings)
+	public SettingsViewModel(ISettingsService settingsService, IEventService eventService, IFileDialogService fileDialogService, ILanguageService languageService, IPathService pathService, ApplicationSettings applicationSettings)
 	{
 		_settingsService = settingsService;
 		_eventService = eventService;
 		_fileDialogService = fileDialogService;
+		_languageService = languageService;
 		_pathService = pathService;
 		_applicationSettings = applicationSettings;
 
@@ -183,6 +187,11 @@ public sealed class SettingsViewModel : ViewModelBase, INavigateable
 			await _settingsService
 				.SaveAsync(_applicationSettings)
 				.ConfigureAwait(false);
+
+			// Reported after the save, so the restart the user is offered finds the new value in
+			// the settings file. A restart that comes first would read the old one again.
+			if (_languageService.HasPendingChanges())
+				_eventService.Publish(new LanguageChangedEvent(General.Language.GetCultureName()));
 
 			if (_pathService.HasPendingChanges())
 				_eventService.Publish(new DataPathsChangedEvent());

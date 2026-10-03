@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -219,6 +219,7 @@ internal static class ViewModelFactory
 			new Mock<ISettingsService>().Object,
 			new Mock<IEventService>().Object,
 			new Mock<IFileDialogService>().Object,
+			new Mock<ILanguageService>().Object,
 			pathServiceMock.Object,
 			new ApplicationSettings());
 	}
