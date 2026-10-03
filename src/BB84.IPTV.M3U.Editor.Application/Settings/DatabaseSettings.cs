@@ -16,6 +16,8 @@ public sealed class DatabaseSettings : SettingsBase
 {
 	private int _commandTimeout = 30;
 	private int _maxBatchSize = 500;
+	private bool _autoUpdate;
+	private int _updateIntervalDays = 7;
 
 	/// <summary>
 	/// Gets or sets the command timeout for database operations, which specifies the maximum amount of time (in seconds)
@@ -30,4 +32,18 @@ public sealed class DatabaseSettings : SettingsBase
 	/// </summary>
 	[GenerateIniFileValue]
 	public int MaxBatchSize { get => _maxBatchSize; set => SetProperty(ref _maxBatchSize, value); }
+
+	/// <summary>
+	/// Gets or sets whether a catalog that is older than <see cref="UpdateIntervalDays"/> is updated
+	/// at the start of the application without asking.
+	/// </summary>
+	[GenerateIniFileValue]
+	public bool AutoUpdate { get => _autoUpdate; set => SetProperty(ref _autoUpdate, value); }
+
+	/// <summary>
+	/// Gets or sets after how many days the application offers to update the catalog, counted from
+	/// the last time it was read. A value of zero switches the check off.
+	/// </summary>
+	[GenerateIniFileValue]
+	public int UpdateIntervalDays { get => _updateIntervalDays; set => SetProperty(ref _updateIntervalDays, value); }
 }

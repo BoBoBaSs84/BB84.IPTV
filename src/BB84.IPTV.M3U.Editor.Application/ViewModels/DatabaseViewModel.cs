@@ -3,6 +3,8 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using System.Collections.ObjectModel;
+
 using BB84.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
@@ -37,14 +39,14 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	private bool _databaseChecking;
 	private bool _databaseCreated;
 	private bool _databaseCreating;
-	private bool _databaseImported;
-	private bool _databaseImporting;
-	private int _importProgress;
-	private int _importProgressMaximum = 100;
-	private string _importStatusMessage = string.Empty;
+	private bool _databaseSynchronized;
+	private bool _databaseSynchronizing;
+	private int _syncProgress;
+	private int _syncProgressMaximum = 100;
+	private string _syncStatusMessage = string.Empty;
 	private AsyncActionCommand? _checkDatabaseCommand;
 	private AsyncActionCommand? _createDatabaseCommand;
-	private AsyncActionCommand? _importDatabaseCommand;
+	private AsyncActionCommand? _synchronizeDatabaseCommand;
 	private AsyncActionCommand? _cacheLogosCommand;
 	private ActionCommand? _cancelLogoCacheCommand;
 	private AsyncActionCommand? _clearLogoCacheCommand;
@@ -63,12 +65,17 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 		_logoService = logoService;
 		_settings = settings;
 
-		_eventService.Subscribe<DatabaseImportProgressEvent>(OnDatabaseImportProgress);
+		_eventService.Subscribe<CatalogSyncProgressEvent>(OnCatalogSyncProgress);
 		_eventService.Subscribe<LogoCacheProgressEvent>(OnLogoCacheProgress);
 
 		// The commands depend on the database state, the UI only re-queries them when told so.
 		PropertyChanged += (s, e) => RaiseCommandStatesChanged();
 	}
+
+	/// <summary>
+	/// Gets what is known about the synchronization of each list of the catalog.
+	/// </summary>
+	public ObservableCollection<CatalogStatusItemViewModel> CatalogStatuses { get; } = [];
 
 	/// <summary>
 	/// Indicates whether the database has been checked or not.
@@ -107,48 +114,48 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	}
 
 	/// <summary>
-	/// Indicates whether the database has been imported or not.
+	/// Indicates whether the catalog was synchronized in this session.
 	/// </summary>
-	public bool DatabaseImported
+	public bool DatabaseSynchronized
 	{
-		get => _databaseImported;
-		private set => SetProperty(ref _databaseImported, value);
+		get => _databaseSynchronized;
+		private set => SetProperty(ref _databaseSynchronized, value);
 	}
 
 	/// <summary>
-	/// Indicates whether the database is being imported or not.
+	/// Indicates whether the catalog is being synchronized.
 	/// </summary>
-	public bool DatabaseImporting
+	public bool DatabaseSynchronizing
 	{
-		get => _databaseImporting;
-		private set => SetProperty(ref _databaseImporting, value);
+		get => _databaseSynchronizing;
+		private set => SetProperty(ref _databaseSynchronizing, value);
 	}
 
 	/// <summary>
-	/// Gets the current import progress value (0-100).
+	/// Gets the current synchronization progress value (0-100).
 	/// </summary>
-	public int ImportProgress
+	public int SyncProgress
 	{
-		get => _importProgress;
-		private set => SetProperty(ref _importProgress, value);
+		get => _syncProgress;
+		private set => SetProperty(ref _syncProgress, value);
 	}
 
 	/// <summary>
-	/// Gets the maximum value for the import progress (typically 100).
+	/// Gets the maximum value for the synchronization progress (typically 100).
 	/// </summary>
-	public int ImportProgressMaximum
+	public int SyncProgressMaximum
 	{
-		get => _importProgressMaximum;
-		private set => SetProperty(ref _importProgressMaximum, value);
+		get => _syncProgressMaximum;
+		private set => SetProperty(ref _syncProgressMaximum, value);
 	}
 
 	/// <summary>
-	/// Gets the current import status message indicating which repository is being imported.
+	/// Gets what the synchronization is doing, e.g. which list is read.
 	/// </summary>
-	public string ImportStatusMessage
+	public string SyncStatusMessage
 	{
-		get => _importStatusMessage;
-		private set => SetProperty(ref _importStatusMessage, value);
+		get => _syncStatusMessage;
+		private set => SetProperty(ref _syncStatusMessage, value);
 	}
 
 	/// <summary>
@@ -164,10 +171,10 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 		=> _createDatabaseCommand ??= new AsyncActionCommand(CreateDatabaseAsync, CanCreateDatabase, CreateDataBaseFailed);
 
 	/// <summary>
-	/// The command to import the database.
+	/// The command that brings the catalog in line with iptv-org.
 	/// </summary>
-	public IAsyncActionCommand ImportDatabaseCommand
-		=> _importDatabaseCommand ??= new AsyncActionCommand(ImportDatabaseAsync, CanImportDatabase, ImportDatabaseFailed);
+	public IAsyncActionCommand SynchronizeDatabaseCommand
+		=> _synchronizeDatabaseCommand ??= new AsyncActionCommand(SynchronizeDatabaseAsync, CanSynchronizeDatabase, SynchronizeDatabaseFailed);
 
 	private async Task CheckDatabaseAsync()
 	{
@@ -211,39 +218,54 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	private void CreateDataBaseFailed(Exception exception)
 		=> _eventService.Publish(new ErrorOccuredEvent(Resources.DatabaseCreateFailed, exception));
 
-	private async Task ImportDatabaseAsync()
+	private async Task SynchronizeDatabaseAsync()
 	{
 		try
 		{
-			DatabaseImporting = true;
-			ImportProgress = 0;
-			ImportStatusMessage = Resources.DatabaseImportStarted;
+			DatabaseSynchronizing = true;
+			SyncProgress = 0;
+			SyncStatusMessage = Resources.DatabaseSyncStarted;
 
-			DatabaseImportResponse response = await _databaseService
-				.ImportDatabaseAsync();
+			CatalogSyncResponse response = await _databaseService
+				.SynchronizeAsync()
+				.ConfigureAwait(true);
 
-			DatabaseImported = response.IsSuccess;
-			ImportStatusMessage = response.IsSuccess
-				? Resources.DatabaseImportSucceeded.FormatMessage(response.TotalImported)
-				: Resources.DatabaseImportWithoutRecords;
+			DatabaseSynchronized = true;
+			SyncStatusMessage = GetSyncStatusMessage(response);
 		}
 		finally
 		{
-			DatabaseImporting = false;
+			DatabaseSynchronizing = false;
+			await LoadCatalogStatusAsync().ConfigureAwait(true);
+			await LoadLogoCacheStatusAsync().ConfigureAwait(true);
 		}
 	}
 
-	private bool CanImportDatabase()
-		=> _databaseImported.IsFalse() && _databaseImporting.IsFalse() && _databaseCreated.IsTrue();
-
-	private void ImportDatabaseFailed(Exception exception)
+	/// <summary>
+	/// Tells what the run did: what changed, what was left alone, or that nothing moved.
+	/// </summary>
+	private static string GetSyncStatusMessage(CatalogSyncResponse response)
 	{
-		_eventService.Publish(new ErrorOccuredEvent(Resources.DatabaseImportFailed, exception));
+		if (response.SkippedCount > 0)
+			return Resources.DatabaseSyncSkipped.FormatMessage(response.SkippedCount);
+
+		return response.HasChanges
+			? Resources.DatabaseSyncSucceeded.FormatMessage(response.TotalAdded, response.TotalUpdated, response.TotalRemoved)
+			: Resources.DatabaseSyncUnchanged;
+	}
+
+	// The catalog is updated, not created, so a finished run does not disable the command.
+	private bool CanSynchronizeDatabase()
+		=> _databaseSynchronizing.IsFalse();
+
+	private void SynchronizeDatabaseFailed(Exception exception)
+	{
+		_eventService.Publish(new ErrorOccuredEvent(Resources.DatabaseSyncFailed, exception));
 
 		Invoke(() =>
 		{
-			ImportStatusMessage = Resources.DatabaseImportFailed;
-			ImportProgress = 0;
+			SyncStatusMessage = Resources.DatabaseSyncFailed;
+			SyncProgress = 0;
 		});
 	}
 
@@ -251,7 +273,7 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	{
 		_checkDatabaseCommand?.RaiseCanExecuteChanged();
 		_createDatabaseCommand?.RaiseCanExecuteChanged();
-		_importDatabaseCommand?.RaiseCanExecuteChanged();
+		_synchronizeDatabaseCommand?.RaiseCanExecuteChanged();
 		_cacheLogosCommand?.RaiseCanExecuteChanged();
 		_cancelLogoCacheCommand?.RaiseCanExecuteChanged();
 		_clearLogoCacheCommand?.RaiseCanExecuteChanged();
@@ -333,6 +355,40 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 	}
 
 	/// <summary>
+	/// Reads what is known about the synchronization of the catalog, one row per list.
+	/// </summary>
+	/// <param name="cancellationToken">The cancellation token.</param>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	public async Task LoadCatalogStatusAsync(CancellationToken cancellationToken = default)
+	{
+		IReadOnlyList<CatalogStatusResponse> statuses = await _databaseService
+			.GetCatalogStatusAsync(cancellationToken)
+			.ConfigureAwait(true);
+
+		CatalogStatuses.Clear();
+		foreach (CatalogStatusResponse status in statuses)
+			CatalogStatuses.Add(new CatalogStatusItemViewModel(status));
+	}
+
+	/// <summary>
+	/// Reads the catalog status and the logo cache status, and reports a failure instead of
+	/// throwing, for callers that cannot await.
+	/// </summary>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	public async Task LoadStatusAndReportAsync()
+	{
+		try
+		{
+			await LoadCatalogStatusAsync().ConfigureAwait(true);
+			await LoadLogoCacheStatusAsync().ConfigureAwait(true);
+		}
+		catch (Exception exception)
+		{
+			LogoOperationFailed(exception);
+		}
+	}
+
+	/// <summary>
 	/// Reads the status and reports a failure instead of throwing, for callers that cannot await.
 	/// </summary>
 	/// <returns>A task that represents the asynchronous operation.</returns>
@@ -410,13 +466,13 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 		LogoStatusMessage = Resources.LogoCacheProgress.FormatMessage(@event.ProcessedCount, @event.TotalCount);
 	}
 
-	private void OnDatabaseImportProgress(DatabaseImportProgressEvent @event)
-		=> Invoke(() => UpdateImportProgress(@event));
+	private void OnCatalogSyncProgress(CatalogSyncProgressEvent @event)
+		=> Invoke(() => UpdateSyncProgress(@event));
 
-	private void UpdateImportProgress(DatabaseImportProgressEvent @event)
+	private void UpdateSyncProgress(CatalogSyncProgressEvent @event)
 	{
-		ImportProgress = @event.ProgressPercentage;
-		ImportStatusMessage = Resources.DatabaseImportProgressStatus
-			.FormatMessage(@event.RepositoryName, @event.RecordsImported, @event.CompletedTasks, @event.TotalTasks);
+		SyncProgress = @event.ProgressPercentage;
+		SyncStatusMessage = Resources.DatabaseSyncProgressStatus
+			.FormatMessage(@event.Kind.GetDisplayName(), @event.Added, @event.Updated, @event.Removed, @event.CompletedTasks, @event.TotalTasks);
 	}
 }

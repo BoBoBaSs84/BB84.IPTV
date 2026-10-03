@@ -25,4 +25,61 @@ internal static partial class Mappings
 		Tags = [.. request.Tags],
 		Url = request.Url
 	};
+
+	/// <summary>
+	/// Gets the key that identifies the logo of the import.
+	/// </summary>
+	/// <param name="request">The imported logo.</param>
+	/// <returns>The key of the logo.</returns>
+	internal static string GetKey(this LogoRequest request)
+		=> CatalogKey.Of(request.Channel, request.Feed, request.Url);
+
+	/// <summary>
+	/// Gets the key that identifies the stored logo.
+	/// </summary>
+	/// <param name="entity">The stored logo.</param>
+	/// <returns>The key of the logo.</returns>
+	internal static string GetKey(this LogoEntity entity)
+		=> CatalogKey.Of(entity.Channel, entity.Feed, entity.Url);
+
+	/// <summary>
+	/// Takes what the import holds into the stored logo.
+	/// </summary>
+	/// <remarks>
+	/// The columns of the logo cache are left alone, so a logo that is already downloaded stays
+	/// cached when the catalog changes its size or its tags.
+	/// </remarks>
+	/// <param name="entity">The stored logo.</param>
+	/// <param name="request">The imported logo.</param>
+	/// <returns><see langword="true"/> if the logo changed.</returns>
+	internal static bool Apply(this LogoEntity entity, LogoRequest request)
+	{
+		bool changed = false;
+
+		if (Differs(entity.Format, request.Format))
+		{
+			entity.Format = request.Format;
+			changed = true;
+		}
+
+		if (entity.Width != request.Width)
+		{
+			entity.Width = request.Width;
+			changed = true;
+		}
+
+		if (entity.Height != request.Height)
+		{
+			entity.Height = request.Height;
+			changed = true;
+		}
+
+		if (Differs(entity.Tags, request.Tags))
+		{
+			entity.Tags = [.. request.Tags];
+			changed = true;
+		}
+
+		return changed;
+	}
 }

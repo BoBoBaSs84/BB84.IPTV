@@ -29,4 +29,36 @@ internal static partial class Mappings
 		Code = request.Code,
 		Name = request.Name
 	};
+
+	/// <summary>
+	/// Gets the key that identifies the language of the import.
+	/// </summary>
+	/// <param name="request">The imported language.</param>
+	/// <returns>The key of the language.</returns>
+	internal static string GetKey(this LanguageRequest request)
+		=> CatalogKey.Of(request.Code);
+
+	/// <summary>
+	/// Gets the key that identifies the stored language.
+	/// </summary>
+	/// <param name="entity">The stored language.</param>
+	/// <returns>The key of the language.</returns>
+	internal static string GetKey(this LanguageEntity entity)
+		=> CatalogKey.Of(entity.Code);
+
+	/// <summary>
+	/// Takes what the import holds into the stored language.
+	/// </summary>
+	/// <param name="entity">The stored language.</param>
+	/// <param name="request">The imported language.</param>
+	/// <returns><see langword="true"/> if the language changed.</returns>
+	internal static bool Apply(this LanguageEntity entity, LanguageRequest request)
+	{
+		if (!Differs(entity.Name, request.Name))
+			return false;
+
+		entity.Name = request.Name;
+
+		return true;
+	}
 }

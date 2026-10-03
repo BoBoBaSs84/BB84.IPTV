@@ -92,6 +92,30 @@ public partial class App : AvaloniaApp
 		MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
 		desktop.MainWindow = mainWindow;
 		mainWindow.Show();
+
+		// The window has to be there before the check can ask anything, and nobody waits for it.
+		_ = CheckCatalogAsync();
+	}
+
+	/// <summary>
+	/// Offers to update a catalog that was read longer ago than the settings allow.
+	/// </summary>
+	private async Task CheckCatalogAsync()
+	{
+		try
+		{
+			// The token of the host stops a running update when the application closes.
+			IHostApplicationLifetime lifetime = _host!.Services.GetRequiredService<IHostApplicationLifetime>();
+
+			_ = await _host.Services.GetRequiredService<ICatalogUpdateService>()
+				.RunStartupCheckAsync(lifetime.ApplicationStopping)
+				.ConfigureAwait(true);
+		}
+		catch (Exception ex)
+		{
+			// An old catalog still works, the database view can update it by hand.
+			_eventService!.Publish(new ErrorOccuredEvent(RESX.DatabaseUpdateCheckFailed, ex));
+		}
 	}
 
 	private async Task MigrateDatabaseAsync()

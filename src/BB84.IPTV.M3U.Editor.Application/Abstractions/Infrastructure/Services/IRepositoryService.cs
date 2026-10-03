@@ -13,6 +13,11 @@ namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 public interface IRepositoryService
 {
 	/// <summary>
+	/// The repository instance for what is known about the catalog synchronization.
+	/// </summary>
+	ICatalogSyncRepository CatalogSyncs { get; }
+
+	/// <summary>
 	/// The repository instance for managing categories.
 	/// </summary>
 	ICategoryRepository Categories { get; }

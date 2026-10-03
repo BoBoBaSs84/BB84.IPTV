@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -116,6 +116,9 @@ internal sealed class SqliteTestDatabase : IDisposable
 			=> throw new NotSupportedException("The test database does not store logos.");
 
 		public bool Exists(string? path)
+			=> false;
+
+		public bool Delete(string? path)
 			=> false;
 
 		public int Clear()

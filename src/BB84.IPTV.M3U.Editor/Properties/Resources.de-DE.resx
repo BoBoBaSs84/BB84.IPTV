@@ -120,6 +120,57 @@
   <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
     <value>Datenbank Überprüfen</value>
   </data>
+  <data name="SettingsControl.UpdateIntervalDaysTextBlock.ToolTip" xml:space="preserve">
+    <value>Nach wie vielen Tagen die Anwendung anbietet, den Katalog zu aktualisieren, null schaltet die Prüfung ab</value>
+  </data>
+  <data name="SettingsControl.UpdateIntervalDaysTextBlock.Text" xml:space="preserve">
+    <value>Aktualisierungsintervall (Tage):</value>
+  </data>
+  <data name="SettingsControl.AutoUpdateCheckBox.ToolTip" xml:space="preserve">
+    <value>Aktualisiert einen Katalog, der älter als das Intervall ist, beim Start ohne Nachfrage</value>
+  </data>
+  <data name="SettingsControl.AutoUpdateCheckBox.Content" xml:space="preserve">
+    <value>Katalog automatisch aktualisieren</value>
+  </data>
+  <data name="DatabaseControl.RemovedColumn.Header" xml:space="preserve">
+    <value>Entfernt</value>
+  </data>
+  <data name="DatabaseControl.UpdatedColumn.Header" xml:space="preserve">
+    <value>Aktualisiert</value>
+  </data>
+  <data name="DatabaseControl.AddedColumn.Header" xml:space="preserve">
+    <value>Hinzugefügt</value>
+  </data>
+  <data name="DatabaseControl.LastChangedColumn.Header" xml:space="preserve">
+    <value>Zuletzt geändert</value>
+  </data>
+  <data name="DatabaseControl.LastCheckedColumn.Header" xml:space="preserve">
+    <value>Zuletzt geprüft</value>
+  </data>
+  <data name="DatabaseControl.FirstImportedColumn.Header" xml:space="preserve">
+    <value>Erstimport</value>
+  </data>
+  <data name="DatabaseControl.CatalogKindColumn.Header" xml:space="preserve">
+    <value>Katalog</value>
+  </data>
+  <data name="DatabaseControl.CatalogStatusGroupBox.Header" xml:space="preserve">
+    <value>Katalogstatus</value>
+  </data>
+  <data name="DatabaseControl.SyncProgressGroupBox.Header" xml:space="preserve">
+    <value>Aktualisierungsfortschritt</value>
+  </data>
+  <data name="DatabaseControl.DatabaseSynchronizingCheckBox.Content" xml:space="preserve">
+    <value>Katalog wird aktualisiert</value>
+  </data>
+  <data name="DatabaseControl.DatabaseSynchronizedCheckBox.Content" xml:space="preserve">
+    <value>Katalog aktualisiert</value>
+  </data>
+  <data name="DatabaseControl.SynchronizeDatabaseButton.ToolTip" xml:space="preserve">
+    <value>Liest die iptv-org-Listen und fügt hinzu, aktualisiert und entfernt, was sich geändert hat</value>
+  </data>
+  <data name="DatabaseControl.SynchronizeDatabaseButton.Content" xml:space="preserve">
+    <value>Katalog aktualisieren</value>
+  </data>
   <data name="DatabaseControl.CreateDatabaseButton.Content" xml:space="preserve">
     <value>Datenbank erstellen</value>
   </data>
@@ -135,20 +186,11 @@
   <data name="DatabaseControl.DatabaseCreatingCheckBox.Content" xml:space="preserve">
     <value>Datenbankerstellung</value>
   </data>
-  <data name="DatabaseControl.DatabaseImportedCheckBox.Content" xml:space="preserve">
-    <value>Datenbank importiert</value>
-  </data>
-  <data name="DatabaseControl.DatabaseImportingCheckBox.Content" xml:space="preserve">
-    <value>Datenbankimport</value>
-  </data>
   <data name="DatabaseControl.DatabaseOperationsGroupBox.Header" xml:space="preserve">
     <value>Datenbankoperationen</value>
   </data>
   <data name="DatabaseControl.DatabaseStatusGroupBox.Header" xml:space="preserve">
     <value>Datenbankstatus</value>
-  </data>
-  <data name="DatabaseControl.ImportDatabaseButton.Content" xml:space="preserve">
-    <value>Datenbank importieren</value>
   </data>
   <data name="DatabaseControl.LogoCacheGroupBox.Header" xml:space="preserve">
     <value>Logo-Zwischenspeicher</value>
@@ -321,11 +363,11 @@
   <data name="MainWindow.GuideMenuItem.Header" xml:space="preserve">
     <value>_Programmführer-Export</value>
   </data>
-  <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
-    <value>Importfortschritt</value>
-  </data>
   <data name="DatabaseMigrationFailed" xml:space="preserve">
     <value>Die Datenbank konnte nicht erstellt oder aktualisiert werden. Details stehen im Protokoll.</value>
+  </data>
+  <data name="DatabaseUpdateCheckFailed" xml:space="preserve">
+    <value>Der Katalog konnte nicht auf Aktualisierungen geprüft werden. Details stehen im Protokoll.</value>
   </data>
   <data name="ErrorMessageCaptition" xml:space="preserve">
     <value>Fehler</value>

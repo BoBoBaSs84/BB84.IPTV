@@ -79,6 +79,11 @@ The application is a cross-platform AvaloniaUI app and runs on Windows, Linux an
 
 - The schema is managed by EF Core migrations, applied while the application starts.
 - "Create Database" only resets the iptv-org catalog, so playlists, custom channels and guide mappings survive a catalog re-import.
+- "Update Catalog" reads every iptv-org list and brings the stored catalog in line with it: a new record is added, a changed record is updated in place, and a row that is gone upstream is removed. The first run on an empty database adds everything, which is the former import.
+- A list that comes back without a single record is left untouched, because a failed request looks exactly like an empty list; the run says which lists it skipped.
+- A logo keeps its cached file when it only changed upstream, and loses it when the logo itself is gone.
+- The catalog status shows per list when it was first imported, when it was last checked and last changed, and what the last run added, updated and removed.
+- At the start the application offers to update a catalog that was read longer ago than the interval of the database settings (7 days by default, `0` switches the check off); with "Update the catalog automatically" it runs without asking.
 - The import of the iptv-org data reports its progress in the status bar of the main window, like every other long running operation.
 
 ### Settings and diagnostics

@@ -11,7 +11,7 @@
 						 x:DataType="vm:DatabaseViewModel">
 	<Grid Margin="8"
 				ColumnDefinitions="*,*"
-				RowDefinitions="*,Auto,Auto">
+				RowDefinitions="Auto,Auto,*,Auto">
 		<HeaderedContentControl Grid.Row="0"
 														Grid.Column="0"
 														Theme="{StaticResource GroupBox}"
@@ -32,13 +32,14 @@
 								Margin="4"
 								Height="40"
 								Command="{Binding CheckDatabaseCommand}" />
-				<Button Content="{x:Static p:Resources.DatabaseControl_ImportDatabaseButton_Content}"
+				<Button Content="{x:Static p:Resources.DatabaseControl_SynchronizeDatabaseButton_Content}"
+								ToolTip.Tip="{x:Static p:Resources.DatabaseControl_SynchronizeDatabaseButton_ToolTip}"
 								HorizontalAlignment="Stretch"
 								HorizontalContentAlignment="Center"
 								VerticalContentAlignment="Center"
 								Margin="4"
 								Height="40"
-								Command="{Binding ImportDatabaseCommand}" />
+								Command="{Binding SynchronizeDatabaseCommand}" />
 			</StackPanel>
 		</HeaderedContentControl>
 		<HeaderedContentControl Grid.Row="0"
@@ -63,12 +64,12 @@
 									IsChecked="{Binding DatabaseChecking, Mode=OneWay}"
 									IsEnabled="False"
 									Margin="4" />
-				<CheckBox Content="{x:Static p:Resources.DatabaseControl_DatabaseImportedCheckBox_Content}"
-									IsChecked="{Binding DatabaseImported, Mode=OneWay}"
+				<CheckBox Content="{x:Static p:Resources.DatabaseControl_DatabaseSynchronizedCheckBox_Content}"
+									IsChecked="{Binding DatabaseSynchronized, Mode=OneWay}"
 									IsEnabled="False"
 									Margin="4" />
-				<CheckBox Content="{x:Static p:Resources.DatabaseControl_DatabaseImportingCheckBox_Content}"
-									IsChecked="{Binding DatabaseImporting, Mode=OneWay}"
+				<CheckBox Content="{x:Static p:Resources.DatabaseControl_DatabaseSynchronizingCheckBox_Content}"
+									IsChecked="{Binding DatabaseSynchronizing, Mode=OneWay}"
 									IsEnabled="False"
 									Margin="4" />
 			</StackPanel>
@@ -76,20 +77,67 @@
 		<HeaderedContentControl Grid.Row="1"
 														Grid.ColumnSpan="2"
 														Theme="{StaticResource GroupBox}"
-														Header="{x:Static p:Resources.DatabaseControl_ImportProgressGroupBox_Header}"
+														Header="{x:Static p:Resources.DatabaseControl_SyncProgressGroupBox_Header}"
 														Margin="4">
 			<StackPanel Margin="8">
 				<ProgressBar Height="22"
 										 Margin="4"
 										 Minimum="0"
-										 Maximum="{Binding ImportProgressMaximum}"
-										 Value="{Binding ImportProgress}" />
-				<TextBlock Text="{Binding ImportStatusMessage}"
+										 Maximum="{Binding SyncProgressMaximum}"
+										 Value="{Binding SyncProgress}" />
+				<TextBlock Text="{Binding SyncStatusMessage}"
 									 Margin="4" />
 			</StackPanel>
 		</HeaderedContentControl>
-		<!-- The logo cache: the files a playlist is shown and exported with. -->
+		<!-- What was imported when, one row per list of the catalog. -->
 		<HeaderedContentControl Grid.Row="2"
+														Grid.ColumnSpan="2"
+														Theme="{StaticResource GroupBox}"
+														Header="{x:Static p:Resources.DatabaseControl_CatalogStatusGroupBox_Header}"
+														Margin="4">
+			<DataGrid x:Name="CatalogStatusDataGrid"
+								Margin="8"
+								MinHeight="160"
+								AutoGenerateColumns="False"
+								IsReadOnly="True"
+								CanUserSortColumns="True"
+								SelectionMode="Single"
+								GridLinesVisibility="All"
+								ItemsSource="{Binding CatalogStatuses}">
+				<DataGrid.Columns>
+					<DataGridTextColumn x:DataType="vm:CatalogStatusItemViewModel"
+															Header="{x:Static p:Resources.DatabaseControl_CatalogKindColumn_Header}"
+															Binding="{Binding Kind}"
+															Width="*" />
+					<DataGridTextColumn x:DataType="vm:CatalogStatusItemViewModel"
+															Header="{x:Static p:Resources.DatabaseControl_FirstImportedColumn_Header}"
+															Binding="{Binding FirstImported}"
+															Width="*" />
+					<DataGridTextColumn x:DataType="vm:CatalogStatusItemViewModel"
+															Header="{x:Static p:Resources.DatabaseControl_LastCheckedColumn_Header}"
+															Binding="{Binding LastChecked}"
+															Width="*" />
+					<DataGridTextColumn x:DataType="vm:CatalogStatusItemViewModel"
+															Header="{x:Static p:Resources.DatabaseControl_LastChangedColumn_Header}"
+															Binding="{Binding LastChanged}"
+															Width="*" />
+					<DataGridTextColumn x:DataType="vm:CatalogStatusItemViewModel"
+															Header="{x:Static p:Resources.DatabaseControl_AddedColumn_Header}"
+															Binding="{Binding Added}"
+															Width="80" />
+					<DataGridTextColumn x:DataType="vm:CatalogStatusItemViewModel"
+															Header="{x:Static p:Resources.DatabaseControl_UpdatedColumn_Header}"
+															Binding="{Binding Updated}"
+															Width="80" />
+					<DataGridTextColumn x:DataType="vm:CatalogStatusItemViewModel"
+															Header="{x:Static p:Resources.DatabaseControl_RemovedColumn_Header}"
+															Binding="{Binding Removed}"
+															Width="80" />
+				</DataGrid.Columns>
+			</DataGrid>
+		</HeaderedContentControl>
+		<!-- The logo cache: the files a playlist is shown and exported with. -->
+		<HeaderedContentControl Grid.Row="3"
 														Grid.ColumnSpan="2"
 														Theme="{StaticResource GroupBox}"
 														Header="{x:Static p:Resources.DatabaseControl_LogoCacheGroupBox_Header}"

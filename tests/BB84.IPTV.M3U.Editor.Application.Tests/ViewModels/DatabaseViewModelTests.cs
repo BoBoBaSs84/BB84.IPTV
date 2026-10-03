@@ -9,12 +9,14 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
+using BB84.IPTV.M3U.Editor.Domain.Enumerators;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -36,6 +38,9 @@ public sealed class DatabaseViewModelTests : IDisposable
 		_logoServiceMock.Setup(x => x.GetStatusAsync(It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new LogoCacheStatusResponse { TotalCount = 10, CachedCount = 4, CachedBytes = 2048 });
 
+		_databaseServiceMock.Setup(x => x.GetCatalogStatusAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync([]);
+
 		_sut = new DatabaseViewModel(_eventServiceMock.Object, _databaseServiceMock.Object, _logoServiceMock.Object, new ApplicationSettings());
 	}
 
@@ -46,66 +51,118 @@ public sealed class DatabaseViewModelTests : IDisposable
 		=> _sut.Dispose();
 
 	[TestMethod]
-	public async Task CreatingTheDatabaseShouldEnableCheckAndImport()
+	public async Task CreatingTheDatabaseShouldEnableTheCheck()
 	{
 		_databaseServiceMock.Setup(x => x.CreateDatabaseAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
 		int checkChanged = 0;
-		int importChanged = 0;
 		_sut.CheckDatabaseCommand.CanExecuteChanged += (s, e) => checkChanged++;
-		_sut.ImportDatabaseCommand.CanExecuteChanged += (s, e) => importChanged++;
 
 		Assert.IsFalse(_sut.CheckDatabaseCommand.CanExecute());
-		Assert.IsFalse(_sut.ImportDatabaseCommand.CanExecute());
+
+		// The catalog is updated, not created, so the update does not wait for a creation.
+		Assert.IsTrue(_sut.SynchronizeDatabaseCommand.CanExecute());
 
 		await _sut.CreateDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.IsTrue(_sut.DatabaseCreated);
 		Assert.IsTrue(_sut.CheckDatabaseCommand.CanExecute());
-		Assert.IsTrue(_sut.ImportDatabaseCommand.CanExecute());
 		Assert.IsGreaterThan(0, checkChanged);
-		Assert.IsGreaterThan(0, importChanged);
 	}
 
 	[TestMethod]
-	public async Task TheImportShouldReportItsResultWithALocalizedMessage()
+	public async Task TheUpdateShouldReportWhatItChangedWithALocalizedMessage()
 	{
-		_databaseServiceMock.Setup(x => x.CreateDatabaseAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
-		_databaseServiceMock.Setup(x => x.ImportDatabaseAsync(It.IsAny<CancellationToken>()))
-			.ReturnsAsync(new DatabaseImportResponse { CategoriesImported = 3, CountriesImported = 4 });
+		_databaseServiceMock.Setup(x => x.SynchronizeAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(new CatalogSyncResponse
+			{
+				Kinds =
+				[
+					new CatalogKindResponse { Kind = CatalogKind.Category, Outcome = CatalogSyncOutcome.Synchronized, Added = 3 },
+					new CatalogKindResponse { Kind = CatalogKind.Channel, Outcome = CatalogSyncOutcome.Synchronized, Updated = 4, Removed = 1 }
+				]
+			});
 
-		await _sut.CreateDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
-		await _sut.ImportDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.SynchronizeDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
-		Assert.AreEqual(Resources.DatabaseImportSucceeded.FormatMessage(7), _sut.ImportStatusMessage);
+		Assert.IsTrue(_sut.DatabaseSynchronized);
+		Assert.AreEqual(Resources.DatabaseSyncSucceeded.FormatMessage(3, 4, 1), _sut.SyncStatusMessage);
+
+		// The update stays available, a catalog is brought up to date more than once.
+		Assert.IsTrue(_sut.SynchronizeDatabaseCommand.CanExecute());
 	}
 
 	[TestMethod]
-	public async Task TheImportShouldReportAnEmptyResultWithALocalizedMessage()
+	public async Task TheUpdateShouldReportThatNothingChanged()
 	{
-		_databaseServiceMock.Setup(x => x.CreateDatabaseAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
-		_databaseServiceMock.Setup(x => x.ImportDatabaseAsync(It.IsAny<CancellationToken>()))
-			.ReturnsAsync(new DatabaseImportResponse());
+		_databaseServiceMock.Setup(x => x.SynchronizeAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(new CatalogSyncResponse
+			{
+				Kinds = [new CatalogKindResponse { Kind = CatalogKind.Category, Outcome = CatalogSyncOutcome.Synchronized, Unchanged = 12 }]
+			});
 
-		await _sut.CreateDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
-		await _sut.ImportDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+		await _sut.SynchronizeDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
-		Assert.AreEqual(Resources.DatabaseImportWithoutRecords, _sut.ImportStatusMessage);
+		Assert.AreEqual(Resources.DatabaseSyncUnchanged, _sut.SyncStatusMessage);
 	}
 
 	[TestMethod]
-	public async Task AFailedImportShouldPublishALocalizedError()
+	public async Task TheUpdateShouldReportTheListsItLeftAlone()
 	{
-		_databaseServiceMock.Setup(x => x.CreateDatabaseAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
-		_databaseServiceMock.Setup(x => x.ImportDatabaseAsync(It.IsAny<CancellationToken>()))
+		_databaseServiceMock.Setup(x => x.SynchronizeAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(new CatalogSyncResponse
+			{
+				Kinds =
+				[
+					new CatalogKindResponse { Kind = CatalogKind.Category, Outcome = CatalogSyncOutcome.Synchronized, Added = 2 },
+					new CatalogKindResponse { Kind = CatalogKind.Guide, Outcome = CatalogSyncOutcome.Skipped }
+				]
+			});
+
+		await _sut.SynchronizeDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
+
+		Assert.AreEqual(Resources.DatabaseSyncSkipped.FormatMessage(1), _sut.SyncStatusMessage);
+	}
+
+	[TestMethod]
+	public async Task TheCatalogStatusShouldHoldWhatIsKnownPerList()
+	{
+		_databaseServiceMock.Setup(x => x.GetCatalogStatusAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(
+			[
+				new CatalogStatusResponse
+				{
+					Kind = CatalogKind.Category,
+					FirstImported = new DateTime(2026, 2, 1, 0, 0, 0, DateTimeKind.Utc),
+					LastChecked = new DateTime(2026, 10, 3, 0, 0, 0, DateTimeKind.Utc),
+					LastChanged = new DateTime(2026, 9, 1, 0, 0, 0, DateTimeKind.Utc),
+					Added = 1
+				},
+				new CatalogStatusResponse { Kind = CatalogKind.Guide }
+			]);
+
+		await _sut.LoadCatalogStatusAsync(TestContext.CancellationToken).ConfigureAwait(false);
+
+		Assert.HasCount(2, _sut.CatalogStatuses);
+		Assert.AreEqual(Resources.CatalogKindCategory, _sut.CatalogStatuses[0].Kind);
+		Assert.AreEqual("1", _sut.CatalogStatuses[0].Added);
+
+		// A list that was never read shows no date and no counter.
+		Assert.AreEqual(Resources.CatalogStatusNever, _sut.CatalogStatuses[1].FirstImported);
+		Assert.AreEqual(string.Empty, _sut.CatalogStatuses[1].Added);
+	}
+
+	[TestMethod]
+	public async Task AFailedUpdateShouldPublishALocalizedError()
+	{
+		_databaseServiceMock.Setup(x => x.SynchronizeAsync(It.IsAny<CancellationToken>()))
 			.ThrowsAsync(new InvalidOperationException("no connection"));
 
-		await _sut.CreateDatabaseCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
-		ErrorOccuredEvent reported = await ExecuteAndReadErrorAsync(_sut.ImportDatabaseCommand).ConfigureAwait(false);
+		ErrorOccuredEvent reported = await ExecuteAndReadErrorAsync(_sut.SynchronizeDatabaseCommand).ConfigureAwait(false);
 
-		Assert.AreEqual(Resources.DatabaseImportFailed, reported.Message);
+		Assert.AreEqual(Resources.DatabaseSyncFailed, reported.Message);
 		Assert.IsNotNull(reported.Exception);
-		Assert.AreEqual(Resources.DatabaseImportFailed, _sut.ImportStatusMessage);
-		Assert.AreEqual(0, _sut.ImportProgress);
+		Assert.AreEqual(Resources.DatabaseSyncFailed, _sut.SyncStatusMessage);
+		Assert.AreEqual(0, _sut.SyncProgress);
 	}
 
 	[TestMethod]
@@ -191,15 +248,17 @@ public sealed class DatabaseViewModelTests : IDisposable
 	}
 
 	[TestMethod]
-	public void TheImportProgressShouldBeReportedWithALocalizedMessage()
+	public void TheUpdateProgressShouldBeReportedWithALocalizedMessage()
 	{
 		EventService eventService = new(NullLogger<EventService>.Instance);
 		using DatabaseViewModel viewModel = new(eventService, _databaseServiceMock.Object, _logoServiceMock.Object, new ApplicationSettings());
 
-		eventService.Publish(new DatabaseImportProgressEvent("Channels", 12, 4, 8));
+		eventService.Publish(new CatalogSyncProgressEvent(CatalogKind.Channel, 12, 3, 1, 4, 8));
 
-		Assert.AreEqual(50, viewModel.ImportProgress);
-		Assert.AreEqual(Resources.DatabaseImportProgressStatus.FormatMessage("Channels", 12, 4, 8), viewModel.ImportStatusMessage);
+		Assert.AreEqual(50, viewModel.SyncProgress);
+		Assert.AreEqual(
+			Resources.DatabaseSyncProgressStatus.FormatMessage(Resources.CatalogKindChannel, 12, 3, 1, 4, 8),
+			viewModel.SyncStatusMessage);
 	}
 
 	public TestContext TestContext { get; set; }

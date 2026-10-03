@@ -120,6 +120,57 @@
   <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
     <value>Vérifier la base de données</value>
   </data>
+  <data name="SettingsControl.UpdateIntervalDaysTextBlock.ToolTip" xml:space="preserve">
+    <value>Après combien de jours l'application propose de mettre à jour le catalogue, zéro désactive la vérification</value>
+  </data>
+  <data name="SettingsControl.UpdateIntervalDaysTextBlock.Text" xml:space="preserve">
+    <value>Intervalle de mise à jour (jours) :</value>
+  </data>
+  <data name="SettingsControl.AutoUpdateCheckBox.ToolTip" xml:space="preserve">
+    <value>Met à jour au démarrage, sans demander, un catalogue plus ancien que l'intervalle</value>
+  </data>
+  <data name="SettingsControl.AutoUpdateCheckBox.Content" xml:space="preserve">
+    <value>Mettre à jour le catalogue automatiquement</value>
+  </data>
+  <data name="DatabaseControl.RemovedColumn.Header" xml:space="preserve">
+    <value>Supprimés</value>
+  </data>
+  <data name="DatabaseControl.UpdatedColumn.Header" xml:space="preserve">
+    <value>Mis à jour</value>
+  </data>
+  <data name="DatabaseControl.AddedColumn.Header" xml:space="preserve">
+    <value>Ajoutés</value>
+  </data>
+  <data name="DatabaseControl.LastChangedColumn.Header" xml:space="preserve">
+    <value>Dernière modification</value>
+  </data>
+  <data name="DatabaseControl.LastCheckedColumn.Header" xml:space="preserve">
+    <value>Dernière vérification</value>
+  </data>
+  <data name="DatabaseControl.FirstImportedColumn.Header" xml:space="preserve">
+    <value>Premier import</value>
+  </data>
+  <data name="DatabaseControl.CatalogKindColumn.Header" xml:space="preserve">
+    <value>Catalogue</value>
+  </data>
+  <data name="DatabaseControl.CatalogStatusGroupBox.Header" xml:space="preserve">
+    <value>État du catalogue</value>
+  </data>
+  <data name="DatabaseControl.SyncProgressGroupBox.Header" xml:space="preserve">
+    <value>Progression de la mise à jour</value>
+  </data>
+  <data name="DatabaseControl.DatabaseSynchronizingCheckBox.Content" xml:space="preserve">
+    <value>Mise à jour du catalogue</value>
+  </data>
+  <data name="DatabaseControl.DatabaseSynchronizedCheckBox.Content" xml:space="preserve">
+    <value>Catalogue mis à jour</value>
+  </data>
+  <data name="DatabaseControl.SynchronizeDatabaseButton.ToolTip" xml:space="preserve">
+    <value>Lit les listes iptv-org et ajoute, met à jour et supprime ce qui a changé</value>
+  </data>
+  <data name="DatabaseControl.SynchronizeDatabaseButton.Content" xml:space="preserve">
+    <value>Mettre à jour le catalogue</value>
+  </data>
   <data name="DatabaseControl.CreateDatabaseButton.Content" xml:space="preserve">
     <value>Créer une base de données</value>
   </data>
@@ -135,20 +186,11 @@
   <data name="DatabaseControl.DatabaseCreatingCheckBox.Content" xml:space="preserve">
     <value>Création de base de données</value>
   </data>
-  <data name="DatabaseControl.DatabaseImportedCheckBox.Content" xml:space="preserve">
-    <value>Base de données importée</value>
-  </data>
-  <data name="DatabaseControl.DatabaseImportingCheckBox.Content" xml:space="preserve">
-    <value>Importation de base de données</value>
-  </data>
   <data name="DatabaseControl.DatabaseOperationsGroupBox.Header" xml:space="preserve">
     <value>Opérations de base de données</value>
   </data>
   <data name="DatabaseControl.DatabaseStatusGroupBox.Header" xml:space="preserve">
     <value>Statut de la base de données</value>
-  </data>
-  <data name="DatabaseControl.ImportDatabaseButton.Content" xml:space="preserve">
-    <value>Importer la base de données</value>
   </data>
   <data name="DatabaseControl.LogoCacheGroupBox.Header" xml:space="preserve">
     <value>Cache des logos</value>
@@ -241,7 +283,7 @@
     <value>_Aperçu des guides</value>
   </data>
   <data name="GuideControl.ExportButton.ToolTip" xml:space="preserve">
-    <value>Écrire le channels.xml que lit le grabber EPG d&apos;iptv-org</value>
+    <value>Écrire le channels.xml que lit le grabber EPG d'iptv-org</value>
   </data>
   <data name="GuideControl.MappingGroupBox.Header" xml:space="preserve">
     <value>Entrées</value>
@@ -321,11 +363,11 @@
   <data name="MainWindow.GuideMenuItem.Header" xml:space="preserve">
     <value>Export du _guide</value>
   </data>
-  <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
-    <value>Progression de l'importation</value>
-  </data>
   <data name="DatabaseMigrationFailed" xml:space="preserve">
     <value>Impossible de créer ou de mettre à jour la base de données. Consultez le journal pour plus de détails.</value>
+  </data>
+  <data name="DatabaseUpdateCheckFailed" xml:space="preserve">
+    <value>Impossible de vérifier les mises à jour du catalogue. Voir le journal pour les détails.</value>
   </data>
   <data name="ErrorMessageCaptition" xml:space="preserve">
     <value>Erreur</value>
@@ -458,5 +500,8 @@
   </data>
   <data name="WarningMessageCaptition" xml:space="preserve">
     <value>Avertissement</value>
+  </data>
+  <data name="QuestionMessageCaptition" xml:space="preserve">
+    <value>Question</value>
   </data>
 </root>
