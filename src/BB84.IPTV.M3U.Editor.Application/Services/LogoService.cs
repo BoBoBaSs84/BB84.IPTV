@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -67,16 +67,8 @@ internal sealed class LogoService(
 	{
 		request ??= new LogoCacheRequest();
 
-		using IServiceScope scope = serviceScopeFactory.CreateScope();
-		IRepositoryService repositoryService = GetRepositoryService(scope);
-
-		IReadOnlyList<LogoEntity> logos = await repositoryService.Logos
-			.GetListAsync(new Query<LogoEntity> { TrackChanges = true }, cancellationToken)
+		List<LogoCandidate> candidates = await SelectCandidatesAsync(request, cancellationToken)
 			.ConfigureAwait(false);
-
-		List<LogoEntity> candidates = [.. SelectPerChannel(logos)
-			.Where(logo => request.Channels.Count is 0 || request.Channels.Contains(logo.Channel, StringComparer.OrdinalIgnoreCase))
-			.Where(logo => request.RefreshCached || !logoStoreService.Exists(logo.LocalPath))];
 
 		int downloaded = 0;
 		int failed = 0;
@@ -84,7 +76,7 @@ internal sealed class LogoService(
 
 		// The logos of a batch are downloaded at once, the database is written afterwards: the
 		// context belongs to one thread, and a committed batch is what a cancelled run keeps.
-		foreach (LogoEntity[] batch in candidates.Chunk(request.MaxParallelDownloads))
+		foreach (LogoCandidate[] batch in candidates.Chunk(request.MaxParallelDownloads))
 		{
 			// A cancelled run keeps what it downloaded so far, so the next one goes on from there.
 			if (cancellationToken.IsCancellationRequested)
@@ -95,7 +87,7 @@ internal sealed class LogoService(
 			try
 			{
 				results = await Task
-					.WhenAll(batch.Select(logo => DownloadAsync(logo, cancellationToken)))
+					.WhenAll(batch.Select(candidate => DownloadAsync(candidate, cancellationToken)))
 					.ConfigureAwait(false);
 			}
 			catch (OperationCanceledException)
@@ -105,21 +97,11 @@ internal sealed class LogoService(
 				break;
 			}
 
-			for (int index = 0; index < batch.Length; index++)
-			{
-				if (results[index].Failed)
-					failed++;
-
-				if (Apply(batch[index], results[index].Update))
-					downloaded++;
-			}
+			failed += results.Count(result => result.Failed);
+			downloaded += await WriteBatchAsync(batch, results).ConfigureAwait(false);
 
 			done += batch.Length;
 			PublishProgress(done, candidates.Count);
-
-			_ = await repositoryService
-				.CommitChangesAsync(CancellationToken.None)
-				.ConfigureAwait(false);
 		}
 
 		if (downloaded > 0)
@@ -191,6 +173,80 @@ internal sealed class LogoService(
 	}
 
 	/// <summary>
+	/// Reads which logos are to be downloaded.
+	/// </summary>
+	/// <remarks>
+	/// The whole table is read to pick one logo per channel, but only for the moment of the
+	/// selection and untracked: a run that downloads thousands of files goes on with the few
+	/// values a download needs, instead of holding every row and its change tracking until it is
+	/// through.
+	/// </remarks>
+	/// <param name="request">What the run is to cache.</param>
+	/// <param name="cancellationToken">The cancellation token.</param>
+	/// <returns>The logos to download, one per channel.</returns>
+	private async Task<List<LogoCandidate>> SelectCandidatesAsync(LogoCacheRequest request, CancellationToken cancellationToken)
+	{
+		using IServiceScope scope = serviceScopeFactory.CreateScope();
+		IRepositoryService repositoryService = GetRepositoryService(scope);
+
+		IReadOnlyList<LogoEntity> logos = await repositoryService.Logos
+			.GetListAsync(new Query<LogoEntity>(), cancellationToken)
+			.ConfigureAwait(false);
+
+		return
+		[
+			.. SelectPerChannel(logos)
+				.Where(logo => request.Channels.Count is 0 || request.Channels.Contains(logo.Channel, StringComparer.OrdinalIgnoreCase))
+				.Where(logo => request.RefreshCached || !logoStoreService.Exists(logo.LocalPath))
+				.Select(ToCandidate)
+		];
+	}
+
+	/// <summary>
+	/// Writes what the downloads of one batch brought to the rows they belong to.
+	/// </summary>
+	/// <remarks>
+	/// The rows are loaded tracked in a scope of their own, so the change tracker holds one batch
+	/// and lets it go again with the scope. A row that is gone, e.g. because the catalog was
+	/// synchronized while the run was going on, is left alone.
+	/// </remarks>
+	/// <param name="batch">The logos that were downloaded.</param>
+	/// <param name="results">What each download of the batch brought.</param>
+	/// <returns>The number of logos that were written to the store.</returns>
+	private async Task<int> WriteBatchAsync(LogoCandidate[] batch, LogoResult[] results)
+	{
+		int[] ids = [.. batch
+			.Where((_, index) => results[index].Update is not null)
+			.Select(candidate => candidate.Id)];
+
+		// Nothing came back that is worth a row, e.g. every logo of the batch was unreachable.
+		if (ids.Length is 0)
+			return 0;
+
+		using IServiceScope scope = serviceScopeFactory.CreateScope();
+		IRepositoryService repositoryService = GetRepositoryService(scope);
+
+		IReadOnlyList<LogoEntity> tracked = await repositoryService.Logos
+			.GetListAsync(new Query<LogoEntity> { Where = logo => ids.Contains(logo.Id), TrackChanges = true }, CancellationToken.None)
+			.ConfigureAwait(false);
+
+		Dictionary<int, LogoEntity> entitiesById = tracked.ToDictionary(logo => logo.Id);
+
+		int downloaded = 0;
+		for (int index = 0; index < batch.Length; index++)
+		{
+			if (entitiesById.TryGetValue(batch[index].Id, out LogoEntity? entity) && Apply(entity, results[index].Update))
+				downloaded++;
+		}
+
+		_ = await repositoryService
+			.CommitChangesAsync(CancellationToken.None)
+			.ConfigureAwait(false);
+
+		return downloaded;
+	}
+
+	/// <summary>
 	/// Downloads one logo and writes it to the store, without touching the row.
 	/// </summary>
 	/// <remarks>
@@ -198,7 +254,7 @@ internal sealed class LogoService(
 	/// downloader, the store and the row values it reads.
 	/// </remarks>
 	/// <returns>What the row is to be set to, and whether the logo had to be skipped.</returns>
-	private async Task<LogoResult> DownloadAsync(LogoEntity logo, CancellationToken cancellationToken)
+	private async Task<LogoResult> DownloadAsync(LogoCandidate logo, CancellationToken cancellationToken)
 	{
 		try
 		{
@@ -260,6 +316,39 @@ internal sealed class LogoService(
 	}
 
 	/// <summary>
+	/// Reduces a stored logo to what a download needs, so a run does not hold the rows.
+	/// </summary>
+	/// <param name="logo">The logo that was picked for a channel.</param>
+	/// <returns>The values the download works with.</returns>
+	private static LogoCandidate ToCandidate(LogoEntity logo)
+		=> new(logo.Id, logo.Channel, logo.Feed, logo.Format, logo.Url, logo.LocalPath, logo.ETag, logo.ContentHash, logo.FileSize, logo.DownloadedAt);
+
+	/// <summary>
+	/// The logo of one channel, as a run works with it.
+	/// </summary>
+	/// <param name="Id">The identifier of the row the download belongs to.</param>
+	/// <param name="Channel">The channel the logo belongs to.</param>
+	/// <param name="Feed">The feed the logo belongs to, if any.</param>
+	/// <param name="Format">The image format the catalog knows.</param>
+	/// <param name="Url">The URL the logo is downloaded from.</param>
+	/// <param name="LocalPath">The path of the file that is already cached, if any.</param>
+	/// <param name="ETag">The entity tag of the cached file, if any.</param>
+	/// <param name="ContentHash">The hash of the cached file, if any.</param>
+	/// <param name="FileSize">The size of the cached file in bytes, if any.</param>
+	/// <param name="DownloadedAt">The moment the cached file was downloaded, if any.</param>
+	private sealed record LogoCandidate(
+		int Id,
+		string Channel,
+		string? Feed,
+		string? Format,
+		string Url,
+		string? LocalPath,
+		string? ETag,
+		string? ContentHash,
+		long? FileSize,
+		DateTime? DownloadedAt);
+
+	/// <summary>
 	/// What a download brought, before it is written to the row.
 	/// </summary>
 	/// <param name="LocalPath">The written file, <see langword="null"/> if the cached one still fits.</param>
@@ -291,7 +380,7 @@ internal sealed class LogoService(
 	/// Builds the file name of a logo: the feed or the channel, with the extension of the URL, of
 	/// the media type the server reported or of the format the catalog knows.
 	/// </summary>
-	private string BuildFileName(LogoEntity logo, string? contentType)
+	private string BuildFileName(LogoCandidate logo, string? contentType)
 	{
 		string name = string.IsNullOrWhiteSpace(logo.Feed) ? logo.Channel : $"{logo.Channel}@{logo.Feed}";
 		string extension = GetExtension(logo, contentType);
@@ -299,7 +388,7 @@ internal sealed class LogoService(
 		return $"{name}{extension}";
 	}
 
-	private string GetExtension(LogoEntity logo, string? contentType)
+	private string GetExtension(LogoCandidate logo, string? contentType)
 	{
 		string? fromUrl = providerService.Path.GetExtension(new Uri(logo.Url, UriKind.RelativeOrAbsolute).IsAbsoluteUri
 			? new Uri(logo.Url).AbsolutePath
