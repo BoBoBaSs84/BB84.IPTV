@@ -415,8 +415,10 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 
 	private async Task CacheLogosAsync()
 	{
+		CancellationTokenSource tokenSource = new();
+
 		_logoCacheCancellation?.Dispose();
-		_logoCacheCancellation = new CancellationTokenSource();
+		_logoCacheCancellation = tokenSource;
 
 		try
 		{
@@ -424,7 +426,7 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 			LogoProgress = 0;
 
 			int downloaded = await _logoService
-				.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = _settings.Logo.MaxParallelDownloads }, _logoCacheCancellation.Token)
+				.CacheLogosAsync(new LogoCacheRequest { MaxParallelDownloads = _settings.Logo.MaxParallelDownloads }, tokenSource.Token)
 				.ConfigureAwait(true);
 
 			LogoStatusMessage = Resources.LogoCacheDownloaded.FormatMessage(downloaded);
@@ -432,6 +434,15 @@ public sealed class DatabaseViewModel : ViewModelBase, INavigateable, IDisposabl
 		finally
 		{
 			LogosCaching = false;
+
+			// The run is through, so nothing has to be cancelled any more. A run that was started
+			// again in the meantime owns the field and keeps its own source.
+			if (ReferenceEquals(_logoCacheCancellation, tokenSource))
+			{
+				_logoCacheCancellation = null;
+				tokenSource.Dispose();
+			}
+
 			await LoadLogoCacheStatusAsync().ConfigureAwait(true);
 		}
 	}

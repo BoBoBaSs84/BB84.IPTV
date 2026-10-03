@@ -20,6 +20,17 @@ public interface IEventService
 	void Subscribe<T>(Action<T> handler) where T : notnull, IEvent;
 
 	/// <summary>
+	/// Removes a handler that was registered with <see cref="Subscribe{T}(Action{T})"/>.
+	/// </summary>
+	/// <remarks>
+	/// A subscriber that does not live as long as the service has to unsubscribe, because the
+	/// service holds every handler it was given.
+	/// </remarks>
+	/// <typeparam name="T">The type of event to unsubscribe from.</typeparam>
+	/// <param name="handler">The handler that is no longer to be invoked.</param>
+	void Unsubscribe<T>(Action<T> handler) where T : notnull, IEvent;
+
+	/// <summary>
 	/// Publish an event of <typeparamref name="T"/> type with the specified message.
 	/// </summary>
 	/// <typeparam name="T">The type of event to publish.</typeparam>

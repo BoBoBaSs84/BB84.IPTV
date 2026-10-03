@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -48,12 +48,34 @@ public sealed class ServiceCollectionExtensionsTests
 		Assert.IsEmpty(loggerProviders.OfType<FileLoggerProvider>());
 	}
 
+	[TestMethod]
+	public void TheFileLoggerProviderShouldBeOwnedByTheContainer()
+	{
+		ServiceCollection services = BuildServices(Environments.Production);
+
+		ServiceDescriptor descriptor = services
+			.Single(service => service.ServiceType == typeof(ILoggerProvider));
+
+		// Only a provider the container built is closed by it, and with it the log file it writes.
+		Assert.IsNull(descriptor.ImplementationInstance, "An instance registration is never disposed by the container.");
+		Assert.IsNotNull(descriptor.ImplementationFactory);
+		Assert.AreEqual(ServiceLifetime.Singleton, descriptor.Lifetime);
+	}
+
 	/// <summary>
 	/// Builds the services the logger registration needs, for the given environment.
 	/// </summary>
 	/// <param name="environmentName">The name of the host environment.</param>
 	/// <returns>The service provider with the registered logging.</returns>
 	private static ServiceProvider BuildProvider(string environmentName)
+		=> BuildServices(environmentName).BuildServiceProvider();
+
+	/// <summary>
+	/// Registers the services the logger registration needs, for the given environment.
+	/// </summary>
+	/// <param name="environmentName">The name of the host environment.</param>
+	/// <returns>The service collection with the registered logging.</returns>
+	private static ServiceCollection BuildServices(string environmentName)
 	{
 		Mock<IHostEnvironment> environmentMock = new Mock<IHostEnvironment>().SetupAllProperties();
 		environmentMock.Object.ApplicationName = "BB84.IPTV.Test";
@@ -65,6 +87,6 @@ public sealed class ServiceCollectionExtensionsTests
 			.RegisterPathService()
 			.RegisterLoggerService(environmentMock.Object);
 
-		return services.BuildServiceProvider();
+		return services;
 	}
 }

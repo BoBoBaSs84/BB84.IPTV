@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -154,6 +154,72 @@ public sealed class PlaylistsControlTests
 				Assert.IsTrue(editor.GetVisualDescendants().OfType<TextBlock>()
 					.Any(block => block.Text == viewModel.Editor.ValidationMessage && block.IsEffectivelyVisible));
 			});
+		}).ConfigureAwait(false);
+
+	[TestMethod]
+	public async Task AnUnloadedControlShouldNoLongerFollowTheViewModel()
+		=> await UiTest.RunAsync(() =>
+		{
+			PlaylistsViewModel viewModel = ViewModelFactory.CreatePlaylists();
+			viewModel.LoadPlaylistsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
+
+			PlaylistsControl control = new() { DataContext = viewModel };
+			ListBox list = default!;
+
+			UiTest.InWindow(control, _ =>
+			{
+				list = control.GetControl<ListBox>("PlaylistList");
+
+				list.SelectedIndex = 0;
+				UiTest.Settle();
+
+				Assert.AreSame(viewModel.Playlists[0], list.SelectedItem);
+			});
+
+			// The window is closed, so the control is unloaded and off the view model. The view
+			// model lives as long as the application and must not hold the control any more.
+			viewModel.OpenAsync(viewModel.Playlists[1]).GetAwaiter().GetResult();
+			UiTest.Settle();
+
+			Assert.AreSame(viewModel.Playlists[1], viewModel.CurrentPlaylist);
+			Assert.AreSame(viewModel.Playlists[0], list.SelectedItem, "The unloaded control still listens to the view model.");
+		}).ConfigureAwait(false);
+
+	[TestMethod]
+	public async Task AControlThatIsShownAgainShouldFollowTheViewModelAgain()
+		=> await UiTest.RunAsync(() =>
+		{
+			PlaylistsViewModel viewModel = ViewModelFactory.CreatePlaylists();
+			viewModel.LoadPlaylistsAsync(TestContext.CancellationToken).GetAwaiter().GetResult();
+
+			PlaylistsControl control = new() { DataContext = viewModel };
+			Window window = new() { Width = 1280, Height = 720 };
+
+			try
+			{
+				UiTest.ShowWindow(window);
+
+				// Navigating to the screen, away from it and back to it, as the main window does.
+				window.Content = control;
+				UiTest.Settle();
+
+				window.Content = null;
+				UiTest.Settle();
+
+				window.Content = control;
+				UiTest.Settle();
+
+				ListBox list = control.GetControl<ListBox>("PlaylistList");
+
+				viewModel.OpenAsync(viewModel.Playlists[1]).GetAwaiter().GetResult();
+				UiTest.Settle();
+
+				Assert.AreSame(viewModel.Playlists[1], list.SelectedItem, "The control that is shown again does not listen to the view model.");
+			}
+			finally
+			{
+				window.Close();
+			}
 		}).ConfigureAwait(false);
 
 	public TestContext TestContext { get; set; }
