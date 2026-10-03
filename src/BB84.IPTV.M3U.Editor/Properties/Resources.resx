@@ -121,6 +121,57 @@
   <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
     <value>Check Database</value>
   </data>
+  <data name="SettingsControl.UpdateIntervalDaysTextBlock.ToolTip" xml:space="preserve">
+    <value>After how many days the application offers to update the catalog, zero switches the check off</value>
+  </data>
+  <data name="SettingsControl.UpdateIntervalDaysTextBlock.Text" xml:space="preserve">
+    <value>Update interval (days):</value>
+  </data>
+  <data name="SettingsControl.AutoUpdateCheckBox.ToolTip" xml:space="preserve">
+    <value>Updates a catalog that is older than the interval at the start, without asking</value>
+  </data>
+  <data name="SettingsControl.AutoUpdateCheckBox.Content" xml:space="preserve">
+    <value>Update the catalog automatically</value>
+  </data>
+  <data name="DatabaseControl.RemovedColumn.Header" xml:space="preserve">
+    <value>Removed</value>
+  </data>
+  <data name="DatabaseControl.UpdatedColumn.Header" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="DatabaseControl.AddedColumn.Header" xml:space="preserve">
+    <value>Added</value>
+  </data>
+  <data name="DatabaseControl.LastChangedColumn.Header" xml:space="preserve">
+    <value>Last changed</value>
+  </data>
+  <data name="DatabaseControl.LastCheckedColumn.Header" xml:space="preserve">
+    <value>Last checked</value>
+  </data>
+  <data name="DatabaseControl.FirstImportedColumn.Header" xml:space="preserve">
+    <value>First imported</value>
+  </data>
+  <data name="DatabaseControl.CatalogKindColumn.Header" xml:space="preserve">
+    <value>Catalog</value>
+  </data>
+  <data name="DatabaseControl.CatalogStatusGroupBox.Header" xml:space="preserve">
+    <value>Catalog Status</value>
+  </data>
+  <data name="DatabaseControl.SyncProgressGroupBox.Header" xml:space="preserve">
+    <value>Update Progress</value>
+  </data>
+  <data name="DatabaseControl.DatabaseSynchronizingCheckBox.Content" xml:space="preserve">
+    <value>Catalog Updating</value>
+  </data>
+  <data name="DatabaseControl.DatabaseSynchronizedCheckBox.Content" xml:space="preserve">
+    <value>Catalog Updated</value>
+  </data>
+  <data name="DatabaseControl.SynchronizeDatabaseButton.ToolTip" xml:space="preserve">
+    <value>Reads the iptv-org lists and adds, updates and removes what changed</value>
+  </data>
+  <data name="DatabaseControl.SynchronizeDatabaseButton.Content" xml:space="preserve">
+    <value>Update Catalog</value>
+  </data>
   <data name="DatabaseControl.CreateDatabaseButton.Content" xml:space="preserve">
     <value>Create Database</value>
   </data>
@@ -136,20 +187,11 @@
   <data name="DatabaseControl.DatabaseCreatingCheckBox.Content" xml:space="preserve">
     <value>Database Creating</value>
   </data>
-  <data name="DatabaseControl.DatabaseImportedCheckBox.Content" xml:space="preserve">
-    <value>Database Imported</value>
-  </data>
-  <data name="DatabaseControl.DatabaseImportingCheckBox.Content" xml:space="preserve">
-    <value>Database Importing</value>
-  </data>
   <data name="DatabaseControl.DatabaseOperationsGroupBox.Header" xml:space="preserve">
     <value>Database Operations</value>
   </data>
   <data name="DatabaseControl.DatabaseStatusGroupBox.Header" xml:space="preserve">
     <value>Database Status</value>
-  </data>
-  <data name="DatabaseControl.ImportDatabaseButton.Content" xml:space="preserve">
-    <value>Import Database</value>
   </data>
   <data name="DatabaseControl.LogoCacheGroupBox.Header" xml:space="preserve">
     <value>Logo Cache</value>
@@ -322,11 +364,11 @@
   <data name="MainWindow.GuideMenuItem.Header" xml:space="preserve">
     <value>_Guide Export</value>
   </data>
-  <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
-    <value>Import Progress</value>
-  </data>
   <data name="DatabaseMigrationFailed" xml:space="preserve">
     <value>The database could not be created or updated. See the log for details.</value>
+  </data>
+  <data name="DatabaseUpdateCheckFailed" xml:space="preserve">
+    <value>The catalog could not be checked for updates. See the log for details.</value>
   </data>
   <data name="ErrorMessageCaptition" xml:space="preserve">
     <value>Error</value>

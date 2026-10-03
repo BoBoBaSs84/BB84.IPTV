@@ -63,4 +63,99 @@ internal static partial class Mappings
 		Quality = stream?.Quality,
 		LogoUrl = logo?.Url
 	};
+
+	/// <summary>
+	/// Gets the key that identifies the channel of the import.
+	/// </summary>
+	/// <param name="request">The imported channel.</param>
+	/// <returns>The key of the channel.</returns>
+	internal static string GetKey(this ChannelRequest request)
+		=> CatalogKey.Of(request.Id);
+
+	/// <summary>
+	/// Gets the key that identifies the stored channel.
+	/// </summary>
+	/// <param name="entity">The stored channel.</param>
+	/// <returns>The key of the channel.</returns>
+	internal static string GetKey(this ChannelEntity entity)
+		=> CatalogKey.Of(entity.Channel);
+
+	/// <summary>
+	/// Takes what the import holds into the stored channel.
+	/// </summary>
+	/// <param name="entity">The stored channel.</param>
+	/// <param name="request">The imported channel.</param>
+	/// <returns><see langword="true"/> if the channel changed.</returns>
+	internal static bool Apply(this ChannelEntity entity, ChannelRequest request)
+	{
+		bool changed = false;
+
+		if (Differs(entity.Name, request.Name))
+		{
+			entity.Name = request.Name;
+			changed = true;
+		}
+
+		if (Differs(entity.Country, request.Country))
+		{
+			entity.Country = request.Country;
+			changed = true;
+		}
+
+		if (entity.IsNsfw != request.IsNsfw)
+		{
+			entity.IsNsfw = request.IsNsfw;
+			changed = true;
+		}
+
+		if (entity.Launched != request.Launched)
+		{
+			entity.Launched = request.Launched;
+			changed = true;
+		}
+
+		if (entity.Closed != request.Closed)
+		{
+			entity.Closed = request.Closed;
+			changed = true;
+		}
+
+		if (Differs(entity.Network, request.Network))
+		{
+			entity.Network = request.Network;
+			changed = true;
+		}
+
+		if (Differs(entity.ReplacedBy, request.ReplacedBy))
+		{
+			entity.ReplacedBy = request.ReplacedBy;
+			changed = true;
+		}
+
+		if (Differs(entity.Website, request.Website))
+		{
+			entity.Website = request.Website;
+			changed = true;
+		}
+
+		if (Differs(entity.AltNames, request.AltNames))
+		{
+			entity.AltNames = [.. request.AltNames];
+			changed = true;
+		}
+
+		if (Differs(entity.Categories, request.Categories))
+		{
+			entity.Categories = [.. request.Categories];
+			changed = true;
+		}
+
+		if (Differs(entity.Owners, request.Owners))
+		{
+			entity.Owners = [.. request.Owners];
+			changed = true;
+		}
+
+		return changed;
+	}
 }

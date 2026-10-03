@@ -42,11 +42,21 @@ public interface IDatabaseService
 	Task MigrateDatabaseAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Imports all reference data into the database, including categories, countries, languages, and channels.
+	/// Reads every list of the iptv-org catalog and brings the stored catalog in line with it.
+	/// </summary>
+	/// <remarks>
+	/// A record that is new is added, a record that changed is updated and a row that is gone
+	/// upstream is removed, so the first run on an empty database is the former import. A list that
+	/// comes back without a single record is left alone, because a failed request looks the same.
+	/// </remarks>
+	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
+	/// <returns>What the synchronization did to each list of the catalog.</returns>
+	Task<CatalogSyncResponse> SynchronizeAsync(CancellationToken cancellationToken = default);
+
+	/// <summary>
+	/// Gets what is known about the synchronization of each list of the catalog.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
-	/// <returns>
-	/// A <see cref="DatabaseImportResponse"/> object containing the count of imported records for each repository.
-	/// </returns>
-	Task<DatabaseImportResponse> ImportDatabaseAsync(CancellationToken cancellationToken = default);
+	/// <returns>One entry per list, also for a list that was never read.</returns>
+	Task<IReadOnlyList<CatalogStatusResponse>> GetCatalogStatusAsync(CancellationToken cancellationToken = default);
 }

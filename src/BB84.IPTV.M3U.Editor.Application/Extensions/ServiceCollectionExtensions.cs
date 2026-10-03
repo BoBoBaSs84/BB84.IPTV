@@ -47,6 +47,7 @@ internal static class ServiceCollectionExtensions
 	{
 		services.AddSingleton<IEventService, EventService>();
 		services.AddSingleton<ICatalogService, CatalogService>();
+		services.AddSingleton<ICatalogUpdateService, CatalogUpdateService>();
 		services.AddSingleton<ICustomChannelService, CustomChannelService>();
 		services.AddSingleton<IDatabaseService, DatabaseService>();
 		services.AddSingleton<IChannelsXmlSerializer, ChannelsXmlSerializer>();

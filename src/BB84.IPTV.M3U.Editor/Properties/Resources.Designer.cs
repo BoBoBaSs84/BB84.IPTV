@@ -61,6 +61,15 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Added.
+        /// </summary>
+        public static string DatabaseControl_AddedColumn_Header {
+            get {
+                return ResourceManager.GetString("DatabaseControl.AddedColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string DatabaseControl_CancelLogoCacheButton_Content {
@@ -75,6 +84,24 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string DatabaseControl_CancelLogoCacheButton_ToolTip {
             get {
                 return ResourceManager.GetString("DatabaseControl.CancelLogoCacheButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Catalog.
+        /// </summary>
+        public static string DatabaseControl_CatalogKindColumn_Header {
+            get {
+                return ResourceManager.GetString("DatabaseControl.CatalogKindColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Catalog Status.
+        /// </summary>
+        public static string DatabaseControl_CatalogStatusGroupBox_Header {
+            get {
+                return ResourceManager.GetString("DatabaseControl.CatalogStatusGroupBox.Header", resourceCulture);
             }
         }
         
@@ -151,24 +178,6 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Database Imported.
-        /// </summary>
-        public static string DatabaseControl_DatabaseImportedCheckBox_Content {
-            get {
-                return ResourceManager.GetString("DatabaseControl.DatabaseImportedCheckBox.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Database Importing.
-        /// </summary>
-        public static string DatabaseControl_DatabaseImportingCheckBox_Content {
-            get {
-                return ResourceManager.GetString("DatabaseControl.DatabaseImportingCheckBox.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Database Operations.
         /// </summary>
         public static string DatabaseControl_DatabaseOperationsGroupBox_Header {
@@ -183,6 +192,24 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string DatabaseControl_DatabaseStatusGroupBox_Header {
             get {
                 return ResourceManager.GetString("DatabaseControl.DatabaseStatusGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Catalog Updated.
+        /// </summary>
+        public static string DatabaseControl_DatabaseSynchronizedCheckBox_Content {
+            get {
+                return ResourceManager.GetString("DatabaseControl.DatabaseSynchronizedCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Catalog Updating.
+        /// </summary>
+        public static string DatabaseControl_DatabaseSynchronizingCheckBox_Content {
+            get {
+                return ResourceManager.GetString("DatabaseControl.DatabaseSynchronizingCheckBox.Content", resourceCulture);
             }
         }
         
@@ -205,20 +232,29 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import Database.
+        ///   Looks up a localized string similar to First imported.
         /// </summary>
-        public static string DatabaseControl_ImportDatabaseButton_Content {
+        public static string DatabaseControl_FirstImportedColumn_Header {
             get {
-                return ResourceManager.GetString("DatabaseControl.ImportDatabaseButton.Content", resourceCulture);
+                return ResourceManager.GetString("DatabaseControl.FirstImportedColumn.Header", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import Progress.
+        ///   Looks up a localized string similar to Last changed.
         /// </summary>
-        public static string DatabaseControl_ImportProgressGroupBox_Header {
+        public static string DatabaseControl_LastChangedColumn_Header {
             get {
-                return ResourceManager.GetString("DatabaseControl.ImportProgressGroupBox.Header", resourceCulture);
+                return ResourceManager.GetString("DatabaseControl.LastChangedColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last checked.
+        /// </summary>
+        public static string DatabaseControl_LastCheckedColumn_Header {
+            get {
+                return ResourceManager.GetString("DatabaseControl.LastCheckedColumn.Header", resourceCulture);
             }
         }
         
@@ -232,11 +268,65 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Removed.
+        /// </summary>
+        public static string DatabaseControl_RemovedColumn_Header {
+            get {
+                return ResourceManager.GetString("DatabaseControl.RemovedColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Catalog.
+        /// </summary>
+        public static string DatabaseControl_SynchronizeDatabaseButton_Content {
+            get {
+                return ResourceManager.GetString("DatabaseControl.SynchronizeDatabaseButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reads the iptv-org lists and adds, updates and removes what changed.
+        /// </summary>
+        public static string DatabaseControl_SynchronizeDatabaseButton_ToolTip {
+            get {
+                return ResourceManager.GetString("DatabaseControl.SynchronizeDatabaseButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Progress.
+        /// </summary>
+        public static string DatabaseControl_SyncProgressGroupBox_Header {
+            get {
+                return ResourceManager.GetString("DatabaseControl.SyncProgressGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updated.
+        /// </summary>
+        public static string DatabaseControl_UpdatedColumn_Header {
+            get {
+                return ResourceManager.GetString("DatabaseControl.UpdatedColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The database could not be created or updated. See the log for details..
         /// </summary>
         public static string DatabaseMigrationFailed {
             get {
                 return ResourceManager.GetString("DatabaseMigrationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The catalog could not be checked for updates. See the log for details..
+        /// </summary>
+        public static string DatabaseUpdateCheckFailed {
+            get {
+                return ResourceManager.GetString("DatabaseUpdateCheckFailed", resourceCulture);
             }
         }
         
@@ -529,114 +619,6 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Information.
-        /// </summary>
-        public static string InformationMessageCaptition {
-            get {
-                return ResourceManager.GetString("InformationMessageCaptition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Language has been set to &apos;{0}&apos;..
-        /// </summary>
-        public static string LanguageSetTo {
-            get {
-                return ResourceManager.GetString("LanguageSetTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Guide _Overview.
-        /// </summary>
-        public static string MainWindow_GuideOverviewMenuItem_Header {
-            get {
-                return ResourceManager.GetString("MainWindow.GuideOverviewMenuItem.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Providers.
-        /// </summary>
-        public static string GuideOverviewControl_ProvidersGroupBox_Header {
-            get {
-                return ResourceManager.GetString("GuideOverviewControl.ProvidersGroupBox.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter providers.
-        /// </summary>
-        public static string GuideOverviewControl_ProviderSearchTextBox_Placeholder {
-            get {
-                return ResourceManager.GetString("GuideOverviewControl.ProviderSearchTextBox.Placeholder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refresh.
-        /// </summary>
-        public static string GuideOverviewControl_RefreshProvidersButton_Content {
-            get {
-                return ResourceManager.GetString("GuideOverviewControl.RefreshProvidersButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to All providers.
-        /// </summary>
-        public static string GuideOverviewControl_ClearProviderButton_Content {
-            get {
-                return ResourceManager.GetString("GuideOverviewControl.ClearProviderButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Guides.
-        /// </summary>
-        public static string GuideOverviewControl_ResultGroupBox_Header {
-            get {
-                return ResourceManager.GetString("GuideOverviewControl.ResultGroupBox.Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Channel, provider, identifier or language.
-        /// </summary>
-        public static string GuideOverviewControl_SearchTextBox_Placeholder {
-            get {
-                return ResourceManager.GetString("GuideOverviewControl.SearchTextBox.Placeholder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search.
-        /// </summary>
-        public static string GuideOverviewControl_SearchButton_Content {
-            get {
-                return ResourceManager.GetString("GuideOverviewControl.SearchButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Previous.
-        /// </summary>
-        public static string GuideOverviewControl_PreviousPageButton_Content {
-            get {
-                return ResourceManager.GetString("GuideOverviewControl.PreviousPageButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Next.
-        /// </summary>
-        public static string GuideOverviewControl_NextPageButton_Content {
-            get {
-                return ResourceManager.GetString("GuideOverviewControl.NextPageButton.Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Channel.
         /// </summary>
         public static string GuideOverviewControl_ChannelColumn_Header {
@@ -655,6 +637,24 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All providers.
+        /// </summary>
+        public static string GuideOverviewControl_ClearProviderButton_Content {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ClearProviderButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string GuideOverviewControl_CountryColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.CountryColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed.
         /// </summary>
         public static string GuideOverviewControl_FeedColumn_Header {
@@ -664,11 +664,92 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string GuideOverviewControl_LangColumn_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.LangColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string GuideOverviewControl_NextPageButton_Content {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.NextPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string GuideOverviewControl_PreviousPageButton_Content {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.PreviousPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Provider.
         /// </summary>
         public static string GuideOverviewControl_ProviderColumn_Header {
             get {
                 return ResourceManager.GetString("GuideOverviewControl.ProviderColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter providers.
+        /// </summary>
+        public static string GuideOverviewControl_ProviderSearchTextBox_Placeholder {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ProviderSearchTextBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Providers.
+        /// </summary>
+        public static string GuideOverviewControl_ProvidersGroupBox_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ProvidersGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string GuideOverviewControl_RefreshProvidersButton_Content {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.RefreshProvidersButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guides.
+        /// </summary>
+        public static string GuideOverviewControl_ResultGroupBox_Header {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ResultGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string GuideOverviewControl_SearchButton_Content {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.SearchButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel, provider, identifier or language.
+        /// </summary>
+        public static string GuideOverviewControl_SearchTextBox_Placeholder {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.SearchTextBox.Placeholder", resourceCulture);
             }
         }
         
@@ -691,20 +772,20 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Language.
+        ///   Looks up a localized string similar to Information.
         /// </summary>
-        public static string GuideOverviewControl_LangColumn_Header {
+        public static string InformationMessageCaptition {
             get {
-                return ResourceManager.GetString("GuideOverviewControl.LangColumn.Header", resourceCulture);
+                return ResourceManager.GetString("InformationMessageCaptition", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Country.
+        ///   Looks up a localized string similar to Language has been set to &apos;{0}&apos;..
         /// </summary>
-        public static string GuideOverviewControl_CountryColumn_Header {
+        public static string LanguageSetTo {
             get {
-                return ResourceManager.GetString("GuideOverviewControl.CountryColumn.Header", resourceCulture);
+                return ResourceManager.GetString("LanguageSetTo", resourceCulture);
             }
         }
         
@@ -714,6 +795,15 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string MainWindow_GuideMenuItem_Header {
             get {
                 return ResourceManager.GetString("MainWindow.GuideMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guide _Overview.
+        /// </summary>
+        public static string MainWindow_GuideOverviewMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.GuideOverviewMenuItem.Header", resourceCulture);
             }
         }
         
@@ -786,6 +876,24 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string SettingsControl_AutoSaveIntervalTextBlock_Text {
             get {
                 return ResourceManager.GetString("SettingsControl.AutoSaveIntervalTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update the catalog automatically.
+        /// </summary>
+        public static string SettingsControl_AutoUpdateCheckBox_Content {
+            get {
+                return ResourceManager.GetString("SettingsControl.AutoUpdateCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates a catalog that is older than the interval at the start, without asking.
+        /// </summary>
+        public static string SettingsControl_AutoUpdateCheckBox_ToolTip {
+            get {
+                return ResourceManager.GetString("SettingsControl.AutoUpdateCheckBox.ToolTip", resourceCulture);
             }
         }
         
@@ -948,6 +1056,24 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string SettingsControl_SaveSettingsButton_Content {
             get {
                 return ResourceManager.GetString("SettingsControl.SaveSettingsButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update interval (days):.
+        /// </summary>
+        public static string SettingsControl_UpdateIntervalDaysTextBlock_Text {
+            get {
+                return ResourceManager.GetString("SettingsControl.UpdateIntervalDaysTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After how many days the application offers to update the catalog, zero switches the check off.
+        /// </summary>
+        public static string SettingsControl_UpdateIntervalDaysTextBlock_ToolTip {
+            get {
+                return ResourceManager.GetString("SettingsControl.UpdateIntervalDaysTextBlock.ToolTip", resourceCulture);
             }
         }
         

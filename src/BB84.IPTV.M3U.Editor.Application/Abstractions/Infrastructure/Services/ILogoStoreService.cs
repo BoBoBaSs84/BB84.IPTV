@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -29,6 +29,17 @@ public interface ILogoStoreService
 	/// <param name="path">The full path of the file.</param>
 	/// <returns><see langword="true"/> if the file exists.</returns>
 	bool Exists(string? path);
+
+	/// <summary>
+	/// Deletes one cached file, so a logo the catalog no longer knows leaves nothing behind.
+	/// </summary>
+	/// <remarks>
+	/// A path outside the logo directory is refused, and a file that is already gone counts as
+	/// deleted by someone else.
+	/// </remarks>
+	/// <param name="path">The full path of the file.</param>
+	/// <returns><see langword="true"/> if a file was deleted.</returns>
+	bool Delete(string? path);
 
 	/// <summary>
 	/// Deletes every cached file.

@@ -22,7 +22,7 @@ public partial class DatabaseControl : UserControl
 
 	/// <inheritdoc/>
 	/// <remarks>
-	/// The state of the logo cache is read whenever the screen is shown, so an import or a run
+	/// The catalog status and the logo cache are read whenever the screen is shown, so a run
 	/// elsewhere is picked up. The load cannot be awaited here, so it reports a failure itself.
 	/// </remarks>
 	protected override void OnDataContextChanged(EventArgs e)
@@ -30,6 +30,6 @@ public partial class DatabaseControl : UserControl
 		base.OnDataContextChanged(e);
 
 		if (DataContext is DatabaseViewModel viewModel)
-			_ = viewModel.LoadLogoCacheStatusAndReportAsync();
+			_ = viewModel.LoadStatusAndReportAsync();
 	}
 }

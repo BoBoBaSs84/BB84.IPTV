@@ -150,20 +150,59 @@
   <data name="DatabaseCreateFailed" xml:space="preserve">
     <value>The database could not be created.</value>
   </data>
-  <data name="DatabaseImportFailed" xml:space="preserve">
-    <value>The database could not be imported.</value>
+  <data name="CatalogKindStream" xml:space="preserve">
+    <value>Streams</value>
   </data>
-  <data name="DatabaseImportProgressStatus" xml:space="preserve">
-    <value>Importing {0}: {1} records ({2} of {3}).</value>
+  <data name="CatalogKindLogo" xml:space="preserve">
+    <value>Logos</value>
   </data>
-  <data name="DatabaseImportStarted" xml:space="preserve">
-    <value>The database import has started.</value>
+  <data name="CatalogKindGuide" xml:space="preserve">
+    <value>Guides</value>
   </data>
-  <data name="DatabaseImportSucceeded" xml:space="preserve">
-    <value>The import is done, {0} records in total.</value>
+  <data name="CatalogKindFeed" xml:space="preserve">
+    <value>Feeds</value>
   </data>
-  <data name="DatabaseImportWithoutRecords" xml:space="preserve">
-    <value>The import is done, no records were imported.</value>
+  <data name="CatalogKindChannel" xml:space="preserve">
+    <value>Channels</value>
+  </data>
+  <data name="CatalogKindLanguage" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="CatalogKindCountry" xml:space="preserve">
+    <value>Countries</value>
+  </data>
+  <data name="CatalogKindCategory" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="CatalogStatusNever" xml:space="preserve">
+    <value>never</value>
+  </data>
+  <data name="DatabaseSyncNeverQuestion" xml:space="preserve">
+    <value>The catalog has not been imported yet. Import it now?</value>
+  </data>
+  <data name="DatabaseSyncQuestion" xml:space="preserve">
+    <value>The catalog was last updated {0} days ago. Update it now?</value>
+  </data>
+  <data name="DatabaseSyncEmptyResult" xml:space="preserve">
+    <value>{0}: iptv-org returned no records, nothing was changed.</value>
+  </data>
+  <data name="DatabaseSyncFailed" xml:space="preserve">
+    <value>The catalog could not be updated.</value>
+  </data>
+  <data name="DatabaseSyncSkipped" xml:space="preserve">
+    <value>The update is done, {0} lists returned no records and were left unchanged.</value>
+  </data>
+  <data name="DatabaseSyncUnchanged" xml:space="preserve">
+    <value>The catalog is up to date, nothing changed.</value>
+  </data>
+  <data name="DatabaseSyncSucceeded" xml:space="preserve">
+    <value>The catalog is up to date: {0} added, {1} updated, {2} removed.</value>
+  </data>
+  <data name="DatabaseSyncProgressStatus" xml:space="preserve">
+    <value>Updating {0}: {1} added, {2} updated, {3} removed ({4} of {5}).</value>
+  </data>
+  <data name="DatabaseSyncStarted" xml:space="preserve">
+    <value>The catalog update has started.</value>
   </data>
   <data name="DataDirectoryDialogTitle" xml:space="preserve">
     <value>Select the directory that holds the database</value>

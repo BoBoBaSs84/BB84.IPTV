@@ -40,6 +40,23 @@ internal sealed class LogoStoreService(IPathService pathService, IProviderServic
 	public bool Exists(string? path)
 		=> !string.IsNullOrWhiteSpace(path) && providerService.File.Exists(path);
 
+	public bool Delete(string? path)
+	{
+		if (!Exists(path))
+			return false;
+
+		// A path of an earlier logo directory is none of our business any more.
+		string fullPath = providerService.Path.GetFullPath(path!);
+		string directory = providerService.Path.GetFullPath(pathService.LogoDirectory);
+
+		if (!fullPath.StartsWith(directory + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+			return false;
+
+		providerService.File.Delete(fullPath);
+
+		return true;
+	}
+
 	public int Clear()
 	{
 		if (!providerService.Directory.Exists(pathService.LogoDirectory))

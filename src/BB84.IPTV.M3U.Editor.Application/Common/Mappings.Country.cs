@@ -31,4 +31,51 @@ internal static partial class Mappings
 		Languages = [.. request.Languages],
 		Flag = request.Flag
 	};
+
+	/// <summary>
+	/// Gets the key that identifies the country of the import.
+	/// </summary>
+	/// <param name="request">The imported country.</param>
+	/// <returns>The key of the country.</returns>
+	internal static string GetKey(this CountryRequest request)
+		=> CatalogKey.Of(request.Code);
+
+	/// <summary>
+	/// Gets the key that identifies the stored country.
+	/// </summary>
+	/// <param name="entity">The stored country.</param>
+	/// <returns>The key of the country.</returns>
+	internal static string GetKey(this CountryEntity entity)
+		=> CatalogKey.Of(entity.Code);
+
+	/// <summary>
+	/// Takes what the import holds into the stored country.
+	/// </summary>
+	/// <param name="entity">The stored country.</param>
+	/// <param name="request">The imported country.</param>
+	/// <returns><see langword="true"/> if the country changed.</returns>
+	internal static bool Apply(this CountryEntity entity, CountryRequest request)
+	{
+		bool changed = false;
+
+		if (Differs(entity.Name, request.Name))
+		{
+			entity.Name = request.Name;
+			changed = true;
+		}
+
+		if (Differs(entity.Flag, request.Flag))
+		{
+			entity.Flag = request.Flag;
+			changed = true;
+		}
+
+		if (Differs(entity.Languages, request.Languages))
+		{
+			entity.Languages = [.. request.Languages];
+			changed = true;
+		}
+
+		return changed;
+	}
 }

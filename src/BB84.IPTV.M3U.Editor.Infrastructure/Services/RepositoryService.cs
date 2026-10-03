@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -22,6 +22,7 @@ internal sealed class RepositoryService : IRepositoryService
 		"SELECT COUNT(*) AS \"Value\" FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name NOT IN ('__EFMigrationsHistory', '__EFMigrationsLock')";
 
 	private readonly IDatabaseContext _context;
+	private readonly Lazy<ICatalogSyncRepository> _catalogSyncRepository;
 	private readonly Lazy<ICategoryRepository> _categoryRepository;
 	private readonly Lazy<IChannelRepository> _channelRepository;
 	private readonly Lazy<ICountryRepository> _countryRepository;
@@ -42,6 +43,7 @@ internal sealed class RepositoryService : IRepositoryService
 	public RepositoryService(IDatabaseContext context)
 	{
 		_context = context;
+		_catalogSyncRepository = new Lazy<ICatalogSyncRepository>(() => new CatalogSyncRepository(_context));
 		_categoryRepository = new Lazy<ICategoryRepository>(() => new CategoryRepository(_context));
 		_channelRepository = new Lazy<IChannelRepository>(() => new ChannelRepository(_context));
 		_countryRepository = new Lazy<ICountryRepository>(() => new CountryRepository(_context));
@@ -56,6 +58,7 @@ internal sealed class RepositoryService : IRepositoryService
 		_streamRepository = new Lazy<IStreamRepository>(() => new StreamRepository(_context));
 	}
 
+	public ICatalogSyncRepository CatalogSyncs => _catalogSyncRepository.Value;
 	public ICategoryRepository Categories => _categoryRepository.Value;
 	public IChannelRepository Channels => _channelRepository.Value;
 	public ICountryRepository Countries => _countryRepository.Value;
@@ -101,6 +104,10 @@ internal sealed class RepositoryService : IRepositoryService
 		deleted += await _context.Set<LanguageEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
 		deleted += await _context.Set<CountryEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
 		deleted += await _context.Set<CategoryEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
+
+		// What was synchronized is gone with the catalog, so the next run starts as a first import.
+		_ = await _context.Set<CatalogSyncEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
+
 		return deleted;
 	}
 

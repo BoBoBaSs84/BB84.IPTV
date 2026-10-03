@@ -51,4 +51,39 @@ internal static partial class Mappings
 		ChannelName = channel?.Name,
 		Country = channel?.Country
 	};
+
+	/// <summary>
+	/// Gets the key that identifies the guide of the import.
+	/// </summary>
+	/// <param name="request">The imported guide.</param>
+	/// <returns>The key of the guide.</returns>
+	internal static string GetKey(this GuideRequest request)
+		=> CatalogKey.Of(request.Channel, request.Feed, request.Site, request.SiteId, request.Lang);
+
+	/// <summary>
+	/// Gets the key that identifies the stored guide.
+	/// </summary>
+	/// <param name="entity">The stored guide.</param>
+	/// <returns>The key of the guide.</returns>
+	internal static string GetKey(this GuideEntity entity)
+		=> CatalogKey.Of(entity.Channel, entity.Feed, entity.Site, entity.SiteId, entity.Lang);
+
+	/// <summary>
+	/// Takes what the import holds into the stored guide.
+	/// </summary>
+	/// <remarks>
+	/// Everything but the name the site uses is part of the key, so only that can change.
+	/// </remarks>
+	/// <param name="entity">The stored guide.</param>
+	/// <param name="request">The imported guide.</param>
+	/// <returns><see langword="true"/> if the guide changed.</returns>
+	internal static bool Apply(this GuideEntity entity, GuideRequest request)
+	{
+		if (!Differs(entity.SiteName, request.SiteName))
+			return false;
+
+		entity.SiteName = request.SiteName;
+
+		return true;
+	}
 }

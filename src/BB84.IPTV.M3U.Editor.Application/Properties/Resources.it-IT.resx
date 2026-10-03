@@ -151,20 +151,59 @@
   <data name="DatabaseCreateFailed" xml:space="preserve">
     <value>Non è stato possibile creare il database.</value>
   </data>
-  <data name="DatabaseImportFailed" xml:space="preserve">
-    <value>Non è stato possibile importare il database.</value>
+  <data name="CatalogKindStream" xml:space="preserve">
+    <value>Stream</value>
   </data>
-  <data name="DatabaseImportProgressStatus" xml:space="preserve">
-    <value>Importazione di {0}: {1} record ({2} di {3}).</value>
+  <data name="CatalogKindLogo" xml:space="preserve">
+    <value>Loghi</value>
   </data>
-  <data name="DatabaseImportStarted" xml:space="preserve">
-    <value>L’importazione del database è iniziata.</value>
+  <data name="CatalogKindGuide" xml:space="preserve">
+    <value>Guide</value>
   </data>
-  <data name="DatabaseImportSucceeded" xml:space="preserve">
-    <value>L’importazione è finita, {0} record in totale.</value>
+  <data name="CatalogKindFeed" xml:space="preserve">
+    <value>Feed</value>
   </data>
-  <data name="DatabaseImportWithoutRecords" xml:space="preserve">
-    <value>L’importazione è finita, nessun record importato.</value>
+  <data name="CatalogKindChannel" xml:space="preserve">
+    <value>Canali</value>
+  </data>
+  <data name="CatalogKindLanguage" xml:space="preserve">
+    <value>Lingue</value>
+  </data>
+  <data name="CatalogKindCountry" xml:space="preserve">
+    <value>Paesi</value>
+  </data>
+  <data name="CatalogKindCategory" xml:space="preserve">
+    <value>Categorie</value>
+  </data>
+  <data name="CatalogStatusNever" xml:space="preserve">
+    <value>mai</value>
+  </data>
+  <data name="DatabaseSyncNeverQuestion" xml:space="preserve">
+    <value>Il catalogo non è ancora stato importato. Importarlo ora?</value>
+  </data>
+  <data name="DatabaseSyncQuestion" xml:space="preserve">
+    <value>Il catalogo è stato aggiornato l'ultima volta {0} giorni fa. Aggiornarlo ora?</value>
+  </data>
+  <data name="DatabaseSyncEmptyResult" xml:space="preserve">
+    <value>{0}: iptv-org non ha restituito record, non è stato modificato nulla.</value>
+  </data>
+  <data name="DatabaseSyncFailed" xml:space="preserve">
+    <value>Non è stato possibile aggiornare il catalogo.</value>
+  </data>
+  <data name="DatabaseSyncSkipped" xml:space="preserve">
+    <value>L'aggiornamento è terminato, {0} elenchi non hanno restituito record e sono rimasti invariati.</value>
+  </data>
+  <data name="DatabaseSyncUnchanged" xml:space="preserve">
+    <value>Il catalogo è aggiornato, nulla è cambiato.</value>
+  </data>
+  <data name="DatabaseSyncSucceeded" xml:space="preserve">
+    <value>Il catalogo è aggiornato: {0} aggiunti, {1} aggiornati, {2} rimossi.</value>
+  </data>
+  <data name="DatabaseSyncProgressStatus" xml:space="preserve">
+    <value>Aggiornamento di {0}: {1} aggiunti, {2} aggiornati, {3} rimossi ({4} di {5}).</value>
+  </data>
+  <data name="DatabaseSyncStarted" xml:space="preserve">
+    <value>L'aggiornamento del catalogo è iniziato.</value>
   </data>
   <data name="DataDirectoryDialogTitle" xml:space="preserve">
     <value>Seleziona la cartella che contiene il database</value>

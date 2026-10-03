@@ -120,6 +120,57 @@
   <data name="DatabaseControl.CheckDatabaseButton.Content" xml:space="preserve">
     <value>Controlla il database</value>
   </data>
+  <data name="SettingsControl.UpdateIntervalDaysTextBlock.ToolTip" xml:space="preserve">
+    <value>Dopo quanti giorni l'applicazione propone di aggiornare il catalogo, zero disattiva il controllo</value>
+  </data>
+  <data name="SettingsControl.UpdateIntervalDaysTextBlock.Text" xml:space="preserve">
+    <value>Intervallo di aggiornamento (giorni):</value>
+  </data>
+  <data name="SettingsControl.AutoUpdateCheckBox.ToolTip" xml:space="preserve">
+    <value>All'avvio aggiorna senza chiedere un catalogo più vecchio dell'intervallo</value>
+  </data>
+  <data name="SettingsControl.AutoUpdateCheckBox.Content" xml:space="preserve">
+    <value>Aggiorna il catalogo automaticamente</value>
+  </data>
+  <data name="DatabaseControl.RemovedColumn.Header" xml:space="preserve">
+    <value>Rimossi</value>
+  </data>
+  <data name="DatabaseControl.UpdatedColumn.Header" xml:space="preserve">
+    <value>Aggiornati</value>
+  </data>
+  <data name="DatabaseControl.AddedColumn.Header" xml:space="preserve">
+    <value>Aggiunti</value>
+  </data>
+  <data name="DatabaseControl.LastChangedColumn.Header" xml:space="preserve">
+    <value>Ultima modifica</value>
+  </data>
+  <data name="DatabaseControl.LastCheckedColumn.Header" xml:space="preserve">
+    <value>Ultimo controllo</value>
+  </data>
+  <data name="DatabaseControl.FirstImportedColumn.Header" xml:space="preserve">
+    <value>Primo import</value>
+  </data>
+  <data name="DatabaseControl.CatalogKindColumn.Header" xml:space="preserve">
+    <value>Catalogo</value>
+  </data>
+  <data name="DatabaseControl.CatalogStatusGroupBox.Header" xml:space="preserve">
+    <value>Stato del catalogo</value>
+  </data>
+  <data name="DatabaseControl.SyncProgressGroupBox.Header" xml:space="preserve">
+    <value>Avanzamento aggiornamento</value>
+  </data>
+  <data name="DatabaseControl.DatabaseSynchronizingCheckBox.Content" xml:space="preserve">
+    <value>Aggiornamento catalogo</value>
+  </data>
+  <data name="DatabaseControl.DatabaseSynchronizedCheckBox.Content" xml:space="preserve">
+    <value>Catalogo aggiornato</value>
+  </data>
+  <data name="DatabaseControl.SynchronizeDatabaseButton.ToolTip" xml:space="preserve">
+    <value>Legge gli elenchi di iptv-org e aggiunge, aggiorna e rimuove ciò che è cambiato</value>
+  </data>
+  <data name="DatabaseControl.SynchronizeDatabaseButton.Content" xml:space="preserve">
+    <value>Aggiorna catalogo</value>
+  </data>
   <data name="DatabaseControl.CreateDatabaseButton.Content" xml:space="preserve">
     <value>Crea banca dati</value>
   </data>
@@ -135,20 +186,11 @@
   <data name="DatabaseControl.DatabaseCreatingCheckBox.Content" xml:space="preserve">
     <value>Creazione del database</value>
   </data>
-  <data name="DatabaseControl.DatabaseImportedCheckBox.Content" xml:space="preserve">
-    <value>Database importato</value>
-  </data>
-  <data name="DatabaseControl.DatabaseImportingCheckBox.Content" xml:space="preserve">
-    <value>Importazione del database</value>
-  </data>
   <data name="DatabaseControl.DatabaseOperationsGroupBox.Header" xml:space="preserve">
     <value>Operazioni sulla banca dati</value>
   </data>
   <data name="DatabaseControl.DatabaseStatusGroupBox.Header" xml:space="preserve">
     <value>Stato della banca dati</value>
-  </data>
-  <data name="DatabaseControl.ImportDatabaseButton.Content" xml:space="preserve">
-    <value>Importa banca dati</value>
   </data>
   <data name="DatabaseControl.LogoCacheGroupBox.Header" xml:space="preserve">
     <value>Cache dei loghi</value>
@@ -321,11 +363,11 @@
   <data name="MainWindow.GuideMenuItem.Header" xml:space="preserve">
     <value>Esporta _guida</value>
   </data>
-  <data name="DatabaseControl.ImportProgressGroupBox.Header" xml:space="preserve">
-    <value>Importa avanzamento</value>
-  </data>
   <data name="DatabaseMigrationFailed" xml:space="preserve">
     <value>Impossibile creare o aggiornare il database. Consultare il log per i dettagli.</value>
+  </data>
+  <data name="DatabaseUpdateCheckFailed" xml:space="preserve">
+    <value>Non è stato possibile verificare gli aggiornamenti del catalogo. Vedere il registro.</value>
   </data>
   <data name="ErrorMessageCaptition" xml:space="preserve">
     <value>Errore</value>
@@ -458,5 +500,8 @@
   </data>
   <data name="WarningMessageCaptition" xml:space="preserve">
     <value>Avvertimento</value>
+  </data>
+  <data name="QuestionMessageCaptition" xml:space="preserve">
+    <value>Domanda</value>
   </data>
 </root>

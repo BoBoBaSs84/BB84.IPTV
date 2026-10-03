@@ -88,7 +88,7 @@
 														Margin="4">
 			<Grid Margin="8"
 						ColumnDefinitions="Auto,*"
-						RowDefinitions="Auto,Auto">
+						RowDefinitions="Auto,Auto,Auto,Auto">
 				<TextBlock Grid.Row="0"
 									 Grid.Column="0"
 									 Text="{x:Static p:Resources.SettingsControl_CommandTimeoutTextBlock_Text}"
@@ -107,6 +107,23 @@
 											 Grid.Column="1"
 											 Classes="Integer"
 											 Value="{Binding Database.MaxBatchSize}" />
+				<TextBlock Grid.Row="2"
+									 Grid.Column="0"
+									 Text="{x:Static p:Resources.SettingsControl_UpdateIntervalDaysTextBlock_Text}"
+									 ToolTip.Tip="{x:Static p:Resources.SettingsControl_UpdateIntervalDaysTextBlock_ToolTip}"
+									 Margin="4"
+									 VerticalAlignment="Center" />
+				<NumericUpDown Grid.Row="2"
+											 Grid.Column="1"
+											 Classes="Integer"
+											 Minimum="0"
+											 Value="{Binding Database.UpdateIntervalDays}" />
+				<CheckBox Grid.Row="3"
+									Grid.ColumnSpan="2"
+									Content="{x:Static p:Resources.SettingsControl_AutoUpdateCheckBox_Content}"
+									ToolTip.Tip="{x:Static p:Resources.SettingsControl_AutoUpdateCheckBox_ToolTip}"
+									Margin="4"
+									IsChecked="{Binding Database.AutoUpdate}" />
 			</Grid>
 		</HeaderedContentControl>
 		<HeaderedContentControl Grid.Row="1"

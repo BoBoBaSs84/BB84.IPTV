@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -189,6 +189,16 @@ public sealed class LogoCachePersistenceTests
 
 		public bool Exists(string? path)
 			=> !string.IsNullOrWhiteSpace(path) && File.Exists(path);
+
+		public bool Delete(string? path)
+		{
+			if (!Exists(path))
+				return false;
+
+			File.Delete(path!);
+
+			return true;
+		}
 
 		public int Clear()
 		{
