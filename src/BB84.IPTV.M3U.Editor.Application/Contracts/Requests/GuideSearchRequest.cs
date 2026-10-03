@@ -1,0 +1,44 @@
+// Copyright: 2026 Robert Peter Meyer
+// License: MIT
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+using BB84.IPTV.M3U.Editor.Application.Enumerators;
+using BB84.IPTV.M3U.Editor.Application.Features;
+
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+
+/// <summary>
+/// Represents the filter of a search across the guides of every site.
+/// </summary>
+/// <remarks>
+/// The result is paged, see <see cref="Parameters"/>, and ordered by <see cref="SortBy"/>, so the
+/// order covers the whole result and not only the page that is read.
+/// </remarks>
+public sealed class GuideSearchRequest : Parameters
+{
+	/// <summary>
+	/// Gets or initializes the text a guide must hold, in the channel identifier, the channel name,
+	/// the site, the site identifier, the site name or the language.
+	/// </summary>
+	/// <remarks>
+	/// A text of the form <c>channel@feed</c> is split, so the identifier a <c>channels.xml</c> holds
+	/// finds its guide.
+	/// </remarks>
+	public string? SearchText { get; init; }
+
+	/// <summary>
+	/// Gets or initializes the site the search is limited to, <see langword="null"/> for every site.
+	/// </summary>
+	public string? Site { get; init; }
+
+	/// <summary>
+	/// Gets or initializes the column the guides are ordered by.
+	/// </summary>
+	public GuideSortColumn SortBy { get; init; }
+
+	/// <summary>
+	/// Gets or initializes whether the guides are ordered the other way round.
+	/// </summary>
+	public bool Descending { get; init; }
+}

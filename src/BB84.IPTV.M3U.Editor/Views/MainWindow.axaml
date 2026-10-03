@@ -117,6 +117,12 @@
 						<Image Source="/Resources/document_view.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
+				<MenuItem Header="{x:Static p:Resources.MainWindow_GuideOverviewMenuItem_Header}"
+									Click="GuideOverviewMenuItem_Click">
+					<MenuItem.Icon>
+						<Image Source="/Resources/document.ico" />
+					</MenuItem.Icon>
+				</MenuItem>
 				<MenuItem Header="_Database"
 									Click="DatabaseMenuItem_Click">
 					<MenuItem.Icon>

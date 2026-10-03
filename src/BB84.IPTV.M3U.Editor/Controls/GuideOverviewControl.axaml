@@ -1,0 +1,149 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
+						 xmlns:r="using:BB84.IPTV.M3U.Editor.Application.Contracts.Responses"
+						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
+						 mc:Ignorable="d"
+						 d:DesignWidth="1200"
+						 d:DesignHeight="700"
+						 x:Class="BB84.IPTV.M3U.Editor.Controls.GuideOverviewControl"
+						 x:DataType="vm:GuideOverviewViewModel">
+	<Grid ColumnDefinitions="320,Auto,*">
+		<!-- The providers the guides are grabbed from -->
+		<HeaderedContentControl Grid.Column="0"
+														Theme="{StaticResource GroupBox}"
+														Header="{x:Static p:Resources.GuideOverviewControl_ProvidersGroupBox_Header}"
+														Margin="4">
+			<DockPanel>
+				<StackPanel DockPanel.Dock="Top"
+										Margin="0,0,0,4">
+					<TextBox PlaceholderText="{x:Static p:Resources.GuideOverviewControl_ProviderSearchTextBox_Placeholder}"
+									 Text="{Binding ProviderSearchText}" />
+					<StackPanel Orientation="Horizontal"
+											Spacing="4"
+											Margin="0,4,0,0">
+						<Button Content="{x:Static p:Resources.GuideOverviewControl_RefreshProvidersButton_Content}"
+										Command="{Binding RefreshProvidersCommand}" />
+						<Button Content="{x:Static p:Resources.GuideOverviewControl_ClearProviderButton_Content}"
+										Command="{Binding ClearProviderCommand}" />
+					</StackPanel>
+				</StackPanel>
+
+				<TextBlock DockPanel.Dock="Bottom"
+									 Text="{Binding ProviderStatusMessage}"
+									 Foreground="#888"
+									 Margin="0,4,0,0"
+									 TextWrapping="Wrap" />
+
+				<ListBox x:Name="ProviderListBox"
+								 ItemsSource="{Binding Providers}"
+								 SelectedItem="{Binding SelectedProvider}">
+					<ListBox.ItemTemplate>
+						<DataTemplate x:DataType="r:GuideSiteResponse">
+							<StackPanel>
+								<TextBlock Text="{Binding Site}" />
+								<TextBlock Text="{Binding ChannelCount, StringFormat='{}{0} channels'}"
+													 Foreground="#888" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</DockPanel>
+		</HeaderedContentControl>
+
+		<GridSplitter Grid.Column="1"
+									Width="4"
+									ResizeDirection="Columns" />
+
+		<!-- The guides of the search, one per channel and provider -->
+		<HeaderedContentControl Grid.Column="2"
+														Theme="{StaticResource GroupBox}"
+														Header="{x:Static p:Resources.GuideOverviewControl_ResultGroupBox_Header}"
+														Margin="4">
+			<DockPanel>
+				<StackPanel DockPanel.Dock="Top"
+										Orientation="Horizontal"
+										Spacing="4"
+										Margin="0,0,0,4">
+					<TextBox x:Name="SearchTextBox"
+									 Width="320"
+									 PlaceholderText="{x:Static p:Resources.GuideOverviewControl_SearchTextBox_Placeholder}"
+									 Text="{Binding SearchText}"
+									 KeyDown="OnSearchTextBoxKeyDown" />
+					<Button Content="{x:Static p:Resources.GuideOverviewControl_SearchButton_Content}"
+									Command="{Binding SearchCommand}" />
+				</StackPanel>
+
+				<StackPanel DockPanel.Dock="Bottom"
+										Orientation="Horizontal"
+										Spacing="4"
+										Margin="0,4,0,0">
+					<Button Content="{x:Static p:Resources.GuideOverviewControl_PreviousPageButton_Content}"
+									Command="{Binding PreviousPageCommand}" />
+					<Button Content="{x:Static p:Resources.GuideOverviewControl_NextPageButton_Content}"
+									Command="{Binding NextPageCommand}" />
+					<TextBlock Text="{Binding StatusMessage}"
+										 Foreground="#888"
+										 VerticalAlignment="Center"
+										 Margin="8,0,0,0"
+										 TextWrapping="Wrap" />
+				</StackPanel>
+
+				<!-- The sort of a column is pushed into the query, see the Sorting handler. -->
+				<DataGrid x:Name="GuideDataGrid"
+									AutoGenerateColumns="False"
+									IsReadOnly="True"
+									CanUserSortColumns="True"
+									SelectionMode="Single"
+									GridLinesVisibility="All"
+									ItemsSource="{Binding Guides}"
+									Sorting="OnGuidesSorting">
+					<DataGrid.Columns>
+						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																Header="{x:Static p:Resources.GuideOverviewControl_ChannelColumn_Header}"
+																Binding="{Binding Channel}"
+																SortMemberPath="Channel"
+																Width="*" />
+						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																Header="{x:Static p:Resources.GuideOverviewControl_ChannelNameColumn_Header}"
+																Binding="{Binding ChannelName}"
+																SortMemberPath="ChannelName"
+																Width="2*" />
+						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																Header="{x:Static p:Resources.GuideOverviewControl_FeedColumn_Header}"
+																Binding="{Binding Feed}"
+																SortMemberPath="Feed"
+																Width="80" />
+						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																Header="{x:Static p:Resources.GuideOverviewControl_ProviderColumn_Header}"
+																Binding="{Binding Site}"
+																SortMemberPath="Site"
+																Width="*" />
+						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																Header="{x:Static p:Resources.GuideOverviewControl_SiteIdColumn_Header}"
+																Binding="{Binding SiteId}"
+																SortMemberPath="SiteId"
+																Width="*" />
+						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																Header="{x:Static p:Resources.GuideOverviewControl_SiteNameColumn_Header}"
+																Binding="{Binding SiteName}"
+																SortMemberPath="SiteName"
+																Width="*" />
+						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																Header="{x:Static p:Resources.GuideOverviewControl_LangColumn_Header}"
+																Binding="{Binding Lang}"
+																SortMemberPath="Lang"
+																Width="80" />
+						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
+																Header="{x:Static p:Resources.GuideOverviewControl_CountryColumn_Header}"
+																Binding="{Binding Country}"
+																SortMemberPath="Country"
+																Width="80" />
+					</DataGrid.Columns>
+				</DataGrid>
+			</DockPanel>
+		</HeaderedContentControl>
+	</Grid>
+</UserControl>

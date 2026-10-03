@@ -68,6 +68,10 @@ public sealed class MainWindowTests
 				UiTest.Settle();
 				Assert.HasCount(1, window.GetVisualDescendants().OfType<PlaylistsControl>().ToList());
 
+				navigationService.NavigateTo<GuideOverviewViewModel>();
+				UiTest.Settle();
+				Assert.HasCount(1, window.GetVisualDescendants().OfType<GuideOverviewControl>().ToList());
+
 				Assert.IsEmpty(sink.Messages, string.Join(Environment.NewLine, sink.Messages));
 			}
 			finally
@@ -138,12 +142,14 @@ public sealed class MainWindowTests
 		PlaylistsViewModel playlists = ViewModelFactory.CreatePlaylists();
 		CatalogViewModel catalog = ViewModelFactory.CreateCatalog();
 		MergeViewModel merge = ViewModelFactory.CreateMerge();
+		GuideOverviewViewModel guideOverview = ViewModelFactory.CreateGuideOverview();
 
 		TestNavigationService navigationService = new(new Dictionary<Type, ViewModelBase>
 		{
 			[typeof(PlaylistsViewModel)] = playlists,
 			[typeof(CatalogViewModel)] = catalog,
-			[typeof(MergeViewModel)] = merge
+			[typeof(MergeViewModel)] = merge,
+			[typeof(GuideOverviewViewModel)] = guideOverview
 		});
 
 		Mock<IHostEnvironment> hostEnvironmentMock = new();

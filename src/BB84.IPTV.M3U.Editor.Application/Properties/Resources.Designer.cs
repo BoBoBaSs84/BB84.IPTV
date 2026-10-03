@@ -256,6 +256,24 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No guide matches the search..
+        /// </summary>
+        public static string GuideOverviewNoResult {
+            get {
+                return ResourceManager.GetString("GuideOverviewNoResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1} providers..
+        /// </summary>
+        public static string GuideOverviewProvidersStatus {
+            get {
+                return ResourceManager.GetString("GuideOverviewProvidersStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} sites known..
         /// </summary>
         public static string GuideSitesStatus {

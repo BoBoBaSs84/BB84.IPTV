@@ -186,6 +186,60 @@
   <data name="GuideControl.ExportButton.Content" xml:space="preserve">
     <value>Esporta channels.xml</value>
   </data>
+  <data name="GuideOverviewControl.CountryColumn.Header" xml:space="preserve">
+    <value>Paese</value>
+  </data>
+  <data name="GuideOverviewControl.LangColumn.Header" xml:space="preserve">
+    <value>Lingua</value>
+  </data>
+  <data name="GuideOverviewControl.SiteNameColumn.Header" xml:space="preserve">
+    <value>Nome sito</value>
+  </data>
+  <data name="GuideOverviewControl.SiteIdColumn.Header" xml:space="preserve">
+    <value>ID sito</value>
+  </data>
+  <data name="GuideOverviewControl.ProviderColumn.Header" xml:space="preserve">
+    <value>Fornitore</value>
+  </data>
+  <data name="GuideOverviewControl.FeedColumn.Header" xml:space="preserve">
+    <value>Feed</value>
+  </data>
+  <data name="GuideOverviewControl.ChannelNameColumn.Header" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="GuideOverviewControl.ChannelColumn.Header" xml:space="preserve">
+    <value>Canale</value>
+  </data>
+  <data name="GuideOverviewControl.NextPageButton.Content" xml:space="preserve">
+    <value>Successivo</value>
+  </data>
+  <data name="GuideOverviewControl.PreviousPageButton.Content" xml:space="preserve">
+    <value>Precedente</value>
+  </data>
+  <data name="GuideOverviewControl.SearchButton.Content" xml:space="preserve">
+    <value>Cerca</value>
+  </data>
+  <data name="GuideOverviewControl.SearchTextBox.Placeholder" xml:space="preserve">
+    <value>Canale, fornitore, identificatore o lingua</value>
+  </data>
+  <data name="GuideOverviewControl.ResultGroupBox.Header" xml:space="preserve">
+    <value>Guide</value>
+  </data>
+  <data name="GuideOverviewControl.ClearProviderButton.Content" xml:space="preserve">
+    <value>Tutti i fornitori</value>
+  </data>
+  <data name="GuideOverviewControl.RefreshProvidersButton.Content" xml:space="preserve">
+    <value>Aggiorna</value>
+  </data>
+  <data name="GuideOverviewControl.ProviderSearchTextBox.Placeholder" xml:space="preserve">
+    <value>Filtra fornitori</value>
+  </data>
+  <data name="GuideOverviewControl.ProvidersGroupBox.Header" xml:space="preserve">
+    <value>Fornitori</value>
+  </data>
+  <data name="MainWindow.GuideOverviewMenuItem.Header" xml:space="preserve">
+    <value>_Panoramica guide</value>
+  </data>
   <data name="GuideControl.ExportButton.ToolTip" xml:space="preserve">
     <value>Scrivere il channels.xml letto dal grabber EPG di iptv-org</value>
   </data>
