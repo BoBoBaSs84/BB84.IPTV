@@ -4,6 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using System.Collections.Concurrent;
+using System.Linq.Expressions;
 
 using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
@@ -27,9 +28,10 @@ using Moq;
 namespace BB84.IPTV.M3U.Editor.Application.Tests.Services;
 
 [TestClass]
-public sealed class LogoServiceTests
+public sealed partial class LogoServiceTests
 {
 	private readonly Mock<ILogoRepository> _logoRepositoryMock = new();
+	private readonly Mock<IChannelRepository> _channelRepositoryMock = new();
 	private readonly Mock<IDownloadService> _downloadServiceMock = new();
 	private readonly Mock<ILogoStoreService> _logoStoreServiceMock = new();
 	private readonly Mock<IEventService> _eventServiceMock = new();
@@ -39,6 +41,7 @@ public sealed class LogoServiceTests
 	/// </summary>
 	private readonly ConcurrentDictionary<string, byte> _filesOnDisk = new(StringComparer.OrdinalIgnoreCase);
 	private readonly List<LogoEntity> _logos = [];
+	private readonly List<ChannelEntity> _channels = [];
 
 	/// <summary>
 	/// The queries the service ran, so a test can tell what it read and how it read it.
@@ -48,6 +51,17 @@ public sealed class LogoServiceTests
 
 	public LogoServiceTests()
 	{
+		_channels.Add(new ChannelEntity
+		{
+			Channel = "DasErste.de",
+			Name = "Das Erste",
+			Country = "DE",
+			AltNames = [],
+			Categories = [],
+			Owners = [],
+			IsNsfw = false
+		});
+
 		_logos.AddRange(
 		[
 			CreateLogo(1, "DasErste.de", null, "https://logo.example/ard.png", "PNG", tags: []),
@@ -61,10 +75,47 @@ public sealed class LogoServiceTests
 				lock (_queries)
 					_queries.Add(query);
 
-				return query.Where is null
-					? [.. _logos]
-					: [.. _logos.Where(query.Where.Compile())];
+				IEnumerable<LogoEntity> logos = query.Where is null
+					? _logos
+					: _logos.Where(query.Where.Compile());
+
+				if (query.OrderBy is not null)
+					logos = query.OrderBy(logos.AsQueryable());
+
+				if (query.Skip is int skip)
+					logos = logos.Skip(skip);
+
+				if (query.Take is int take)
+					logos = logos.Take(take);
+
+				return [.. logos];
 			});
+
+		_logoRepositoryMock.Setup(x => x.CountAsync(It.IsAny<Query<LogoEntity>>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((Query<LogoEntity> query, CancellationToken token) =>
+			{
+				lock (_queries)
+					_queries.Add(query);
+
+				return query.Where is null ? _logos.Count : _logos.Count(query.Where.Compile());
+			});
+
+		_channelRepositoryMock.Setup(x => x.GetListAsync(
+				It.IsAny<Expression<Func<ChannelEntity, string>>>(),
+				It.IsAny<Query<ChannelEntity>>(),
+				It.IsAny<CancellationToken>()))
+			.ReturnsAsync((Expression<Func<ChannelEntity, string>> projection, Query<ChannelEntity> query, CancellationToken token)
+				=> [.. Filter(query).Select(projection.Compile())]);
+
+		_channelRepositoryMock.Setup(x => x.GetListAsync(
+				It.IsAny<Expression<Func<ChannelEntity, ChannelInfo>>>(),
+				It.IsAny<Query<ChannelEntity>>(),
+				It.IsAny<CancellationToken>()))
+			.ReturnsAsync((Expression<Func<ChannelEntity, ChannelInfo>> projection, Query<ChannelEntity> query, CancellationToken token)
+				=> [.. Filter(query).Select(projection.Compile())]);
+
+		_logoRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>(), It.IsAny<Query<LogoEntity>>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((int id, Query<LogoEntity> query, CancellationToken token) => _logos.Find(logo => logo.Id == id));
 
 		_logoStoreServiceMock.Setup(x => x.Exists(It.IsAny<string>()))
 			.Returns((string? path) => path is not null && _filesOnDisk.ContainsKey(path));
@@ -169,7 +220,7 @@ public sealed class LogoServiceTests
 
 		LogoEntity logo = _logos[0];
 
-		Assert.AreEqual(Path.Combine("logos", "DasErste.de", "DasErste.de.png"), logo.LocalPath);
+		Assert.AreEqual(Path.Combine("logos", "DasErste.de", "DasErste.de-1.png"), logo.LocalPath);
 		Assert.AreEqual("\"tag\"", logo.ETag);
 		Assert.AreEqual(3, logo.FileSize);
 		Assert.IsNotNull(logo.ContentHash);
@@ -401,7 +452,7 @@ public sealed class LogoServiceTests
 		string? path = await _sut.GetLocalPathAsync("DasErste.de", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 		string? unknown = await _sut.GetLocalPathAsync("Unknown.de", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
-		Assert.AreEqual(Path.Combine("logos", "DasErste.de", "DasErste.de.png"), path);
+		Assert.AreEqual(Path.Combine("logos", "DasErste.de", "DasErste.de-1.png"), path);
 		Assert.IsNull(unknown);
 	}
 
@@ -417,10 +468,17 @@ public sealed class LogoServiceTests
 		Height = 512
 	};
 
+	/// <summary>
+	/// The channels the query of a search keeps.
+	/// </summary>
+	private IEnumerable<ChannelEntity> Filter(Query<ChannelEntity> query)
+		=> query.Where is null ? _channels : _channels.Where(query.Where.Compile());
+
 	private IServiceScopeFactory CreateScopeFactory()
 	{
 		Mock<IRepositoryService> repositoryServiceMock = new();
 		repositoryServiceMock.SetupGet(x => x.Logos).Returns(_logoRepositoryMock.Object);
+		repositoryServiceMock.SetupGet(x => x.Channels).Returns(_channelRepositoryMock.Object);
 		repositoryServiceMock.Setup(x => x.CommitChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(0);
 
 		Mock<IServiceProvider> serviceProviderMock = new();

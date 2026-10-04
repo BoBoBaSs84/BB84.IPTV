@@ -1,0 +1,275 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:m="using:BB84.IPTV.M3U.Editor.Markup"
+						 xmlns:conv="using:BB84.IPTV.M3U.Editor.Converters"
+						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
+						 xmlns:appEnums="using:BB84.IPTV.M3U.Editor.Application.Enumerators"
+						 xmlns:r="using:BB84.IPTV.M3U.Editor.Application.Contracts.Responses"
+						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
+						 mc:Ignorable="d"
+						 d:DesignWidth="1280"
+						 d:DesignHeight="720"
+						 x:Class="BB84.IPTV.M3U.Editor.Controls.LogoOverviewControl"
+						 x:DataType="vm:LogoOverviewViewModel">
+	<DockPanel>
+		<!-- The playlist the logos are assigned to -->
+		<StackPanel DockPanel.Dock="Top"
+								Orientation="Horizontal"
+								Spacing="4"
+								Margin="4">
+			<TextBlock Text="{x:Static p:Resources.LogoOverviewControl_PlaylistsGroupBox_Header}"
+								 VerticalAlignment="Center" />
+			<ComboBox Width="260"
+								ItemsSource="{Binding Playlists}"
+								SelectedItem="{Binding SelectedPlaylist}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate x:DataType="vm:PlaylistItemViewModel">
+						<TextBlock Text="{Binding Name}" />
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			<Button Content="{x:Static p:Resources.LogoOverviewControl_ReloadPlaylistsButton_Content}"
+							Command="{Binding ReloadPlaylistsCommand}" />
+			<Button Content="{x:Static p:Resources.LogoOverviewControl_SaveButton_Content}"
+							ToolTip.Tip="{x:Static p:Resources.LogoOverviewControl_SaveButton_ToolTip}"
+							Command="{Binding SaveCommand}" />
+			<TextBlock Text="{Binding EntriesStatusMessage}"
+								 Foreground="#888"
+								 VerticalAlignment="Center"
+								 Margin="12,0,0,0" />
+		</StackPanel>
+
+		<Grid ColumnDefinitions="440,Auto,*">
+			<!-- The entries of the playlist and the logo each of them carries -->
+			<HeaderedContentControl Grid.Column="0"
+															Theme="{StaticResource GroupBox}"
+															Header="{x:Static p:Resources.LogoOverviewControl_EntriesGroupBox_Header}"
+															Margin="4">
+				<DockPanel>
+					<StackPanel DockPanel.Dock="Bottom"
+											Margin="0,4,0,0"
+											Spacing="4">
+						<CheckBox Content="{x:Static p:Resources.LogoOverviewControl_ApplyToWholeChannelCheckBox_Content}"
+											IsChecked="{Binding ApplyToWholeChannel}" />
+						<WrapPanel>
+							<Button Content="{x:Static p:Resources.LogoOverviewControl_AssignUrlButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.LogoOverviewControl_AssignUrlButton_ToolTip}"
+											Margin="0,0,4,4"
+											Command="{Binding AssignUrlCommand}" />
+							<Button Content="{x:Static p:Resources.LogoOverviewControl_AssignLocalPathButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.LogoOverviewControl_AssignLocalPathButton_ToolTip}"
+											Margin="0,0,4,4"
+											Command="{Binding AssignLocalPathCommand}" />
+							<Button Content="{x:Static p:Resources.LogoOverviewControl_BrowseFileButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.LogoOverviewControl_BrowseFileButton_ToolTip}"
+											Margin="0,0,4,4"
+											Command="{Binding BrowseFileCommand}" />
+							<Button Content="{x:Static p:Resources.LogoOverviewControl_ClearLogoButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.LogoOverviewControl_ClearLogoButton_ToolTip}"
+											Margin="0,0,4,4"
+											Command="{Binding ClearLogoCommand}" />
+						</WrapPanel>
+					</StackPanel>
+
+					<!-- The tvg-logo stays editable, so a path can also be pasted into it. -->
+					<DataGrid AutoGenerateColumns="False"
+										IsReadOnly="False"
+										CanUserSortColumns="False"
+										SelectionMode="Single"
+										GridLinesVisibility="All"
+										ItemsSource="{Binding Entries}"
+										SelectedItem="{Binding SelectedEntry}">
+						<DataGrid.Columns>
+							<!-- Only cached logos are shown, a missing one stays empty. -->
+							<DataGridTemplateColumn Header="{x:Static p:Resources.LogoOverviewControl_EntryLogoColumn_Header}"
+																			Width="56"
+																			IsReadOnly="True">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate x:DataType="vm:LogoAssignmentViewModel">
+										<Image Source="{Binding Logo, Converter={x:Static conv:LogoImageConverter.Instance}}"
+													 Height="32"
+													 Width="48"
+													 Stretch="Uniform"
+													 Margin="2" />
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
+							<DataGridTextColumn x:DataType="vm:LogoAssignmentViewModel"
+																	Header="{x:Static p:Resources.LogoOverviewControl_EntryTitleColumn_Header}"
+																	Binding="{Binding Title}"
+																	IsReadOnly="True"
+																	Width="2*" />
+							<DataGridTextColumn x:DataType="vm:LogoAssignmentViewModel"
+																	Header="{x:Static p:Resources.LogoOverviewControl_EntryTvgIdColumn_Header}"
+																	Binding="{Binding TvgId}"
+																	IsReadOnly="True"
+																	Width="*" />
+							<DataGridTextColumn x:DataType="vm:LogoAssignmentViewModel"
+																	Header="{x:Static p:Resources.LogoOverviewControl_EntryValueColumn_Header}"
+																	Binding="{Binding Logo}"
+																	Width="2*" />
+							<DataGridTextColumn x:DataType="vm:LogoAssignmentViewModel"
+																	Header="{x:Static p:Resources.LogoOverviewControl_EntryLocalPathColumn_Header}"
+																	Binding="{Binding LocalPath}"
+																	IsReadOnly="True"
+																	Width="2*" />
+						</DataGrid.Columns>
+					</DataGrid>
+				</DockPanel>
+			</HeaderedContentControl>
+
+			<GridSplitter Grid.Column="1"
+										Width="4"
+										ResizeDirection="Columns" />
+
+			<!-- The logos of the catalog, cached or not -->
+			<HeaderedContentControl Grid.Column="2"
+															Theme="{StaticResource GroupBox}"
+															Header="{x:Static p:Resources.LogoOverviewControl_LogosGroupBox_Header}"
+															Margin="4">
+				<DockPanel>
+					<StackPanel DockPanel.Dock="Top"
+											Orientation="Horizontal"
+											Spacing="4"
+											Margin="0,0,0,4">
+						<TextBox x:Name="SearchTextBox"
+										 Width="300"
+										 PlaceholderText="{x:Static p:Resources.LogoOverviewControl_SearchTextBox_Placeholder}"
+										 Text="{Binding SearchText}"
+										 KeyDown="OnSearchTextBoxKeyDown" />
+						<Button Content="{x:Static p:Resources.LogoOverviewControl_SearchButton_Content}"
+										Command="{Binding SearchCommand}" />
+						<TextBlock Text="{x:Static p:Resources.LogoOverviewControl_CacheStateTextBlock_Text}"
+											 VerticalAlignment="Center"
+											 Margin="8,0,0,0" />
+						<ComboBox ItemsSource="{m:EnumValues {x:Type appEnums:LogoCacheFilter}}"
+											SelectedItem="{Binding CacheState}">
+							<ComboBox.ItemTemplate>
+								<DataTemplate x:DataType="appEnums:LogoCacheFilter">
+									<TextBlock Text="{Binding Converter={x:Static conv:EnumDisplayNameConverter.Instance}}" />
+								</DataTemplate>
+							</ComboBox.ItemTemplate>
+						</ComboBox>
+						<CheckBox Content="{x:Static p:Resources.LogoOverviewControl_OnlySelectedChannelCheckBox_Content}"
+											VerticalAlignment="Center"
+											Margin="8,0,0,0"
+											IsChecked="{Binding OnlySelectedChannel}" />
+					</StackPanel>
+
+					<StackPanel DockPanel.Dock="Bottom"
+											Orientation="Horizontal"
+											Spacing="4"
+											Margin="0,4,0,0">
+						<Button Content="{x:Static p:Resources.LogoOverviewControl_PreviousPageButton_Content}"
+										Command="{Binding PreviousPageCommand}" />
+						<Button Content="{x:Static p:Resources.LogoOverviewControl_NextPageButton_Content}"
+										Command="{Binding NextPageCommand}" />
+						<Button Content="{x:Static p:Resources.LogoOverviewControl_DownloadLogoButton_Content}"
+										ToolTip.Tip="{x:Static p:Resources.LogoOverviewControl_DownloadLogoButton_ToolTip}"
+										Margin="8,0,0,0"
+										Command="{Binding DownloadLogoCommand}" />
+						<Button Content="{x:Static p:Resources.LogoOverviewControl_CopyUrlButton_Content}"
+										Command="{Binding CopyUrlCommand}" />
+						<Button Content="{x:Static p:Resources.LogoOverviewControl_CopyLocalPathButton_Content}"
+										Command="{Binding CopyLocalPathCommand}" />
+						<TextBlock Text="{Binding StatusMessage}"
+											 Foreground="#888"
+											 VerticalAlignment="Center"
+											 Margin="8,0,0,0"
+											 TextWrapping="Wrap" />
+					</StackPanel>
+
+					<!-- The sort of a column is pushed into the query, see the Sorting handler. -->
+					<DataGrid x:Name="LogoDataGrid"
+										AutoGenerateColumns="False"
+										IsReadOnly="True"
+										CanUserSortColumns="True"
+										SelectionMode="Single"
+										GridLinesVisibility="All"
+										ItemsSource="{Binding Logos}"
+										SelectedItem="{Binding SelectedLogo}"
+										Sorting="OnLogosSorting">
+						<DataGrid.Columns>
+							<!-- Only cached logos are shown, one that is not downloaded stays empty. -->
+							<DataGridTemplateColumn Header="{x:Static p:Resources.LogoOverviewControl_LogoColumn_Header}"
+																			CanUserSort="False"
+																			Width="56">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate x:DataType="r:LogoOptionResponse">
+										<Image Source="{Binding LocalPath, Converter={x:Static conv:LogoImageConverter.Instance}}"
+													 Height="32"
+													 Width="48"
+													 Stretch="Uniform"
+													 Margin="2" />
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_ChannelColumn_Header}"
+																	Binding="{Binding Channel}"
+																	SortMemberPath="Channel"
+																	Width="*" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_ChannelNameColumn_Header}"
+																	Binding="{Binding ChannelName}"
+																	CanUserSort="False"
+																	Width="*" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_FeedColumn_Header}"
+																	Binding="{Binding Feed}"
+																	SortMemberPath="Feed"
+																	Width="80" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_CountryColumn_Header}"
+																	Binding="{Binding Country}"
+																	CanUserSort="False"
+																	Width="70" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_FormatColumn_Header}"
+																	Binding="{Binding Format}"
+																	SortMemberPath="Format"
+																	Width="70" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_WidthColumn_Header}"
+																	Binding="{Binding Width}"
+																	SortMemberPath="Width"
+																	Width="70" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_HeightColumn_Header}"
+																	Binding="{Binding Height}"
+																	SortMemberPath="Height"
+																	Width="70" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_TagsColumn_Header}"
+																	Binding="{Binding Tags}"
+																	CanUserSort="False"
+																	Width="100" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_UrlColumn_Header}"
+																	Binding="{Binding Url}"
+																	SortMemberPath="Url"
+																	Width="2*" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_LocalPathColumn_Header}"
+																	Binding="{Binding LocalPath}"
+																	SortMemberPath="LocalPath"
+																	Width="2*" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_FileSizeColumn_Header}"
+																	Binding="{Binding FileSize}"
+																	SortMemberPath="FileSize"
+																	Width="90" />
+							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
+																	Header="{x:Static p:Resources.LogoOverviewControl_DownloadedAtColumn_Header}"
+																	Binding="{Binding DownloadedAt}"
+																	SortMemberPath="DownloadedAt"
+																	Width="150" />
+						</DataGrid.Columns>
+					</DataGrid>
+				</DockPanel>
+			</HeaderedContentControl>
+		</Grid>
+	</DockPanel>
+</UserControl>

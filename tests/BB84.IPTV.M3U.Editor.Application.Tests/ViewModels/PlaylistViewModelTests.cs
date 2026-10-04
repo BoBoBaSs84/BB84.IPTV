@@ -1,10 +1,12 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Domain.Abstractions.Models;
 using BB84.IPTV.M3U.Editor.Domain.Models;
@@ -18,10 +20,20 @@ public sealed class PlaylistViewModelTests
 {
 	private readonly Mock<IPlaylistService> _playlistServiceMock = new();
 	private readonly Mock<IFileService> _fileServiceMock = new();
+	private readonly Mock<ILogoService> _logoServiceMock = new();
+	private readonly Mock<IFileDialogService> _fileDialogServiceMock = new();
+	private readonly Mock<IClipboardService> _clipboardServiceMock = new();
+	private readonly Mock<IEventService> _eventServiceMock = new();
 	private readonly PlaylistViewModel _sut;
 
 	public PlaylistViewModelTests()
-		=> _sut = new PlaylistViewModel(_playlistServiceMock.Object, _fileServiceMock.Object);
+		=> _sut = new PlaylistViewModel(
+			_playlistServiceMock.Object,
+			_fileServiceMock.Object,
+			_logoServiceMock.Object,
+			_fileDialogServiceMock.Object,
+			_clipboardServiceMock.Object,
+			_eventServiceMock.Object);
 
 	[TestMethod]
 	public async Task LoadAsyncShouldOpenThePlaylistWithoutMarkingItDirty()
@@ -190,6 +202,89 @@ public sealed class PlaylistViewModelTests
 		Assert.AreEqual(2, appended);
 		Assert.HasCount(3, _sut.Entries);
 		Assert.IsTrue(_sut.IsDirty);
+	}
+
+	[TestMethod]
+	public async Task TheSelectedEntryShouldShowTheCachedFileItsLogoStandsFor()
+	{
+		_logoServiceMock.Setup(x => x.GetPathsByUrlAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(new Dictionary<string, string> { ["https://logo.example/ard.png"] = "/logos/ard.png" });
+
+		await LoadAsync(
+			new EntryModel("Cached", "http://first", metadata: new MetadataModel { TvgLogo = "https://logo.example/ard.png" }),
+			new EntryModel("Not cached", "http://second", metadata: new MetadataModel { TvgLogo = "https://logo.example/zdf.png" }),
+			new EntryModel("Own file", "http://third", metadata: new MetadataModel { TvgLogo = "/home/user/camera.png" }),
+			new EntryModel("No logo", "http://fourth")).ConfigureAwait(false);
+
+		Assert.AreEqual("/logos/ard.png", _sut.SelectedEntryLogoPath, "The URL of a cached logo shows its file.");
+
+		_sut.SelectedEntry = _sut.Entries[1];
+		Assert.IsNull(_sut.SelectedEntryLogoPath, "A logo that is not cached has no file.");
+
+		_sut.SelectedEntry = _sut.Entries[2];
+		Assert.AreEqual("/home/user/camera.png", _sut.SelectedEntryLogoPath, "A logo that is a path is the file.");
+
+		_sut.SelectedEntry = _sut.Entries[3];
+		Assert.IsNull(_sut.SelectedEntryLogoPath);
+	}
+
+	[TestMethod]
+	public async Task BrowseLogoAsyncShouldAssignThePickedFileAndMarkDirty()
+	{
+		_fileDialogServiceMock.Setup(x => x.ShowOpenFileDialogAsync(It.IsAny<string>(), It.IsAny<string>()))
+			.ReturnsAsync("/home/user/camera.png");
+		await LoadAsync(new EntryModel("Local camera", "rtsp://192.168.12.1:554")).ConfigureAwait(false);
+
+		await _sut.BrowseLogoAsync().ConfigureAwait(false);
+
+		Assert.AreEqual("/home/user/camera.png", _sut.SelectedEntry?.Metadata.TvgLogo);
+		Assert.AreEqual("/home/user/camera.png", _sut.SelectedEntryLogoPath);
+		Assert.IsTrue(_sut.IsDirty);
+	}
+
+	[TestMethod]
+	public async Task BrowseLogoAsyncShouldChangeNothingWhenTheDialogIsCancelled()
+	{
+		_fileDialogServiceMock.Setup(x => x.ShowOpenFileDialogAsync(It.IsAny<string>(), It.IsAny<string>()))
+			.ReturnsAsync((string?)null);
+		await LoadAsync(new EntryModel("Local camera", "rtsp://192.168.12.1:554")).ConfigureAwait(false);
+
+		await _sut.BrowseLogoAsync().ConfigureAwait(false);
+
+		Assert.IsNull(_sut.SelectedEntry?.Metadata.TvgLogo);
+		Assert.IsFalse(_sut.IsDirty);
+	}
+
+	[TestMethod]
+	public async Task BrowseLogoAsyncShouldReportWhatTheDialogThrew()
+	{
+		_fileDialogServiceMock.Setup(x => x.ShowOpenFileDialogAsync(It.IsAny<string>(), It.IsAny<string>()))
+			.ThrowsAsync(new InvalidOperationException("No window is available."));
+		await LoadAsync(new EntryModel("Local camera", "rtsp://192.168.12.1:554")).ConfigureAwait(false);
+
+		await _sut.BrowseLogoAsync().ConfigureAwait(false);
+
+		_eventServiceMock.Verify(x => x.Publish(It.IsAny<ErrorOccuredEvent>()), Times.Once);
+	}
+
+	[TestMethod]
+	public async Task CopyLogoPathAsyncShouldCopyTheFileAndFallBackToTheValue()
+	{
+		_logoServiceMock.Setup(x => x.GetPathsByUrlAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(new Dictionary<string, string> { ["https://logo.example/ard.png"] = "/logos/ard.png" });
+
+		await LoadAsync(
+			new EntryModel("Cached", "http://first", metadata: new MetadataModel { TvgLogo = "https://logo.example/ard.png" }),
+			new EntryModel("Not cached", "http://second", metadata: new MetadataModel { TvgLogo = "https://logo.example/zdf.png" })).ConfigureAwait(false);
+
+		await _sut.CopyLogoPathAsync().ConfigureAwait(false);
+
+		_sut.SelectedEntry = _sut.Entries[1];
+		await _sut.CopyLogoPathAsync().ConfigureAwait(false);
+
+		_clipboardServiceMock.Verify(x => x.SetTextAsync("/logos/ard.png"), Times.Once);
+		_clipboardServiceMock.Verify(x => x.SetTextAsync("https://logo.example/zdf.png"), Times.Once,
+			"A logo that is not cached is copied as it is.");
 	}
 
 	private async Task LoadAsync(params EntryModel[] entries)

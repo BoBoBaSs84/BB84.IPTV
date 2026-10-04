@@ -4,6 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using System.Globalization;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 
 using BB84.EntityFrameworkCore.Repositories.Abstractions;
@@ -12,8 +13,10 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
+using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
@@ -43,6 +46,17 @@ internal sealed class LogoService(
 	IEventService eventService,
 	ILogger<LogoService> logger) : ILogoService
 {
+	/// <summary>
+	/// The number of channel identifiers per <c>IN</c> clause, so the parameter limit of SQLite is
+	/// never reached.
+	/// </summary>
+	private const int ChannelChunkSize = 500;
+
+	/// <summary>
+	/// The character that separates the channel from the feed in the <c>tvg-id</c> of an entry.
+	/// </summary>
+	private const char FeedSeparator = '@';
+
 	public async Task<LogoCacheStatusResponse> GetStatusAsync(CancellationToken cancellationToken = default)
 	{
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
@@ -115,6 +129,70 @@ internal sealed class LogoService(
 		return downloaded;
 	}
 
+	public async Task<IPagedList<LogoOptionResponse>> SearchLogosAsync(LogoSearchRequest request, CancellationToken cancellationToken = default)
+	{
+		ArgumentNullException.ThrowIfNull(request);
+
+		using IServiceScope scope = serviceScopeFactory.CreateScope();
+		IRepositoryService repositoryService = GetRepositoryService(scope);
+
+		Expression<Func<LogoEntity, bool>> filter = await BuildFilterAsync(repositoryService, request, cancellationToken)
+			.ConfigureAwait(false);
+
+		int total = await repositoryService.Logos
+			.CountAsync(new Query<LogoEntity> { Where = filter }, cancellationToken)
+			.ConfigureAwait(false);
+
+		// Only the page is read, the catalog knows several logos for most of its channels.
+		IReadOnlyList<LogoEntity> page = await repositoryService.Logos
+			.GetListAsync(
+				new Query<LogoEntity>
+				{
+					Where = filter,
+					OrderBy = query => Order(query, request.SortBy, request.Descending),
+					Skip = request.Skip,
+					Take = request.PageSize
+				},
+				cancellationToken)
+			.ConfigureAwait(false);
+
+		// What the catalog knows about the channels of the page, so a row can be recognised.
+		List<string> channels = [.. page
+			.Select(logo => logo.Channel)
+			.Distinct(StringComparer.OrdinalIgnoreCase)];
+
+		Dictionary<string, ChannelInfo> channelsById = await LoadChannelsAsync(repositoryService, channels, cancellationToken)
+			.ConfigureAwait(false);
+
+		// The row says that the logo was downloaded, the store says whether the file is still there.
+		IEnumerable<LogoOptionResponse> options = page
+			.Select(logo => logo.ToOption(Lookup(channelsById, logo.Channel), logoStoreService.Exists(logo.LocalPath)));
+
+		return new PagedList<LogoOptionResponse>(options, total, request.PageNumber, request.PageSize);
+	}
+
+	public async Task<string?> CacheLogoAsync(int logoId, CancellationToken cancellationToken = default)
+	{
+		LogoCandidate? candidate = await LoadCandidateAsync(logoId, cancellationToken)
+			.ConfigureAwait(false);
+
+		if (candidate is null)
+			return null;
+
+		LogoResult result = await DownloadAsync(candidate, cancellationToken)
+			.ConfigureAwait(false);
+
+		if (await WriteBatchAsync([candidate], [result]).ConfigureAwait(false) > 0)
+			eventService.Publish(new LogoCacheChangedEvent(1));
+
+		if (result.Failed)
+			eventService.Publish(new WarningOccuredEvent(Resources.LogoCacheSkipped.FormatMessage(1)));
+
+		// The download brought a file, or the server reported that the cached one still fits.
+		return result.Update?.LocalPath
+			?? (logoStoreService.Exists(candidate.LocalPath) ? candidate.LocalPath : null);
+	}
+
 	public async Task<string?> GetLocalPathAsync(string channel, string? feed = null, CancellationToken cancellationToken = default)
 	{
 		ArgumentException.ThrowIfNullOrWhiteSpace(channel);
@@ -173,6 +251,133 @@ internal sealed class LogoService(
 	}
 
 	/// <summary>
+	/// Builds what a search covers: the channel, what the cache holds and the text a logo must hold.
+	/// </summary>
+	/// <remarks>
+	/// The text is matched on the columns of the logo and on the name of its channel, which lives in
+	/// a table of its own: the channels whose name holds the text are read first, so the filter the
+	/// database runs can name them. A text of the form <c>channel@feed</c> is the <c>tvg-id</c> of an
+	/// entry, and a feed only decides which logo of a channel is preferred, so the channel alone is
+	/// matched and the logos of its other feeds stay in the result.
+	/// </remarks>
+	private static async Task<Expression<Func<LogoEntity, bool>>> BuildFilterAsync(
+		IRepositoryService repositoryService,
+		LogoSearchRequest request,
+		CancellationToken cancellationToken)
+	{
+		string? text = request.SearchText.TrimToNull();
+		string? channel = request.Channel.TrimToNull() ?? ChannelOfTvgId(text);
+
+		// The text named the channel, so it is not matched as a text as well.
+		if (channel is not null)
+			text = null;
+
+		List<string> named = text is null
+			? []
+			: [.. await LoadChannelsByNameAsync(repositoryService, text, cancellationToken).ConfigureAwait(false)];
+
+		LogoCacheFilter cacheState = request.CacheState;
+
+		return logo
+			=> (channel == null || logo.Channel == channel)
+			&& (cacheState != LogoCacheFilter.Cached || logo.LocalPath != null)
+			&& (cacheState != LogoCacheFilter.NotCached || logo.LocalPath == null)
+			&& (text == null
+				|| logo.Channel.Contains(text)
+				|| named.Contains(logo.Channel)
+				|| (logo.Feed != null && logo.Feed.Contains(text))
+				|| (logo.Format != null && logo.Format.Contains(text))
+				|| logo.Url.Contains(text)
+				|| (logo.LocalPath != null && logo.LocalPath.Contains(text)));
+	}
+
+	/// <summary>
+	/// Reads the identifiers of the channels whose name holds the text.
+	/// </summary>
+	private static async Task<IReadOnlyList<string>> LoadChannelsByNameAsync(
+		IRepositoryService repositoryService,
+		string text,
+		CancellationToken cancellationToken)
+		=> await repositoryService.Channels
+			.GetListAsync(
+				Mappings.ChannelToIdentifier,
+				new Query<ChannelEntity> { Where = channel => channel.Name.Contains(text) },
+				cancellationToken)
+			.ConfigureAwait(false);
+
+	/// <summary>
+	/// Orders the logos by the asked column, with the identity last, so a logo never moves between
+	/// pages when several of them share the column.
+	/// </summary>
+	private static IOrderedQueryable<LogoEntity> Order(IQueryable<LogoEntity> logos, LogoSortColumn sortBy, bool descending)
+	{
+		IOrderedQueryable<LogoEntity> ordered = sortBy switch
+		{
+			LogoSortColumn.Feed => OrderBy(logos, logo => logo.Feed, descending),
+			LogoSortColumn.Format => OrderBy(logos, logo => logo.Format, descending),
+			LogoSortColumn.Width => OrderBy(logos, logo => logo.Width, descending),
+			LogoSortColumn.Height => OrderBy(logos, logo => logo.Height, descending),
+			LogoSortColumn.Url => OrderBy(logos, logo => logo.Url, descending),
+			LogoSortColumn.LocalPath => OrderBy(logos, logo => logo.LocalPath, descending),
+			LogoSortColumn.FileSize => OrderBy(logos, logo => logo.FileSize, descending),
+			LogoSortColumn.DownloadedAt => OrderBy(logos, logo => logo.DownloadedAt, descending),
+			_ => OrderBy(logos, logo => logo.Channel, descending)
+		};
+
+		return ordered.ThenBy(logo => logo.Id);
+	}
+
+	/// <summary>
+	/// Orders the logos by one key, in the asked direction.
+	/// </summary>
+	private static IOrderedQueryable<LogoEntity> OrderBy<TKey>(IQueryable<LogoEntity> logos, Expression<Func<LogoEntity, TKey>> key, bool descending)
+		=> descending ? logos.OrderByDescending(key) : logos.OrderBy(key);
+
+	/// <summary>
+	/// Loads what the catalog knows about the given channels, in chunks, so the query stays within
+	/// the parameter limit of SQLite.
+	/// </summary>
+	private static async Task<Dictionary<string, ChannelInfo>> LoadChannelsAsync(
+		IRepositoryService repositoryService,
+		IReadOnlyList<string> channels,
+		CancellationToken cancellationToken)
+	{
+		Dictionary<string, ChannelInfo> channelsById = new(StringComparer.OrdinalIgnoreCase);
+
+		foreach (string[] chunk in channels.Chunk(ChannelChunkSize))
+		{
+			IReadOnlyList<ChannelInfo> loaded = await repositoryService.Channels
+				.GetListAsync(
+					Mappings.ChannelToInfo,
+					new Query<ChannelEntity> { Where = channel => chunk.Contains(channel.Channel) },
+					cancellationToken)
+				.ConfigureAwait(false);
+
+			foreach (ChannelInfo info in loaded)
+				channelsById[info.Channel] = info;
+		}
+
+		return channelsById;
+	}
+
+	private static ChannelInfo? Lookup(Dictionary<string, ChannelInfo> channelsById, string channel)
+		=> channelsById.TryGetValue(channel, out ChannelInfo? info) ? info : null;
+
+	/// <summary>
+	/// Reads the channel out of a text that is the <c>tvg-id</c> of an entry, which names the channel
+	/// and, after the separator, the feed.
+	/// </summary>
+	private static string? ChannelOfTvgId(string? text)
+	{
+		if (text is null)
+			return null;
+
+		int separator = text.IndexOf(FeedSeparator, StringComparison.Ordinal);
+
+		return separator > 0 && separator < text.Length - 1 ? text[..separator] : null;
+	}
+
+	/// <summary>
 	/// Reads which logos are to be downloaded.
 	/// </summary>
 	/// <remarks>
@@ -200,6 +405,24 @@ internal sealed class LogoService(
 				.Where(logo => request.RefreshCached || !logoStoreService.Exists(logo.LocalPath))
 				.Select(ToCandidate)
 		];
+	}
+
+	/// <summary>
+	/// Reads the one logo a single download works on.
+	/// </summary>
+	/// <param name="logoId">The identifier of the stored logo.</param>
+	/// <param name="cancellationToken">The cancellation token.</param>
+	/// <returns>The values the download works with, or <see langword="null"/> if the logo is gone.</returns>
+	private async Task<LogoCandidate?> LoadCandidateAsync(int logoId, CancellationToken cancellationToken)
+	{
+		using IServiceScope scope = serviceScopeFactory.CreateScope();
+		IRepositoryService repositoryService = GetRepositoryService(scope);
+
+		LogoEntity? logo = await repositoryService.Logos
+			.GetByIdAsync(logoId, new Query<LogoEntity>(), cancellationToken)
+			.ConfigureAwait(false);
+
+		return logo is null ? null : ToCandidate(logo);
 	}
 
 	/// <summary>
@@ -377,15 +600,22 @@ internal sealed class LogoService(
 	}
 
 	/// <summary>
-	/// Builds the file name of a logo: the feed or the channel, with the extension of the URL, of
-	/// the media type the server reported or of the format the catalog knows.
+	/// Builds the file name of a logo: the feed or the channel and the identifier of the row, with
+	/// the extension of the URL, of the media type the server reported or of the format the catalog
+	/// knows.
 	/// </summary>
+	/// <remarks>
+	/// The identifier is part of the name, because a channel can hold several logos that only differ
+	/// in their tags, and a single download of such a logo must not write over the file of the one
+	/// that is picked for the channel. A file that was cached under the former name keeps its row,
+	/// so nothing is downloaded again for it.
+	/// </remarks>
 	private string BuildFileName(LogoCandidate logo, string? contentType)
 	{
 		string name = string.IsNullOrWhiteSpace(logo.Feed) ? logo.Channel : $"{logo.Channel}@{logo.Feed}";
 		string extension = GetExtension(logo, contentType);
 
-		return $"{name}{extension}";
+		return $"{name}-{logo.Id}{extension}";
 	}
 
 	private string GetExtension(LogoCandidate logo, string? contentType)

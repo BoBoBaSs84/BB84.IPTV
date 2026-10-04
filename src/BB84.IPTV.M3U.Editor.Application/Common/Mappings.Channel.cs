@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -18,6 +18,13 @@ internal static partial class Mappings
 	/// </summary>
 	internal static Expression<Func<ChannelEntity, ChannelInfo>> ChannelToInfo { get; }
 		= channel => new ChannelInfo(channel.Channel, channel.Name, channel.Country);
+
+	/// <summary>
+	/// Gets the projection of a <see cref="ChannelEntity"/> to its iptv-org identifier, for a search
+	/// that only needs to know which channels it found.
+	/// </summary>
+	internal static Expression<Func<ChannelEntity, string>> ChannelToIdentifier { get; }
+		= channel => channel.Channel;
 
 	/// <summary>
 	/// Converts a <see cref="ChannelRequest"/> to a <see cref="ChannelEntity"/>.

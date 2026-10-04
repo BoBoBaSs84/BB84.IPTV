@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -10,6 +10,8 @@ using System.ComponentModel;
 using BB84.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
+using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Application.ViewModels.Base;
@@ -27,6 +29,11 @@ public sealed class PlaylistViewModel : ViewModelBase
 {
 	private readonly IPlaylistService _playlistService;
 	private readonly IFileService _fileService;
+	private readonly ILogoService _logoService;
+	private readonly IFileDialogService _fileDialogService;
+	private readonly IClipboardService _clipboardService;
+	private readonly IEventService _eventService;
+	private IReadOnlyDictionary<string, string> _pathsByUrl = new Dictionary<string, string>();
 	private int? _playlistId;
 	private string _name = string.Empty;
 	private string _urlTvg = string.Empty;
@@ -45,10 +52,24 @@ public sealed class PlaylistViewModel : ViewModelBase
 	/// </summary>
 	/// <param name="playlistService">The service that loads and saves stored playlists.</param>
 	/// <param name="fileService">The file service used to read playlists to merge.</param>
-	public PlaylistViewModel(IPlaylistService playlistService, IFileService fileService)
+	/// <param name="logoService">The service that knows which logos are cached.</param>
+	/// <param name="fileDialogService">The service that shows file dialogs.</param>
+	/// <param name="clipboardService">The service that copies a path to the clipboard.</param>
+	/// <param name="eventService">The service that publishes error events.</param>
+	public PlaylistViewModel(
+		IPlaylistService playlistService,
+		IFileService fileService,
+		ILogoService logoService,
+		IFileDialogService fileDialogService,
+		IClipboardService clipboardService,
+		IEventService eventService)
 	{
 		_playlistService = playlistService;
 		_fileService = fileService;
+		_logoService = logoService;
+		_fileDialogService = fileDialogService;
+		_clipboardService = clipboardService;
+		_eventService = eventService;
 		Entries = [];
 		Entries.CollectionChanged += (s, e) => OnEntriesCollectionChanged(e);
 	}
@@ -123,12 +144,23 @@ public sealed class PlaylistViewModel : ViewModelBase
 	/// <summary>
 	/// Gets or sets the currently selected playlist entry.
 	/// </summary>
-	[NotifyChanged(nameof(SelectedEntryVisible))]
+	[NotifyChanged(nameof(SelectedEntryVisible), nameof(SelectedEntryLogoPath))]
 	public IEntry? SelectedEntry
 	{
 		get => _selectedEntry;
 		set => SetProperty(ref _selectedEntry, value);
 	}
+
+	/// <summary>
+	/// Gets the cached file the logo of the selected entry stands for, <see langword="null"/> if the
+	/// entry has no logo or the logo is neither cached nor a path.
+	/// </summary>
+	/// <remarks>
+	/// The <c>tvg-logo</c> of an entry is usually the URL the catalog knows, and the file it was
+	/// downloaded to is what a player on this machine reads without the network.
+	/// </remarks>
+	public string? SelectedEntryLogoPath
+		=> ResolveCachedPath(SelectedEntry?.Metadata.TvgLogo);
 
 	/// <summary>
 	/// Gets the collection of playlist entries.
@@ -248,6 +280,9 @@ public sealed class PlaylistViewModel : ViewModelBase
 					Entries.Add(new EntryModel(entry));
 				SelectedEntry = Entries.FirstOrDefault();
 			});
+
+			await RefreshCachedLogoPathsAsync(cancellationToken).ConfigureAwait(true);
+
 			IsDirty = false;
 			RaiseValidationChanged();
 
@@ -462,6 +497,89 @@ public sealed class PlaylistViewModel : ViewModelBase
 		return new PlaylistModel(header, snapshotEntries);
 	}
 
+	/// <summary>
+	/// Assigns an image file from disk as the logo of the selected entry.
+	/// </summary>
+	/// <remarks>
+	/// Covers a channel the catalog knows no logo for, e.g. a stream from the local network.
+	/// </remarks>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	public async Task BrowseLogoAsync()
+	{
+		if (SelectedEntry is not { } entry)
+			return;
+
+		try
+		{
+			string? filePath = await _fileDialogService
+				.ShowOpenFileDialogAsync(LogoOverviewViewModel.ImageFilter, Resources.LogoBrowseTitle)
+				.ConfigureAwait(true);
+
+			if (filePath is null)
+				return;
+
+			entry.Metadata.TvgLogo = filePath;
+			RaisePropertyChanged(nameof(SelectedEntryLogoPath));
+		}
+		catch (Exception exception)
+		{
+			_eventService.Publish(new ErrorOccuredEvent(Resources.LogoOperationFailed, exception));
+		}
+	}
+
+	/// <summary>
+	/// Copies the logo of the selected entry, the cached file if there is one and the value itself
+	/// otherwise.
+	/// </summary>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	public async Task CopyLogoPathAsync()
+	{
+		string? path = SelectedEntryLogoPath ?? SelectedEntry?.Metadata.TvgLogo;
+
+		if (path is null)
+			return;
+
+		try
+		{
+			_ = await _clipboardService
+				.SetTextAsync(path)
+				.ConfigureAwait(true);
+		}
+		catch (Exception exception)
+		{
+			_eventService.Publish(new ErrorOccuredEvent(Resources.LogoOperationFailed, exception));
+		}
+	}
+
+	/// <summary>
+	/// Reads which logos are cached, so an entry can show the file its logo stands for.
+	/// </summary>
+	/// <param name="cancellationToken">The cancellation token.</param>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	private async Task RefreshCachedLogoPathsAsync(CancellationToken cancellationToken)
+	{
+		_pathsByUrl = await _logoService
+			.GetPathsByUrlAsync(cancellationToken)
+			.ConfigureAwait(true) ?? new Dictionary<string, string>();
+
+		RaisePropertyChanged(nameof(SelectedEntryLogoPath));
+	}
+
+	/// <summary>
+	/// Reads the cached file a logo value stands for: the file of its URL, or the value itself when
+	/// it already is a path.
+	/// </summary>
+	private string? ResolveCachedPath(string? logo)
+	{
+		if (string.IsNullOrWhiteSpace(logo))
+			return null;
+
+		if (_pathsByUrl.TryGetValue(logo, out string? path))
+			return path;
+
+		return Uri.TryCreate(logo, UriKind.Absolute, out Uri? uri) && !uri.IsFile ? null : logo;
+	}
+
 	private void SetPropertyAndMarkDirty<T>(ref T field, T value, [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
 	{
 		if (SetProperty(ref field, value, propertyName))
@@ -498,7 +616,12 @@ public sealed class PlaylistViewModel : ViewModelBase
 	}
 
 	private void OnEntryPropertyChanged(object? sender, PropertyChangedEventArgs e)
-		=> MarkDirty();
+	{
+		if (e.PropertyName is nameof(IMetadata.TvgLogo))
+			RaisePropertyChanged(nameof(SelectedEntryLogoPath));
+
+		MarkDirty();
+	}
 
 	private void ClearEntries()
 	{

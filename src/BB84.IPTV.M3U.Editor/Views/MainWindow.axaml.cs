@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -90,6 +90,9 @@ public partial class MainWindow : Window
 
 	private void GuideOverviewMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<GuideOverviewViewModel>();
+
+	private void LogoOverviewMenuItem_Click(object? sender, RoutedEventArgs e)
+		=> _navigationService.NavigateTo<LogoOverviewViewModel>();
 
 	private void MergeMenuItem_Click(object? sender, RoutedEventArgs e)
 		=> _navigationService.NavigateTo<MergeViewModel>();

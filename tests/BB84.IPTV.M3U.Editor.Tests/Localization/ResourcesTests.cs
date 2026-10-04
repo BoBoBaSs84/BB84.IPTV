@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -35,6 +35,7 @@ public sealed class ResourcesTests
 	[
 		typeof(Language),
 		typeof(LogLevel),
+		typeof(LogoCacheFilter),
 		typeof(LogoPathStyle),
 		typeof(MergeDuplicateMode),
 		typeof(MergeDuplicateResolution),

@@ -1029,4 +1029,163 @@
   <data name="Enum.Deinterlace.Mean" xml:space="preserve">
     <value>Mean</value>
   </data>
+  <data name="MainWindow.LogoOverviewMenuItem.Header" xml:space="preserve">
+    <value>Logos</value>
+  </data>
+  <data name="Enum.LogoCacheFilter.Any" xml:space="preserve">
+    <value>Tous les logos</value>
+  </data>
+  <data name="Enum.LogoCacheFilter.Cached" xml:space="preserve">
+    <value>Téléchargés</value>
+  </data>
+  <data name="Enum.LogoCacheFilter.NotCached" xml:space="preserve">
+    <value>Non téléchargés</value>
+  </data>
+  <data name="LogoOverviewControl.PlaylistsGroupBox.Header" xml:space="preserve">
+    <value>Listes de lecture</value>
+  </data>
+  <data name="LogoOverviewControl.ReloadPlaylistsButton.Content" xml:space="preserve">
+    <value>Recharger</value>
+  </data>
+  <data name="LogoOverviewControl.EntriesGroupBox.Header" xml:space="preserve">
+    <value>Entrées de la liste de lecture</value>
+  </data>
+  <data name="LogoOverviewControl.EntryLogoColumn.Header" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="LogoOverviewControl.EntryTitleColumn.Header" xml:space="preserve">
+    <value>Titre</value>
+  </data>
+  <data name="LogoOverviewControl.EntryTvgIdColumn.Header" xml:space="preserve">
+    <value>tvg-id</value>
+  </data>
+  <data name="LogoOverviewControl.EntryValueColumn.Header" xml:space="preserve">
+    <value>tvg-logo</value>
+  </data>
+  <data name="LogoOverviewControl.EntryLocalPathColumn.Header" xml:space="preserve">
+    <value>Chemin local</value>
+  </data>
+  <data name="LogoOverviewControl.LogosGroupBox.Header" xml:space="preserve">
+    <value>Logos du catalogue</value>
+  </data>
+  <data name="LogoOverviewControl.SearchTextBox.Placeholder" xml:space="preserve">
+    <value>Chaîne, nom, flux, format, URL ou chemin</value>
+  </data>
+  <data name="LogoOverviewControl.SearchButton.Content" xml:space="preserve">
+    <value>Rechercher</value>
+  </data>
+  <data name="LogoOverviewControl.PreviousPageButton.Content" xml:space="preserve">
+    <value>Précédent</value>
+  </data>
+  <data name="LogoOverviewControl.NextPageButton.Content" xml:space="preserve">
+    <value>Suivant</value>
+  </data>
+  <data name="LogoOverviewControl.CacheStateTextBlock.Text" xml:space="preserve">
+    <value>Cache</value>
+  </data>
+  <data name="LogoOverviewControl.OnlySelectedChannelCheckBox.Content" xml:space="preserve">
+    <value>Uniquement la chaîne de l'entrée</value>
+  </data>
+  <data name="LogoOverviewControl.ApplyToWholeChannelCheckBox.Content" xml:space="preserve">
+    <value>Toutes les entrées avec le même tvg-id</value>
+  </data>
+  <data name="LogoOverviewControl.AssignUrlButton.Content" xml:space="preserve">
+    <value>Attribuer l'URL</value>
+  </data>
+  <data name="LogoOverviewControl.AssignUrlButton.ToolTip" xml:space="preserve">
+    <value>Écrit l'URL du logo sélectionné dans le tvg-logo de l'entrée.</value>
+  </data>
+  <data name="LogoOverviewControl.AssignLocalPathButton.Content" xml:space="preserve">
+    <value>Attribuer le fichier</value>
+  </data>
+  <data name="LogoOverviewControl.AssignLocalPathButton.ToolTip" xml:space="preserve">
+    <value>Écrit le chemin du fichier téléchargé dans le tvg-logo de l'entrée, ce qui exige que le logo soit téléchargé.</value>
+  </data>
+  <data name="LogoOverviewControl.BrowseFileButton.Content" xml:space="preserve">
+    <value>Depuis le disque</value>
+  </data>
+  <data name="LogoOverviewControl.BrowseFileButton.ToolTip" xml:space="preserve">
+    <value>Attribue un fichier image propre qui ne provient pas du catalogue.</value>
+  </data>
+  <data name="LogoOverviewControl.ClearLogoButton.Content" xml:space="preserve">
+    <value>Effacer</value>
+  </data>
+  <data name="LogoOverviewControl.ClearLogoButton.ToolTip" xml:space="preserve">
+    <value>Retire le logo de l'entrée sélectionnée.</value>
+  </data>
+  <data name="LogoOverviewControl.DownloadLogoButton.Content" xml:space="preserve">
+    <value>Télécharger</value>
+  </data>
+  <data name="LogoOverviewControl.DownloadLogoButton.ToolTip" xml:space="preserve">
+    <value>Télécharge le logo sélectionné, même un logo qui n'est pas celui choisi pour sa chaîne.</value>
+  </data>
+  <data name="LogoOverviewControl.CopyUrlButton.Content" xml:space="preserve">
+    <value>Copier l'URL</value>
+  </data>
+  <data name="LogoOverviewControl.CopyLocalPathButton.Content" xml:space="preserve">
+    <value>Copier le chemin</value>
+  </data>
+  <data name="LogoOverviewControl.SaveButton.Content" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="LogoOverviewControl.SaveButton.ToolTip" xml:space="preserve">
+    <value>Écrit les logos attribués dans la liste de lecture enregistrée.</value>
+  </data>
+  <data name="LogoOverviewControl.LogoColumn.Header" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="LogoOverviewControl.ChannelColumn.Header" xml:space="preserve">
+    <value>Chaîne</value>
+  </data>
+  <data name="LogoOverviewControl.ChannelNameColumn.Header" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="LogoOverviewControl.FeedColumn.Header" xml:space="preserve">
+    <value>Flux</value>
+  </data>
+  <data name="LogoOverviewControl.FormatColumn.Header" xml:space="preserve">
+    <value>Format</value>
+  </data>
+  <data name="LogoOverviewControl.WidthColumn.Header" xml:space="preserve">
+    <value>Largeur</value>
+  </data>
+  <data name="LogoOverviewControl.HeightColumn.Header" xml:space="preserve">
+    <value>Hauteur</value>
+  </data>
+  <data name="LogoOverviewControl.TagsColumn.Header" xml:space="preserve">
+    <value>Étiquettes</value>
+  </data>
+  <data name="LogoOverviewControl.UrlColumn.Header" xml:space="preserve">
+    <value>Chemin distant</value>
+  </data>
+  <data name="LogoOverviewControl.LocalPathColumn.Header" xml:space="preserve">
+    <value>Chemin local</value>
+  </data>
+  <data name="LogoOverviewControl.FileSizeColumn.Header" xml:space="preserve">
+    <value>Taille du fichier</value>
+  </data>
+  <data name="LogoOverviewControl.DownloadedAtColumn.Header" xml:space="preserve">
+    <value>Téléchargé</value>
+  </data>
+  <data name="LogoOverviewControl.CountryColumn.Header" xml:space="preserve">
+    <value>Pays</value>
+  </data>
+  <data name="PlaylistControl.LogoPathTextBlock.Text" xml:space="preserve">
+    <value>Fichier de logo</value>
+  </data>
+  <data name="PlaylistControl.BrowseLogoButton.Content" xml:space="preserve">
+    <value>Depuis le disque</value>
+  </data>
+  <data name="PlaylistControl.BrowseLogoButton.ToolTip" xml:space="preserve">
+    <value>Attribue un fichier image du disque comme logo de l'entrée.</value>
+  </data>
+  <data name="PlaylistControl.CopyLogoPathButton.Content" xml:space="preserve">
+    <value>Copier</value>
+  </data>
+  <data name="PlaylistControl.CopyLogoPathButton.ToolTip" xml:space="preserve">
+    <value>Copie le fichier de logo de l'entrée dans le presse-papiers.</value>
+  </data>
+  <data name="ToolTip.Logo.CachedFile" xml:space="preserve">
+    <value>Le fichier téléchargé que représente le logo de l'entrée. Il est vide tant que le logo n'est pas téléchargé.</value>
+  </data>
 </root>

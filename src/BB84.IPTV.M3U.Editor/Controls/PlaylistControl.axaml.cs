@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -40,6 +40,12 @@ public partial class PlaylistControl : UserControl
 
 	private void MoveDownButton_Click(object? sender, RoutedEventArgs e)
 		=> ShowSelectedEntry(vm => vm.MoveSelectedEntry(1));
+
+	private void BrowseLogoButton_Click(object? sender, RoutedEventArgs e)
+		=> _ = ViewModel?.BrowseLogoAsync();
+
+	private void CopyLogoPathButton_Click(object? sender, RoutedEventArgs e)
+		=> _ = ViewModel?.CopyLogoPathAsync();
 
 	// The grid applies the sort after the event and drops the selection, so both are handled afterwards.
 	private void OnEntriesSorting(object? sender, DataGridColumnEventArgs e)
