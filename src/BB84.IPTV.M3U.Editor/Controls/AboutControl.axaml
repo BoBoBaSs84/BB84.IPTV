@@ -2,6 +2,8 @@
 						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
+						 xmlns:conv="using:BB84.IPTV.M3U.Editor.Converters"
 						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
 						 mc:Ignorable="d"
 						 d:DesignWidth="700"
@@ -54,7 +56,7 @@
 											 FontWeight="SemiBold"
 											 Foreground="White"
 											 HorizontalAlignment="Center" />
-						<TextBlock Text="{Binding Version, StringFormat='Version {0}'}"
+						<TextBlock Text="{Binding Version, Converter={x:Static conv:ResourceFormatConverter.Instance}, ConverterParameter={x:Static p:Resources.AboutControl_VersionTextBlock_Format}}"
 											 FontSize="13"
 											 Foreground="#AAB"
 											 HorizontalAlignment="Center"
@@ -71,19 +73,19 @@
 										 Margin="0,0,0,16" />
 					<Separator Margin="0,0,0,16" />
 					<!-- Info grid -->
-					<TextBlock Text="COMPANY"
+					<TextBlock Text="{x:Static p:Resources.AboutControl_CompanyTextBlock_Text}"
 										 Classes="InfoLabel" />
 					<TextBlock Text="{Binding Company}"
 										 Classes="InfoValue" />
-					<TextBlock Text="COPYRIGHT"
+					<TextBlock Text="{x:Static p:Resources.AboutControl_CopyrightTextBlock_Text}"
 										 Classes="InfoLabel" />
 					<TextBlock Text="{Binding Copyright}"
 										 Classes="InfoValue" />
-					<TextBlock Text="FRAMEWORK"
+					<TextBlock Text="{x:Static p:Resources.AboutControl_FrameworkTextBlock_Text}"
 										 Classes="InfoLabel" />
 					<TextBlock Text="{Binding FrameworkName}"
 										 Classes="InfoValue" />
-					<TextBlock Text="REPOSITORY"
+					<TextBlock Text="{x:Static p:Resources.AboutControl_RepositoryTextBlock_Text}"
 										 Classes="InfoLabel" />
 					<HyperlinkButton NavigateUri="{Binding Repository}"
 													 Content="{Binding Repository}"

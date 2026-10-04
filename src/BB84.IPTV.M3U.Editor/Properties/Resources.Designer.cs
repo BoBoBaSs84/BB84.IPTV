@@ -61,6 +61,465 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to COMPANY.
+        /// </summary>
+        public static string AboutControl_CompanyTextBlock_Text {
+            get {
+                return ResourceManager.GetString("AboutControl.CompanyTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to COPYRIGHT.
+        /// </summary>
+        public static string AboutControl_CopyrightTextBlock_Text {
+            get {
+                return ResourceManager.GetString("AboutControl.CopyrightTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FRAMEWORK.
+        /// </summary>
+        public static string AboutControl_FrameworkTextBlock_Text {
+            get {
+                return ResourceManager.GetString("AboutControl.FrameworkTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REPOSITORY.
+        /// </summary>
+        public static string AboutControl_RepositoryTextBlock_Text {
+            get {
+                return ResourceManager.GetString("AboutControl.RepositoryTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version {0}.
+        /// </summary>
+        public static string AboutControl_VersionTextBlock_Format {
+            get {
+                return ResourceManager.GetString("AboutControl.VersionTextBlock.Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add All.
+        /// </summary>
+        public static string CatalogControl_AddAllChannelsButton_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.AddAllChannelsButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add all channels of this page to the open playlist.
+        /// </summary>
+        public static string CatalogControl_AddAllChannelsButton_ToolTip {
+            get {
+                return ResourceManager.GetString("CatalogControl.AddAllChannelsButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add to Playlist.
+        /// </summary>
+        public static string CatalogControl_AddChannelButton_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.AddChannelButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add the selected channel to the open playlist.
+        /// </summary>
+        public static string CatalogControl_AddChannelButton_ToolTip {
+            get {
+                return ResourceManager.GetString("CatalogControl.AddChannelButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add the selected custom channel to the open playlist.
+        /// </summary>
+        public static string CatalogControl_AddCustomChannelButton_ToolTip {
+            get {
+                return ResourceManager.GetString("CatalogControl.AddCustomChannelButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Catalog.
+        /// </summary>
+        public static string CatalogControl_CatalogTabItem_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.CatalogTabItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categories.
+        /// </summary>
+        public static string CatalogControl_CategoriesColumn_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.CategoriesColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category.
+        /// </summary>
+        public static string CatalogControl_CategoryComboBox_Placeholder {
+            get {
+                return ResourceManager.GetString("CatalogControl.CategoryComboBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel.
+        /// </summary>
+        public static string CatalogControl_ChannelGroupBox_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.ChannelGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channels.
+        /// </summary>
+        public static string CatalogControl_ChannelsGroupBox_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.ChannelsGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string CatalogControl_CountryColumn_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.CountryColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string CatalogControl_CountryComboBox_Placeholder {
+            get {
+                return ResourceManager.GetString("CatalogControl.CountryComboBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channels.
+        /// </summary>
+        public static string CatalogControl_CustomChannelsGroupBox_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.CustomChannelsGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Channels.
+        /// </summary>
+        public static string CatalogControl_CustomChannelsTabItem_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.CustomChannelsTabItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string CatalogControl_DeleteCustomChannelButton_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.DeleteCustomChannelButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the selected custom channel.
+        /// </summary>
+        public static string CatalogControl_DeleteCustomChannelButton_ToolTip {
+            get {
+                return ResourceManager.GetString("CatalogControl.DeleteCustomChannelButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        public static string CatalogControl_FilterGroupBox_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.FilterGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group Title:.
+        /// </summary>
+        public static string CatalogControl_GroupTitleTextBlock_Text {
+            get {
+                return ResourceManager.GetString("CatalogControl.GroupTitleTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include NSFW.
+        /// </summary>
+        public static string CatalogControl_IncludeNsfwCheckBox_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.IncludeNsfwCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include channels without stream.
+        /// </summary>
+        public static string CatalogControl_IncludeWithoutStreamCheckBox_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.IncludeWithoutStreamCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string CatalogControl_LanguageComboBox_Placeholder {
+            get {
+                return ResourceManager.GetString("CatalogControl.LanguageComboBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Languages.
+        /// </summary>
+        public static string CatalogControl_LanguagesColumn_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.LanguagesColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo.
+        /// </summary>
+        public static string CatalogControl_LogoColumn_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.LogoColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string CatalogControl_NameColumn_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.NameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string CatalogControl_NameTextBlock_Text {
+            get {
+                return ResourceManager.GetString("CatalogControl.NameTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string CatalogControl_NewCustomChannelButton_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.NewCustomChannelButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new custom channel.
+        /// </summary>
+        public static string CatalogControl_NewCustomChannelButton_ToolTip {
+            get {
+                return ResourceManager.GetString("CatalogControl.NewCustomChannelButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next &gt;.
+        /// </summary>
+        public static string CatalogControl_NextPageButton_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.NextPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open a playlist to add channels to it..
+        /// </summary>
+        public static string CatalogControl_NoPlaylistHint_Text {
+            get {
+                return ResourceManager.GetString("CatalogControl.NoPlaylistHint.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt; Previous.
+        /// </summary>
+        public static string CatalogControl_PreviousPageButton_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.PreviousPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quality.
+        /// </summary>
+        public static string CatalogControl_QualityColumn_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.QualityColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string CatalogControl_ResetButton_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.ResetButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the filter and the result.
+        /// </summary>
+        public static string CatalogControl_ResetButton_ToolTip {
+            get {
+                return ResourceManager.GetString("CatalogControl.ResetButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string CatalogControl_SaveCustomChannelButton_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.SaveCustomChannelButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Store the selected custom channel.
+        /// </summary>
+        public static string CatalogControl_SaveCustomChannelButton_ToolTip {
+            get {
+                return ResourceManager.GetString("CatalogControl.SaveCustomChannelButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string CatalogControl_SearchButton_Content {
+            get {
+                return ResourceManager.GetString("CatalogControl.SearchButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name or identifier.
+        /// </summary>
+        public static string CatalogControl_SearchTextBox_Placeholder {
+            get {
+                return ResourceManager.GetString("CatalogControl.SearchTextBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stream.
+        /// </summary>
+        public static string CatalogControl_StreamColumn_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.StreamColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVG ID.
+        /// </summary>
+        public static string CatalogControl_TvgIdColumn_Header {
+            get {
+                return ResourceManager.GetString("CatalogControl.TvgIdColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVG ID:.
+        /// </summary>
+        public static string CatalogControl_TvgIdTextBlock_Text {
+            get {
+                return ResourceManager.GetString("CatalogControl.TvgIdTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVG Logo:.
+        /// </summary>
+        public static string CatalogControl_TvgLogoTextBlock_Text {
+            get {
+                return ResourceManager.GetString("CatalogControl.TvgLogoTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL:.
+        /// </summary>
+        public static string CatalogControl_UrlTextBlock_Text {
+            get {
+                return ResourceManager.GetString("CatalogControl.UrlTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any URL scheme, e.g. http, https, rtsp or udp.
+        /// </summary>
+        public static string CatalogControl_UrlTextBlock_ToolTip {
+            get {
+                return ResourceManager.GetString("CatalogControl.UrlTextBlock.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} entries.
+        /// </summary>
+        public static string Common_EntryCount_Format {
+            get {
+                return ResourceManager.GetString("Common.EntryCount.Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show the next page.
+        /// </summary>
+        public static string Common_NextPage_ToolTip {
+            get {
+                return ResourceManager.GetString("Common.NextPage.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show the previous page.
+        /// </summary>
+        public static string Common_PreviousPage_ToolTip {
+            get {
+                return ResourceManager.GetString("Common.PreviousPage.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Added.
         /// </summary>
         public static string DatabaseControl_AddedColumn_Header {
@@ -327,6 +786,213 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string DatabaseUpdateCheckFailed {
             get {
                 return ResourceManager.GetString("DatabaseUpdateCheckFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blend.
+        /// </summary>
+        public static string Enum_Deinterlace_Blend {
+            get {
+                return ResourceManager.GetString("Enum.Deinterlace.Blend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mean.
+        /// </summary>
+        public static string Enum_Deinterlace_Mean {
+            get {
+                return ResourceManager.GetString("Enum.Deinterlace.Mean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string Enum_Deinterlace_None {
+            get {
+                return ResourceManager.GetString("Enum.Deinterlace.None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string Enum_Language_English {
+            get {
+                return ResourceManager.GetString("Enum.Language.English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Français.
+        /// </summary>
+        public static string Enum_Language_French {
+            get {
+                return ResourceManager.GetString("Enum.Language.French", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deutsch.
+        /// </summary>
+        public static string Enum_Language_German {
+            get {
+                return ResourceManager.GetString("Enum.Language.German", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Italiano.
+        /// </summary>
+        public static string Enum_Language_Italian {
+            get {
+                return ResourceManager.GetString("Enum.Language.Italian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Español.
+        /// </summary>
+        public static string Enum_Language_Spanish {
+            get {
+                return ResourceManager.GetString("Enum.Language.Spanish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical.
+        /// </summary>
+        public static string Enum_LogLevel_Critical {
+            get {
+                return ResourceManager.GetString("Enum.LogLevel.Critical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debug.
+        /// </summary>
+        public static string Enum_LogLevel_Debug {
+            get {
+                return ResourceManager.GetString("Enum.LogLevel.Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Enum_LogLevel_Error {
+            get {
+                return ResourceManager.GetString("Enum.LogLevel.Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        public static string Enum_LogLevel_Information {
+            get {
+                return ResourceManager.GetString("Enum.LogLevel.Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string Enum_LogLevel_None {
+            get {
+                return ResourceManager.GetString("Enum.LogLevel.None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trace.
+        /// </summary>
+        public static string Enum_LogLevel_Trace {
+            get {
+                return ResourceManager.GetString("Enum.LogLevel.Trace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string Enum_LogLevel_Warning {
+            get {
+                return ResourceManager.GetString("Enum.LogLevel.Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Absolute.
+        /// </summary>
+        public static string Enum_LogoPathStyle_Absolute {
+            get {
+                return ResourceManager.GetString("Enum.LogoPathStyle.Absolute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Relative.
+        /// </summary>
+        public static string Enum_LogoPathStyle_Relative {
+            get {
+                return ResourceManager.GetString("Enum.LogoPathStyle.Relative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same TVG ID.
+        /// </summary>
+        public static string Enum_MergeDuplicateMode_ByTvgId {
+            get {
+                return ResourceManager.GetString("Enum.MergeDuplicateMode.ByTvgId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same TVG ID or URL.
+        /// </summary>
+        public static string Enum_MergeDuplicateMode_ByTvgIdOrUrl {
+            get {
+                return ResourceManager.GetString("Enum.MergeDuplicateMode.ByTvgIdOrUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same URL.
+        /// </summary>
+        public static string Enum_MergeDuplicateMode_ByUrl {
+            get {
+                return ResourceManager.GetString("Enum.MergeDuplicateMode.ByUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep every entry.
+        /// </summary>
+        public static string Enum_MergeDuplicateMode_None {
+            get {
+                return ResourceManager.GetString("Enum.MergeDuplicateMode.None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep the first.
+        /// </summary>
+        public static string Enum_MergeDuplicateResolution_KeepFirst {
+            get {
+                return ResourceManager.GetString("Enum.MergeDuplicateResolution.KeepFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep the last.
+        /// </summary>
+        public static string Enum_MergeDuplicateResolution_KeepLast {
+            get {
+                return ResourceManager.GetString("Enum.MergeDuplicateResolution.KeepLast", resourceCulture);
             }
         }
         
@@ -628,6 +1294,15 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} channels.
+        /// </summary>
+        public static string GuideOverviewControl_ChannelCount_Format {
+            get {
+                return ResourceManager.GetString("GuideOverviewControl.ChannelCount.Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string GuideOverviewControl_ChannelNameColumn_Header {
@@ -790,6 +1465,87 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _About....
+        /// </summary>
+        public static string MainWindow_AboutMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.AboutMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Channels.
+        /// </summary>
+        public static string MainWindow_CatalogMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.CatalogMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Copy.
+        /// </summary>
+        public static string MainWindow_CopyMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.CopyMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cu_t.
+        /// </summary>
+        public static string MainWindow_CutMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.CutMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Database.
+        /// </summary>
+        public static string MainWindow_DatabaseMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.DatabaseMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Edit.
+        /// </summary>
+        public static string MainWindow_EditMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.EditMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E_xit.
+        /// </summary>
+        public static string MainWindow_ExitMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.ExitMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Export....
+        /// </summary>
+        public static string MainWindow_ExportMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.ExportMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _File.
+        /// </summary>
+        public static string MainWindow_FileMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.FileMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Guide Export.
         /// </summary>
         public static string MainWindow_GuideMenuItem_Header {
@@ -804,6 +1560,375 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string MainWindow_GuideOverviewMenuItem_Header {
             get {
                 return ResourceManager.GetString("MainWindow.GuideOverviewMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Help.
+        /// </summary>
+        public static string MainWindow_HelpMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.HelpMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Import....
+        /// </summary>
+        public static string MainWindow_ImportMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.ImportMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Index.
+        /// </summary>
+        public static string MainWindow_IndexMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.IndexMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Merge....
+        /// </summary>
+        public static string MainWindow_MergeMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.MergeMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge _Playlists.
+        /// </summary>
+        public static string MainWindow_MergePlaylistsMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.MergePlaylistsMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _New Playlist.
+        /// </summary>
+        public static string MainWindow_NewMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.NewMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Paste.
+        /// </summary>
+        public static string MainWindow_PasteMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.PasteMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Playlists.
+        /// </summary>
+        public static string MainWindow_PlaylistsMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.PlaylistsMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Print.
+        /// </summary>
+        public static string MainWindow_PrintMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.PrintMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print Pre_view.
+        /// </summary>
+        public static string MainWindow_PrintPreviewMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.PrintPreviewMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Redo.
+        /// </summary>
+        public static string MainWindow_RedoMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.RedoMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Save.
+        /// </summary>
+        public static string MainWindow_SaveMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.SaveMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Search.
+        /// </summary>
+        public static string MainWindow_SearchMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.SearchMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select _All.
+        /// </summary>
+        public static string MainWindow_SelectAllMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.SelectAllMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Settings.
+        /// </summary>
+        public static string MainWindow_SettingsMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.SettingsMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Tools.
+        /// </summary>
+        public static string MainWindow_ToolsMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.ToolsMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Undo.
+        /// </summary>
+        public static string MainWindow_UndoMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.UndoMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicates:.
+        /// </summary>
+        public static string MergeControl_DuplicateModeTextBlock_Text {
+            get {
+                return ResourceManager.GetString("MergeControl.DuplicateModeTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What makes two entries the same entry.
+        /// </summary>
+        public static string MergeControl_DuplicateModeTextBlock_ToolTip {
+            get {
+                return ResourceManager.GetString("MergeControl.DuplicateModeTextBlock.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep:.
+        /// </summary>
+        public static string MergeControl_DuplicateResolutionTextBlock_Text {
+            get {
+                return ResourceManager.GetString("MergeControl.DuplicateResolutionTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Which of two duplicate entries survives.
+        /// </summary>
+        public static string MergeControl_DuplicateResolutionTextBlock_ToolTip {
+            get {
+                return ResourceManager.GetString("MergeControl.DuplicateResolutionTextBlock.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string MergeControl_GroupColumn_Header {
+            get {
+                return ResourceManager.GetString("MergeControl.GroupColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Groups.
+        /// </summary>
+        public static string MergeControl_GroupsGroupBox_Header {
+            get {
+                return ResourceManager.GetString("MergeControl.GroupsGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename the groups of the result, an empty value clears the group..
+        /// </summary>
+        public static string MergeControl_GroupsHint_Text {
+            get {
+                return ResourceManager.GetString("MergeControl.GroupsHint.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge.
+        /// </summary>
+        public static string MergeControl_MergeButton_Content {
+            get {
+                return ResourceManager.GetString("MergeControl.MergeButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save the result as a new playlist, the sources stay as they are.
+        /// </summary>
+        public static string MergeControl_MergeButton_ToolTip {
+            get {
+                return ResourceManager.GetString("MergeControl.MergeButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Down.
+        /// </summary>
+        public static string MergeControl_MoveDownButton_Content {
+            get {
+                return ResourceManager.GetString("MergeControl.MoveDownButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge the selected playlist later.
+        /// </summary>
+        public static string MergeControl_MoveDownButton_ToolTip {
+            get {
+                return ResourceManager.GetString("MergeControl.MoveDownButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Up.
+        /// </summary>
+        public static string MergeControl_MoveUpButton_Content {
+            get {
+                return ResourceManager.GetString("MergeControl.MoveUpButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge the selected playlist earlier.
+        /// </summary>
+        public static string MergeControl_MoveUpButton_ToolTip {
+            get {
+                return ResourceManager.GetString("MergeControl.MoveUpButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string MergeControl_NameTextBlock_Text {
+            get {
+                return ResourceManager.GetString("MergeControl.NameTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        public static string MergeControl_OptionsGroupBox_Header {
+            get {
+                return ResourceManager.GetString("MergeControl.OptionsGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string MergeControl_PreviewButton_Content {
+            get {
+                return ResourceManager.GetString("MergeControl.PreviewButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge without saving, to see the result.
+        /// </summary>
+        public static string MergeControl_PreviewButton_ToolTip {
+            get {
+                return ResourceManager.GetString("MergeControl.PreviewButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string MergeControl_PreviewGroupBox_Header {
+            get {
+                return ResourceManager.GetString("MergeControl.PreviewGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string MergeControl_SourceGroupColumn_Header {
+            get {
+                return ResourceManager.GetString("MergeControl.SourceGroupColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlists to merge.
+        /// </summary>
+        public static string MergeControl_SourcesGroupBox_Header {
+            get {
+                return ResourceManager.GetString("MergeControl.SourcesGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename to.
+        /// </summary>
+        public static string MergeControl_TargetGroupColumn_Header {
+            get {
+                return ResourceManager.GetString("MergeControl.TargetGroupColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string MergeControl_TitleColumn_Header {
+            get {
+                return ResourceManager.GetString("MergeControl.TitleColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVG ID.
+        /// </summary>
+        public static string MergeControl_TvgIdColumn_Header {
+            get {
+                return ResourceManager.GetString("MergeControl.TvgIdColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL.
+        /// </summary>
+        public static string MergeControl_UrlColumn_Header {
+            get {
+                return ResourceManager.GetString("MergeControl.UrlColumn.Header", resourceCulture);
             }
         }
         
@@ -840,6 +1965,456 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string MessageDialog_YesButton_Content {
             get {
                 return ResourceManager.GetString("MessageDialog.YesButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string PlaylistControl_AddButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistControl.AddButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Entry.
+        /// </summary>
+        public static string PlaylistControl_AddButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistControl.AddButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cache:.
+        /// </summary>
+        public static string PlaylistControl_CacheTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.CacheTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Censored.
+        /// </summary>
+        public static string PlaylistControl_CensoredCheckBox_Content {
+            get {
+                return ResourceManager.GetString("PlaylistControl.CensoredCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deinterlace:.
+        /// </summary>
+        public static string PlaylistControl_DeinterlaceTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.DeinterlaceTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsaved changes.
+        /// </summary>
+        public static string PlaylistControl_DirtyHint_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.DirtyHint.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate.
+        /// </summary>
+        public static string PlaylistControl_DuplicateButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistControl.DuplicateButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate Entry.
+        /// </summary>
+        public static string PlaylistControl_DuplicateButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistControl.DuplicateButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration:.
+        /// </summary>
+        public static string PlaylistControl_DurationTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.DurationTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entries.
+        /// </summary>
+        public static string PlaylistControl_EntriesGroupBox_Header {
+            get {
+                return ResourceManager.GetString("PlaylistControl.EntriesGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry.
+        /// </summary>
+        public static string PlaylistControl_EntryGroupBox_Header {
+            get {
+                return ResourceManager.GetString("PlaylistControl.EntryGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string PlaylistControl_GroupColumn_Header {
+            get {
+                return ResourceManager.GetString("PlaylistControl.GroupColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group ID:.
+        /// </summary>
+        public static string PlaylistControl_GroupIdTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.GroupIdTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grouping:.
+        /// </summary>
+        public static string PlaylistControl_GroupingTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.GroupingTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group Title:.
+        /// </summary>
+        public static string PlaylistControl_GroupTitleTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.GroupTitleTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location:.
+        /// </summary>
+        public static string PlaylistControl_LocationTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.LocationTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo.
+        /// </summary>
+        public static string PlaylistControl_LogoColumn_Header {
+            get {
+                return ResourceManager.GetString("PlaylistControl.LogoColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Metadata.
+        /// </summary>
+        public static string PlaylistControl_MetadataGroupBox_Header {
+            get {
+                return ResourceManager.GetString("PlaylistControl.MetadataGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Down.
+        /// </summary>
+        public static string PlaylistControl_MoveDownButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistControl.MoveDownButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Entry Down, off while the grid is sorted.
+        /// </summary>
+        public static string PlaylistControl_MoveDownButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistControl.MoveDownButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Up.
+        /// </summary>
+        public static string PlaylistControl_MoveUpButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistControl.MoveUpButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Entry Up, off while the grid is sorted.
+        /// </summary>
+        public static string PlaylistControl_MoveUpButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistControl.MoveUpButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string PlaylistControl_NameTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.NameTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist.
+        /// </summary>
+        public static string PlaylistControl_PlaylistGroupBox_Header {
+            get {
+                return ResourceManager.GetString("PlaylistControl.PlaylistGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh:.
+        /// </summary>
+        public static string PlaylistControl_RefreshTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.RefreshTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string PlaylistControl_RemoveButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistControl.RemoveButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Entry.
+        /// </summary>
+        public static string PlaylistControl_RemoveButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistControl.RemoveButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string PlaylistControl_TitleColumn_Header {
+            get {
+                return ResourceManager.GetString("PlaylistControl.TitleColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title:.
+        /// </summary>
+        public static string PlaylistControl_TitleTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.TitleTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVG ID.
+        /// </summary>
+        public static string PlaylistControl_TvgIdColumn_Header {
+            get {
+                return ResourceManager.GetString("PlaylistControl.TvgIdColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVG ID:.
+        /// </summary>
+        public static string PlaylistControl_TvgIdTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.TvgIdTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVG Logo:.
+        /// </summary>
+        public static string PlaylistControl_TvgLogoTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.TvgLogoTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVG Name.
+        /// </summary>
+        public static string PlaylistControl_TvgNameColumn_Header {
+            get {
+                return ResourceManager.GetString("PlaylistControl.TvgNameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVG Name:.
+        /// </summary>
+        public static string PlaylistControl_TvgNameTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.TvgNameTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TV Guide:.
+        /// </summary>
+        public static string PlaylistControl_TvGuideTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.TvGuideTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL.
+        /// </summary>
+        public static string PlaylistControl_UrlColumn_Header {
+            get {
+                return ResourceManager.GetString("PlaylistControl.UrlColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string PlaylistsControl_DeleteButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.DeleteButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the open playlist.
+        /// </summary>
+        public static string PlaylistsControl_DeleteButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.DeleteButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a playlist on the left, or create or import one..
+        /// </summary>
+        public static string PlaylistsControl_EmptyHint_Text {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.EmptyHint.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export....
+        /// </summary>
+        public static string PlaylistsControl_ExportButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.ExportButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save and export the open playlist to an M3U file.
+        /// </summary>
+        public static string PlaylistsControl_ExportButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.ExportButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import....
+        /// </summary>
+        public static string PlaylistsControl_ImportButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.ImportButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import an M3U file as a new playlist.
+        /// </summary>
+        public static string PlaylistsControl_ImportButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.ImportButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge....
+        /// </summary>
+        public static string PlaylistsControl_MergeButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.MergeButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Append the entries of an M3U file to the open playlist.
+        /// </summary>
+        public static string PlaylistsControl_MergeButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.MergeButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string PlaylistsControl_NewButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.NewButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new, empty playlist.
+        /// </summary>
+        public static string PlaylistsControl_NewButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.NewButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlists.
+        /// </summary>
+        public static string PlaylistsControl_PlaylistsGroupBox_Header {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.PlaylistsGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string PlaylistsControl_SaveButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.SaveButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save the open playlist.
+        /// </summary>
+        public static string PlaylistsControl_SaveButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistsControl.SaveButton.ToolTip", resourceCulture);
             }
         }
         

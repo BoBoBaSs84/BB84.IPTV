@@ -31,24 +31,24 @@
 								Orientation="Horizontal"
 								Spacing="4"
 								Margin="4">
-			<Button Content="Add"
-							ToolTip.Tip="Add Entry"
+			<Button Content="{x:Static p:Resources.PlaylistControl_AddButton_Content}"
+							ToolTip.Tip="{x:Static p:Resources.PlaylistControl_AddButton_ToolTip}"
 							Click="AddButton_Click" />
-			<Button Content="Duplicate"
-							ToolTip.Tip="Duplicate Entry"
+			<Button Content="{x:Static p:Resources.PlaylistControl_DuplicateButton_Content}"
+							ToolTip.Tip="{x:Static p:Resources.PlaylistControl_DuplicateButton_ToolTip}"
 							Click="DuplicateButton_Click" />
-			<Button Content="Remove"
-							ToolTip.Tip="Remove Entry"
+			<Button Content="{x:Static p:Resources.PlaylistControl_RemoveButton_Content}"
+							ToolTip.Tip="{x:Static p:Resources.PlaylistControl_RemoveButton_ToolTip}"
 							Click="RemoveButton_Click" />
-			<Button Content="Move Up"
-							ToolTip.Tip="Move Entry Up, off while the grid is sorted"
+			<Button Content="{x:Static p:Resources.PlaylistControl_MoveUpButton_Content}"
+							ToolTip.Tip="{x:Static p:Resources.PlaylistControl_MoveUpButton_ToolTip}"
 							IsEnabled="{Binding CanReorderEntries}"
 							Click="MoveUpButton_Click" />
-			<Button Content="Move Down"
-							ToolTip.Tip="Move Entry Down, off while the grid is sorted"
+			<Button Content="{x:Static p:Resources.PlaylistControl_MoveDownButton_Content}"
+							ToolTip.Tip="{x:Static p:Resources.PlaylistControl_MoveDownButton_ToolTip}"
 							IsEnabled="{Binding CanReorderEntries}"
 							Click="MoveDownButton_Click" />
-			<TextBlock Text="Unsaved changes"
+			<TextBlock Text="{x:Static p:Resources.PlaylistControl_DirtyHint_Text}"
 								 Foreground="#888"
 								 VerticalAlignment="Center"
 								 Margin="12,0,0,0"
@@ -73,7 +73,7 @@
 			<!-- Entries DataGrid -->
 			<HeaderedContentControl Grid.Column="0"
 															Theme="{StaticResource GroupBox}"
-															Header="Entries"
+															Header="{x:Static p:Resources.PlaylistControl_EntriesGroupBox_Header}"
 															Margin="4">
 				<DataGrid x:Name="EntriesDataGrid"
 									AutoGenerateColumns="False"
@@ -86,7 +86,7 @@
 									Sorting="OnEntriesSorting">
 					<DataGrid.Columns>
 						<!-- Only cached logos are shown, a missing one stays empty. -->
-						<DataGridTemplateColumn Header="Logo"
+						<DataGridTemplateColumn Header="{x:Static p:Resources.PlaylistControl_LogoColumn_Header}"
 																		Width="56"
 																		IsReadOnly="True">
 							<DataGridTemplateColumn.CellTemplate>
@@ -100,23 +100,23 @@
 							</DataGridTemplateColumn.CellTemplate>
 						</DataGridTemplateColumn>
 						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="Title"
+																Header="{x:Static p:Resources.PlaylistControl_TitleColumn_Header}"
 																Binding="{Binding Title}"
 																Width="2*" />
 						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="Group"
+																Header="{x:Static p:Resources.PlaylistControl_GroupColumn_Header}"
 																Binding="{Binding Metadata.GroupTitle}"
 																Width="*" />
 						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="TVG ID"
+																Header="{x:Static p:Resources.PlaylistControl_TvgIdColumn_Header}"
 																Binding="{Binding Metadata.TvgId}"
 																Width="*" />
 						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="TVG Name"
+																Header="{x:Static p:Resources.PlaylistControl_TvgNameColumn_Header}"
 																Binding="{Binding Metadata.TvgName}"
 																Width="*" />
 						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="URL"
+																Header="{x:Static p:Resources.PlaylistControl_UrlColumn_Header}"
 																Binding="{Binding FilePath}"
 																Width="2*" />
 					</DataGrid.Columns>
@@ -131,42 +131,48 @@
 										Spacing="4">
 					<!-- Playlist Header -->
 					<HeaderedContentControl Theme="{StaticResource GroupBox}"
-																	Header="Playlist">
+																	Header="{x:Static p:Resources.PlaylistControl_PlaylistGroupBox_Header}">
 						<Grid Classes="Detail"
 									ColumnDefinitions="Auto,*"
 									RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 							<TextBlock Grid.Row="0"
-												 Text="Name:" />
+												 Text="{x:Static p:Resources.PlaylistControl_NameTextBlock_Text}" />
 							<TextBox Grid.Row="0"
 											 Grid.Column="1"
 											 Text="{Binding Name}" />
 
 							<TextBlock Grid.Row="1"
-												 Text="TV Guide:"
+												 Text="{x:Static p:Resources.PlaylistControl_TvGuideTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Playlist_TVGuidePath}" />
 							<TextBox Grid.Row="1"
 											 Grid.Column="1"
 											 Text="{Binding UrlTvg}" />
 
 							<TextBlock Grid.Row="2"
-												 Text="Cache:"
+												 Text="{x:Static p:Resources.PlaylistControl_CacheTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Playlist_Cache}" />
 							<TextBox Grid.Row="2"
 											 Grid.Column="1"
 											 Text="{Binding Cache}" />
 
 							<TextBlock Grid.Row="3"
-												 Text="Deinterlace:"
+												 Text="{x:Static p:Resources.PlaylistControl_DeinterlaceTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Playlist_Deinterlace}" />
 							<ComboBox Grid.Row="3"
 												Grid.Column="1"
 												Margin="4"
 												HorizontalAlignment="Stretch"
 												ItemsSource="{m:EnumValues {x:Type domain:Deinterlace}}"
-												SelectedItem="{Binding Deinterlace}" />
+												SelectedItem="{Binding Deinterlace}">
+								<ComboBox.ItemTemplate>
+									<DataTemplate x:DataType="domain:Deinterlace">
+										<TextBlock Text="{Binding Converter={x:Static conv:EnumDisplayNameConverter.Instance}}" />
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
 
 							<TextBlock Grid.Row="4"
-												 Text="Refresh:"
+												 Text="{x:Static p:Resources.PlaylistControl_RefreshTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Playlist_Refresh}" />
 							<TextBox Grid.Row="4"
 											 Grid.Column="1"
@@ -176,7 +182,7 @@
 
 					<!-- Entry Detail -->
 					<HeaderedContentControl Theme="{StaticResource GroupBox}"
-																	Header="Entry"
+																	Header="{x:Static p:Resources.PlaylistControl_EntryGroupBox_Header}"
 																	IsVisible="{Binding SelectedEntryVisible}">
 						<Grid Classes="Detail"
 									DataContext="{Binding SelectedEntry}"
@@ -184,28 +190,28 @@
 									ColumnDefinitions="Auto,*"
 									RowDefinitions="Auto,Auto,Auto,Auto">
 							<TextBlock Grid.Row="0"
-												 Text="Duration:"
+												 Text="{x:Static p:Resources.PlaylistControl_DurationTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Track_Duration}" />
 							<TextBox Grid.Row="0"
 											 Grid.Column="1"
 											 Text="{Binding Duration}" />
 
 							<TextBlock Grid.Row="1"
-												 Text="Title:"
+												 Text="{x:Static p:Resources.PlaylistControl_TitleTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Track_Title}" />
 							<TextBox Grid.Row="1"
 											 Grid.Column="1"
 											 Text="{Binding Title}" />
 
 							<TextBlock Grid.Row="2"
-												 Text="Location:"
+												 Text="{x:Static p:Resources.PlaylistControl_LocationTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Track_Location}" />
 							<TextBox Grid.Row="2"
 											 Grid.Column="1"
 											 Text="{Binding FilePath}" />
 
 							<TextBlock Grid.Row="3"
-												 Text="Grouping:"
+												 Text="{x:Static p:Resources.PlaylistControl_GroupingTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Track_Grouping}" />
 							<TextBox Grid.Row="3"
 											 Grid.Column="1"
@@ -215,7 +221,7 @@
 
 					<!-- Metadata Detail -->
 					<HeaderedContentControl Theme="{StaticResource GroupBox}"
-																	Header="Metadata"
+																	Header="{x:Static p:Resources.PlaylistControl_MetadataGroupBox_Header}"
 																	IsVisible="{Binding SelectedEntryVisible}">
 						<Grid Classes="Detail"
 									DataContext="{Binding SelectedEntry}"
@@ -223,34 +229,34 @@
 									ColumnDefinitions="Auto,*"
 									RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
 							<TextBlock Grid.Row="0"
-												 Text="TVG ID:" />
+												 Text="{x:Static p:Resources.PlaylistControl_TvgIdTextBlock_Text}" />
 							<TextBox Grid.Row="0"
 											 Grid.Column="1"
 											 Text="{Binding Metadata.TvgId}" />
 
 							<TextBlock Grid.Row="1"
-												 Text="TVG Name:"
+												 Text="{x:Static p:Resources.PlaylistControl_TvgNameTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_Name}" />
 							<TextBox Grid.Row="1"
 											 Grid.Column="1"
 											 Text="{Binding Metadata.TvgName}" />
 
 							<TextBlock Grid.Row="2"
-												 Text="TVG Logo:"
+												 Text="{x:Static p:Resources.PlaylistControl_TvgLogoTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_Logo}" />
 							<TextBox Grid.Row="2"
 											 Grid.Column="1"
 											 Text="{Binding Metadata.TvgLogo}" />
 
 							<TextBlock Grid.Row="3"
-												 Text="Group ID:"
+												 Text="{x:Static p:Resources.PlaylistControl_GroupIdTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_GroupId}" />
 							<TextBox Grid.Row="3"
 											 Grid.Column="1"
 											 Text="{Binding Metadata.GroupId}" />
 
 							<TextBlock Grid.Row="4"
-												 Text="Group Title:"
+												 Text="{x:Static p:Resources.PlaylistControl_GroupTitleTextBlock_Text}"
 												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_GroupTitle}" />
 							<TextBox Grid.Row="4"
 											 Grid.Column="1"
@@ -258,7 +264,7 @@
 
 							<CheckBox Grid.Row="5"
 												Grid.ColumnSpan="2"
-												Content="Censored"
+												Content="{x:Static p:Resources.PlaylistControl_CensoredCheckBox_Content}"
 												Margin="4"
 												ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_Censored}"
 												IsChecked="{Binding Metadata.Censored}" />

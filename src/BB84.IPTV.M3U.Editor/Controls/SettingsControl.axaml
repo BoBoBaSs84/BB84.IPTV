@@ -2,6 +2,7 @@
 						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:conv="using:BB84.IPTV.M3U.Editor.Converters"
 						 xmlns:m="using:BB84.IPTV.M3U.Editor.Markup"
 						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
 						 xmlns:appEnums="using:BB84.IPTV.M3U.Editor.Application.Enumerators"
@@ -67,7 +68,13 @@
 									Margin="4"
 									HorizontalAlignment="Stretch"
 									ItemsSource="{m:EnumValues {x:Type logging:LogLevel}}"
-									SelectedItem="{Binding General.LogLevel}" />
+									SelectedItem="{Binding General.LogLevel}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate x:DataType="logging:LogLevel">
+							<TextBlock Text="{Binding Converter={x:Static conv:EnumDisplayNameConverter.Instance}}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
 				<TextBlock Grid.Row="4"
 									 Grid.Column="0"
 									 Text="{x:Static p:Resources.SettingsControl_LanguageTextBlock_Text}"
@@ -78,7 +85,13 @@
 									Margin="4"
 									HorizontalAlignment="Stretch"
 									ItemsSource="{m:EnumValues {x:Type appEnums:Language}}"
-									SelectedItem="{Binding General.Language}" />
+									SelectedItem="{Binding General.Language}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate x:DataType="appEnums:Language">
+							<TextBlock Text="{Binding Converter={x:Static conv:EnumDisplayNameConverter.Instance}}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
 			</Grid>
 		</HeaderedContentControl>
 		<HeaderedContentControl Grid.Row="0"
@@ -149,7 +162,13 @@
 									Margin="4"
 									HorizontalAlignment="Stretch"
 									ItemsSource="{m:EnumValues {x:Type appEnums:LogoPathStyle}}"
-									SelectedItem="{Binding Logo.ExportPathStyle}" />
+									SelectedItem="{Binding Logo.ExportPathStyle}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate x:DataType="appEnums:LogoPathStyle">
+							<TextBlock Text="{Binding Converter={x:Static conv:EnumDisplayNameConverter.Instance}}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
 				<TextBlock Grid.Row="2"
 									 Grid.Column="0"
 									 Text="{x:Static p:Resources.SettingsControl_MaxParallelDownloadsTextBlock_Text}"
