@@ -144,9 +144,11 @@ internal static class ServiceCollectionExtensions
 				.WithMediaType(Constants.HttpClientMediaType)
 				.WithTimeout(TimeSpan.FromSeconds(30)));
 
-		// The logos are hosted wherever their channel keeps them, so this client has no base address.
 		services.AddHttpClient(Constants.DownloadClientName, configureClient =>
-			configureClient.WithTimeout(TimeSpan.FromSeconds(30)));
+		{
+			configureClient.WithTimeout(TimeSpan.FromSeconds(30));
+			configureClient.DefaultRequestHeaders.UserAgent.ParseAdd(Constants.DownloadClientUserAgent);
+		});
 
 		return services;
 	}

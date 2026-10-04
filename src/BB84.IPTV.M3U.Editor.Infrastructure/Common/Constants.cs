@@ -21,6 +21,11 @@ public static class Constants
 	public const string DownloadClientName = "BB84.IPTV.DownloadClient";
 
 	/// <summary>
+	/// The User-Agent request header sent by the download client.
+	/// </summary>
+	public const string DownloadClientUserAgent = "BB84.IPTV.M3U.Editor (+https://github.com/BoBoBaSs84/BB84.IPTV)";
+
+	/// <summary>
 	/// The media type to be used in HTTP requests and responses.
 	/// </summary>
 	public const string HttpClientMediaType = "application/json";
