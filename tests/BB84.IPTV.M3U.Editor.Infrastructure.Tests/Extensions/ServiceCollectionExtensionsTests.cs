@@ -4,6 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Settings;
+using BB84.IPTV.M3U.Editor.Infrastructure.Common;
 using BB84.IPTV.M3U.Editor.Infrastructure.Extensions;
 using BB84.IPTV.M3U.Editor.Infrastructure.Logging;
 
@@ -46,6 +47,19 @@ public sealed class ServiceCollectionExtensionsTests
 		ILoggerProvider[] loggerProviders = [.. provider.GetServices<ILoggerProvider>()];
 
 		Assert.IsEmpty(loggerProviders.OfType<FileLoggerProvider>());
+	}
+
+	[TestMethod]
+	public void TheDownloadClientShouldNameItself()
+	{
+		ServiceCollection services = new();
+
+		using ServiceProvider provider = services.RegisterHttpClients().BuildServiceProvider();
+		using HttpClient client = provider.GetRequiredService<IHttpClientFactory>()
+			.CreateClient(Constants.DownloadClientName);
+
+		// A host like Wikimedia answers a request without a User-Agent with 403 Forbidden.
+		Assert.AreEqual(Constants.DownloadClientUserAgent, client.DefaultRequestHeaders.UserAgent.ToString());
 	}
 
 	[TestMethod]
