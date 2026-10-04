@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
 						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -269,6 +269,37 @@
 												ToolTip.Tip="{x:Static p:Resources.ToolTip_Metadata_Censored}"
 												IsChecked="{Binding Metadata.Censored}" />
 						</Grid>
+					</HeaderedContentControl>
+
+					<!-- The file the logo of the entry stands for, and where another logo comes from -->
+					<HeaderedContentControl Theme="{StaticResource GroupBox}"
+															Header="{x:Static p:Resources.LogoOverviewControl_LogoColumn_Header}"
+															IsVisible="{Binding SelectedEntryVisible}">
+						<StackPanel Margin="8"
+												Spacing="4">
+							<Image Source="{Binding SelectedEntryLogoPath, Converter={x:Static conv:LogoImageConverter.Instance}}"
+											 Height="64"
+											 Stretch="Uniform" />
+							<TextBlock Text="{x:Static p:Resources.PlaylistControl_LogoPathTextBlock_Text}"
+												 ToolTip.Tip="{x:Static p:Resources.ToolTip_Logo_CachedFile}" />
+							<TextBox Text="{Binding SelectedEntryLogoPath, Mode=OneWay}"
+											 IsReadOnly="True"
+											 ToolTip.Tip="{x:Static p:Resources.ToolTip_Logo_CachedFile}" />
+							<UniformGrid Columns="2">
+								<Button Content="{x:Static p:Resources.PlaylistControl_BrowseLogoButton_Content}"
+												ToolTip.Tip="{x:Static p:Resources.PlaylistControl_BrowseLogoButton_ToolTip}"
+												HorizontalAlignment="Stretch"
+												HorizontalContentAlignment="Center"
+												Margin="0,0,2,0"
+												Click="BrowseLogoButton_Click" />
+								<Button Content="{x:Static p:Resources.PlaylistControl_CopyLogoPathButton_Content}"
+												ToolTip.Tip="{x:Static p:Resources.PlaylistControl_CopyLogoPathButton_ToolTip}"
+												HorizontalAlignment="Stretch"
+												HorizontalContentAlignment="Center"
+												Margin="2,0,0,0"
+												Click="CopyLogoPathButton_Click" />
+							</UniformGrid>
+						</StackPanel>
 					</HeaderedContentControl>
 				</StackPanel>
 			</ScrollViewer>

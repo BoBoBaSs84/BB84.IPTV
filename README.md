@@ -50,10 +50,18 @@ The application is a cross-platform AvaloniaUI app and runs on Windows, Linux an
 ### Local logo cache
 
 - Channel logos are downloaded to `<app data>/logos/<channel>/<file>`; the local path, the ETag, a content hash, the size and the download time are stored in the database.
-- One logo is picked per channel: the one of the feed, then the one without special tags, then the format that displays best, then the larger image.
+- One logo is picked per channel for a bulk run: the one of the feed, then the one without special tags, then the format that displays best, then the larger image. A single logo of any other feed, format or tag is downloaded from the `Logos` screen.
 - Bulk download from the `Logo Cache` section of the Database screen, with progress, Cancel and Clear. Logos are downloaded in batches (four by default, at most 16), a run skips what is already on disk and is therefore resumable, and refreshes with the ETag.
 - The catalog list and the playlist editor read the cache only, never the network. SVG renders through `Svg.Controls.Skia.Avalonia`, WebP through Skia, so a playlist displays fully offline.
 - An M3U export can write `tvg-logo` as a local path, absolute or relative; the stored playlist keeps its URLs.
+
+### Assigning logos
+
+- The `Logos` screen (menu `Tools`) searches every logo the catalog knows, by channel, channel name, feed, format, remote path or local path, and filters by whether it is downloaded. Filtering, ordering and paging run in SQL, 100 logos per page, so an order covers the whole result and not only the page. The text is matched case sensitively, as everywhere else in the catalog. The name and the country of a channel are read for the page that is shown, so they are displayed but not ordered by.
+- Each row shows the preview, the channel and its name, the feed, the country, the format, the size in pixels, the tags, the remote path, the local path, the file size and the download time. `Copy URL` and `Copy path` put either path on the clipboard.
+- The entries of a picked playlist stand next to the logos. A selected logo is assigned to the selected entry with `Assign URL` or, once it is downloaded, with `Assign file`; `From disk` assigns an image of your own, `Clear` takes the logo off. `Every entry with the same tvg-id` applies an assignment to every entry of that channel at once, and `Save` writes the assignments to the stored playlist.
+- `Download` caches the selected logo alone, which is how a logo that a bulk run does not pick gets a local file. A cached file is named after the channel, the feed and the id of the logo, so the logos of one channel never write over each other.
+- The playlist editor shows the file the `tvg-logo` of the selected entry stands for, next to a preview, and assigns an image from disk or copies the path.
 
 ### `channels.xml` export
 

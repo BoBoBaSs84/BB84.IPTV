@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -35,7 +35,7 @@ public sealed class PlaylistsViewModelTests
 
 	public PlaylistsViewModelTests()
 	{
-		PlaylistViewModel editor = new(_playlistServiceMock.Object, new Mock<IFileService>().Object);
+		PlaylistViewModel editor = new(_playlistServiceMock.Object, new Mock<IFileService>().Object, new Mock<ILogoService>().Object, new Mock<IFileDialogService>().Object, new Mock<IClipboardService>().Object, _eventServiceMock.Object);
 		_sut = new PlaylistsViewModel(_playlistServiceMock.Object, _fileDialogServiceMock.Object, _notificationServiceMock.Object, new Mock<INavigationService>().Object, _eventServiceMock.Object, editor);
 
 		SetupPlaylists(

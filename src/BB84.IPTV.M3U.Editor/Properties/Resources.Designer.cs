@@ -925,6 +925,33 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All logos.
+        /// </summary>
+        public static string Enum_LogoCacheFilter_Any {
+            get {
+                return ResourceManager.GetString("Enum.LogoCacheFilter.Any", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloaded.
+        /// </summary>
+        public static string Enum_LogoCacheFilter_Cached {
+            get {
+                return ResourceManager.GetString("Enum.LogoCacheFilter.Cached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not downloaded.
+        /// </summary>
+        public static string Enum_LogoCacheFilter_NotCached {
+            get {
+                return ResourceManager.GetString("Enum.LogoCacheFilter.NotCached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Absolute.
         /// </summary>
         public static string Enum_LogoPathStyle_Absolute {
@@ -1465,6 +1492,393 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Every entry with the same tvg-id.
+        /// </summary>
+        public static string LogoOverviewControl_ApplyToWholeChannelCheckBox_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.ApplyToWholeChannelCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assign file.
+        /// </summary>
+        public static string LogoOverviewControl_AssignLocalPathButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.AssignLocalPathButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Writes the path of the downloaded file into the tvg-logo of the entry, which needs the logo to be downloaded..
+        /// </summary>
+        public static string LogoOverviewControl_AssignLocalPathButton_ToolTip {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.AssignLocalPathButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assign URL.
+        /// </summary>
+        public static string LogoOverviewControl_AssignUrlButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.AssignUrlButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Writes the URL of the selected logo into the tvg-logo of the entry..
+        /// </summary>
+        public static string LogoOverviewControl_AssignUrlButton_ToolTip {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.AssignUrlButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From disk.
+        /// </summary>
+        public static string LogoOverviewControl_BrowseFileButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.BrowseFileButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assigns an image file of your own, one that is not from the catalog..
+        /// </summary>
+        public static string LogoOverviewControl_BrowseFileButton_ToolTip {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.BrowseFileButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cache.
+        /// </summary>
+        public static string LogoOverviewControl_CacheStateTextBlock_Text {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.CacheStateTextBlock.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel.
+        /// </summary>
+        public static string LogoOverviewControl_ChannelColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.ChannelColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string LogoOverviewControl_ChannelNameColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.ChannelNameColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string LogoOverviewControl_ClearLogoButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.ClearLogoButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Takes the logo off the selected entry..
+        /// </summary>
+        public static string LogoOverviewControl_ClearLogoButton_ToolTip {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.ClearLogoButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy path.
+        /// </summary>
+        public static string LogoOverviewControl_CopyLocalPathButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.CopyLocalPathButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy URL.
+        /// </summary>
+        public static string LogoOverviewControl_CopyUrlButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.CopyUrlButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string LogoOverviewControl_CountryColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.CountryColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloaded.
+        /// </summary>
+        public static string LogoOverviewControl_DownloadedAtColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.DownloadedAtColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string LogoOverviewControl_DownloadLogoButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.DownloadLogoButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloads the selected logo, also one that is not the logo picked for its channel..
+        /// </summary>
+        public static string LogoOverviewControl_DownloadLogoButton_ToolTip {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.DownloadLogoButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entries of the playlist.
+        /// </summary>
+        public static string LogoOverviewControl_EntriesGroupBox_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.EntriesGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local path.
+        /// </summary>
+        public static string LogoOverviewControl_EntryLocalPathColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.EntryLocalPathColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo.
+        /// </summary>
+        public static string LogoOverviewControl_EntryLogoColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.EntryLogoColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string LogoOverviewControl_EntryTitleColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.EntryTitleColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tvg-id.
+        /// </summary>
+        public static string LogoOverviewControl_EntryTvgIdColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.EntryTvgIdColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tvg-logo.
+        /// </summary>
+        public static string LogoOverviewControl_EntryValueColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.EntryValueColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed.
+        /// </summary>
+        public static string LogoOverviewControl_FeedColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.FeedColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File size.
+        /// </summary>
+        public static string LogoOverviewControl_FileSizeColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.FileSizeColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Format.
+        /// </summary>
+        public static string LogoOverviewControl_FormatColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.FormatColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string LogoOverviewControl_HeightColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.HeightColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local path.
+        /// </summary>
+        public static string LogoOverviewControl_LocalPathColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.LocalPathColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo.
+        /// </summary>
+        public static string LogoOverviewControl_LogoColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.LogoColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logos of the catalog.
+        /// </summary>
+        public static string LogoOverviewControl_LogosGroupBox_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.LogosGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string LogoOverviewControl_NextPageButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.NextPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only the channel of the entry.
+        /// </summary>
+        public static string LogoOverviewControl_OnlySelectedChannelCheckBox_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.OnlySelectedChannelCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlists.
+        /// </summary>
+        public static string LogoOverviewControl_PlaylistsGroupBox_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.PlaylistsGroupBox.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string LogoOverviewControl_PreviousPageButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.PreviousPageButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload.
+        /// </summary>
+        public static string LogoOverviewControl_ReloadPlaylistsButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.ReloadPlaylistsButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string LogoOverviewControl_SaveButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.SaveButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Writes the assigned logos to the stored playlist..
+        /// </summary>
+        public static string LogoOverviewControl_SaveButton_ToolTip {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.SaveButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string LogoOverviewControl_SearchButton_Content {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.SearchButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel, name, feed, format, URL or path.
+        /// </summary>
+        public static string LogoOverviewControl_SearchTextBox_Placeholder {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.SearchTextBox.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags.
+        /// </summary>
+        public static string LogoOverviewControl_TagsColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.TagsColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote path.
+        /// </summary>
+        public static string LogoOverviewControl_UrlColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.UrlColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string LogoOverviewControl_WidthColumn_Header {
+            get {
+                return ResourceManager.GetString("LogoOverviewControl.WidthColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _About....
         /// </summary>
         public static string MainWindow_AboutMenuItem_Header {
@@ -1587,6 +2001,15 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string MainWindow_IndexMenuItem_Header {
             get {
                 return ResourceManager.GetString("MainWindow.IndexMenuItem.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logos.
+        /// </summary>
+        public static string MainWindow_LogoOverviewMenuItem_Header {
+            get {
+                return ResourceManager.GetString("MainWindow.LogoOverviewMenuItem.Header", resourceCulture);
             }
         }
         
@@ -1987,6 +2410,24 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From disk.
+        /// </summary>
+        public static string PlaylistControl_BrowseLogoButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistControl.BrowseLogoButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assigns an image file from disk as the logo of the entry..
+        /// </summary>
+        public static string PlaylistControl_BrowseLogoButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistControl.BrowseLogoButton.ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cache:.
         /// </summary>
         public static string PlaylistControl_CacheTextBlock_Text {
@@ -2001,6 +2442,24 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string PlaylistControl_CensoredCheckBox_Content {
             get {
                 return ResourceManager.GetString("PlaylistControl.CensoredCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy.
+        /// </summary>
+        public static string PlaylistControl_CopyLogoPathButton_Content {
+            get {
+                return ResourceManager.GetString("PlaylistControl.CopyLogoPathButton.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copies the logo file of the entry to the clipboard..
+        /// </summary>
+        public static string PlaylistControl_CopyLogoPathButton_ToolTip {
+            get {
+                return ResourceManager.GetString("PlaylistControl.CopyLogoPathButton.ToolTip", resourceCulture);
             }
         }
         
@@ -2118,6 +2577,15 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string PlaylistControl_LogoColumn_Header {
             get {
                 return ResourceManager.GetString("PlaylistControl.LogoColumn.Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo file.
+        /// </summary>
+        public static string PlaylistControl_LogoPathTextBlock_Text {
+            get {
+                return ResourceManager.GetString("PlaylistControl.LogoPathTextBlock.Text", resourceCulture);
             }
         }
         
@@ -2658,6 +3126,15 @@ namespace BB84.IPTV.M3U.Editor.Properties {
         public static string SettingsControl_UseLocalPathsOnExportCheckBox_Content {
             get {
                 return ResourceManager.GetString("SettingsControl.UseLocalPathsOnExportCheckBox.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The downloaded file the logo of the entry stands for. It is empty while the logo is not downloaded..
+        /// </summary>
+        public static string ToolTip_Logo_CachedFile {
+            get {
+                return ResourceManager.GetString("ToolTip.Logo.CachedFile", resourceCulture);
             }
         }
         

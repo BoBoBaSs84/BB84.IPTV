@@ -1,9 +1,10 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
 namespace BB84.IPTV.M3U.Editor.Application.Common;
@@ -24,6 +25,41 @@ internal static partial class Mappings
 		Width = request.Width,
 		Tags = [.. request.Tags],
 		Url = request.Url
+	};
+
+	/// <summary>
+	/// The separator the tags of a logo are shown with.
+	/// </summary>
+	private const string TagSeparator = ", ";
+
+	/// <summary>
+	/// Creates the option a logo is picked by, with what the catalog knows about its channel.
+	/// </summary>
+	/// <remarks>
+	/// An empty tag collection is stored as <see langword="null"/>, and the value converter is not
+	/// used for <see langword="null"/>, so the tags read from the database can be
+	/// <see langword="null"/>.
+	/// </remarks>
+	/// <param name="entity">The stored logo to map.</param>
+	/// <param name="channel">What the catalog knows about the channel of the logo, if anything.</param>
+	/// <param name="isCached">Whether the file of the logo is in the store.</param>
+	/// <returns>The logo option.</returns>
+	internal static LogoOptionResponse ToOption(this LogoEntity entity, ChannelInfo? channel = null, bool isCached = false) => new()
+	{
+		Id = entity.Id,
+		Channel = entity.Channel,
+		Feed = entity.Feed,
+		ChannelName = channel?.Name,
+		Country = channel?.Country,
+		Format = entity.Format,
+		Width = entity.Width,
+		Height = entity.Height,
+		Tags = string.Join(TagSeparator, entity.Tags ?? []),
+		Url = entity.Url,
+		LocalPath = entity.LocalPath,
+		FileSize = entity.FileSize,
+		DownloadedAt = entity.DownloadedAt,
+		IsCached = isCached
 	};
 
 	/// <summary>

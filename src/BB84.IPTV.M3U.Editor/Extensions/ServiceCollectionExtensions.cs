@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -47,6 +47,7 @@ internal static class ServiceCollectionExtensions
 	/// <returns>The enriched service collection.</returns>
 	internal static IServiceCollection RegisterServices(this IServiceCollection services)
 	{
+		services.AddSingleton<IClipboardService, ClipboardService>();
 		services.AddSingleton<IFileDialogService, FileDialogService>();
 		services.AddSingleton<LogoImageService>();
 		services.AddTransient<IUserService, UserService>();

@@ -77,6 +77,7 @@ internal static class ServiceCollectionExtensions
 		services.AddSingleton<DatabaseViewModel>();
 		services.AddSingleton<GuideOverviewViewModel>();
 		services.AddSingleton<GuideViewModel>();
+		services.AddSingleton<LogoOverviewViewModel>();
 		services.AddSingleton<MainViewModel>();
 		services.AddSingleton<MergeViewModel>();
 		services.AddSingleton<PlaylistViewModel>();

@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -43,7 +43,7 @@ public sealed class CatalogViewModelTests
 
 	public CatalogViewModelTests()
 	{
-		_editor = new PlaylistViewModel(_playlistServiceMock.Object, new Mock<IFileService>().Object);
+		_editor = new PlaylistViewModel(_playlistServiceMock.Object, new Mock<IFileService>().Object, new Mock<ILogoService>().Object, new Mock<IFileDialogService>().Object, new Mock<IClipboardService>().Object, new Mock<IEventService>().Object);
 		_sut = new CatalogViewModel(_catalogServiceMock.Object, _customChannelServiceMock.Object, _notificationServiceMock.Object, _eventServiceMock.Object, _editor);
 
 		_playlistServiceMock.Setup(x => x.LoadAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))

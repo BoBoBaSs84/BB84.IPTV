@@ -268,4 +268,4 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 		protected override Expression VisitParameter(ParameterExpression node)
 			=> ReferenceEquals(node, source) ? target : base.VisitParameter(node);
 	}
-}
+}

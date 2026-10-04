@@ -493,6 +493,24 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The logo was assigned to {0} entries..
+        /// </summary>
+        public static string LogoAssigned {
+            get {
+                return ResourceManager.GetString("LogoAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a logo file.
+        /// </summary>
+        public static string LogoBrowseTitle {
+            get {
+                return ResourceManager.GetString("LogoBrowseTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} cached logos deleted..
         /// </summary>
         public static string LogoCacheCleared {
@@ -561,6 +579,87 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
         public static string LogoDirectoryDialogTitle {
             get {
                 return ResourceManager.GetString("LogoDirectoryDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The logo was downloaded..
+        /// </summary>
+        public static string LogoDownloaded {
+            get {
+                return ResourceManager.GetString("LogoDownloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1} entries carry a logo..
+        /// </summary>
+        public static string LogoEntriesStatus {
+            get {
+                return ResourceManager.GetString("LogoEntriesStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The logo could not be downloaded..
+        /// </summary>
+        public static string LogoNotDownloaded {
+            get {
+                return ResourceManager.GetString("LogoNotDownloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The logo operation failed..
+        /// </summary>
+        public static string LogoOperationFailed {
+            get {
+                return ResourceManager.GetString("LogoOperationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page {0} of {1}, {2} logos..
+        /// </summary>
+        public static string LogoPageStatus {
+            get {
+                return ResourceManager.GetString("LogoPageStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copied: {0}.
+        /// </summary>
+        public static string LogoPathCopied {
+            get {
+                return ResourceManager.GetString("LogoPathCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The playlist no longer exists..
+        /// </summary>
+        public static string LogoPlaylistGone {
+            get {
+                return ResourceManager.GetString("LogoPlaylistGone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The logos of the playlist &apos;{0}&apos; were saved..
+        /// </summary>
+        public static string LogoPlaylistSaved {
+            get {
+                return ResourceManager.GetString("LogoPlaylistSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No logo found..
+        /// </summary>
+        public static string LogoSearchNoResult {
+            get {
+                return ResourceManager.GetString("LogoSearchNoResult", resourceCulture);
             }
         }
         

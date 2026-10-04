@@ -370,4 +370,37 @@
   <data name="WebRequestFailed" xml:space="preserve">
     <value>No se pudieron leer los datos de iptv-org.</value>
   </data>
+  <data name="LogoAssigned" xml:space="preserve">
+    <value>El logotipo se ha asignado a {0} entradas.</value>
+  </data>
+  <data name="LogoBrowseTitle" xml:space="preserve">
+    <value>Seleccionar un archivo de logotipo</value>
+  </data>
+  <data name="LogoDownloaded" xml:space="preserve">
+    <value>El logotipo se ha descargado.</value>
+  </data>
+  <data name="LogoEntriesStatus" xml:space="preserve">
+    <value>{0} de {1} entradas tienen un logotipo.</value>
+  </data>
+  <data name="LogoNotDownloaded" xml:space="preserve">
+    <value>No se ha podido descargar el logotipo.</value>
+  </data>
+  <data name="LogoOperationFailed" xml:space="preserve">
+    <value>La operación de logotipos ha fallado.</value>
+  </data>
+  <data name="LogoPageStatus" xml:space="preserve">
+    <value>Página {0} de {1}, {2} logotipos.</value>
+  </data>
+  <data name="LogoPathCopied" xml:space="preserve">
+    <value>Copiado: {0}</value>
+  </data>
+  <data name="LogoPlaylistGone" xml:space="preserve">
+    <value>La lista de reproducción ya no existe.</value>
+  </data>
+  <data name="LogoPlaylistSaved" xml:space="preserve">
+    <value>Se han guardado los logotipos de la lista de reproducción '{0}'.</value>
+  </data>
+  <data name="LogoSearchNoResult" xml:space="preserve">
+    <value>No se ha encontrado ningún logotipo.</value>
+  </data>
 </root>

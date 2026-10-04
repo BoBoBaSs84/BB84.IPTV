@@ -33,7 +33,7 @@ internal static class ViewModelFactory
 
 		SetupPlaylistService(playlistServiceMock);
 
-		PlaylistViewModel editor = new(playlistServiceMock.Object, new Mock<IFileService>().Object);
+		PlaylistViewModel editor = new(playlistServiceMock.Object, new Mock<IFileService>().Object, new Mock<ILogoService>().Object, new Mock<IFileDialogService>().Object, new Mock<IClipboardService>().Object, new Mock<IEventService>().Object);
 
 		return new PlaylistsViewModel(
 			playlistServiceMock.Object,
@@ -87,7 +87,7 @@ internal static class ViewModelFactory
 		Mock<IPlaylistService> playlistServiceMock = new();
 		SetupPlaylistService(playlistServiceMock);
 
-		PlaylistViewModel editor = new(playlistServiceMock.Object, new Mock<IFileService>().Object);
+		PlaylistViewModel editor = new(playlistServiceMock.Object, new Mock<IFileService>().Object, new Mock<ILogoService>().Object, new Mock<IFileDialogService>().Object, new Mock<IClipboardService>().Object, new Mock<IEventService>().Object);
 
 		return new CatalogViewModel(
 			catalogServiceMock.Object,
@@ -158,6 +158,67 @@ internal static class ViewModelFactory
 				request.PageSize));
 
 		return new GuideOverviewViewModel(guideServiceMock.Object, new Mock<IEventService>().Object);
+	}
+
+	/// <summary>
+	/// Creates the logo screen with one playlist, two of its entries and two logos of one channel.
+	/// </summary>
+	public static LogoOverviewViewModel CreateLogoOverview(Mock<ILogoService>? logoServiceMock = null)
+	{
+		logoServiceMock ??= new Mock<ILogoService>();
+
+		Mock<IPlaylistService> playlistServiceMock = new();
+		SetupPlaylistService(playlistServiceMock);
+
+		playlistServiceMock.Setup(x => x.LoadAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync(() => new PlaylistModel(new PlaylistModel(),
+			[
+				new EntryModel("Das Erste", "https://example.com/ard.m3u8",
+					metadata: new MetadataModel { TvgId = "DasErste.de", TvgLogo = "https://logo.example/ard.png" }),
+				new EntryModel("Local camera", "rtsp://192.168.12.1:554")
+			]));
+
+		logoServiceMock.Setup(x => x.GetPathsByUrlAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(new Dictionary<string, string>());
+
+		logoServiceMock.Setup(x => x.SearchLogosAsync(It.IsAny<LogoSearchRequest>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((LogoSearchRequest request, CancellationToken _) => new PagedList<LogoOptionResponse>(
+				[
+					new LogoOptionResponse
+					{
+						Id = 1,
+						Channel = "DasErste.de",
+						ChannelName = "Das Erste",
+						Country = "DE",
+						Format = "PNG",
+						Width = 512,
+						Height = 512,
+						Tags = "light",
+						Url = "https://logo.example/ard.png"
+					},
+					new LogoOptionResponse
+					{
+						Id = 2,
+						Channel = "DasErste.de",
+						ChannelName = "Das Erste",
+						Country = "DE",
+						Feed = "HD",
+						Format = "WEBP",
+						Width = 256,
+						Height = 256,
+						Url = "https://logo.example/ard-hd.webp"
+					}
+				],
+				2,
+				request.PageNumber,
+				request.PageSize));
+
+		return new LogoOverviewViewModel(
+			logoServiceMock.Object,
+			playlistServiceMock.Object,
+			new Mock<IFileDialogService>().Object,
+			new Mock<IClipboardService>().Object,
+			new Mock<IEventService>().Object);
 	}
 
 	/// <summary>

@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
+using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Controls;
@@ -82,7 +83,7 @@ public sealed class PlaylistControlTests
 				new EntryModel("Local camera", "rtsp://192.168.12.1:554")
 			]));
 
-		PlaylistViewModel viewModel = new(playlistServiceMock.Object, new Mock<IFileService>().Object);
+		PlaylistViewModel viewModel = new(playlistServiceMock.Object, new Mock<IFileService>().Object, new Mock<ILogoService>().Object, new Mock<IFileDialogService>().Object, new Mock<IClipboardService>().Object, new Mock<IEventService>().Object);
 		viewModel.LoadAsync(1, "Mine", CancellationToken.None).GetAwaiter().GetResult();
 
 		return viewModel;
