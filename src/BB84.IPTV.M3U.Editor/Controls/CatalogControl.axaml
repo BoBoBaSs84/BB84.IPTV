@@ -2,6 +2,7 @@
 						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
 						 xmlns:conv="using:BB84.IPTV.M3U.Editor.Converters"
 						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
 						 mc:Ignorable="d"
@@ -23,45 +24,45 @@
 	</UserControl.Styles>
 	<TabControl Margin="4">
 		<!-- The iptv-org catalog -->
-		<TabItem Header="Catalog">
+		<TabItem Header="{x:Static p:Resources.CatalogControl_CatalogTabItem_Header}">
 			<DockPanel>
 				<!-- Filter -->
 				<HeaderedContentControl DockPanel.Dock="Top"
 																Theme="{StaticResource GroupBox}"
-																Header="Filter"
+																Header="{x:Static p:Resources.CatalogControl_FilterGroupBox_Header}"
 																Margin="4">
 					<StackPanel Spacing="4">
 						<WrapPanel>
-							<TextBox PlaceholderText="Name or identifier"
+							<TextBox PlaceholderText="{x:Static p:Resources.CatalogControl_SearchTextBox_Placeholder}"
 											 Width="220"
 											 Margin="4"
 											 Text="{Binding SearchText}" />
-							<ComboBox PlaceholderText="Country"
+							<ComboBox PlaceholderText="{x:Static p:Resources.CatalogControl_CountryComboBox_Placeholder}"
 												Width="180"
 												Margin="4"
 												ItemsSource="{Binding Countries}"
 												SelectedItem="{Binding SelectedCountry}" />
-							<ComboBox PlaceholderText="Language"
+							<ComboBox PlaceholderText="{x:Static p:Resources.CatalogControl_LanguageComboBox_Placeholder}"
 												Width="180"
 												Margin="4"
 												ItemsSource="{Binding Languages}"
 												SelectedItem="{Binding SelectedLanguage}" />
-							<ComboBox PlaceholderText="Category"
+							<ComboBox PlaceholderText="{x:Static p:Resources.CatalogControl_CategoryComboBox_Placeholder}"
 												Width="180"
 												Margin="4"
 												ItemsSource="{Binding Categories}"
 												SelectedItem="{Binding SelectedCategory}" />
-							<CheckBox Content="Include NSFW"
+							<CheckBox Content="{x:Static p:Resources.CatalogControl_IncludeNsfwCheckBox_Content}"
 												Margin="4"
 												IsChecked="{Binding IncludeNsfw}" />
-							<CheckBox Content="Include channels without stream"
+							<CheckBox Content="{x:Static p:Resources.CatalogControl_IncludeWithoutStreamCheckBox_Content}"
 												Margin="4"
 												IsChecked="{Binding IncludeWithoutStream}" />
-							<Button Content="Search"
+							<Button Content="{x:Static p:Resources.CatalogControl_SearchButton_Content}"
 											Margin="4"
 											Command="{Binding SearchCommand}" />
-							<Button Content="Reset"
-											ToolTip.Tip="Clear the filter and the result"
+							<Button Content="{x:Static p:Resources.CatalogControl_ResetButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.CatalogControl_ResetButton_ToolTip}"
 											Margin="4"
 											Command="{Binding ResetFiltersCommand}" />
 						</WrapPanel>
@@ -78,20 +79,20 @@
 										Orientation="Horizontal"
 										Spacing="4"
 										Margin="4">
-					<Button Content="Add to Playlist"
-									ToolTip.Tip="Add the selected channel to the open playlist"
+					<Button Content="{x:Static p:Resources.CatalogControl_AddChannelButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.CatalogControl_AddChannelButton_ToolTip}"
 									Command="{Binding AddChannelCommand}" />
-					<Button Content="Add All"
-									ToolTip.Tip="Add all channels of this page to the open playlist"
+					<Button Content="{x:Static p:Resources.CatalogControl_AddAllChannelsButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.CatalogControl_AddAllChannelsButton_ToolTip}"
 									Command="{Binding AddAllChannelsCommand}" />
-					<Button Content="&lt; Previous"
-									ToolTip.Tip="Show the previous page"
+					<Button Content="{x:Static p:Resources.CatalogControl_PreviousPageButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.Common_PreviousPage_ToolTip}"
 									Margin="12,0,0,0"
 									Command="{Binding PreviousPageCommand}" />
-					<Button Content="Next &gt;"
-									ToolTip.Tip="Show the next page"
+					<Button Content="{x:Static p:Resources.CatalogControl_NextPageButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.Common_NextPage_ToolTip}"
 									Command="{Binding NextPageCommand}" />
-					<TextBlock Text="Open a playlist to add channels to it."
+					<TextBlock Text="{x:Static p:Resources.CatalogControl_NoPlaylistHint_Text}"
 										 Foreground="#888"
 										 VerticalAlignment="Center"
 										 Margin="8,0,0,0"
@@ -100,7 +101,7 @@
 
 				<!-- Result -->
 				<HeaderedContentControl Theme="{StaticResource GroupBox}"
-																Header="Channels"
+																Header="{x:Static p:Resources.CatalogControl_ChannelsGroupBox_Header}"
 																Margin="4">
 					<DataGrid AutoGenerateColumns="False"
 										IsReadOnly="True"
@@ -111,7 +112,7 @@
 										SelectedItem="{Binding SelectedChannel}">
 						<DataGrid.Columns>
 							<!-- Only cached logos are shown, a missing one stays empty. -->
-							<DataGridTemplateColumn Header="Logo"
+							<DataGridTemplateColumn Header="{x:Static p:Resources.CatalogControl_LogoColumn_Header}"
 																			Width="56">
 								<DataGridTemplateColumn.CellTemplate>
 									<DataTemplate x:DataType="vm:CatalogChannelViewModel">
@@ -124,31 +125,31 @@
 								</DataGridTemplateColumn.CellTemplate>
 							</DataGridTemplateColumn>
 							<DataGridTextColumn x:DataType="vm:CatalogChannelViewModel"
-																	Header="Name"
+																	Header="{x:Static p:Resources.CatalogControl_NameColumn_Header}"
 																	Binding="{Binding Name}"
 																	Width="2*" />
 							<DataGridTextColumn x:DataType="vm:CatalogChannelViewModel"
-																	Header="TVG ID"
+																	Header="{x:Static p:Resources.CatalogControl_TvgIdColumn_Header}"
 																	Binding="{Binding TvgId}"
 																	Width="*" />
 							<DataGridTextColumn x:DataType="vm:CatalogChannelViewModel"
-																	Header="Country"
+																	Header="{x:Static p:Resources.CatalogControl_CountryColumn_Header}"
 																	Binding="{Binding Country}"
 																	Width="80" />
 							<DataGridTextColumn x:DataType="vm:CatalogChannelViewModel"
-																	Header="Languages"
+																	Header="{x:Static p:Resources.CatalogControl_LanguagesColumn_Header}"
 																	Binding="{Binding Languages}"
 																	Width="*" />
 							<DataGridTextColumn x:DataType="vm:CatalogChannelViewModel"
-																	Header="Categories"
+																	Header="{x:Static p:Resources.CatalogControl_CategoriesColumn_Header}"
 																	Binding="{Binding Categories}"
 																	Width="*" />
 							<DataGridTextColumn x:DataType="vm:CatalogChannelViewModel"
-																	Header="Quality"
+																	Header="{x:Static p:Resources.CatalogControl_QualityColumn_Header}"
 																	Binding="{Binding Quality}"
 																	Width="80" />
 							<DataGridTextColumn x:DataType="vm:CatalogChannelViewModel"
-																	Header="Stream"
+																	Header="{x:Static p:Resources.CatalogControl_StreamColumn_Header}"
 																	Binding="{Binding StreamUrl}"
 																	Width="2*" />
 						</DataGrid.Columns>
@@ -158,11 +159,11 @@
 		</TabItem>
 
 		<!-- User defined channels -->
-		<TabItem Header="Custom Channels">
+		<TabItem Header="{x:Static p:Resources.CatalogControl_CustomChannelsTabItem_Header}">
 			<Grid ColumnDefinitions="280,*">
 				<HeaderedContentControl Grid.Column="0"
 																Theme="{StaticResource GroupBox}"
-																Header="Channels"
+																Header="{x:Static p:Resources.CatalogControl_ChannelsGroupBox_Header}"
 																Margin="4">
 					<DockPanel>
 						<!-- Only shown when the custom channels do not fit on one page. -->
@@ -171,12 +172,12 @@
 											 IsVisible="{Binding HasMultipleCustomChannelPages}">
 							<Button DockPanel.Dock="Left"
 											Content="&lt;"
-											ToolTip.Tip="Show the previous page"
+											ToolTip.Tip="{x:Static p:Resources.Common_PreviousPage_ToolTip}"
 											Margin="2"
 											Command="{Binding PreviousCustomChannelPageCommand}" />
 							<Button DockPanel.Dock="Right"
 											Content="&gt;"
-											ToolTip.Tip="Show the next page"
+											ToolTip.Tip="{x:Static p:Resources.Common_NextPage_ToolTip}"
 											Margin="2"
 											Command="{Binding NextCustomChannelPageCommand}" />
 							<TextBlock Text="{Binding CustomChannelPageStatus}"
@@ -187,26 +188,26 @@
 						<UniformGrid DockPanel.Dock="Bottom"
 												 Columns="2"
 												 Margin="0,4,0,0">
-							<Button Content="New"
-											ToolTip.Tip="Create a new custom channel"
+							<Button Content="{x:Static p:Resources.CatalogControl_NewCustomChannelButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.CatalogControl_NewCustomChannelButton_ToolTip}"
 											HorizontalAlignment="Stretch"
 											HorizontalContentAlignment="Center"
 											Margin="2"
 											Command="{Binding NewCustomChannelCommand}" />
-							<Button Content="Save"
-											ToolTip.Tip="Store the selected custom channel"
+							<Button Content="{x:Static p:Resources.CatalogControl_SaveCustomChannelButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.CatalogControl_SaveCustomChannelButton_ToolTip}"
 											HorizontalAlignment="Stretch"
 											HorizontalContentAlignment="Center"
 											Margin="2"
 											Command="{Binding SaveCustomChannelCommand}" />
-							<Button Content="Delete"
-											ToolTip.Tip="Delete the selected custom channel"
+							<Button Content="{x:Static p:Resources.CatalogControl_DeleteCustomChannelButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.CatalogControl_DeleteCustomChannelButton_ToolTip}"
 											HorizontalAlignment="Stretch"
 											HorizontalContentAlignment="Center"
 											Margin="2"
 											Command="{Binding DeleteCustomChannelCommand}" />
-							<Button Content="Add to Playlist"
-											ToolTip.Tip="Add the selected custom channel to the open playlist"
+							<Button Content="{x:Static p:Resources.CatalogControl_AddChannelButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.CatalogControl_AddCustomChannelButton_ToolTip}"
 											HorizontalAlignment="Stretch"
 											HorizontalContentAlignment="Center"
 											Margin="2"
@@ -243,7 +244,7 @@
 				<!-- Detail of the selected custom channel -->
 				<HeaderedContentControl Grid.Column="1"
 																Theme="{StaticResource GroupBox}"
-																Header="Channel"
+																Header="{x:Static p:Resources.CatalogControl_ChannelGroupBox_Header}"
 																VerticalAlignment="Top"
 																Margin="4"
 																IsVisible="{Binding SelectedCustomChannelVisible}">
@@ -253,33 +254,33 @@
 								ColumnDefinitions="Auto,*"
 								RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 						<TextBlock Grid.Row="0"
-											 Text="Name:" />
+											 Text="{x:Static p:Resources.CatalogControl_NameTextBlock_Text}" />
 						<TextBox Grid.Row="0"
 										 Grid.Column="1"
 										 Text="{Binding Name}" />
 
 						<TextBlock Grid.Row="1"
-											 Text="URL:"
-											 ToolTip.Tip="Any URL scheme, e.g. http, https, rtsp or udp" />
+											 Text="{x:Static p:Resources.CatalogControl_UrlTextBlock_Text}"
+											 ToolTip.Tip="{x:Static p:Resources.CatalogControl_UrlTextBlock_ToolTip}" />
 						<TextBox Grid.Row="1"
 										 Grid.Column="1"
 										 PlaceholderText="rtsp://192.168.12.1:554"
 										 Text="{Binding Url}" />
 
 						<TextBlock Grid.Row="2"
-											 Text="Group Title:" />
+											 Text="{x:Static p:Resources.CatalogControl_GroupTitleTextBlock_Text}" />
 						<TextBox Grid.Row="2"
 										 Grid.Column="1"
 										 Text="{Binding GroupTitle}" />
 
 						<TextBlock Grid.Row="3"
-											 Text="TVG ID:" />
+											 Text="{x:Static p:Resources.CatalogControl_TvgIdTextBlock_Text}" />
 						<TextBox Grid.Row="3"
 										 Grid.Column="1"
 										 Text="{Binding TvgId}" />
 
 						<TextBlock Grid.Row="4"
-											 Text="TVG Logo:" />
+											 Text="{x:Static p:Resources.CatalogControl_TvgLogoTextBlock_Text}" />
 						<TextBox Grid.Row="4"
 										 Grid.Column="1"
 										 Text="{Binding TvgLogo}" />

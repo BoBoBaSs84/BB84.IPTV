@@ -2,6 +2,8 @@
 						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
+						 xmlns:conv="using:BB84.IPTV.M3U.Editor.Converters"
 						 xmlns:vm="using:BB84.IPTV.M3U.Editor.Application.ViewModels"
 						 mc:Ignorable="d"
 						 d:DesignWidth="1200"
@@ -12,7 +14,7 @@
 		<!-- Playlist list -->
 		<HeaderedContentControl Grid.Column="0"
 														Theme="{StaticResource GroupBox}"
-														Header="Playlists"
+														Header="{x:Static p:Resources.PlaylistsControl_PlaylistsGroupBox_Header}"
 														Margin="4">
 			<DockPanel>
 				<!-- Only shown when the playlists do not fit on one page. -->
@@ -21,12 +23,12 @@
 									 IsVisible="{Binding HasMultiplePages}">
 					<Button DockPanel.Dock="Left"
 									Content="&lt;"
-									ToolTip.Tip="Show the previous page"
+									ToolTip.Tip="{x:Static p:Resources.Common_PreviousPage_ToolTip}"
 									Margin="2"
 									Command="{Binding PreviousPageCommand}" />
 					<Button DockPanel.Dock="Right"
 									Content="&gt;"
-									ToolTip.Tip="Show the next page"
+									ToolTip.Tip="{x:Static p:Resources.Common_NextPage_ToolTip}"
 									Margin="2"
 									Command="{Binding NextPageCommand}" />
 					<TextBlock Text="{Binding PageStatus}"
@@ -37,38 +39,38 @@
 				<UniformGrid DockPanel.Dock="Bottom"
 										 Columns="2"
 										 Margin="0,4,0,0">
-					<Button Content="New"
-									ToolTip.Tip="Create a new, empty playlist"
+					<Button Content="{x:Static p:Resources.PlaylistsControl_NewButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.PlaylistsControl_NewButton_ToolTip}"
 									HorizontalAlignment="Stretch"
 									HorizontalContentAlignment="Center"
 									Margin="2"
 									Command="{Binding NewCommand}" />
-					<Button Content="Delete"
-									ToolTip.Tip="Delete the open playlist"
+					<Button Content="{x:Static p:Resources.PlaylistsControl_DeleteButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.PlaylistsControl_DeleteButton_ToolTip}"
 									HorizontalAlignment="Stretch"
 									HorizontalContentAlignment="Center"
 									Margin="2"
 									Command="{Binding DeleteCommand}" />
-					<Button Content="Import..."
-									ToolTip.Tip="Import an M3U file as a new playlist"
+					<Button Content="{x:Static p:Resources.PlaylistsControl_ImportButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.PlaylistsControl_ImportButton_ToolTip}"
 									HorizontalAlignment="Stretch"
 									HorizontalContentAlignment="Center"
 									Margin="2"
 									Command="{Binding ImportCommand}" />
-					<Button Content="Export..."
-									ToolTip.Tip="Save and export the open playlist to an M3U file"
+					<Button Content="{x:Static p:Resources.PlaylistsControl_ExportButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.PlaylistsControl_ExportButton_ToolTip}"
 									HorizontalAlignment="Stretch"
 									HorizontalContentAlignment="Center"
 									Margin="2"
 									Command="{Binding ExportCommand}" />
-					<Button Content="Save"
-									ToolTip.Tip="Save the open playlist"
+					<Button Content="{x:Static p:Resources.PlaylistsControl_SaveButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.PlaylistsControl_SaveButton_ToolTip}"
 									HorizontalAlignment="Stretch"
 									HorizontalContentAlignment="Center"
 									Margin="2"
 									Command="{Binding SaveCommand}" />
-					<Button Content="Merge..."
-									ToolTip.Tip="Append the entries of an M3U file to the open playlist"
+					<Button Content="{x:Static p:Resources.PlaylistsControl_MergeButton_Content}"
+									ToolTip.Tip="{x:Static p:Resources.PlaylistsControl_MergeButton_ToolTip}"
 									HorizontalAlignment="Stretch"
 									HorizontalContentAlignment="Center"
 									Margin="2"
@@ -92,7 +94,7 @@
 								<TextBlock Text="{Binding Name}"
 													 FontWeight="SemiBold"
 													 TextTrimming="CharacterEllipsis" />
-								<TextBlock Text="{Binding EntryCount, StringFormat='{}{0} entries'}"
+								<TextBlock Text="{Binding EntryCount, Converter={x:Static conv:ResourceFormatConverter.Instance}, ConverterParameter={x:Static p:Resources.Common_EntryCount_Format}}"
 													 FontSize="12"
 													 Foreground="#888" />
 							</StackPanel>
@@ -107,7 +109,7 @@
 										Content="{Binding Editor}"
 										IsVisible="{Binding Editor.HasPlaylist}" />
 		<TextBlock Grid.Column="1"
-							 Text="Select a playlist on the left, or create or import one."
+							 Text="{x:Static p:Resources.PlaylistsControl_EmptyHint_Text}"
 							 Foreground="#888"
 							 HorizontalAlignment="Center"
 							 VerticalAlignment="Center"

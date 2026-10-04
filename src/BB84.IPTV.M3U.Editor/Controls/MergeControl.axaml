@@ -2,6 +2,8 @@
 						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:p="using:BB84.IPTV.M3U.Editor.Properties"
+						 xmlns:conv="using:BB84.IPTV.M3U.Editor.Converters"
 						 xmlns:m="using:BB84.IPTV.M3U.Editor.Markup"
 						 xmlns:enums="using:BB84.IPTV.M3U.Editor.Application.Enumerators"
 						 xmlns:models="using:BB84.IPTV.M3U.Editor.Domain.Abstractions.Models"
@@ -29,20 +31,20 @@
 									VerticalScrollBarVisibility="Auto">
 			<StackPanel Spacing="4">
 				<HeaderedContentControl Theme="{StaticResource GroupBox}"
-																Header="Playlists to merge"
+																Header="{x:Static p:Resources.MergeControl_SourcesGroupBox_Header}"
 																Margin="4">
 					<DockPanel>
 						<UniformGrid DockPanel.Dock="Bottom"
 												 Columns="2"
 												 Margin="0,4,0,0">
-							<Button Content="Move Up"
-											ToolTip.Tip="Merge the selected playlist earlier"
+							<Button Content="{x:Static p:Resources.MergeControl_MoveUpButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.MergeControl_MoveUpButton_ToolTip}"
 											HorizontalAlignment="Stretch"
 											HorizontalContentAlignment="Center"
 											Margin="2"
 											Command="{Binding MoveUpCommand}" />
-							<Button Content="Move Down"
-											ToolTip.Tip="Merge the selected playlist later"
+							<Button Content="{x:Static p:Resources.MergeControl_MoveDownButton_Content}"
+											ToolTip.Tip="{x:Static p:Resources.MergeControl_MoveDownButton_ToolTip}"
 											HorizontalAlignment="Stretch"
 											HorizontalContentAlignment="Center"
 											Margin="2"
@@ -67,7 +69,7 @@
 											<TextBlock Text="{Binding Name}"
 																 FontWeight="SemiBold"
 																 TextTrimming="CharacterEllipsis" />
-											<TextBlock Text="{Binding EntryCount, StringFormat='{}{0} entries'}"
+											<TextBlock Text="{Binding EntryCount, Converter={x:Static conv:ResourceFormatConverter.Instance}, ConverterParameter={x:Static p:Resources.Common_EntryCount_Format}}"
 																 FontSize="12"
 																 Foreground="#888" />
 										</StackPanel>
@@ -79,46 +81,58 @@
 				</HeaderedContentControl>
 
 				<HeaderedContentControl Theme="{StaticResource GroupBox}"
-																Header="Options"
+																Header="{x:Static p:Resources.MergeControl_OptionsGroupBox_Header}"
 																Margin="4">
 					<Grid Classes="Detail"
 								ColumnDefinitions="Auto,*"
 								RowDefinitions="Auto,Auto,Auto">
 						<TextBlock Grid.Row="0"
-											 Text="Name:" />
+											 Text="{x:Static p:Resources.MergeControl_NameTextBlock_Text}" />
 						<TextBox Grid.Row="0"
 										 Grid.Column="1"
 										 Text="{Binding Name}" />
 
 						<TextBlock Grid.Row="1"
-											 Text="Duplicates:"
-											 ToolTip.Tip="What makes two entries the same entry" />
+											 Text="{x:Static p:Resources.MergeControl_DuplicateModeTextBlock_Text}"
+											 ToolTip.Tip="{x:Static p:Resources.MergeControl_DuplicateModeTextBlock_ToolTip}" />
 						<ComboBox Grid.Row="1"
 											Grid.Column="1"
 											Margin="4"
 											HorizontalAlignment="Stretch"
 											ItemsSource="{m:EnumValues {x:Type enums:MergeDuplicateMode}}"
-											SelectedItem="{Binding DuplicateMode}" />
+											SelectedItem="{Binding DuplicateMode}">
+							<ComboBox.ItemTemplate>
+								<DataTemplate x:DataType="enums:MergeDuplicateMode">
+									<TextBlock Text="{Binding Converter={x:Static conv:EnumDisplayNameConverter.Instance}}" />
+								</DataTemplate>
+							</ComboBox.ItemTemplate>
+						</ComboBox>
 
 						<TextBlock Grid.Row="2"
-											 Text="Keep:"
-											 ToolTip.Tip="Which of two duplicate entries survives" />
+											 Text="{x:Static p:Resources.MergeControl_DuplicateResolutionTextBlock_Text}"
+											 ToolTip.Tip="{x:Static p:Resources.MergeControl_DuplicateResolutionTextBlock_ToolTip}" />
 						<ComboBox Grid.Row="2"
 											Grid.Column="1"
 											Margin="4"
 											HorizontalAlignment="Stretch"
 											ItemsSource="{m:EnumValues {x:Type enums:MergeDuplicateResolution}}"
-											SelectedItem="{Binding DuplicateResolution}" />
+											SelectedItem="{Binding DuplicateResolution}">
+							<ComboBox.ItemTemplate>
+								<DataTemplate x:DataType="enums:MergeDuplicateResolution">
+									<TextBlock Text="{Binding Converter={x:Static conv:EnumDisplayNameConverter.Instance}}" />
+								</DataTemplate>
+							</ComboBox.ItemTemplate>
+						</ComboBox>
 					</Grid>
 				</HeaderedContentControl>
 
 				<!-- Group remapping, filled by a preview -->
 				<HeaderedContentControl Theme="{StaticResource GroupBox}"
-																Header="Groups"
+																Header="{x:Static p:Resources.MergeControl_GroupsGroupBox_Header}"
 																Margin="4"
 																IsVisible="{Binding HasPreview}">
 					<StackPanel>
-						<TextBlock Text="Rename the groups of the result, an empty value clears the group."
+						<TextBlock Text="{x:Static p:Resources.MergeControl_GroupsHint_Text}"
 											 Foreground="#888"
 											 TextWrapping="Wrap"
 											 Margin="4" />
@@ -129,12 +143,12 @@
 											ItemsSource="{Binding GroupMappings}">
 							<DataGrid.Columns>
 								<DataGridTextColumn x:DataType="vm:MergeGroupMappingViewModel"
-																		Header="Group"
+																		Header="{x:Static p:Resources.MergeControl_GroupColumn_Header}"
 																		Binding="{Binding SourceGroup}"
 																		IsReadOnly="True"
 																		Width="*" />
 								<DataGridTextColumn x:DataType="vm:MergeGroupMappingViewModel"
-																		Header="Rename to"
+																		Header="{x:Static p:Resources.MergeControl_TargetGroupColumn_Header}"
 																		Binding="{Binding TargetGroup}"
 																		Width="*" />
 							</DataGrid.Columns>
@@ -150,11 +164,11 @@
 									Orientation="Horizontal"
 									Spacing="4"
 									Margin="4">
-				<Button Content="Preview"
-								ToolTip.Tip="Merge without saving, to see the result"
+				<Button Content="{x:Static p:Resources.MergeControl_PreviewButton_Content}"
+								ToolTip.Tip="{x:Static p:Resources.MergeControl_PreviewButton_ToolTip}"
 								Command="{Binding PreviewCommand}" />
-				<Button Content="Merge"
-								ToolTip.Tip="Save the result as a new playlist, the sources stay as they are"
+				<Button Content="{x:Static p:Resources.MergeControl_MergeButton_Content}"
+								ToolTip.Tip="{x:Static p:Resources.MergeControl_MergeButton_ToolTip}"
 								Command="{Binding MergeCommand}" />
 				<TextBlock Text="{Binding PreviewMessage}"
 									 Foreground="#888"
@@ -177,7 +191,7 @@
 			</Border>
 
 			<HeaderedContentControl Theme="{StaticResource GroupBox}"
-															Header="Preview"
+															Header="{x:Static p:Resources.MergeControl_PreviewGroupBox_Header}"
 															Margin="4">
 				<DataGrid AutoGenerateColumns="False"
 									IsReadOnly="True"
@@ -187,19 +201,19 @@
 									ItemsSource="{Binding PreviewEntries}">
 					<DataGrid.Columns>
 						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="Title"
+																Header="{x:Static p:Resources.MergeControl_TitleColumn_Header}"
 																Binding="{Binding Title}"
 																Width="2*" />
 						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="Group"
+																Header="{x:Static p:Resources.MergeControl_GroupColumn_Header}"
 																Binding="{Binding Metadata.GroupTitle}"
 																Width="*" />
 						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="TVG ID"
+																Header="{x:Static p:Resources.MergeControl_TvgIdColumn_Header}"
 																Binding="{Binding Metadata.TvgId}"
 																Width="*" />
 						<DataGridTextColumn x:DataType="models:IEntry"
-																Header="URL"
+																Header="{x:Static p:Resources.MergeControl_UrlColumn_Header}"
 																Binding="{Binding FilePath}"
 																Width="2*" />
 					</DataGrid.Columns>

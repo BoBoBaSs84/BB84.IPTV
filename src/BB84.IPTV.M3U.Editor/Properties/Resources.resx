@@ -505,4 +505,529 @@
   <data name="WarningMessageCaptition" xml:space="preserve">
     <value>Warning</value>
   </data>
+  <data name="Common.PreviousPage.ToolTip" xml:space="preserve">
+    <value>Show the previous page</value>
+  </data>
+  <data name="Common.NextPage.ToolTip" xml:space="preserve">
+    <value>Show the next page</value>
+  </data>
+  <data name="Common.EntryCount.Format" xml:space="preserve">
+    <value>{0} entries</value>
+  </data>
+  <data name="MainWindow.FileMenuItem.Header" xml:space="preserve">
+    <value>_File</value>
+  </data>
+  <data name="MainWindow.NewMenuItem.Header" xml:space="preserve">
+    <value>_New Playlist</value>
+  </data>
+  <data name="MainWindow.ImportMenuItem.Header" xml:space="preserve">
+    <value>_Import...</value>
+  </data>
+  <data name="MainWindow.SaveMenuItem.Header" xml:space="preserve">
+    <value>_Save</value>
+  </data>
+  <data name="MainWindow.ExportMenuItem.Header" xml:space="preserve">
+    <value>_Export...</value>
+  </data>
+  <data name="MainWindow.MergeMenuItem.Header" xml:space="preserve">
+    <value>_Merge...</value>
+  </data>
+  <data name="MainWindow.PrintMenuItem.Header" xml:space="preserve">
+    <value>_Print</value>
+  </data>
+  <data name="MainWindow.PrintPreviewMenuItem.Header" xml:space="preserve">
+    <value>Print Pre_view</value>
+  </data>
+  <data name="MainWindow.ExitMenuItem.Header" xml:space="preserve">
+    <value>E_xit</value>
+  </data>
+  <data name="MainWindow.EditMenuItem.Header" xml:space="preserve">
+    <value>_Edit</value>
+  </data>
+  <data name="MainWindow.UndoMenuItem.Header" xml:space="preserve">
+    <value>_Undo</value>
+  </data>
+  <data name="MainWindow.RedoMenuItem.Header" xml:space="preserve">
+    <value>_Redo</value>
+  </data>
+  <data name="MainWindow.CutMenuItem.Header" xml:space="preserve">
+    <value>Cu_t</value>
+  </data>
+  <data name="MainWindow.CopyMenuItem.Header" xml:space="preserve">
+    <value>_Copy</value>
+  </data>
+  <data name="MainWindow.PasteMenuItem.Header" xml:space="preserve">
+    <value>_Paste</value>
+  </data>
+  <data name="MainWindow.SelectAllMenuItem.Header" xml:space="preserve">
+    <value>Select _All</value>
+  </data>
+  <data name="MainWindow.ToolsMenuItem.Header" xml:space="preserve">
+    <value>_Tools</value>
+  </data>
+  <data name="MainWindow.PlaylistsMenuItem.Header" xml:space="preserve">
+    <value>_Playlists</value>
+  </data>
+  <data name="MainWindow.MergePlaylistsMenuItem.Header" xml:space="preserve">
+    <value>Merge _Playlists</value>
+  </data>
+  <data name="MainWindow.CatalogMenuItem.Header" xml:space="preserve">
+    <value>_Channels</value>
+  </data>
+  <data name="MainWindow.DatabaseMenuItem.Header" xml:space="preserve">
+    <value>_Database</value>
+  </data>
+  <data name="MainWindow.SettingsMenuItem.Header" xml:space="preserve">
+    <value>_Settings</value>
+  </data>
+  <data name="MainWindow.HelpMenuItem.Header" xml:space="preserve">
+    <value>_Help</value>
+  </data>
+  <data name="MainWindow.IndexMenuItem.Header" xml:space="preserve">
+    <value>_Index</value>
+  </data>
+  <data name="MainWindow.SearchMenuItem.Header" xml:space="preserve">
+    <value>_Search</value>
+  </data>
+  <data name="MainWindow.AboutMenuItem.Header" xml:space="preserve">
+    <value>_About...</value>
+  </data>
+  <data name="PlaylistsControl.PlaylistsGroupBox.Header" xml:space="preserve">
+    <value>Playlists</value>
+  </data>
+  <data name="PlaylistsControl.NewButton.Content" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="PlaylistsControl.NewButton.ToolTip" xml:space="preserve">
+    <value>Create a new, empty playlist</value>
+  </data>
+  <data name="PlaylistsControl.DeleteButton.Content" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="PlaylistsControl.DeleteButton.ToolTip" xml:space="preserve">
+    <value>Delete the open playlist</value>
+  </data>
+  <data name="PlaylistsControl.ImportButton.Content" xml:space="preserve">
+    <value>Import...</value>
+  </data>
+  <data name="PlaylistsControl.ImportButton.ToolTip" xml:space="preserve">
+    <value>Import an M3U file as a new playlist</value>
+  </data>
+  <data name="PlaylistsControl.ExportButton.Content" xml:space="preserve">
+    <value>Export...</value>
+  </data>
+  <data name="PlaylistsControl.ExportButton.ToolTip" xml:space="preserve">
+    <value>Save and export the open playlist to an M3U file</value>
+  </data>
+  <data name="PlaylistsControl.SaveButton.Content" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="PlaylistsControl.SaveButton.ToolTip" xml:space="preserve">
+    <value>Save the open playlist</value>
+  </data>
+  <data name="PlaylistsControl.MergeButton.Content" xml:space="preserve">
+    <value>Merge...</value>
+  </data>
+  <data name="PlaylistsControl.MergeButton.ToolTip" xml:space="preserve">
+    <value>Append the entries of an M3U file to the open playlist</value>
+  </data>
+  <data name="PlaylistsControl.EmptyHint.Text" xml:space="preserve">
+    <value>Select a playlist on the left, or create or import one.</value>
+  </data>
+  <data name="CatalogControl.CatalogTabItem.Header" xml:space="preserve">
+    <value>Catalog</value>
+  </data>
+  <data name="CatalogControl.FilterGroupBox.Header" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="CatalogControl.SearchTextBox.Placeholder" xml:space="preserve">
+    <value>Name or identifier</value>
+  </data>
+  <data name="CatalogControl.CountryComboBox.Placeholder" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="CatalogControl.LanguageComboBox.Placeholder" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="CatalogControl.CategoryComboBox.Placeholder" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="CatalogControl.IncludeNsfwCheckBox.Content" xml:space="preserve">
+    <value>Include NSFW</value>
+  </data>
+  <data name="CatalogControl.IncludeWithoutStreamCheckBox.Content" xml:space="preserve">
+    <value>Include channels without stream</value>
+  </data>
+  <data name="CatalogControl.SearchButton.Content" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="CatalogControl.ResetButton.Content" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="CatalogControl.ResetButton.ToolTip" xml:space="preserve">
+    <value>Clear the filter and the result</value>
+  </data>
+  <data name="CatalogControl.AddChannelButton.Content" xml:space="preserve">
+    <value>Add to Playlist</value>
+  </data>
+  <data name="CatalogControl.AddChannelButton.ToolTip" xml:space="preserve">
+    <value>Add the selected channel to the open playlist</value>
+  </data>
+  <data name="CatalogControl.AddAllChannelsButton.Content" xml:space="preserve">
+    <value>Add All</value>
+  </data>
+  <data name="CatalogControl.AddAllChannelsButton.ToolTip" xml:space="preserve">
+    <value>Add all channels of this page to the open playlist</value>
+  </data>
+  <data name="CatalogControl.PreviousPageButton.Content" xml:space="preserve">
+    <value>&lt; Previous</value>
+  </data>
+  <data name="CatalogControl.NextPageButton.Content" xml:space="preserve">
+    <value>Next &gt;</value>
+  </data>
+  <data name="CatalogControl.NoPlaylistHint.Text" xml:space="preserve">
+    <value>Open a playlist to add channels to it.</value>
+  </data>
+  <data name="CatalogControl.ChannelsGroupBox.Header" xml:space="preserve">
+    <value>Channels</value>
+  </data>
+  <data name="CatalogControl.LogoColumn.Header" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="CatalogControl.NameColumn.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="CatalogControl.TvgIdColumn.Header" xml:space="preserve">
+    <value>TVG ID</value>
+  </data>
+  <data name="CatalogControl.CountryColumn.Header" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="CatalogControl.LanguagesColumn.Header" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="CatalogControl.CategoriesColumn.Header" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="CatalogControl.QualityColumn.Header" xml:space="preserve">
+    <value>Quality</value>
+  </data>
+  <data name="CatalogControl.StreamColumn.Header" xml:space="preserve">
+    <value>Stream</value>
+  </data>
+  <data name="CatalogControl.CustomChannelsTabItem.Header" xml:space="preserve">
+    <value>Custom Channels</value>
+  </data>
+  <data name="CatalogControl.CustomChannelsGroupBox.Header" xml:space="preserve">
+    <value>Channels</value>
+  </data>
+  <data name="CatalogControl.NewCustomChannelButton.Content" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="CatalogControl.NewCustomChannelButton.ToolTip" xml:space="preserve">
+    <value>Create a new custom channel</value>
+  </data>
+  <data name="CatalogControl.SaveCustomChannelButton.Content" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="CatalogControl.SaveCustomChannelButton.ToolTip" xml:space="preserve">
+    <value>Store the selected custom channel</value>
+  </data>
+  <data name="CatalogControl.DeleteCustomChannelButton.Content" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CatalogControl.DeleteCustomChannelButton.ToolTip" xml:space="preserve">
+    <value>Delete the selected custom channel</value>
+  </data>
+  <data name="CatalogControl.AddCustomChannelButton.ToolTip" xml:space="preserve">
+    <value>Add the selected custom channel to the open playlist</value>
+  </data>
+  <data name="CatalogControl.ChannelGroupBox.Header" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="CatalogControl.NameTextBlock.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="CatalogControl.UrlTextBlock.Text" xml:space="preserve">
+    <value>URL:</value>
+  </data>
+  <data name="CatalogControl.UrlTextBlock.ToolTip" xml:space="preserve">
+    <value>Any URL scheme, e.g. http, https, rtsp or udp</value>
+  </data>
+  <data name="CatalogControl.GroupTitleTextBlock.Text" xml:space="preserve">
+    <value>Group Title:</value>
+  </data>
+  <data name="CatalogControl.TvgIdTextBlock.Text" xml:space="preserve">
+    <value>TVG ID:</value>
+  </data>
+  <data name="CatalogControl.TvgLogoTextBlock.Text" xml:space="preserve">
+    <value>TVG Logo:</value>
+  </data>
+  <data name="MergeControl.SourcesGroupBox.Header" xml:space="preserve">
+    <value>Playlists to merge</value>
+  </data>
+  <data name="MergeControl.MoveUpButton.Content" xml:space="preserve">
+    <value>Move Up</value>
+  </data>
+  <data name="MergeControl.MoveUpButton.ToolTip" xml:space="preserve">
+    <value>Merge the selected playlist earlier</value>
+  </data>
+  <data name="MergeControl.MoveDownButton.Content" xml:space="preserve">
+    <value>Move Down</value>
+  </data>
+  <data name="MergeControl.MoveDownButton.ToolTip" xml:space="preserve">
+    <value>Merge the selected playlist later</value>
+  </data>
+  <data name="MergeControl.OptionsGroupBox.Header" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="MergeControl.NameTextBlock.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="MergeControl.DuplicateModeTextBlock.Text" xml:space="preserve">
+    <value>Duplicates:</value>
+  </data>
+  <data name="MergeControl.DuplicateModeTextBlock.ToolTip" xml:space="preserve">
+    <value>What makes two entries the same entry</value>
+  </data>
+  <data name="MergeControl.DuplicateResolutionTextBlock.Text" xml:space="preserve">
+    <value>Keep:</value>
+  </data>
+  <data name="MergeControl.DuplicateResolutionTextBlock.ToolTip" xml:space="preserve">
+    <value>Which of two duplicate entries survives</value>
+  </data>
+  <data name="MergeControl.GroupsGroupBox.Header" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="MergeControl.GroupsHint.Text" xml:space="preserve">
+    <value>Rename the groups of the result, an empty value clears the group.</value>
+  </data>
+  <data name="MergeControl.SourceGroupColumn.Header" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="MergeControl.TargetGroupColumn.Header" xml:space="preserve">
+    <value>Rename to</value>
+  </data>
+  <data name="MergeControl.PreviewButton.Content" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="MergeControl.PreviewButton.ToolTip" xml:space="preserve">
+    <value>Merge without saving, to see the result</value>
+  </data>
+  <data name="MergeControl.MergeButton.Content" xml:space="preserve">
+    <value>Merge</value>
+  </data>
+  <data name="MergeControl.MergeButton.ToolTip" xml:space="preserve">
+    <value>Save the result as a new playlist, the sources stay as they are</value>
+  </data>
+  <data name="MergeControl.PreviewGroupBox.Header" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="MergeControl.TitleColumn.Header" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="MergeControl.GroupColumn.Header" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="MergeControl.TvgIdColumn.Header" xml:space="preserve">
+    <value>TVG ID</value>
+  </data>
+  <data name="MergeControl.UrlColumn.Header" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="PlaylistControl.AddButton.Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="PlaylistControl.AddButton.ToolTip" xml:space="preserve">
+    <value>Add Entry</value>
+  </data>
+  <data name="PlaylistControl.DuplicateButton.Content" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="PlaylistControl.DuplicateButton.ToolTip" xml:space="preserve">
+    <value>Duplicate Entry</value>
+  </data>
+  <data name="PlaylistControl.RemoveButton.Content" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="PlaylistControl.RemoveButton.ToolTip" xml:space="preserve">
+    <value>Remove Entry</value>
+  </data>
+  <data name="PlaylistControl.MoveUpButton.Content" xml:space="preserve">
+    <value>Move Up</value>
+  </data>
+  <data name="PlaylistControl.MoveUpButton.ToolTip" xml:space="preserve">
+    <value>Move Entry Up, off while the grid is sorted</value>
+  </data>
+  <data name="PlaylistControl.MoveDownButton.Content" xml:space="preserve">
+    <value>Move Down</value>
+  </data>
+  <data name="PlaylistControl.MoveDownButton.ToolTip" xml:space="preserve">
+    <value>Move Entry Down, off while the grid is sorted</value>
+  </data>
+  <data name="PlaylistControl.DirtyHint.Text" xml:space="preserve">
+    <value>Unsaved changes</value>
+  </data>
+  <data name="PlaylistControl.EntriesGroupBox.Header" xml:space="preserve">
+    <value>Entries</value>
+  </data>
+  <data name="PlaylistControl.LogoColumn.Header" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="PlaylistControl.TitleColumn.Header" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="PlaylistControl.GroupColumn.Header" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="PlaylistControl.TvgIdColumn.Header" xml:space="preserve">
+    <value>TVG ID</value>
+  </data>
+  <data name="PlaylistControl.TvgNameColumn.Header" xml:space="preserve">
+    <value>TVG Name</value>
+  </data>
+  <data name="PlaylistControl.UrlColumn.Header" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="PlaylistControl.PlaylistGroupBox.Header" xml:space="preserve">
+    <value>Playlist</value>
+  </data>
+  <data name="PlaylistControl.NameTextBlock.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="PlaylistControl.TvGuideTextBlock.Text" xml:space="preserve">
+    <value>TV Guide:</value>
+  </data>
+  <data name="PlaylistControl.CacheTextBlock.Text" xml:space="preserve">
+    <value>Cache:</value>
+  </data>
+  <data name="PlaylistControl.DeinterlaceTextBlock.Text" xml:space="preserve">
+    <value>Deinterlace:</value>
+  </data>
+  <data name="PlaylistControl.RefreshTextBlock.Text" xml:space="preserve">
+    <value>Refresh:</value>
+  </data>
+  <data name="PlaylistControl.EntryGroupBox.Header" xml:space="preserve">
+    <value>Entry</value>
+  </data>
+  <data name="PlaylistControl.DurationTextBlock.Text" xml:space="preserve">
+    <value>Duration:</value>
+  </data>
+  <data name="PlaylistControl.TitleTextBlock.Text" xml:space="preserve">
+    <value>Title:</value>
+  </data>
+  <data name="PlaylistControl.LocationTextBlock.Text" xml:space="preserve">
+    <value>Location:</value>
+  </data>
+  <data name="PlaylistControl.GroupingTextBlock.Text" xml:space="preserve">
+    <value>Grouping:</value>
+  </data>
+  <data name="PlaylistControl.MetadataGroupBox.Header" xml:space="preserve">
+    <value>Metadata</value>
+  </data>
+  <data name="PlaylistControl.TvgIdTextBlock.Text" xml:space="preserve">
+    <value>TVG ID:</value>
+  </data>
+  <data name="PlaylistControl.TvgNameTextBlock.Text" xml:space="preserve">
+    <value>TVG Name:</value>
+  </data>
+  <data name="PlaylistControl.TvgLogoTextBlock.Text" xml:space="preserve">
+    <value>TVG Logo:</value>
+  </data>
+  <data name="PlaylistControl.GroupIdTextBlock.Text" xml:space="preserve">
+    <value>Group ID:</value>
+  </data>
+  <data name="PlaylistControl.GroupTitleTextBlock.Text" xml:space="preserve">
+    <value>Group Title:</value>
+  </data>
+  <data name="PlaylistControl.CensoredCheckBox.Content" xml:space="preserve">
+    <value>Censored</value>
+  </data>
+  <data name="AboutControl.VersionTextBlock.Format" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="AboutControl.CompanyTextBlock.Text" xml:space="preserve">
+    <value>COMPANY</value>
+  </data>
+  <data name="AboutControl.CopyrightTextBlock.Text" xml:space="preserve">
+    <value>COPYRIGHT</value>
+  </data>
+  <data name="AboutControl.FrameworkTextBlock.Text" xml:space="preserve">
+    <value>FRAMEWORK</value>
+  </data>
+  <data name="AboutControl.RepositoryTextBlock.Text" xml:space="preserve">
+    <value>REPOSITORY</value>
+  </data>
+  <data name="GuideOverviewControl.ChannelCount.Format" xml:space="preserve">
+    <value>{0} channels</value>
+  </data>
+  <data name="Enum.Language.English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Enum.Language.Spanish" xml:space="preserve">
+    <value>Español</value>
+  </data>
+  <data name="Enum.Language.French" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="Enum.Language.German" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="Enum.Language.Italian" xml:space="preserve">
+    <value>Italiano</value>
+  </data>
+  <data name="Enum.LogLevel.Trace" xml:space="preserve">
+    <value>Trace</value>
+  </data>
+  <data name="Enum.LogLevel.Debug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="Enum.LogLevel.Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="Enum.LogLevel.Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Enum.LogLevel.Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Enum.LogLevel.Critical" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="Enum.LogLevel.None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Enum.LogoPathStyle.Absolute" xml:space="preserve">
+    <value>Absolute</value>
+  </data>
+  <data name="Enum.LogoPathStyle.Relative" xml:space="preserve">
+    <value>Relative</value>
+  </data>
+  <data name="Enum.MergeDuplicateMode.None" xml:space="preserve">
+    <value>Keep every entry</value>
+  </data>
+  <data name="Enum.MergeDuplicateMode.ByTvgId" xml:space="preserve">
+    <value>Same TVG ID</value>
+  </data>
+  <data name="Enum.MergeDuplicateMode.ByUrl" xml:space="preserve">
+    <value>Same URL</value>
+  </data>
+  <data name="Enum.MergeDuplicateMode.ByTvgIdOrUrl" xml:space="preserve">
+    <value>Same TVG ID or URL</value>
+  </data>
+  <data name="Enum.MergeDuplicateResolution.KeepFirst" xml:space="preserve">
+    <value>Keep the first</value>
+  </data>
+  <data name="Enum.MergeDuplicateResolution.KeepLast" xml:space="preserve">
+    <value>Keep the last</value>
+  </data>
+  <data name="Enum.Deinterlace.None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Enum.Deinterlace.Blend" xml:space="preserve">
+    <value>Blend</value>
+  </data>
+  <data name="Enum.Deinterlace.Mean" xml:space="preserve">
+    <value>Mean</value>
+  </data>
 </root>

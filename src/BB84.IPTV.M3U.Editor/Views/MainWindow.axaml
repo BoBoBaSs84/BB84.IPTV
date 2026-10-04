@@ -18,10 +18,10 @@
 		<!-- Menu Bar -->
 		<Menu DockPanel.Dock="Top">
 			<MenuItem x:Name="FileMenuItem"
-								Header="_File"
+								Header="{x:Static p:Resources.MainWindow_FileMenuItem_Header}"
 								SubmenuOpened="FileMenuItem_SubmenuOpened">
 				<MenuItem x:Name="NewMenuItem"
-									Header="_New Playlist"
+									Header="{x:Static p:Resources.MainWindow_NewMenuItem_Header}"
 									InputGesture="Ctrl+N"
 									HotKey="Ctrl+N">
 					<MenuItem.Icon>
@@ -29,7 +29,7 @@
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem x:Name="ImportMenuItem"
-									Header="_Import..."
+									Header="{x:Static p:Resources.MainWindow_ImportMenuItem_Header}"
 									InputGesture="Ctrl+O"
 									HotKey="Ctrl+O">
 					<MenuItem.Icon>
@@ -38,7 +38,7 @@
 				</MenuItem>
 				<Separator />
 				<MenuItem x:Name="SaveMenuItem"
-									Header="_Save"
+									Header="{x:Static p:Resources.MainWindow_SaveMenuItem_Header}"
 									InputGesture="Ctrl+S"
 									HotKey="Ctrl+S">
 					<MenuItem.Icon>
@@ -46,66 +46,66 @@
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem x:Name="ExportMenuItem"
-									Header="_Export...">
+									Header="{x:Static p:Resources.MainWindow_ExportMenuItem_Header}">
 					<MenuItem.Icon>
 						<Image Source="/Resources/floppy_disk_edit.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem x:Name="MergeMenuItem"
-									Header="_Merge...">
+									Header="{x:Static p:Resources.MainWindow_MergeMenuItem_Header}">
 					<MenuItem.Icon>
 						<Image Source="/Resources/floppy_disks.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<Separator />
-				<MenuItem Header="_Print"
+				<MenuItem Header="{x:Static p:Resources.MainWindow_PrintMenuItem_Header}"
 									InputGesture="Ctrl+P">
 					<MenuItem.Icon>
 						<Image Source="/Resources/printer.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="Print Pre_view">
+				<MenuItem Header="{x:Static p:Resources.MainWindow_PrintPreviewMenuItem_Header}">
 					<MenuItem.Icon>
 						<Image Source="/Resources/document_view.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<Separator />
-				<MenuItem Header="E_xit"
+				<MenuItem Header="{x:Static p:Resources.MainWindow_ExitMenuItem_Header}"
 									Command="{Binding ExitApplicationCommand}">
 					<MenuItem.Icon>
 						<Image Source="/Resources/exit.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
-			<MenuItem Header="_Edit">
-				<MenuItem Header="_Undo"
+			<MenuItem Header="{x:Static p:Resources.MainWindow_EditMenuItem_Header}">
+				<MenuItem Header="{x:Static p:Resources.MainWindow_UndoMenuItem_Header}"
 									InputGesture="Ctrl+Z" />
-				<MenuItem Header="_Redo"
+				<MenuItem Header="{x:Static p:Resources.MainWindow_RedoMenuItem_Header}"
 									InputGesture="Ctrl+Y" />
 				<Separator />
-				<MenuItem Header="Cu_t"
+				<MenuItem Header="{x:Static p:Resources.MainWindow_CutMenuItem_Header}"
 									InputGesture="Ctrl+X" />
-				<MenuItem Header="_Copy"
+				<MenuItem Header="{x:Static p:Resources.MainWindow_CopyMenuItem_Header}"
 									InputGesture="Ctrl+C" />
-				<MenuItem Header="_Paste"
+				<MenuItem Header="{x:Static p:Resources.MainWindow_PasteMenuItem_Header}"
 									InputGesture="Ctrl+V" />
 				<Separator />
-				<MenuItem Header="Select _All" />
+				<MenuItem Header="{x:Static p:Resources.MainWindow_SelectAllMenuItem_Header}" />
 			</MenuItem>
-			<MenuItem Header="_Tools">
-				<MenuItem Header="_Playlists"
+			<MenuItem Header="{x:Static p:Resources.MainWindow_ToolsMenuItem_Header}">
+				<MenuItem Header="{x:Static p:Resources.MainWindow_PlaylistsMenuItem_Header}"
 									Click="PlaylistsMenuItem_Click">
 					<MenuItem.Icon>
 						<Image Source="/Resources/tv.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="Merge _Playlists"
+				<MenuItem Header="{x:Static p:Resources.MainWindow_MergePlaylistsMenuItem_Header}"
 									Click="MergeMenuItem_Click">
 					<MenuItem.Icon>
 						<Image Source="/Resources/floppy_disks.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="_Channels"
+				<MenuItem Header="{x:Static p:Resources.MainWindow_CatalogMenuItem_Header}"
 									Click="CatalogMenuItem_Click">
 					<MenuItem.Icon>
 						<Image Source="/Resources/tv.ico" />
@@ -123,24 +123,24 @@
 						<Image Source="/Resources/document.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="_Database"
+				<MenuItem Header="{x:Static p:Resources.MainWindow_DatabaseMenuItem_Header}"
 									Click="DatabaseMenuItem_Click">
 					<MenuItem.Icon>
 						<Image Source="/Resources/data.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="_Settings"
+				<MenuItem Header="{x:Static p:Resources.MainWindow_SettingsMenuItem_Header}"
 									Command="{Binding OpenSettingsCommand}">
 					<MenuItem.Icon>
 						<Image Source="/Resources/gear.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
-			<MenuItem Header="_Help">
-				<MenuItem Header="_Index" />
-				<MenuItem Header="_Search" />
+			<MenuItem Header="{x:Static p:Resources.MainWindow_HelpMenuItem_Header}">
+				<MenuItem Header="{x:Static p:Resources.MainWindow_IndexMenuItem_Header}" />
+				<MenuItem Header="{x:Static p:Resources.MainWindow_SearchMenuItem_Header}" />
 				<Separator />
-				<MenuItem Header="_About..."
+				<MenuItem Header="{x:Static p:Resources.MainWindow_AboutMenuItem_Header}"
 									Command="{Binding ShowAboutControl}">
 					<MenuItem.Icon>
 						<Image Source="/Resources/about.ico" />
