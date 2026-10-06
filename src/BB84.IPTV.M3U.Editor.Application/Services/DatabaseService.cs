@@ -207,7 +207,7 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 		return [.. Enum.GetValues<CatalogKind>()
 			.Select(kind => storedByKind.TryGetValue(kind, out CatalogSyncEntity? entity)
 				? entity.ToResponse()
-				: new CatalogStatusResponse { Kind = kind })];
+				: kind.ToEmptyStatus())];
 	}
 
 	/// <summary>
