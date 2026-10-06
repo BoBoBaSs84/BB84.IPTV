@@ -14,6 +14,5 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Persistence.Repositories.Base;
 /// </summary>
 /// <typeparam name="TEntity">The type of the entity managed by the repository.</typeparam>
 /// <param name="dbContext">The database context to be used by the repository.</param>
-internal abstract class RepositoryBase<TEntity>(IDbContext dbContext) : IdentityRepository<TEntity, int>(dbContext)
-		where TEntity : class, IIdentityEntity<int>
-{ }
+internal abstract class RepositoryBase<TEntity>(IDbContext dbContext)
+	: IdentityRepository<TEntity, int>(dbContext) where TEntity : class, IIdentityEntity<int>;

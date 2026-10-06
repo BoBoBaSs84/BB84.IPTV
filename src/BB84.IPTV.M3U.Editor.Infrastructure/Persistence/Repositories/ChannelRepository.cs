@@ -14,5 +14,5 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Persistence.Repositories;
 /// Represents the repository for managing <see cref="ChannelEntity"/> instances.
 /// </summary>
 /// <param name="dbContext">The database context to be used by the repository.</param>
-internal sealed class ChannelRepository(IDbContext dbContext) : RepositoryBase<ChannelEntity>(dbContext), IChannelRepository
-{ }
+internal sealed class ChannelRepository(IDbContext dbContext)
+	: RepositoryBase<ChannelEntity>(dbContext), IChannelRepository;

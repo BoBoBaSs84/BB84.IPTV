@@ -14,5 +14,5 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Persistence.Repositories;
 /// Represents the repository for managing <see cref="LanguageEntity"/> instances.
 /// </summary>
 /// <param name="dbContext">The database context to be used by the repository.</param>
-internal sealed class LanguageRepository(IDbContext dbContext) : RepositoryBase<LanguageEntity>(dbContext), ILanguageRepository
-{ }
+internal sealed class LanguageRepository(IDbContext dbContext)
+	: RepositoryBase<LanguageEntity>(dbContext), ILanguageRepository;

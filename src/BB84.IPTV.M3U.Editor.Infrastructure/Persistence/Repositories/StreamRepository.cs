@@ -14,5 +14,5 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Persistence.Repositories;
 /// Represents the repository for managing <see cref="StreamEntity"/> instances.
 /// </summary>
 /// <param name="dbContext">The database context to be used by the repository.</param>
-internal sealed class StreamRepository(IDbContext dbContext) : RepositoryBase<StreamEntity>(dbContext), IStreamRepository
-{ }
+internal sealed class StreamRepository(IDbContext dbContext)
+	: RepositoryBase<StreamEntity>(dbContext), IStreamRepository;

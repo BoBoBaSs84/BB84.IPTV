@@ -14,5 +14,5 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Persistence.Repositories;
 /// Represents the repository for managing <see cref="CatalogSyncEntity"/> instances.
 /// </summary>
 /// <param name="dbContext">The database context to be used by the repository.</param>
-internal sealed class CatalogSyncRepository(IDbContext dbContext) : RepositoryBase<CatalogSyncEntity>(dbContext), ICatalogSyncRepository
-{ }
+internal sealed class CatalogSyncRepository(IDbContext dbContext)
+	: RepositoryBase<CatalogSyncEntity>(dbContext), ICatalogSyncRepository;
