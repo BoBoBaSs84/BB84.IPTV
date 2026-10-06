@@ -12,8 +12,8 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// Represents the filter of a search across the logos the catalog knows.
 /// </summary>
 /// <remarks>
-/// The result is paged, see <see cref="Parameters"/>, and ordered by <see cref="SortBy"/>, so the
-/// order covers the whole result and not only the page that is read.
+/// The result is paged, see <see cref="Parameters"/>, in one fixed order, so a row never moves between
+/// pages. The grid sorts only the page it shows.
 /// </remarks>
 public sealed class LogoSearchRequest : Parameters
 {
@@ -37,14 +37,4 @@ public sealed class LogoSearchRequest : Parameters
 	/// Gets or initializes which logos the search covers, by what the cache holds for them.
 	/// </summary>
 	public LogoCacheFilter CacheState { get; init; }
-
-	/// <summary>
-	/// Gets or initializes the column the logos are ordered by.
-	/// </summary>
-	public LogoSortColumn SortBy { get; init; }
-
-	/// <summary>
-	/// Gets or initializes whether the logos are ordered the other way round.
-	/// </summary>
-	public bool Descending { get; init; }
 }

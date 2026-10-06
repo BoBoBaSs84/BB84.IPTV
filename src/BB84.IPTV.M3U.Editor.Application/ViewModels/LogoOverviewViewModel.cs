@@ -61,8 +61,6 @@ public sealed class LogoOverviewViewModel : ViewModelBase, INavigateable, IDispo
 	private LogoCacheFilter _cacheState;
 	private bool _onlySelectedChannel = true;
 	private bool _applyToWholeChannel;
-	private LogoSortColumn _sortBy;
-	private bool _descending;
 	private int _pageNumber = 1;
 	private int _totalPages;
 	private int _totalCount;
@@ -215,24 +213,6 @@ public sealed class LogoOverviewViewModel : ViewModelBase, INavigateable, IDispo
 	{
 		get => _applyToWholeChannel;
 		set => SetProperty(ref _applyToWholeChannel, value);
-	}
-
-	/// <summary>
-	/// Gets the column the logos are ordered by.
-	/// </summary>
-	public LogoSortColumn SortBy
-	{
-		get => _sortBy;
-		private set => SetProperty(ref _sortBy, value);
-	}
-
-	/// <summary>
-	/// Indicates whether the logos are ordered the other way round.
-	/// </summary>
-	public bool Descending
-	{
-		get => _descending;
-		private set => SetProperty(ref _descending, value);
 	}
 
 	/// <summary>
@@ -534,8 +514,6 @@ public sealed class LogoOverviewViewModel : ViewModelBase, INavigateable, IDispo
 						SearchText = SearchText,
 						Channel = OnlySelectedChannel ? SelectedEntry?.Channel : null,
 						CacheState = CacheState,
-						SortBy = SortBy,
-						Descending = Descending,
 						PageNumber = pageNumber,
 						PageSize = LogoPageSize
 					},
@@ -569,20 +547,6 @@ public sealed class LogoOverviewViewModel : ViewModelBase, INavigateable, IDispo
 			if (Interlocked.CompareExchange(ref _loadTokenSource, null, tokenSource) == tokenSource)
 				tokenSource.Dispose();
 		}
-	}
-
-	/// <summary>
-	/// Orders the logos by a column, which starts again at the first page.
-	/// </summary>
-	/// <param name="column">The column to order by.</param>
-	/// <param name="descending">Orders the logos the other way round.</param>
-	/// <returns>A task that represents the asynchronous operation.</returns>
-	public async Task SortAsync(LogoSortColumn column, bool descending)
-	{
-		SortBy = column;
-		Descending = descending;
-
-		await LoadLogosAsync(1).ConfigureAwait(true);
 	}
 
 	/// <summary>

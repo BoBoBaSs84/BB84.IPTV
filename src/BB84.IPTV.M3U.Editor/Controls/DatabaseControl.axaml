@@ -100,7 +100,6 @@
 								MinHeight="160"
 								AutoGenerateColumns="False"
 								IsReadOnly="True"
-								CanUserSortColumns="True"
 								SelectionMode="Single"
 								GridLinesVisibility="All"
 								ItemsSource="{Binding CatalogStatuses}">

@@ -9,7 +9,6 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
-using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -44,8 +43,6 @@ public sealed class GuideOverviewViewModel : ViewModelBase, INavigateable, IDisp
 	private string _providerSearchText = string.Empty;
 	private GuideSiteResponse? _selectedProvider;
 	private string _searchText = string.Empty;
-	private GuideSortColumn _sortBy;
-	private bool _descending;
 	private int _pageNumber = 1;
 	private int _totalPages;
 	private int _totalCount;
@@ -120,24 +117,6 @@ public sealed class GuideOverviewViewModel : ViewModelBase, INavigateable, IDisp
 	{
 		get => _searchText;
 		set => SetProperty(ref _searchText, value);
-	}
-
-	/// <summary>
-	/// Gets the column the guides are ordered by.
-	/// </summary>
-	public GuideSortColumn SortBy
-	{
-		get => _sortBy;
-		private set => SetProperty(ref _sortBy, value);
-	}
-
-	/// <summary>
-	/// Indicates whether the guides are ordered the other way round.
-	/// </summary>
-	public bool Descending
-	{
-		get => _descending;
-		private set => SetProperty(ref _descending, value);
 	}
 
 	/// <summary>
@@ -316,8 +295,6 @@ public sealed class GuideOverviewViewModel : ViewModelBase, INavigateable, IDisp
 					{
 						SearchText = SearchText,
 						Site = SelectedProvider?.Site,
-						SortBy = SortBy,
-						Descending = Descending,
 						PageNumber = pageNumber,
 						PageSize = GuidePageSize
 					},
@@ -357,20 +334,6 @@ public sealed class GuideOverviewViewModel : ViewModelBase, INavigateable, IDisp
 		CancellationTokenSource? tokenSource = Interlocked.Exchange(ref _loadTokenSource, null);
 
 		tokenSource?.Dispose();
-	}
-
-	/// <summary>
-	/// Orders the guides by a column, which starts again at the first page.
-	/// </summary>
-	/// <param name="column">The column to order by.</param>
-	/// <param name="descending">Orders the guides the other way round.</param>
-	/// <returns>A task that represents the asynchronous operation.</returns>
-	public async Task SortAsync(GuideSortColumn column, bool descending)
-	{
-		SortBy = column;
-		Descending = descending;
-
-		await LoadAsync(1).ConfigureAwait(true);
 	}
 
 	/// <summary>

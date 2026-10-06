@@ -78,7 +78,6 @@
 				<DataGrid x:Name="EntriesDataGrid"
 									AutoGenerateColumns="False"
 									IsReadOnly="False"
-									CanUserSortColumns="True"
 									SelectionMode="Single"
 									GridLinesVisibility="All"
 									ItemsSource="{Binding Entries}"
@@ -87,6 +86,7 @@
 					<DataGrid.Columns>
 						<!-- Only cached logos are shown, a missing one stays empty. -->
 						<DataGridTemplateColumn Header="{x:Static p:Resources.PlaylistControl_LogoColumn_Header}"
+																		CanUserSort="False"
 																		Width="56"
 																		IsReadOnly="True">
 							<DataGridTemplateColumn.CellTemplate>

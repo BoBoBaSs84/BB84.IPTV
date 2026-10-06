@@ -92,55 +92,44 @@
 										 TextWrapping="Wrap" />
 				</StackPanel>
 
-				<!-- The sort of a column is pushed into the query, see the Sorting handler. -->
 				<DataGrid x:Name="GuideDataGrid"
 									AutoGenerateColumns="False"
 									IsReadOnly="True"
-									CanUserSortColumns="True"
 									SelectionMode="Single"
 									GridLinesVisibility="All"
-									ItemsSource="{Binding Guides}"
-									Sorting="OnGuidesSorting">
+									ItemsSource="{Binding Guides}">
 					<DataGrid.Columns>
 						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
 																Header="{x:Static p:Resources.GuideOverviewControl_ChannelColumn_Header}"
 																Binding="{Binding Channel}"
-																SortMemberPath="Channel"
 																Width="*" />
 						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
 																Header="{x:Static p:Resources.GuideOverviewControl_ChannelNameColumn_Header}"
 																Binding="{Binding ChannelName}"
-																SortMemberPath="ChannelName"
 																Width="2*" />
 						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
 																Header="{x:Static p:Resources.GuideOverviewControl_FeedColumn_Header}"
 																Binding="{Binding Feed}"
-																SortMemberPath="Feed"
 																Width="80" />
 						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
 																Header="{x:Static p:Resources.GuideOverviewControl_ProviderColumn_Header}"
 																Binding="{Binding Site}"
-																SortMemberPath="Site"
 																Width="*" />
 						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
 																Header="{x:Static p:Resources.GuideOverviewControl_SiteIdColumn_Header}"
 																Binding="{Binding SiteId}"
-																SortMemberPath="SiteId"
 																Width="*" />
 						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
 																Header="{x:Static p:Resources.GuideOverviewControl_SiteNameColumn_Header}"
 																Binding="{Binding SiteName}"
-																SortMemberPath="SiteName"
 																Width="*" />
 						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
 																Header="{x:Static p:Resources.GuideOverviewControl_LangColumn_Header}"
 																Binding="{Binding Lang}"
-																SortMemberPath="Lang"
 																Width="80" />
 						<DataGridTextColumn x:DataType="r:GuideOptionResponse"
 																Header="{x:Static p:Resources.GuideOverviewControl_CountryColumn_Header}"
 																Binding="{Binding Country}"
-																SortMemberPath="Country"
 																Width="80" />
 					</DataGrid.Columns>
 				</DataGrid>

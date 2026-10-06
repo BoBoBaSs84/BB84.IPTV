@@ -149,7 +149,7 @@ internal sealed class LogoService(
 				new Query<LogoEntity>
 				{
 					Where = filter,
-					OrderBy = query => Order(query, request.SortBy, request.Descending),
+					OrderBy = query => query.OrderBy(logo => logo.Channel).ThenBy(logo => logo.Id),
 					Skip = request.Skip,
 					Take = request.PageSize
 				},
@@ -304,34 +304,6 @@ internal sealed class LogoService(
 				new Query<ChannelEntity> { Where = channel => channel.Name.Contains(text) },
 				cancellationToken)
 			.ConfigureAwait(false);
-
-	/// <summary>
-	/// Orders the logos by the asked column, with the identity last, so a logo never moves between
-	/// pages when several of them share the column.
-	/// </summary>
-	private static IOrderedQueryable<LogoEntity> Order(IQueryable<LogoEntity> logos, LogoSortColumn sortBy, bool descending)
-	{
-		IOrderedQueryable<LogoEntity> ordered = sortBy switch
-		{
-			LogoSortColumn.Feed => OrderBy(logos, logo => logo.Feed, descending),
-			LogoSortColumn.Format => OrderBy(logos, logo => logo.Format, descending),
-			LogoSortColumn.Width => OrderBy(logos, logo => logo.Width, descending),
-			LogoSortColumn.Height => OrderBy(logos, logo => logo.Height, descending),
-			LogoSortColumn.Url => OrderBy(logos, logo => logo.Url, descending),
-			LogoSortColumn.LocalPath => OrderBy(logos, logo => logo.LocalPath, descending),
-			LogoSortColumn.FileSize => OrderBy(logos, logo => logo.FileSize, descending),
-			LogoSortColumn.DownloadedAt => OrderBy(logos, logo => logo.DownloadedAt, descending),
-			_ => OrderBy(logos, logo => logo.Channel, descending)
-		};
-
-		return ordered.ThenBy(logo => logo.Id);
-	}
-
-	/// <summary>
-	/// Orders the logos by one key, in the asked direction.
-	/// </summary>
-	private static IOrderedQueryable<LogoEntity> OrderBy<TKey>(IQueryable<LogoEntity> logos, Expression<Func<LogoEntity, TKey>> key, bool descending)
-		=> descending ? logos.OrderByDescending(key) : logos.OrderBy(key);
 
 	/// <summary>
 	/// Loads what the catalog knows about the given channels, in chunks, so the query stays within
