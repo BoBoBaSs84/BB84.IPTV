@@ -6,7 +6,6 @@
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
-using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
@@ -72,8 +71,6 @@ public sealed class GuideOverviewViewModelTests : IDisposable
 		GuideSearchRequest request = _requests.Single();
 
 		Assert.AreEqual(Parameters.MinPageSize, request.PageSize);
-		Assert.AreEqual(GuideSortColumn.Channel, request.SortBy);
-		Assert.IsFalse(request.Descending);
 		Assert.IsNull(request.Site);
 	}
 
@@ -100,36 +97,6 @@ public sealed class GuideOverviewViewModelTests : IDisposable
 		Assert.AreEqual("Das Erste", request.SearchText);
 		Assert.AreEqual(1, request.PageNumber);
 		Assert.AreEqual(1, _sut.PageNumber);
-	}
-
-	[TestMethod]
-	public async Task SortAsyncShouldOrderTheWholeResultAndStartAtTheFirstPage()
-	{
-		await _sut.LoadAsync(2).ConfigureAwait(false);
-
-		await _sut.SortAsync(GuideSortColumn.ChannelName, true).ConfigureAwait(false);
-
-		GuideSearchRequest request = _requests[^1];
-
-		Assert.AreEqual(GuideSortColumn.ChannelName, request.SortBy);
-		Assert.IsTrue(request.Descending);
-		Assert.AreEqual(1, request.PageNumber);
-		Assert.AreEqual(GuideSortColumn.ChannelName, _sut.SortBy);
-		Assert.IsTrue(_sut.Descending);
-	}
-
-	[TestMethod]
-	public async Task PagingShouldKeepTheOrderOfTheSearch()
-	{
-		await _sut.SortAsync(GuideSortColumn.SiteName, true).ConfigureAwait(false);
-
-		await _sut.NextPageCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
-
-		GuideSearchRequest request = _requests[^1];
-
-		Assert.AreEqual(2, request.PageNumber);
-		Assert.AreEqual(GuideSortColumn.SiteName, request.SortBy);
-		Assert.IsTrue(request.Descending);
 	}
 
 	[TestMethod]

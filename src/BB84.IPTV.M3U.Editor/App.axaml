@@ -72,5 +72,10 @@
 	<Application.Styles>
 		<FluentTheme />
 		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+		<!-- Every grid sorts in its own view, never in the database, and lets the user size its columns. -->
+		<Style Selector="DataGrid">
+			<Setter Property="CanUserSortColumns" Value="True" />
+			<Setter Property="CanUserResizeColumns" Value="True" />
+		</Style>
 	</Application.Styles>
 </Application>

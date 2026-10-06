@@ -105,7 +105,6 @@
 																Margin="4">
 					<DataGrid AutoGenerateColumns="False"
 										IsReadOnly="True"
-										CanUserSortColumns="True"
 										SelectionMode="Single"
 										GridLinesVisibility="All"
 										ItemsSource="{Binding Channels}"
@@ -113,6 +112,7 @@
 						<DataGrid.Columns>
 							<!-- Only cached logos are shown, a missing one stays empty. -->
 							<DataGridTemplateColumn Header="{x:Static p:Resources.CatalogControl_LogoColumn_Header}"
+																			CanUserSort="False"
 																			Width="56">
 								<DataGridTemplateColumn.CellTemplate>
 									<DataTemplate x:DataType="vm:CatalogChannelViewModel">

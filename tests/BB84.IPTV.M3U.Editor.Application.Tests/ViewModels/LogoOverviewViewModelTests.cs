@@ -7,7 +7,6 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
-using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
@@ -270,21 +269,6 @@ public sealed class LogoOverviewViewModelTests : IDisposable
 			It.IsAny<CancellationToken>()), Times.Once);
 		Assert.IsFalse(_sut.IsDirty);
 		Assert.IsFalse(_sut.CanSave);
-	}
-
-	[TestMethod]
-	public async Task SortAsyncShouldOrderInTheQueryAndStartAtTheFirstPage()
-	{
-		await _sut.LoadAndReportAsync().ConfigureAwait(false);
-		await _sut.LoadLogosAsync(2).ConfigureAwait(false);
-
-		await _sut.SortAsync(LogoSortColumn.DownloadedAt, true).ConfigureAwait(false);
-
-		Assert.AreEqual(LogoSortColumn.DownloadedAt, _sut.SortBy);
-		Assert.IsTrue(_sut.Descending);
-		Assert.AreEqual(1, _requests[^1].PageNumber);
-		Assert.AreEqual(LogoSortColumn.DownloadedAt, _requests[^1].SortBy);
-		Assert.IsTrue(_requests[^1].Descending);
 	}
 
 	[TestMethod]

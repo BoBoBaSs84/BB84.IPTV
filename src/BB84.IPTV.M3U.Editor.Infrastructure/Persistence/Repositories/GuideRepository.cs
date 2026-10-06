@@ -3,12 +3,9 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
-using System.Linq.Expressions;
-
 using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persistence.Repositories;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
-using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 using BB84.IPTV.M3U.Editor.Infrastructure.Persistence.Repositories.Base;
 
@@ -44,8 +41,8 @@ internal sealed class GuideRepository : RepositoryBase<GuideEntity>, IGuideRepos
 	/// <inheritdoc/>
 	/// <remarks>
 	/// The query is written here instead of in the service, because it joins two entities, which a
-	/// <see cref="Query{TEntity}"/> cannot express, and because the column it orders by is chosen by
-	/// the caller. The projection therefore stays with the query and is not a mapping expression.
+	/// <see cref="Query{TEntity}"/> cannot express. The projection therefore stays with the query and
+	/// is not a mapping expression.
 	/// The text is matched with <c>LIKE</c>, which folds the case of ASCII letters only, and the
 	/// order uses the binary collation of SQLite, so an upper case letter and an unknown channel
 	/// come first.
@@ -53,15 +50,13 @@ internal sealed class GuideRepository : RepositoryBase<GuideEntity>, IGuideRepos
 	public async Task<(IReadOnlyList<GuideOptionResponse> Guides, int TotalCount)> SearchAsync(
 		string? searchText,
 		string? site,
-		GuideSortColumn sortBy,
-		bool descending,
 		int skip,
 		int take,
 		CancellationToken cancellationToken = default)
 	{
 		IQueryable<GuideChannel> rows = Filter(searchText, site);
 
-		List<GuideOptionResponse> guides = await Order(rows, sortBy, descending)
+		List<GuideOptionResponse> guides = await Order(rows)
 			.Skip(skip)
 			.Take(take)
 			.Select(row => new GuideOptionResponse
@@ -128,34 +123,17 @@ internal sealed class GuideRepository : RepositoryBase<GuideEntity>, IGuideRepos
 	}
 
 	/// <summary>
-	/// Orders the guides by the asked column, with a unique key last.
+	/// Orders the guides by channel, with a unique key last.
 	/// </summary>
-	private static IOrderedQueryable<GuideChannel> Order(IQueryable<GuideChannel> rows, GuideSortColumn sortBy, bool descending)
+	private static IOrderedQueryable<GuideChannel> Order(IQueryable<GuideChannel> rows)
 	{
-		IOrderedQueryable<GuideChannel> ordered = sortBy switch
-		{
-			GuideSortColumn.ChannelName => OrderBy(rows, row => row.Channel != null ? row.Channel.Name : null, descending),
-			GuideSortColumn.Feed => OrderBy(rows, row => row.Guide.Feed, descending),
-			GuideSortColumn.Site => OrderBy(rows, row => row.Guide.Site, descending),
-			GuideSortColumn.SiteId => OrderBy(rows, row => row.Guide.SiteId, descending),
-			GuideSortColumn.SiteName => OrderBy(rows, row => row.Guide.SiteName, descending),
-			GuideSortColumn.Lang => OrderBy(rows, row => row.Guide.Lang, descending),
-			GuideSortColumn.Country => OrderBy(rows, row => row.Channel != null ? row.Channel.Country : null, descending),
-			_ => OrderBy(rows, row => row.Guide.Channel, descending)
-		};
-
-		// The identity last, so a guide never moves between pages when several share the column.
-		return ordered
+		// The identity last, so a guide never moves between pages when several share the channel.
+		return rows
+			.OrderBy(row => row.Guide.Channel)
 			.ThenBy(row => row.Guide.Site)
 			.ThenBy(row => row.Guide.SiteId)
 			.ThenBy(row => row.Guide.Id);
 	}
-
-	/// <summary>
-	/// Orders the guides by one key, in the asked direction.
-	/// </summary>
-	private static IOrderedQueryable<GuideChannel> OrderBy<TKey>(IQueryable<GuideChannel> rows, Expression<Func<GuideChannel, TKey>> key, bool descending)
-		=> descending ? rows.OrderByDescending(key) : rows.OrderBy(key);
 
 	/// <summary>
 	/// Takes the meaning off the wildcards of a <c>LIKE</c> pattern, so a text of <c>_</c> does not

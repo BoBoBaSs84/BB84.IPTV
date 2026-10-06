@@ -127,15 +127,15 @@ public sealed class LogoSearchPersistenceTests
 	}
 
 	[TestMethod]
-	public async Task SearchLogosAsyncShouldOrderInTheDatabase()
+	public async Task SearchLogosAsyncShouldOrderByChannelInTheDatabase()
 	{
 		IPagedList<LogoOptionResponse> logos = await _sut
 			.SearchLogosAsync(
-				new LogoSearchRequest { SortBy = LogoSortColumn.Format, Descending = true },
+				new LogoSearchRequest(),
 				TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
-		Assert.AreSequenceEqual(["WEBP", "SVG", "PNG"], logos.Select(logo => logo.Format).ToArray());
+		Assert.AreSequenceEqual(["PNG", "WEBP", "SVG"], logos.Select(logo => logo.Format).ToArray());
 	}
 
 	[TestMethod]

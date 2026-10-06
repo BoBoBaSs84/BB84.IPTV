@@ -3,6 +3,8 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using System.ComponentModel;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless;
@@ -12,7 +14,6 @@ using Avalonia.VisualTree;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
-using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Controls;
@@ -47,7 +48,7 @@ public sealed class GuideOverviewControlTests
 		}).ConfigureAwait(false);
 
 	[TestMethod]
-	public async Task EveryColumnShouldSortByAKnownColumn()
+	public async Task EveryGridShouldSortAndResizeItsColumns()
 		=> await UiTest.RunAsync(() =>
 		{
 			GuideOverviewViewModel viewModel = ViewModelFactory.CreateGuideOverview();
@@ -57,29 +58,28 @@ public sealed class GuideOverviewControlTests
 			{
 				UiTest.Settle();
 
-				DataGrid grid = control.GetControl<DataGrid>("GuideDataGrid");
-
-				Assert.IsTrue(grid.CanUserSortColumns);
-
-				foreach (DataGridColumn column in grid.Columns)
+				foreach (DataGrid grid in control.GetVisualDescendants().OfType<DataGrid>())
 				{
-					Assert.IsTrue(
-						Enum.TryParse(column.SortMemberPath, out GuideSortColumn _),
-						$"'{column.SortMemberPath}' is no column the query can order by.");
+					Assert.IsTrue(grid.CanUserSortColumns, $"'{grid.Name}' does not sort.");
+					Assert.IsTrue(grid.CanUserResizeColumns, $"'{grid.Name}' does not resize.");
+
+					// Only a picture column opts out of the sort.
+					foreach (DataGridColumn column in grid.Columns.Where(column => column is not DataGridTemplateColumn))
+						Assert.IsTrue(column.CanUserSort, $"'{column.Header}' of '{grid.Name}' does not sort.");
 				}
 			});
 		}).ConfigureAwait(false);
 
 	[TestMethod]
-	public async Task AHeaderClickShouldOrderTheWholeResult()
+	public async Task AHeaderClickShouldSortThePageWithoutSearchingAgain()
 		=> await UiTest.RunAsync(() =>
 		{
 			List<GuideSearchRequest> requests = [];
-			Mock<IGuideService> guideServiceMock = new();
-			GuideOverviewViewModel viewModel = ViewModelFactory.CreateGuideOverview(guideServiceMock);
+			Mock<IGuideService> serviceMock = new();
+			GuideOverviewViewModel viewModel = ViewModelFactory.CreateGuideOverview(serviceMock);
 
-			// The search of the factory still answers, the requests it gets are the ones asserted on.
-			guideServiceMock
+			// The search of the factory still answers, the requests it gets are the ones counted.
+			serviceMock
 				.Setup(x => x.SearchGuidesAsync(It.IsAny<GuideSearchRequest>(), It.IsAny<CancellationToken>()))
 				.ReturnsAsync((GuideSearchRequest request, CancellationToken _) =>
 				{
@@ -94,17 +94,19 @@ public sealed class GuideOverviewControlTests
 			{
 				UiTest.Settle();
 
+				DataGrid grid = control.GetControl<DataGrid>("GuideDataGrid");
+				int searches = requests.Count;
+
 				ClickColumnHeader(control, Properties.Resources.GuideOverviewControl_ChannelNameColumn_Header);
 
-				Assert.AreEqual(GuideSortColumn.ChannelName, requests[^1].SortBy);
-				Assert.IsFalse(requests[^1].Descending);
-				Assert.AreEqual(1, requests[^1].PageNumber);
+				// The grid sorts the page it holds, the database is not asked again.
+				Assert.HasCount(searches, requests);
+				Assert.AreEqual(ListSortDirection.Ascending, grid.CollectionView!.SortDescriptions.Single().Direction);
 
-				// The second click turns the order round, which the query has to follow.
 				ClickColumnHeader(control, Properties.Resources.GuideOverviewControl_ChannelNameColumn_Header);
 
-				Assert.AreEqual(GuideSortColumn.ChannelName, requests[^1].SortBy);
-				Assert.IsTrue(requests[^1].Descending);
+				Assert.HasCount(searches, requests);
+				Assert.AreEqual(ListSortDirection.Descending, grid.CollectionView!.SortDescriptions.Single().Direction);
 				Assert.IsEmpty(sink.Messages, string.Join(Environment.NewLine, sink.Messages));
 			});
 		}).ConfigureAwait(false);

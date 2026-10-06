@@ -27,6 +27,8 @@ The application is a cross-platform AvaloniaUI app and runs on Windows, Linux an
 
 ## Features
 
+Every grid sorts by a click on a column header, and its columns can be resized. A paged grid sorts the page it shows.
+
 ### Playlists
 
 - Create, rename, delete, import and export playlists; they live in the database, M3U is the import and export format.
@@ -57,7 +59,7 @@ The application is a cross-platform AvaloniaUI app and runs on Windows, Linux an
 
 ### Assigning logos
 
-- The `Logos` screen (menu `Tools`) searches every logo the catalog knows, by channel, channel name, feed, format, remote path or local path, and filters by whether it is downloaded. Filtering, ordering and paging run in SQL, 100 logos per page, so an order covers the whole result and not only the page. The text is matched case sensitively, as everywhere else in the catalog. The name and the country of a channel are read for the page that is shown, so they are displayed but not ordered by.
+- The `Logos` screen (menu `Tools`) searches every logo the catalog knows, by channel, channel name, feed, format, remote path or local path, and filters by whether it is downloaded. Filtering and paging run in SQL, 100 logos per page, in a fixed order by channel. The text is matched case sensitively, as everywhere else in the catalog. The name and the country of a channel are read for the page that is shown.
 - Each row shows the preview, the channel and its name, the feed, the country, the format, the size in pixels, the tags, the remote path, the local path, the file size and the download time. `Copy URL` and `Copy path` put either path on the clipboard.
 - The entries of a picked playlist stand next to the logos. A selected logo is assigned to the selected entry with `Assign URL` or, once it is downloaded, with `Assign file`; `From disk` assigns an image of your own, `Clear` takes the logo off. `Every entry with the same tvg-id` applies an assignment to every entry of that channel at once, and `Save` writes the assignments to the stored playlist.
 - `Download` caches the selected logo alone, which is how a logo that a bulk run does not pick gets a local file. A cached file is named after the channel, the feed and the id of the logo, so the logos of one channel never write over each other.
@@ -81,7 +83,7 @@ The application is a cross-platform AvaloniaUI app and runs on Windows, Linux an
 - A read-only screen next to the mapping, for the question which providers carry a guide for a channel: one row per guide, with channel, channel name, feed, provider, site id, site name, language and country.
 - One search term matches the channel name, the channel id, the provider, the site id, the site name and the language; the form `channel@feed`, as a `channels.xml` holds it, finds that one guide.
 - The provider list on the left shows what each provider covers and can be filtered by name; picking one limits the result to it.
-- Every column sorts in the database, so the order covers the whole result and not only the page that is shown, and the result is paged.
+- The result is paged in a fixed order by channel.
 
 ### Database
 

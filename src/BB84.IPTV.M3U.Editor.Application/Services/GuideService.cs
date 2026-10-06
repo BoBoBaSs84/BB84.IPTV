@@ -186,13 +186,11 @@ internal sealed class GuideService(
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
 
-		// The repository joins the catalog channels and orders in the database, see IGuideRepository.
+		// The repository joins the catalog channels, see IGuideRepository.
 		(IReadOnlyList<GuideOptionResponse> guides, int total) = await repositoryService.Guides
 			.SearchAsync(
 				request.SearchText.TrimToNull(),
 				request.Site.TrimToNull(),
-				request.SortBy,
-				request.Descending,
 				request.Skip,
 				request.PageSize,
 				cancellationToken)

@@ -76,7 +76,6 @@
 					<!-- The tvg-logo stays editable, so a path can also be pasted into it. -->
 					<DataGrid AutoGenerateColumns="False"
 										IsReadOnly="False"
-										CanUserSortColumns="False"
 										SelectionMode="Single"
 										GridLinesVisibility="All"
 										ItemsSource="{Binding Entries}"
@@ -84,6 +83,7 @@
 						<DataGrid.Columns>
 							<!-- Only cached logos are shown, a missing one stays empty. -->
 							<DataGridTemplateColumn Header="{x:Static p:Resources.LogoOverviewControl_EntryLogoColumn_Header}"
+																			CanUserSort="False"
 																			Width="56"
 																			IsReadOnly="True">
 								<DataGridTemplateColumn.CellTemplate>
@@ -181,16 +181,13 @@
 											 TextWrapping="Wrap" />
 					</StackPanel>
 
-					<!-- The sort of a column is pushed into the query, see the Sorting handler. -->
 					<DataGrid x:Name="LogoDataGrid"
 										AutoGenerateColumns="False"
 										IsReadOnly="True"
-										CanUserSortColumns="True"
 										SelectionMode="Single"
 										GridLinesVisibility="All"
 										ItemsSource="{Binding Logos}"
-										SelectedItem="{Binding SelectedLogo}"
-										Sorting="OnLogosSorting">
+										SelectedItem="{Binding SelectedLogo}">
 						<DataGrid.Columns>
 							<!-- Only cached logos are shown, one that is not downloaded stays empty. -->
 							<DataGridTemplateColumn Header="{x:Static p:Resources.LogoOverviewControl_LogoColumn_Header}"
@@ -209,62 +206,50 @@
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_ChannelColumn_Header}"
 																	Binding="{Binding Channel}"
-																	SortMemberPath="Channel"
 																	Width="*" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_ChannelNameColumn_Header}"
 																	Binding="{Binding ChannelName}"
-																	CanUserSort="False"
 																	Width="*" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_FeedColumn_Header}"
 																	Binding="{Binding Feed}"
-																	SortMemberPath="Feed"
 																	Width="80" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_CountryColumn_Header}"
 																	Binding="{Binding Country}"
-																	CanUserSort="False"
 																	Width="70" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_FormatColumn_Header}"
 																	Binding="{Binding Format}"
-																	SortMemberPath="Format"
 																	Width="70" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_WidthColumn_Header}"
 																	Binding="{Binding Width}"
-																	SortMemberPath="Width"
 																	Width="70" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_HeightColumn_Header}"
 																	Binding="{Binding Height}"
-																	SortMemberPath="Height"
 																	Width="70" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_TagsColumn_Header}"
 																	Binding="{Binding Tags}"
-																	CanUserSort="False"
 																	Width="100" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_UrlColumn_Header}"
 																	Binding="{Binding Url}"
-																	SortMemberPath="Url"
 																	Width="2*" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_LocalPathColumn_Header}"
 																	Binding="{Binding LocalPath}"
-																	SortMemberPath="LocalPath"
 																	Width="2*" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_FileSizeColumn_Header}"
 																	Binding="{Binding FileSize}"
-																	SortMemberPath="FileSize"
 																	Width="90" />
 							<DataGridTextColumn x:DataType="r:LogoOptionResponse"
 																	Header="{x:Static p:Resources.LogoOverviewControl_DownloadedAtColumn_Header}"
 																	Binding="{Binding DownloadedAt}"
-																	SortMemberPath="DownloadedAt"
 																	Width="150" />
 						</DataGrid.Columns>
 					</DataGrid>
