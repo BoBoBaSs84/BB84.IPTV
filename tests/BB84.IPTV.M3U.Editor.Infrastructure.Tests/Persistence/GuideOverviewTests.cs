@@ -6,7 +6,6 @@
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
-using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
@@ -207,12 +206,11 @@ public sealed class GuideOverviewTests
 	}
 
 	[TestMethod]
-	public async Task SearchGuidesAsyncShouldOrderTheWholeResultAndNotOnlyThePage()
+	public async Task SearchGuidesAsyncShouldPageTheWholeResultInOneFixedOrder()
 	{
 		GuideSearchRequest request = new()
 		{
 			Site = "big.example.com",
-			SortBy = GuideSortColumn.ChannelName,
 			PageNumber = 1,
 			PageSize = Parameters.MinPageSize
 		};
@@ -222,43 +220,26 @@ public sealed class GuideOverviewTests
 		Assert.AreEqual(SeededChannels, first.MetaData.TotalCount);
 		Assert.AreEqual(3, first.MetaData.TotalPages);
 
-		// The first name of the whole result, which the identifier order puts on the last page.
-		Assert.AreEqual("Station 000", first[0].ChannelName);
-		Assert.AreEqual($"Channel{SeededChannels - 1:D3}.de", first[0].Channel);
+		// The channel identifier orders the guides, the grid only sorts the page it shows.
+		Assert.AreEqual("Channel000.de", first[0].Channel);
 
-		List<string> names = [];
+		List<string> channels = [];
 		for (int pageNumber = 1; pageNumber <= first.MetaData.TotalPages; pageNumber++)
 		{
 			IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest
 			{
 				Site = request.Site,
-				SortBy = request.SortBy,
 				PageNumber = pageNumber,
 				PageSize = request.PageSize
 			}).ConfigureAwait(false);
 
-			names.AddRange(page.Select(guide => guide.ChannelName!));
+			channels.AddRange(page.Select(guide => guide.Channel!));
 		}
 
 		// Every guide once, in the order the database applied.
-		Assert.HasCount(SeededChannels, names);
-		Assert.HasCount(SeededChannels, names.Distinct(StringComparer.Ordinal).ToList());
-		CollectionAssert.AreEqual(names.OrderBy(name => name, StringComparer.Ordinal).ToList(), names);
-	}
-
-	[TestMethod]
-	public async Task SearchGuidesAsyncShouldOrderTheWholeResultTheOtherWayRound()
-	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest
-		{
-			Site = "big.example.com",
-			SortBy = GuideSortColumn.ChannelName,
-			Descending = true,
-			PageSize = Parameters.MinPageSize
-		}).ConfigureAwait(false);
-
-		Assert.AreEqual($"Station {SeededChannels - 1:D3}", page[0].ChannelName);
-		Assert.AreEqual("Channel000.de", page[0].Channel);
+		Assert.HasCount(SeededChannels, channels);
+		Assert.HasCount(SeededChannels, channels.Distinct(StringComparer.Ordinal).ToList());
+		CollectionAssert.AreEqual(channels.OrderBy(channel => channel, StringComparer.Ordinal).ToList(), channels);
 	}
 
 	[TestMethod]
@@ -273,7 +254,6 @@ public sealed class GuideOverviewTests
 			{
 				Site = "big.example.com",
 				SearchText = "de",
-				SortBy = GuideSortColumn.Lang,
 				PageNumber = pageNumber,
 				PageSize = Parameters.MinPageSize
 			}).ConfigureAwait(false);
@@ -282,27 +262,6 @@ public sealed class GuideOverviewTests
 		}
 
 		Assert.HasCount(siteIds.Count, siteIds.Distinct(StringComparer.Ordinal).ToList());
-	}
-
-	[TestMethod]
-	[DataRow(GuideSortColumn.Channel)]
-	[DataRow(GuideSortColumn.ChannelName)]
-	[DataRow(GuideSortColumn.Feed)]
-	[DataRow(GuideSortColumn.Site)]
-	[DataRow(GuideSortColumn.SiteId)]
-	[DataRow(GuideSortColumn.SiteName)]
-	[DataRow(GuideSortColumn.Lang)]
-	[DataRow(GuideSortColumn.Country)]
-	public async Task SearchGuidesAsyncShouldOrderByEveryColumn(GuideSortColumn sortBy)
-	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest
-		{
-			SortBy = sortBy,
-			PageSize = Parameters.MinPageSize
-		}).ConfigureAwait(false);
-
-		Assert.HasCount(Parameters.MinPageSize, page);
-		Assert.AreEqual(SeededChannels + 6, page.MetaData.TotalCount);
 	}
 
 	[TestMethod]

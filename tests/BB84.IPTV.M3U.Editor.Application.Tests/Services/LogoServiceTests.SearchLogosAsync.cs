@@ -42,7 +42,7 @@ public sealed partial class LogoServiceTests
 	{
 		IPagedList<LogoOptionResponse> page = await _sut
 			.SearchLogosAsync(
-				new LogoSearchRequest { SortBy = LogoSortColumn.Url, Descending = true, PageNumber = 2, PageSize = Parameters.MinPageSize },
+				new LogoSearchRequest { PageNumber = 2, PageSize = Parameters.MinPageSize },
 				TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
