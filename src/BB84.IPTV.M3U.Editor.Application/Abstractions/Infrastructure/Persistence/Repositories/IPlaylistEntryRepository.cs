@@ -11,5 +11,4 @@ namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persisten
 /// <summary>
 /// Represents the repository abstraction for managing <see cref="PlaylistEntryEntity"/> instances.
 /// </summary>
-public interface IPlaylistEntryRepository : IRepositoryBase<PlaylistEntryEntity>
-{ }
+public interface IPlaylistEntryRepository : IRepositoryBase<PlaylistEntryEntity>;

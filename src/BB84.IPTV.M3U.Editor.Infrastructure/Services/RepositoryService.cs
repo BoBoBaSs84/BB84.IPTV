@@ -93,20 +93,21 @@ internal sealed class RepositoryService : IRepositoryService
 			.ConfigureAwait(false);
 	}
 
+	// The repositories delete in bulk, the context itself only saves, connects and migrates.
 	public async Task<int> ResetCatalogAsync(CancellationToken cancellationToken = default)
 	{
 		int deleted = 0;
-		deleted += await _context.Set<StreamEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
-		deleted += await _context.Set<LogoEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
-		deleted += await _context.Set<GuideEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
-		deleted += await _context.Set<FeedEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
-		deleted += await _context.Set<ChannelEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
-		deleted += await _context.Set<LanguageEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
-		deleted += await _context.Set<CountryEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
-		deleted += await _context.Set<CategoryEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
+		deleted += await Streams.ExecuteDeleteAsync(_ => true, cancellationToken).ConfigureAwait(false);
+		deleted += await Logos.ExecuteDeleteAsync(_ => true, cancellationToken).ConfigureAwait(false);
+		deleted += await Guides.ExecuteDeleteAsync(_ => true, cancellationToken).ConfigureAwait(false);
+		deleted += await Feeds.ExecuteDeleteAsync(_ => true, cancellationToken).ConfigureAwait(false);
+		deleted += await Channels.ExecuteDeleteAsync(_ => true, cancellationToken).ConfigureAwait(false);
+		deleted += await Languages.ExecuteDeleteAsync(_ => true, cancellationToken).ConfigureAwait(false);
+		deleted += await Countries.ExecuteDeleteAsync(_ => true, cancellationToken).ConfigureAwait(false);
+		deleted += await Categories.ExecuteDeleteAsync(_ => true, cancellationToken).ConfigureAwait(false);
 
 		// What was synchronized is gone with the catalog, so the next run starts as a first import.
-		_ = await _context.Set<CatalogSyncEntity>().ExecuteDeleteAsync(cancellationToken).ConfigureAwait(false);
+		_ = await CatalogSyncs.ExecuteDeleteAsync(_ => true, cancellationToken).ConfigureAwait(false);
 
 		return deleted;
 	}

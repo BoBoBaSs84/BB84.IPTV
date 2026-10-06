@@ -11,5 +11,4 @@ namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persisten
 /// <summary>
 /// Represents the repository abstraction for managing <see cref="CatalogSyncEntity"/> instances.
 /// </summary>
-public interface ICatalogSyncRepository : IRepositoryBase<CatalogSyncEntity>
-{ }
+public interface ICatalogSyncRepository : IRepositoryBase<CatalogSyncEntity>;

@@ -11,5 +11,4 @@ namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persisten
 /// <summary>
 /// Represents the repository abstraction for managing <see cref="GuideMappingEntity"/> instances.
 /// </summary>
-public interface IGuideMappingRepository : IRepositoryBase<GuideMappingEntity>
-{ }
+public interface IGuideMappingRepository : IRepositoryBase<GuideMappingEntity>;

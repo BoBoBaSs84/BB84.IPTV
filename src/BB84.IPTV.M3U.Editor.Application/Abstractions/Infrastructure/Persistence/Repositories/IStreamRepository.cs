@@ -11,5 +11,4 @@ namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persisten
 /// <summary>
 /// Represents the repository abstraction for managing <see cref="StreamEntity"/> instances.
 /// </summary>
-public interface IStreamRepository : IRepositoryBase<StreamEntity>
-{ }
+public interface IStreamRepository : IRepositoryBase<StreamEntity>;

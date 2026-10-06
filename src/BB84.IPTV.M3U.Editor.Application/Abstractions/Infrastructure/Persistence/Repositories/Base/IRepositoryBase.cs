@@ -13,5 +13,4 @@ namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persisten
 /// </summary>
 /// <typeparam name="TEntity">The type of entity managed by the repository.</typeparam>
 public interface IRepositoryBase<TEntity> : IIdentityRepository<TEntity, int>
-		where TEntity : class, IIdentityEntity<int>
-{ }
+		where TEntity : class, IIdentityEntity<int>;

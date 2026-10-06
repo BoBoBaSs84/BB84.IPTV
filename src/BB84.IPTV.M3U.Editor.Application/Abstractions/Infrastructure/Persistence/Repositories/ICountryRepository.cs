@@ -11,5 +11,4 @@ namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persisten
 /// <summary>
 /// Represents the repository abstraction for managing <see cref="CountryEntity"/> instances.
 /// </summary>
-public interface ICountryRepository : IRepositoryBase<CountryEntity>
-{ }
+public interface ICountryRepository : IRepositoryBase<CountryEntity>;

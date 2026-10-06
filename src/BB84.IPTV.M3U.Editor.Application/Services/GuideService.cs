@@ -3,6 +3,7 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 using BB84.EntityFrameworkCore.Repositories.Abstractions;
@@ -39,6 +40,12 @@ internal sealed class GuideService(
 	/// never reached.
 	/// </summary>
 	private const int ChannelChunkSize = 500;
+
+	/// <summary>
+	/// The character that separates the channel from the feed in the identifier a
+	/// <c>channels.xml</c> holds.
+	/// </summary>
+	private const char FeedSeparator = '@';
 
 	public async Task<IReadOnlyList<GuideMappingResponse>> GetMappingsAsync(int playlistId, CancellationToken cancellationToken = default)
 	{
@@ -186,17 +193,46 @@ internal sealed class GuideService(
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
 
-		// The repository joins the catalog channels, see IGuideRepository.
-		(IReadOnlyList<GuideOptionResponse> guides, int total) = await repositoryService.Guides
-			.SearchAsync(
-				request.SearchText.TrimToNull(),
-				request.Site.TrimToNull(),
-				request.Skip,
-				request.PageSize,
+		Expression<Func<GuideEntity, bool>> filter = await BuildGuideFilterAsync(repositoryService, request, cancellationToken)
+			.ConfigureAwait(false);
+
+		// One fixed order with the identity last, so a guide never moves between pages.
+		IReadOnlyList<GuideEntity> page = await repositoryService.Guides
+			.GetListAsync(
+				new Query<GuideEntity>
+				{
+					Where = filter,
+					OrderBy = query => query
+						.OrderBy(guide => guide.Channel)
+						.ThenBy(guide => guide.Site)
+						.ThenBy(guide => guide.SiteId)
+						.ThenBy(guide => guide.Id),
+					Skip = request.Skip,
+					Take = request.PageSize
+				},
 				cancellationToken)
 			.ConfigureAwait(false);
 
-		return new PagedList<GuideOptionResponse>(guides, total, request.PageNumber, request.PageSize);
+		// A first page that is not full holds the whole result, so it needs no counting query.
+		int total = request.Skip is 0 && page.Count < request.PageSize
+			? page.Count
+			: await repositoryService.Guides
+				.CountAsync(new Query<GuideEntity> { Where = filter }, cancellationToken)
+				.ConfigureAwait(false);
+
+		// What the catalog knows about the channels of the page, a guide holds no foreign key to it.
+		List<string> channels = [.. page
+			.Select(guide => guide.Channel)
+			.OfType<string>()
+			.Distinct(StringComparer.OrdinalIgnoreCase)];
+
+		Dictionary<string, ChannelInfo> channelsById = await LoadChannelsAsync(repositoryService, channels, cancellationToken)
+			.ConfigureAwait(false);
+
+		IEnumerable<GuideOptionResponse> options = page
+			.Select(guide => guide.ToOption(Lookup(channelsById, guide.Channel)));
+
+		return new PagedList<GuideOptionResponse>(options, total, request.PageNumber, request.PageSize);
 	}
 
 	public async Task<IPagedList<GuideOptionResponse>> SearchSiteChannelsAsync(GuideSiteSearchRequest request, CancellationToken cancellationToken = default)
@@ -326,6 +362,69 @@ internal sealed class GuideService(
 	/// </summary>
 	private static string? ChannelOrNull(EntryModel entry)
 		=> GetChannelKey(entry).TrimToNull();
+
+	/// <summary>
+	/// Builds what a search across the guides of every site covers.
+	/// </summary>
+	/// <remarks>
+	/// A text of the form <c>channel@feed</c>, as a <c>channels.xml</c> holds it, finds that one
+	/// guide. Any other text is matched on the columns of the guide and on the name of its channel,
+	/// which lives in a table of its own: the channels whose name holds the text are read first, so
+	/// the filter the database runs can name them. The case of ASCII letters is ignored, because
+	/// SQLite only folds those, so both sides are folded the same way.
+	/// </remarks>
+	[SuppressMessage("Globalization", "CA1304", Justification = "Translated to the lower function of SQLite, not run in memory.")]
+	[SuppressMessage("Globalization", "CA1311", Justification = "Translated to the lower function of SQLite, not run in memory.")]
+	[SuppressMessage("Performance", "CA1862", Justification = "A comparison overload of Contains does not translate to SQL.")]
+	private static async Task<Expression<Func<GuideEntity, bool>>> BuildGuideFilterAsync(
+		IRepositoryService repositoryService,
+		GuideSearchRequest request,
+		CancellationToken cancellationToken)
+	{
+		string? site = request.Site.TrimToNull();
+		string? text = request.SearchText.TrimToNull();
+
+		if (text is null)
+			return guide => site == null || guide.Site == site;
+
+		int separator = text.IndexOf(FeedSeparator, StringComparison.Ordinal);
+
+		// The identifier of a channels.xml names the channel and the feed, which are two columns here.
+		if (separator > 0 && separator < text.Length - 1)
+		{
+			string channel = text[..separator];
+			string feed = text[(separator + 1)..];
+
+			return guide => (site == null || guide.Site == site) && guide.Channel == channel && guide.Feed == feed;
+		}
+
+		string folded = ToLowerAscii(text);
+
+		List<string> named = [.. await repositoryService.Channels
+			.GetListAsync(
+				Mappings.ChannelToIdentifier,
+				new Query<ChannelEntity> { Where = channel => channel.Name.ToLower().Contains(folded) },
+				cancellationToken)
+			.ConfigureAwait(false)];
+
+		return guide => (site == null || guide.Site == site)
+			&& ((guide.Channel != null && (guide.Channel.ToLower().Contains(folded) || named.Contains(guide.Channel)))
+				|| guide.Site.ToLower().Contains(folded)
+				|| guide.SiteId.ToLower().Contains(folded)
+				|| guide.SiteName.ToLower().Contains(folded)
+				|| guide.Lang.ToLower().Contains(folded));
+	}
+
+	/// <summary>
+	/// Folds the ASCII letters of the text to lower case and keeps every other character, as the
+	/// <c>lower</c> function of SQLite does.
+	/// </summary>
+	private static string ToLowerAscii(string text)
+		=> string.Create(text.Length, text, static (span, source) =>
+		{
+			for (int index = 0; index < source.Length; index++)
+				span[index] = char.IsAsciiLetterUpper(source[index]) ? char.ToLowerInvariant(source[index]) : source[index];
+		});
 
 	/// <summary>
 	/// Loads what the catalog knows about the given channels, in chunks, so the query stays within
