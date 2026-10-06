@@ -35,18 +35,6 @@ internal sealed class GuideService(
 	IChannelsXmlSerializer channelsXmlSerializer,
 	IProviderService providerService) : IGuideService
 {
-	/// <summary>
-	/// The number of channel identifiers per <c>IN</c> clause, so the parameter limit of SQLite is
-	/// never reached.
-	/// </summary>
-	private const int ChannelChunkSize = 500;
-
-	/// <summary>
-	/// The character that separates the channel from the feed in the identifier a
-	/// <c>channels.xml</c> holds.
-	/// </summary>
-	private const char FeedSeparator = '@';
-
 	public async Task<IReadOnlyList<GuideMappingResponse>> GetMappingsAsync(int playlistId, CancellationToken cancellationToken = default)
 	{
 		IPlaylist? playlist = await playlistService
@@ -226,11 +214,11 @@ internal sealed class GuideService(
 			.OfType<string>()
 			.Distinct(StringComparer.OrdinalIgnoreCase)];
 
-		Dictionary<string, ChannelInfo> channelsById = await LoadChannelsAsync(repositoryService, channels, cancellationToken)
+		Dictionary<string, ChannelInfo> channelsById = await CatalogLookup.LoadChannelsAsync(repositoryService, channels, cancellationToken)
 			.ConfigureAwait(false);
 
 		IEnumerable<GuideOptionResponse> options = page
-			.Select(guide => guide.ToOption(Lookup(channelsById, guide.Channel)));
+			.Select(guide => guide.ToOption(CatalogLookup.Lookup(channelsById, guide.Channel)));
 
 		return new PagedList<GuideOptionResponse>(options, total, request.PageNumber, request.PageSize);
 	}
@@ -276,11 +264,11 @@ internal sealed class GuideService(
 			.OfType<string>()
 			.Distinct(StringComparer.OrdinalIgnoreCase)];
 
-		Dictionary<string, ChannelInfo> channelsById = await LoadChannelsAsync(repositoryService, channels, cancellationToken)
+		Dictionary<string, ChannelInfo> channelsById = await CatalogLookup.LoadChannelsAsync(repositoryService, channels, cancellationToken)
 			.ConfigureAwait(false);
 
 		IEnumerable<GuideOptionResponse> options = page
-			.Select(guide => guide.ToOption(Lookup(channelsById, guide.Channel)));
+			.Select(guide => guide.ToOption(CatalogLookup.Lookup(channelsById, guide.Channel)));
 
 		return new PagedList<GuideOptionResponse>(options, total, request.PageNumber, request.PageSize);
 	}
@@ -387,16 +375,9 @@ internal sealed class GuideService(
 		if (text is null)
 			return guide => site == null || guide.Site == site;
 
-		int separator = text.IndexOf(FeedSeparator, StringComparison.Ordinal);
-
 		// The identifier of a channels.xml names the channel and the feed, which are two columns here.
-		if (separator > 0 && separator < text.Length - 1)
-		{
-			string channel = text[..separator];
-			string feed = text[(separator + 1)..];
-
-			return guide => (site == null || guide.Site == site) && guide.Channel == channel && guide.Feed == feed;
-		}
+		if (text.TryParseChannelFeed(out string channelId, out string feedId))
+			return guide => (site == null || guide.Site == site) && guide.Channel == channelId && guide.Feed == feedId;
 
 		string folded = ToLowerAscii(text);
 
@@ -425,33 +406,6 @@ internal sealed class GuideService(
 			for (int index = 0; index < source.Length; index++)
 				span[index] = char.IsAsciiLetterUpper(source[index]) ? char.ToLowerInvariant(source[index]) : source[index];
 		});
-
-	/// <summary>
-	/// Loads what the catalog knows about the given channels, in chunks, so the query stays within
-	/// the parameter limit of SQLite.
-	/// </summary>
-	private static async Task<Dictionary<string, ChannelInfo>> LoadChannelsAsync(IRepositoryService repositoryService, IReadOnlyList<string> channels, CancellationToken cancellationToken)
-	{
-		Dictionary<string, ChannelInfo> channelsById = new(StringComparer.OrdinalIgnoreCase);
-
-		foreach (string[] chunk in channels.Chunk(ChannelChunkSize))
-		{
-			IReadOnlyList<ChannelInfo> loaded = await repositoryService.Channels
-				.GetListAsync(
-					Mappings.ChannelToInfo,
-					new Query<ChannelEntity> { Where = channel => chunk.Contains(channel.Channel) },
-					cancellationToken)
-				.ConfigureAwait(false);
-
-			foreach (ChannelInfo info in loaded)
-				channelsById[info.Channel] = info;
-		}
-
-		return channelsById;
-	}
-
-	private static ChannelInfo? Lookup(Dictionary<string, ChannelInfo> channelsById, string? channel)
-		=> channel is not null && channelsById.TryGetValue(channel, out ChannelInfo? info) ? info : null;
 
 	private static IRepositoryService GetRepositoryService(IServiceScope scope)
 		=> scope.ServiceProvider.GetRequiredService<IRepositoryService>();

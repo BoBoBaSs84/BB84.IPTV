@@ -46,17 +46,6 @@ internal sealed class LogoService(
 	IEventService eventService,
 	ILogger<LogoService> logger) : ILogoService
 {
-	/// <summary>
-	/// The number of channel identifiers per <c>IN</c> clause, so the parameter limit of SQLite is
-	/// never reached.
-	/// </summary>
-	private const int ChannelChunkSize = 500;
-
-	/// <summary>
-	/// The character that separates the channel from the feed in the <c>tvg-id</c> of an entry.
-	/// </summary>
-	private const char FeedSeparator = '@';
-
 	public async Task<LogoCacheStatusResponse> GetStatusAsync(CancellationToken cancellationToken = default)
 	{
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
@@ -161,12 +150,12 @@ internal sealed class LogoService(
 			.Select(logo => logo.Channel)
 			.Distinct(StringComparer.OrdinalIgnoreCase)];
 
-		Dictionary<string, ChannelInfo> channelsById = await LoadChannelsAsync(repositoryService, channels, cancellationToken)
+		Dictionary<string, ChannelInfo> channelsById = await CatalogLookup.LoadChannelsAsync(repositoryService, channels, cancellationToken)
 			.ConfigureAwait(false);
 
 		// The row says that the logo was downloaded, the store says whether the file is still there.
 		IEnumerable<LogoOptionResponse> options = page
-			.Select(logo => logo.ToOption(Lookup(channelsById, logo.Channel), logoStoreService.Exists(logo.LocalPath)));
+			.Select(logo => logo.ToOption(CatalogLookup.Lookup(channelsById, logo.Channel), logoStoreService.Exists(logo.LocalPath)));
 
 		return new PagedList<LogoOptionResponse>(options, total, request.PageNumber, request.PageSize);
 	}
@@ -266,7 +255,7 @@ internal sealed class LogoService(
 		CancellationToken cancellationToken)
 	{
 		string? text = request.SearchText.TrimToNull();
-		string? channel = request.Channel.TrimToNull() ?? ChannelOfTvgId(text);
+		string? channel = request.Channel.TrimToNull() ?? (text.TryParseChannelFeed(out string tvgChannel, out _) ? tvgChannel : null);
 
 		// The text named the channel, so it is not matched as a text as well.
 		if (channel is not null)
@@ -304,50 +293,6 @@ internal sealed class LogoService(
 				new Query<ChannelEntity> { Where = channel => channel.Name.Contains(text) },
 				cancellationToken)
 			.ConfigureAwait(false);
-
-	/// <summary>
-	/// Loads what the catalog knows about the given channels, in chunks, so the query stays within
-	/// the parameter limit of SQLite.
-	/// </summary>
-	private static async Task<Dictionary<string, ChannelInfo>> LoadChannelsAsync(
-		IRepositoryService repositoryService,
-		IReadOnlyList<string> channels,
-		CancellationToken cancellationToken)
-	{
-		Dictionary<string, ChannelInfo> channelsById = new(StringComparer.OrdinalIgnoreCase);
-
-		foreach (string[] chunk in channels.Chunk(ChannelChunkSize))
-		{
-			IReadOnlyList<ChannelInfo> loaded = await repositoryService.Channels
-				.GetListAsync(
-					Mappings.ChannelToInfo,
-					new Query<ChannelEntity> { Where = channel => chunk.Contains(channel.Channel) },
-					cancellationToken)
-				.ConfigureAwait(false);
-
-			foreach (ChannelInfo info in loaded)
-				channelsById[info.Channel] = info;
-		}
-
-		return channelsById;
-	}
-
-	private static ChannelInfo? Lookup(Dictionary<string, ChannelInfo> channelsById, string channel)
-		=> channelsById.TryGetValue(channel, out ChannelInfo? info) ? info : null;
-
-	/// <summary>
-	/// Reads the channel out of a text that is the <c>tvg-id</c> of an entry, which names the channel
-	/// and, after the separator, the feed.
-	/// </summary>
-	private static string? ChannelOfTvgId(string? text)
-	{
-		if (text is null)
-			return null;
-
-		int separator = text.IndexOf(FeedSeparator, StringComparison.Ordinal);
-
-		return separator > 0 && separator < text.Length - 1 ? text[..separator] : null;
-	}
 
 	/// <summary>
 	/// Reads which logos are to be downloaded.

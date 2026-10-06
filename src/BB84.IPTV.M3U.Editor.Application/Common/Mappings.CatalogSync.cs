@@ -5,6 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
+using BB84.IPTV.M3U.Editor.Domain.Enumerators;
 
 namespace BB84.IPTV.M3U.Editor.Application.Common;
 
@@ -24,5 +25,15 @@ internal static partial class Mappings
 		Added = entity.Added,
 		Updated = entity.Updated,
 		Removed = entity.Removed
+	};
+
+	/// <summary>
+	/// Converts a list that was never read to its response, which holds nothing but the kind.
+	/// </summary>
+	/// <param name="kind">The list of the catalog.</param>
+	/// <returns>The converted response.</returns>
+	internal static CatalogStatusResponse ToEmptyStatus(this CatalogKind kind) => new()
+	{
+		Kind = kind
 	};
 }

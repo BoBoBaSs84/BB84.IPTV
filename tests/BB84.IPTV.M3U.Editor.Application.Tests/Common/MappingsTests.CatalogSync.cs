@@ -119,4 +119,19 @@ public sealed partial class MappingsTests
 		Assert.AreEqual(3, response.Removed);
 		Assert.IsTrue(response.IsImported);
 	}
+
+	[TestMethod]
+	public void AListThatWasNeverReadShouldOnlyNameItsKind()
+	{
+		CatalogStatusResponse response = CatalogKind.Logo.ToEmptyStatus();
+
+		Assert.AreEqual(CatalogKind.Logo, response.Kind);
+		Assert.IsNull(response.FirstImported);
+		Assert.IsNull(response.LastChecked);
+		Assert.IsNull(response.LastChanged);
+		Assert.AreEqual(0, response.Added);
+		Assert.AreEqual(0, response.Updated);
+		Assert.AreEqual(0, response.Removed);
+		Assert.IsFalse(response.IsImported);
+	}
 }
