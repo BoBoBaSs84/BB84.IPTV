@@ -37,6 +37,11 @@ internal sealed class DownloadService(IHttpClientFactory httpClientFactory, ILog
 			using HttpClient client = httpClientFactory.CreateClient(Constants.DownloadClientName);
 			using HttpRequestMessage request = new(HttpMethod.Get, uri);
 
+			// A CDN with hotlink protection (Fandom, behind Cloudflare) answers 403 to a request that
+			// carries no Referer. The origin of the logo itself satisfies it, like an image embedded
+			// in a page of the same site.
+			request.Headers.Referrer = new Uri(uri.GetLeftPart(UriPartial.Authority) + "/");
+
 			if (!string.IsNullOrWhiteSpace(eTag) && EntityTagHeaderValue.TryParse(eTag, out EntityTagHeaderValue? tag))
 				request.Headers.IfNoneMatch.Add(tag);
 

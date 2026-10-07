@@ -78,6 +78,21 @@ public sealed class DownloadServiceTests
 		Assert.AreEqual("image/png", response.ContentType);
 	}
 
+	[TestMethod]
+	public async Task DownloadAsyncShouldSendTheOriginOfTheLogoAsReferer()
+	{
+		Uri? referrer = null;
+		DownloadService sut = CreateSut(handler => handler
+			.Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+			.Callback<HttpRequestMessage, CancellationToken>((request, _) => referrer = request.Headers.Referrer)
+			.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent([1]) }));
+
+		_ = await sut.DownloadAsync("https://static.example/path/a%21.png", cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+
+		// A host with hotlink protection answers a request without a Referer with 403 Forbidden.
+		Assert.AreEqual(new Uri("https://static.example/"), referrer);
+	}
+
 	private DownloadService CreateSut(HttpResponseMessage response)
 		=> CreateSut(handler => handler
 			.Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
