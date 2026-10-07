@@ -6,7 +6,6 @@
 using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
@@ -122,7 +121,7 @@ public sealed class CatalogSyncPersistenceTests
 	{
 		_ = await SynchronizeAsync().ConfigureAwait(false);
 
-		// A failed request looks exactly like this, so the rows have to survive it.
+		// A failed response looks exactly like this, so the rows have to survive it.
 		_webService.Channels.Clear();
 
 		CatalogSyncResponse response = await SynchronizeAsync().ConfigureAwait(false);
@@ -261,77 +260,77 @@ public sealed class CatalogSyncPersistenceTests
 	/// </summary>
 	private sealed class FakeWebService : IWebService
 	{
-		public List<CategoryRequest> Categories { get; } =
-			[new CategoryRequest("news", "News", "What happens.")];
+		public List<CategoryResponse> Categories { get; } =
+			[new CategoryResponse("news", "News", "What happens.")];
 
-		public List<CountryRequest> Countries { get; } =
-			[new CountryRequest("Germany", "DE", ["deu"], "flag")];
+		public List<CountryResponse> Countries { get; } =
+			[new CountryResponse("Germany", "DE", ["deu"], "flag")];
 
-		public List<LanguageRequest> Languages { get; } =
-			[new LanguageRequest("German", "deu")];
+		public List<LanguageResponse> Languages { get; } =
+			[new LanguageResponse("German", "deu")];
 
-		public List<ChannelRequest> Channels { get; } =
+		public List<ChannelResponse> Channels { get; } =
 		[
-			new ChannelRequest("DasErste.de", "Das Erste", [], null, [], "DE", ["news"], false, null, null, null, null),
-			new ChannelRequest("ZDF.de", "ZDF", [], null, [], "DE", [], false, null, null, null, null)
+			new ChannelResponse("DasErste.de", "Das Erste", [], null, [], "DE", ["news"], false, null, null, null, null),
+			new ChannelResponse("ZDF.de", "ZDF", [], null, [], "DE", [], false, null, null, null, null)
 		];
 
-		public List<FeedRequest> Feeds { get; } =
-			[new FeedRequest("DasErste.de", "SD", "Standard", [], true, ["DE"], ["Europe/Berlin"], ["deu"], "576i")];
+		public List<FeedResponse> Feeds { get; } =
+			[new FeedResponse("DasErste.de", "SD", "Standard", [], true, ["DE"], ["Europe/Berlin"], ["deu"], "576i")];
 
-		public List<GuideRequest> Guides { get; } =
+		public List<GuideResponse> Guides { get; } =
 		[
-			new GuideRequest("DasErste.de", null, "hoerzu.de", "ard", "ARD", "de"),
-			new GuideRequest("ZDF.de", null, "hoerzu.de", "zdf", "ZDF", "de")
+			new GuideResponse("DasErste.de", null, "hoerzu.de", "ard", "ARD", "de"),
+			new GuideResponse("ZDF.de", null, "hoerzu.de", "zdf", "ZDF", "de")
 		];
 
-		public List<LogoRequest> Logos { get; } =
+		public List<LogoResponse> Logos { get; } =
 		[
-			new LogoRequest("DasErste.de", null, [], 256, 256, "png", "https://example.com/ard.png"),
-			new LogoRequest("ZDF.de", null, [], 256, 256, "png", "https://example.com/zdf.png")
+			new LogoResponse("DasErste.de", null, [], 256, 256, "png", "https://example.com/ard.png"),
+			new LogoResponse("ZDF.de", null, [], 256, 256, "png", "https://example.com/zdf.png")
 		];
 
-		public List<StreamRequest> Streams { get; } =
-			[new StreamRequest("DasErste.de", null, "Das Erste", "https://example.com/ard.m3u8", null, null, "1080p")];
+		public List<StreamResponse> Streams { get; } =
+			[new StreamResponse("DasErste.de", null, "Das Erste", "https://example.com/ard.m3u8", null, null, "1080p")];
 
-		public Task<IEnumerable<CategoryRequest>> GetCategoriesAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<CategoryRequest>>([.. Categories]);
+		public Task<IEnumerable<CategoryResponse>> GetCategoriesAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<CategoryResponse>>([.. Categories]);
 
-		public Task<IEnumerable<CountryRequest>> GetCountriesAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<CountryRequest>>([.. Countries]);
+		public Task<IEnumerable<CountryResponse>> GetCountriesAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<CountryResponse>>([.. Countries]);
 
-		public Task<IEnumerable<LanguageRequest>> GetLanguagesAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<LanguageRequest>>([.. Languages]);
+		public Task<IEnumerable<LanguageResponse>> GetLanguagesAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<LanguageResponse>>([.. Languages]);
 
-		public Task<IEnumerable<ChannelRequest>> GetChannelsAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<ChannelRequest>>([.. Channels]);
+		public Task<IEnumerable<ChannelResponse>> GetChannelsAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<ChannelResponse>>([.. Channels]);
 
-		public Task<IEnumerable<FeedRequest>> GetFeedsAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<FeedRequest>>([.. Feeds]);
+		public Task<IEnumerable<FeedResponse>> GetFeedsAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<FeedResponse>>([.. Feeds]);
 
-		public Task<IEnumerable<GuideRequest>> GetGuidesAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<GuideRequest>>([.. Guides]);
+		public Task<IEnumerable<GuideResponse>> GetGuidesAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<GuideResponse>>([.. Guides]);
 
-		public Task<IEnumerable<LogoRequest>> GetLogosAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<LogoRequest>>([.. Logos]);
+		public Task<IEnumerable<LogoResponse>> GetLogosAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<LogoResponse>>([.. Logos]);
 
-		public Task<IEnumerable<StreamRequest>> GetStreamsAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<StreamRequest>>([.. Streams]);
+		public Task<IEnumerable<StreamResponse>> GetStreamsAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<StreamResponse>>([.. Streams]);
 
-		public Task<IEnumerable<BlocklistRequest>> GetBlocklistsAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<BlocklistRequest>>([]);
+		public Task<IEnumerable<BlocklistResponse>> GetBlocklistsAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<BlocklistResponse>>([]);
 
-		public Task<IEnumerable<CityRequest>> GetCitiesAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<CityRequest>>([]);
+		public Task<IEnumerable<CityResponse>> GetCitiesAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<CityResponse>>([]);
 
-		public Task<IEnumerable<RegionRequest>> GetRegionsAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<RegionRequest>>([]);
+		public Task<IEnumerable<RegionResponse>> GetRegionsAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<RegionResponse>>([]);
 
-		public Task<IEnumerable<SubdivisionRequest>> GetSubdivisionsAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<SubdivisionRequest>>([]);
+		public Task<IEnumerable<SubdivisionResponse>> GetSubdivisionsAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<SubdivisionResponse>>([]);
 
-		public Task<IEnumerable<TimezoneRequest>> GetTimezonesAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<TimezoneRequest>>([]);
+		public Task<IEnumerable<TimezoneResponse>> GetTimezonesAsync(CancellationToken cancellationToken = default)
+			=> Task.FromResult<IEnumerable<TimezoneResponse>>([]);
 	}
 
 	/// <summary>

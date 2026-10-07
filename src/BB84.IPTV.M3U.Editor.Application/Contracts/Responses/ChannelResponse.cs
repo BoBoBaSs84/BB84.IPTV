@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a TV channel with various attributes.
@@ -22,7 +22,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Closed">Date on which the channel closed (YYYY-MM-DD)</param>
 /// <param name="ReplacedBy">The ID of the channel that this channel was replaced by</param>
 /// <param name="Website">Official website URL</param>
-public record ChannelRequest(
+public record ChannelResponse(
 	[property: JsonPropertyName("id")] string Id,
 	[property: JsonPropertyName("name")] string Name,
 	[property: JsonPropertyName("alt_names")] IReadOnlyList<string> AltNames,

@@ -4,7 +4,6 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
@@ -13,12 +12,12 @@ namespace BB84.IPTV.M3U.Editor.Application.Tests.Common;
 public sealed partial class MappingsTests
 {
 	[TestMethod]
-	public void ChannelRequestToEntityShouldMapAllValues()
+	public void ChannelResponseToEntityShouldMapAllValues()
 	{
 		DateTime launched = new(1952, 12, 25, 0, 0, 0, DateTimeKind.Utc);
-		ChannelRequest request = new("DasErste.de", "Das Erste", ["ARD"], "ARD", ["ARD", "WDR"], "DE", ["general", "news"], false, launched, null, null, "https://daserste.de");
+		ChannelResponse response = new("DasErste.de", "Das Erste", ["ARD"], "ARD", ["ARD", "WDR"], "DE", ["general", "news"], false, launched, null, null, "https://daserste.de");
 
-		ChannelEntity entity = request.ToEntity();
+		ChannelEntity entity = response.ToEntity();
 
 		Assert.AreEqual("DasErste.de", entity.Channel);
 		Assert.AreEqual("Das Erste", entity.Name);

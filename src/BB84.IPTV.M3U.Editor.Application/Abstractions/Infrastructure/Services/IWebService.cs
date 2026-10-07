@@ -3,7 +3,7 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 
@@ -17,115 +17,115 @@ public interface IWebService
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of blocklist requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of blocklist responses.
 	/// </returns>
-	Task<IEnumerable<BlocklistRequest>> GetBlocklistsAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<BlocklistResponse>> GetBlocklistsAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the categories from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of category requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of category responses.
 	/// </returns>
-	Task<IEnumerable<CategoryRequest>> GetCategoriesAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<CategoryResponse>> GetCategoriesAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the channels from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of channel requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of channel responses.
 	/// </returns>
-	Task<IEnumerable<ChannelRequest>> GetChannelsAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<ChannelResponse>> GetChannelsAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the cities from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of city requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of city responses.
 	/// </returns>
-	Task<IEnumerable<CityRequest>> GetCitiesAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<CityResponse>> GetCitiesAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the countries from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of country requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of country responses.
 	/// </returns>
-	Task<IEnumerable<CountryRequest>> GetCountriesAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<CountryResponse>> GetCountriesAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the feeds from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of feed requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of feed responses.
 	/// </returns>
-	Task<IEnumerable<FeedRequest>> GetFeedsAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<FeedResponse>> GetFeedsAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the guides from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of guide requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of guide responses.
 	/// </returns>
-	Task<IEnumerable<GuideRequest>> GetGuidesAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<GuideResponse>> GetGuidesAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the languages from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of language requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of language responses.
 	/// </returns>
-	Task<IEnumerable<LanguageRequest>> GetLanguagesAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<LanguageResponse>> GetLanguagesAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the logos from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of logo requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of logo responses.
 	/// </returns>
-	Task<IEnumerable<LogoRequest>> GetLogosAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<LogoResponse>> GetLogosAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the regions from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of region requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of region responses.
 	/// </returns>
-	Task<IEnumerable<RegionRequest>> GetRegionsAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<RegionResponse>> GetRegionsAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the streams from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of stream requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of stream responses.
 	/// </returns>
-	Task<IEnumerable<StreamRequest>> GetStreamsAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<StreamResponse>> GetStreamsAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the sub-divions from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of sub-division requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of sub-division responses.
 	/// </returns>
-	Task<IEnumerable<SubdivisionRequest>> GetSubdivisionsAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<SubdivisionResponse>> GetSubdivisionsAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the timezones from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
 	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of timezone requests.
+	/// A task that represents the asynchronous operation. The task result contains a collection of timezone responses.
 	/// </returns>
-	Task<IEnumerable<TimezoneRequest>> GetTimezonesAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<TimezoneResponse>> GetTimezonesAsync(CancellationToken cancellationToken = default);
 }

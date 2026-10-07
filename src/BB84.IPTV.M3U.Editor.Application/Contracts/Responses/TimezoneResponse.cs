@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a timezone.
@@ -13,7 +13,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Id">Timezone ID from tz database</param>
 /// <param name="UtcOffset">UTC offset for this time zone</param>
 /// <param name="Countries">List of countries included in this time zone</param>
-public record TimezoneRequest(
+public record TimezoneResponse(
 	[property: JsonPropertyName("id")] string Id,
 	[property: JsonPropertyName("utc_offset")] string UtcOffset,
 	[property: JsonPropertyName("countries")] IReadOnlyList<string> Countries

@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a country with its name, code, languages, and flag.
@@ -14,7 +14,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Code">ISO 3166-1 alpha-2 code of the country</param>
 /// <param name="Languages">List of official languages of the country (ISO 639-3 code)</param>
 /// <param name="Flag">Country flag emoji</param>
-public record CountryRequest(
+public record CountryResponse(
 	[property: JsonPropertyName("name")] string Name,
 	[property: JsonPropertyName("code")] string Code,
 	[property: JsonPropertyName("languages")] IReadOnlyList<string> Languages,

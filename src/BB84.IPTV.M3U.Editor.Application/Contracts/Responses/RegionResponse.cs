@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a geographical region.
@@ -13,7 +13,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Code">Code of the region</param>
 /// <param name="Name">Full name of the region</param>
 /// <param name="Countries">List of countries in the region</param>
-public record RegionRequest(
+public record RegionResponse(
 	[property: JsonPropertyName("code")] string Code,
 	[property: JsonPropertyName("name")] string Name,
 	[property: JsonPropertyName("countries")] IReadOnlyList<string> Countries

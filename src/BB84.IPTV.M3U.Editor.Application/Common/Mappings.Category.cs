@@ -5,7 +5,6 @@
 // LICENSE file in the root directory of this source tree.
 using System.Linq.Expressions;
 
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
@@ -20,24 +19,24 @@ internal static partial class Mappings
 		= category => new CatalogFilterValue(category.Category, category.Name);
 
 	/// <summary>
-	/// Converts a <see cref="CategoryRequest"/> to a <see cref="CategoryEntity"/>.
+	/// Converts a <see cref="CategoryResponse"/> to a <see cref="CategoryEntity"/>.
 	/// </summary>
-	/// <param name="request">The request to convert.</param>
+	/// <param name="response">The response to convert.</param>
 	/// <returns>The converted entity.</returns>
-	internal static CategoryEntity ToEntity(this CategoryRequest request) => new()
+	internal static CategoryEntity ToEntity(this CategoryResponse response) => new()
 	{
-		Category = request.Id,
-		Name = request.Name,
-		Description = request.Description
+		Category = response.Id,
+		Name = response.Name,
+		Description = response.Description
 	};
 
 	/// <summary>
 	/// Gets the key that identifies the category of the import.
 	/// </summary>
-	/// <param name="request">The imported category.</param>
+	/// <param name="response">The imported category.</param>
 	/// <returns>The key of the category.</returns>
-	internal static string GetKey(this CategoryRequest request)
-		=> CatalogKey.Of(request.Id);
+	internal static string GetKey(this CategoryResponse response)
+		=> CatalogKey.Of(response.Id);
 
 	/// <summary>
 	/// Gets the key that identifies the stored category.
@@ -51,21 +50,21 @@ internal static partial class Mappings
 	/// Takes what the import holds into the stored category.
 	/// </summary>
 	/// <param name="entity">The stored category.</param>
-	/// <param name="request">The imported category.</param>
+	/// <param name="response">The imported category.</param>
 	/// <returns><see langword="true"/> if the category changed.</returns>
-	internal static bool Apply(this CategoryEntity entity, CategoryRequest request)
+	internal static bool Apply(this CategoryEntity entity, CategoryResponse response)
 	{
 		bool changed = false;
 
-		if (Differs(entity.Name, request.Name))
+		if (Differs(entity.Name, response.Name))
 		{
-			entity.Name = request.Name;
+			entity.Name = response.Name;
 			changed = true;
 		}
 
-		if (Differs(entity.Description, request.Description))
+		if (Differs(entity.Description, response.Description))
 		{
-			entity.Description = request.Description;
+			entity.Description = response.Description;
 			changed = true;
 		}
 

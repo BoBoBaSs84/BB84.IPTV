@@ -5,14 +5,14 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a language with its name and code.
 /// </summary>
 /// <param name="Name">Language name</param>
 /// <param name="Code">ISO 639-3 code of the language</param>
-public record LanguageRequest(
+public record LanguageResponse(
 	[property: JsonPropertyName("name")] string Name,
 	[property: JsonPropertyName("code")] string Code
 	);

@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a blocklist entry.
@@ -13,7 +13,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Channel">Channel ID</param>
 /// <param name="Reason">Reason for blocking (dmca or nsfw)</param>
 /// <param name="Ref">Link to removal request or DMCA takedown notice</param>
-public record BlocklistRequest(
+public record BlocklistResponse(
 	[property: JsonPropertyName("channel")] string Channel,
 	[property: JsonPropertyName("reason")] string Reason,
 	[property: JsonPropertyName("ref")] string Ref

@@ -3,7 +3,6 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
@@ -29,7 +28,7 @@ public sealed partial class DatabaseServiceTests
 		Assert.IsFalse(response.HasChanges);
 		Assert.IsTrue(response.Kinds.All(kind => kind.Outcome is CatalogSyncOutcome.Skipped));
 
-		// An empty list is a failed request as well, so the user is told and nothing is deleted.
+		// An empty list is a failed response as well, so the user is told and nothing is deleted.
 		_eventServiceMock.Verify(x => x.Publish(It.IsAny<WarningOccuredEvent>()), Times.Exactly(8));
 	}
 
@@ -49,7 +48,7 @@ public sealed partial class DatabaseServiceTests
 	public async Task SynchronizeAsyncShouldStopWhenItIsCancelled()
 	{
 		_webServiceMock.Setup(x => x.GetCategoriesAsync(It.IsAny<CancellationToken>()))
-			.ReturnsAsync([new CategoryRequest("news", "News", "What happens.")]);
+			.ReturnsAsync([new CategoryResponse("news", "News", "What happens.")]);
 
 		using CancellationTokenSource tokenSource = new();
 		await tokenSource.CancelAsync().ConfigureAwait(false);

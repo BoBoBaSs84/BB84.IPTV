@@ -3,7 +3,7 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
 namespace BB84.IPTV.M3U.Editor.Application.Common;
@@ -11,30 +11,30 @@ namespace BB84.IPTV.M3U.Editor.Application.Common;
 internal static partial class Mappings
 {
 	/// <summary>
-	/// Converts a <see cref="FeedRequest"/> to a <see cref="FeedEntity"/>.
+	/// Converts a <see cref="FeedResponse"/> to a <see cref="FeedEntity"/>.
 	/// </summary>
-	/// <param name="request">The request to convert.</param>
+	/// <param name="response">The response to convert.</param>
 	/// <returns>The converted entity.</returns>
-	internal static FeedEntity ToEntity(this FeedRequest request) => new()
+	internal static FeedEntity ToEntity(this FeedResponse response) => new()
 	{
-		Channel = request.Channel,
-		Feed = request.Id,
-		Name = request.Name,
-		AltNames = [.. request.AltNames],
-		IsMain = request.IsMain,
-		BroadcastArea = [.. request.BroadcastArea],
-		Timezones = [.. request.Timezones],
-		Languages = [.. request.Languages],
-		Format = request.Format
+		Channel = response.Channel,
+		Feed = response.Id,
+		Name = response.Name,
+		AltNames = [.. response.AltNames],
+		IsMain = response.IsMain,
+		BroadcastArea = [.. response.BroadcastArea],
+		Timezones = [.. response.Timezones],
+		Languages = [.. response.Languages],
+		Format = response.Format
 	};
 
 	/// <summary>
 	/// Gets the key that identifies the feed of the import.
 	/// </summary>
-	/// <param name="request">The imported feed.</param>
+	/// <param name="response">The imported feed.</param>
 	/// <returns>The key of the feed.</returns>
-	internal static string GetKey(this FeedRequest request)
-		=> CatalogKey.Of(request.Channel, request.Id);
+	internal static string GetKey(this FeedResponse response)
+		=> CatalogKey.Of(response.Channel, response.Id);
 
 	/// <summary>
 	/// Gets the key that identifies the stored feed.
@@ -48,51 +48,51 @@ internal static partial class Mappings
 	/// Takes what the import holds into the stored feed.
 	/// </summary>
 	/// <param name="entity">The stored feed.</param>
-	/// <param name="request">The imported feed.</param>
+	/// <param name="response">The imported feed.</param>
 	/// <returns><see langword="true"/> if the feed changed.</returns>
-	internal static bool Apply(this FeedEntity entity, FeedRequest request)
+	internal static bool Apply(this FeedEntity entity, FeedResponse response)
 	{
 		bool changed = false;
 
-		if (Differs(entity.Name, request.Name))
+		if (Differs(entity.Name, response.Name))
 		{
-			entity.Name = request.Name;
+			entity.Name = response.Name;
 			changed = true;
 		}
 
-		if (entity.IsMain != request.IsMain)
+		if (entity.IsMain != response.IsMain)
 		{
-			entity.IsMain = request.IsMain;
+			entity.IsMain = response.IsMain;
 			changed = true;
 		}
 
-		if (Differs(entity.Format, request.Format))
+		if (Differs(entity.Format, response.Format))
 		{
-			entity.Format = request.Format;
+			entity.Format = response.Format;
 			changed = true;
 		}
 
-		if (Differs(entity.AltNames, request.AltNames))
+		if (Differs(entity.AltNames, response.AltNames))
 		{
-			entity.AltNames = [.. request.AltNames];
+			entity.AltNames = [.. response.AltNames];
 			changed = true;
 		}
 
-		if (Differs(entity.BroadcastArea, request.BroadcastArea))
+		if (Differs(entity.BroadcastArea, response.BroadcastArea))
 		{
-			entity.BroadcastArea = [.. request.BroadcastArea];
+			entity.BroadcastArea = [.. response.BroadcastArea];
 			changed = true;
 		}
 
-		if (Differs(entity.Timezones, request.Timezones))
+		if (Differs(entity.Timezones, response.Timezones))
 		{
-			entity.Timezones = [.. request.Timezones];
+			entity.Timezones = [.. response.Timezones];
 			changed = true;
 		}
 
-		if (Differs(entity.Languages, request.Languages))
+		if (Differs(entity.Languages, response.Languages))
 		{
-			entity.Languages = [.. request.Languages];
+			entity.Languages = [.. response.Languages];
 			changed = true;
 		}
 

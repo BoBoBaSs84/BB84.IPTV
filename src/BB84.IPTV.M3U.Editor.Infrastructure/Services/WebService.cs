@@ -8,7 +8,7 @@ using System.Net.Http.Json;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Properties;
 using BB84.IPTV.M3U.Editor.Infrastructure.Common;
@@ -25,11 +25,11 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 /// <param name="eventService">The event service to publish events.</param>
 internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<WebService> logger, IEventService eventService) : IWebService
 {
-	public async Task<IEnumerable<BlocklistRequest>> GetBlocklistsAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<BlocklistResponse>> GetBlocklistsAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<BlocklistRequest>(Constants.BlocklistJsonPath, cancellationToken)
+			return await GetFromApiAsync<BlocklistResponse>(Constants.BlocklistJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -39,11 +39,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<CategoryRequest>> GetCategoriesAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<CategoryResponse>> GetCategoriesAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<CategoryRequest>(Constants.CategoriesJsonPath, cancellationToken)
+			return await GetFromApiAsync<CategoryResponse>(Constants.CategoriesJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -53,11 +53,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<ChannelRequest>> GetChannelsAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<ChannelResponse>> GetChannelsAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<ChannelRequest>(Constants.ChannelsJsonPath, cancellationToken)
+			return await GetFromApiAsync<ChannelResponse>(Constants.ChannelsJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -67,11 +67,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<CityRequest>> GetCitiesAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<CityResponse>> GetCitiesAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<CityRequest>(Constants.CitiesJsonPath, cancellationToken)
+			return await GetFromApiAsync<CityResponse>(Constants.CitiesJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -81,11 +81,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<CountryRequest>> GetCountriesAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<CountryResponse>> GetCountriesAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<CountryRequest>(Constants.CountriesJsonPath, cancellationToken)
+			return await GetFromApiAsync<CountryResponse>(Constants.CountriesJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -95,11 +95,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<FeedRequest>> GetFeedsAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<FeedResponse>> GetFeedsAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<FeedRequest>(Constants.FeedsJsonPath, cancellationToken)
+			return await GetFromApiAsync<FeedResponse>(Constants.FeedsJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -109,11 +109,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<GuideRequest>> GetGuidesAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<GuideResponse>> GetGuidesAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<GuideRequest>(Constants.GuidesJsonPath, cancellationToken)
+			return await GetFromApiAsync<GuideResponse>(Constants.GuidesJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -123,11 +123,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<LanguageRequest>> GetLanguagesAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<LanguageResponse>> GetLanguagesAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<LanguageRequest>(Constants.LanguagesJsonPath, cancellationToken)
+			return await GetFromApiAsync<LanguageResponse>(Constants.LanguagesJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -137,11 +137,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<LogoRequest>> GetLogosAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<LogoResponse>> GetLogosAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<LogoRequest>(Constants.LogosJsonPath, cancellationToken)
+			return await GetFromApiAsync<LogoResponse>(Constants.LogosJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -151,11 +151,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<RegionRequest>> GetRegionsAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<RegionResponse>> GetRegionsAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<RegionRequest>(Constants.RegionsJsonPath, cancellationToken)
+			return await GetFromApiAsync<RegionResponse>(Constants.RegionsJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -165,11 +165,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<StreamRequest>> GetStreamsAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<StreamResponse>> GetStreamsAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<StreamRequest>(Constants.StreamsJsonPath, cancellationToken)
+			return await GetFromApiAsync<StreamResponse>(Constants.StreamsJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -179,11 +179,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<SubdivisionRequest>> GetSubdivisionsAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<SubdivisionResponse>> GetSubdivisionsAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<SubdivisionRequest>(Constants.SubdivisionsJsonPath, cancellationToken)
+			return await GetFromApiAsync<SubdivisionResponse>(Constants.SubdivisionsJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
@@ -193,11 +193,11 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 		}
 	}
 
-	public async Task<IEnumerable<TimezoneRequest>> GetTimezonesAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<TimezoneResponse>> GetTimezonesAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return await GetFromApiAsync<TimezoneRequest>(Constants.TimezonesJsonPath, cancellationToken)
+			return await GetFromApiAsync<TimezoneResponse>(Constants.TimezonesJsonPath, cancellationToken)
 				.ConfigureAwait(false);
 		}
 		catch (Exception ex)
