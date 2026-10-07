@@ -8,7 +8,6 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persistence.Repositories.Base;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
@@ -118,68 +117,68 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 		{
 			List<CatalogKindResponse> kinds = [];
 
-			kinds.Add(await SynchronizeKindAsync<CategoryRequest, CategoryEntity>(
+			kinds.Add(await SynchronizeKindAsync<CategoryResponse, CategoryEntity>(
 				CatalogKind.Category, kinds.Count,
 				(web, token) => web.GetCategoriesAsync(token),
 				repository => repository.Categories,
-				request => request.GetKey(), entity => entity.GetKey(),
-				request => request.ToEntity(), (entity, request) => entity.Apply(request),
+				response => response.GetKey(), entity => entity.GetKey(),
+				response => response.ToEntity(), (entity, response) => entity.Apply(response),
 				null, cancellationToken).ConfigureAwait(false));
 
-			kinds.Add(await SynchronizeKindAsync<CountryRequest, CountryEntity>(
+			kinds.Add(await SynchronizeKindAsync<CountryResponse, CountryEntity>(
 				CatalogKind.Country, kinds.Count,
 				(web, token) => web.GetCountriesAsync(token),
 				repository => repository.Countries,
-				request => request.GetKey(), entity => entity.GetKey(),
-				request => request.ToEntity(), (entity, request) => entity.Apply(request),
+				response => response.GetKey(), entity => entity.GetKey(),
+				response => response.ToEntity(), (entity, response) => entity.Apply(response),
 				null, cancellationToken).ConfigureAwait(false));
 
-			kinds.Add(await SynchronizeKindAsync<LanguageRequest, LanguageEntity>(
+			kinds.Add(await SynchronizeKindAsync<LanguageResponse, LanguageEntity>(
 				CatalogKind.Language, kinds.Count,
 				(web, token) => web.GetLanguagesAsync(token),
 				repository => repository.Languages,
-				request => request.GetKey(), entity => entity.GetKey(),
-				request => request.ToEntity(), (entity, request) => entity.Apply(request),
+				response => response.GetKey(), entity => entity.GetKey(),
+				response => response.ToEntity(), (entity, response) => entity.Apply(response),
 				null, cancellationToken).ConfigureAwait(false));
 
-			kinds.Add(await SynchronizeKindAsync<ChannelRequest, ChannelEntity>(
+			kinds.Add(await SynchronizeKindAsync<ChannelResponse, ChannelEntity>(
 				CatalogKind.Channel, kinds.Count,
 				(web, token) => web.GetChannelsAsync(token),
 				repository => repository.Channels,
-				request => request.GetKey(), entity => entity.GetKey(),
-				request => request.ToEntity(), (entity, request) => entity.Apply(request),
+				response => response.GetKey(), entity => entity.GetKey(),
+				response => response.ToEntity(), (entity, response) => entity.Apply(response),
 				null, cancellationToken).ConfigureAwait(false));
 
-			kinds.Add(await SynchronizeKindAsync<FeedRequest, FeedEntity>(
+			kinds.Add(await SynchronizeKindAsync<FeedResponse, FeedEntity>(
 				CatalogKind.Feed, kinds.Count,
 				(web, token) => web.GetFeedsAsync(token),
 				repository => repository.Feeds,
-				request => request.GetKey(), entity => entity.GetKey(),
-				request => request.ToEntity(), (entity, request) => entity.Apply(request),
+				response => response.GetKey(), entity => entity.GetKey(),
+				response => response.ToEntity(), (entity, response) => entity.Apply(response),
 				null, cancellationToken).ConfigureAwait(false));
 
-			kinds.Add(await SynchronizeKindAsync<GuideRequest, GuideEntity>(
+			kinds.Add(await SynchronizeKindAsync<GuideResponse, GuideEntity>(
 				CatalogKind.Guide, kinds.Count,
 				(web, token) => web.GetGuidesAsync(token),
 				repository => repository.Guides,
-				request => request.GetKey(), entity => entity.GetKey(),
-				request => request.ToEntity(), (entity, request) => entity.Apply(request),
+				response => response.GetKey(), entity => entity.GetKey(),
+				response => response.ToEntity(), (entity, response) => entity.Apply(response),
 				null, cancellationToken).ConfigureAwait(false));
 
-			kinds.Add(await SynchronizeKindAsync<LogoRequest, LogoEntity>(
+			kinds.Add(await SynchronizeKindAsync<LogoResponse, LogoEntity>(
 				CatalogKind.Logo, kinds.Count,
 				(web, token) => web.GetLogosAsync(token),
 				repository => repository.Logos,
-				request => request.GetKey(), entity => entity.GetKey(),
-				request => request.ToEntity(), (entity, request) => entity.Apply(request),
+				response => response.GetKey(), entity => entity.GetKey(),
+				response => response.ToEntity(), (entity, response) => entity.Apply(response),
 				DeleteCachedLogos, cancellationToken).ConfigureAwait(false));
 
-			kinds.Add(await SynchronizeKindAsync<StreamRequest, StreamEntity>(
+			kinds.Add(await SynchronizeKindAsync<StreamResponse, StreamEntity>(
 				CatalogKind.Stream, kinds.Count,
 				(web, token) => web.GetStreamsAsync(token),
 				repository => repository.Streams,
-				request => request.GetKey(), entity => entity.GetKey(),
-				request => request.ToEntity(), (entity, request) => entity.Apply(request),
+				response => response.GetKey(), entity => entity.GetKey(),
+				response => response.ToEntity(), (entity, response) => entity.Apply(response),
 				null, cancellationToken).ConfigureAwait(false));
 
 			return new CatalogSyncResponse { Kinds = kinds };
@@ -213,20 +212,20 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 	/// <summary>
 	/// Reads one list of the catalog and brings the stored rows in line with it.
 	/// </summary>
-	private async Task<CatalogKindResponse> SynchronizeKindAsync<TRequest, TEntity>(
+	private async Task<CatalogKindResponse> SynchronizeKindAsync<TResponse, TEntity>(
 		CatalogKind kind,
 		int completedTasks,
-		Func<IWebService, CancellationToken, Task<IEnumerable<TRequest>>> fetch,
+		Func<IWebService, CancellationToken, Task<IEnumerable<TResponse>>> fetch,
 		Func<IRepositoryService, IRepositoryBase<TEntity>> repository,
-		Func<TRequest, string> requestKey,
+		Func<TResponse, string> responseKey,
 		Func<TEntity, string> entityKey,
-		Func<TRequest, TEntity> create,
-		Func<TEntity, TRequest, bool> apply,
+		Func<TResponse, TEntity> create,
+		Func<TEntity, TResponse, bool> apply,
 		Func<IReadOnlyList<TEntity>, IReadOnlyList<TEntity>, CancellationToken, Task>? onRemoved,
 		CancellationToken cancellationToken)
 		where TEntity : EntityBase
 	{
-		List<TRequest> imported = [.. await FetchAsync(fetch, cancellationToken).ConfigureAwait(false)];
+		List<TResponse> imported = [.. await FetchAsync(fetch, cancellationToken).ConfigureAwait(false)];
 
 		// The web service answers a failed request with an empty list, so nothing is removed for one.
 		if (imported.Count is 0)
@@ -238,12 +237,12 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 			return skipped;
 		}
 
-		Dictionary<string, TRequest> importedByKey = new(StringComparer.Ordinal);
+		Dictionary<string, TResponse> importedByKey = new(StringComparer.Ordinal);
 		int duplicates = 0;
 
-		foreach (TRequest request in imported)
+		foreach (TResponse item in imported)
 		{
-			if (!importedByKey.TryAdd(requestKey(request), request))
+			if (!importedByKey.TryAdd(responseKey(item), item))
 				duplicates++;
 		}
 
@@ -252,7 +251,7 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 		List<TEntity> created = [];
 		List<TEntity> removed = [];
 		List<TEntity> kept = [];
-		Dictionary<int, TRequest> changed = [];
+		Dictionary<int, TResponse> changed = [];
 		int unchanged = 0;
 
 		// The lowest identity of a key wins, so rows an earlier import stored twice are cleaned up.
@@ -261,7 +260,7 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 			TEntity entity = group.First();
 			removed.AddRange(group.Skip(1));
 
-			if (!importedByKey.Remove(group.Key, out TRequest? request))
+			if (!importedByKey.Remove(group.Key, out TResponse? item))
 			{
 				removed.Add(entity);
 				continue;
@@ -269,8 +268,8 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 
 			kept.Add(entity);
 
-			if (apply(entity, request))
-				changed.Add(entity.Id, request);
+			if (apply(entity, item))
+				changed.Add(entity.Id, item);
 			else
 				unchanged++;
 		}
@@ -304,14 +303,14 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 	/// <summary>
 	/// Reads the list from iptv-org.
 	/// </summary>
-	private async Task<IEnumerable<TRequest>> FetchAsync<TRequest>(
-		Func<IWebService, CancellationToken, Task<IEnumerable<TRequest>>> fetch,
+	private async Task<IEnumerable<TResponse>> FetchAsync<TResponse>(
+		Func<IWebService, CancellationToken, Task<IEnumerable<TResponse>>> fetch,
 		CancellationToken cancellationToken)
 	{
 		using IServiceScope scope = _serviceScopeFactory.CreateScope();
 		IWebService webService = scope.ServiceProvider.GetRequiredService<IWebService>();
 
-		IEnumerable<TRequest> result = await fetch(webService, cancellationToken).ConfigureAwait(false);
+		IEnumerable<TResponse> result = await fetch(webService, cancellationToken).ConfigureAwait(false);
 
 		// The web service swallows a cancellation as well, so it is checked here.
 		cancellationToken.ThrowIfCancellationRequested();
@@ -360,10 +359,10 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 	/// Writes the rows that changed, by loading them tracked again, so only the changed columns are
 	/// written and the columns the application owns stay as they are.
 	/// </summary>
-	private async Task UpdateAsync<TEntity, TRequest>(
+	private async Task UpdateAsync<TEntity, TResponse>(
 		Func<IRepositoryService, IRepositoryBase<TEntity>> repository,
-		Dictionary<int, TRequest> changed,
-		Func<TEntity, TRequest, bool> apply,
+		Dictionary<int, TResponse> changed,
+		Func<TEntity, TResponse, bool> apply,
 		CancellationToken cancellationToken)
 		where TEntity : EntityBase
 	{

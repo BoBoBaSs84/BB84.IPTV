@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a geographical or administrative subdivision within a country.
@@ -14,7 +14,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Name">Subdivision name</param>
 /// <param name="Code">ISO 3166-2 code of the subdivision</param>
 /// <param name="Parent">ISO 3166-2 code of the parent subdivision</param>
-public record SubdivisionRequest(
+public record SubdivisionResponse(
 	[property: JsonPropertyName("country")] string Country,
 	[property: JsonPropertyName("name")] string Name,
 	[property: JsonPropertyName("code")] string Code,

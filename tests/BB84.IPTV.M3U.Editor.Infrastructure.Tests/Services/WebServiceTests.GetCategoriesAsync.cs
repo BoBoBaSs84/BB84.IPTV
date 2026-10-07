@@ -6,7 +6,7 @@
 using System.Net;
 
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Infrastructure.Common;
 using BB84.IPTV.M3U.Editor.Infrastructure.Tests.Common;
@@ -27,7 +27,7 @@ public sealed partial class WebServiceTests
 		_httpClientFactoryMock.Setup(x => x.CreateClient(Constants.HttpClientName))
 			.Throws<Exception>();
 
-		IEnumerable<CategoryRequest> result = await _sut
+		IEnumerable<CategoryResponse> result = await _sut
 			.GetCategoriesAsync(cancellationToken)
 			.ConfigureAwait(false);
 
@@ -42,7 +42,7 @@ public sealed partial class WebServiceTests
 		_httpClientFactoryMock.Setup(x => x.CreateClient(Constants.HttpClientName))
 			.Returns(CreateMockedClient(HttpStatusCode.InternalServerError));
 
-		IEnumerable<CategoryRequest> result = await _sut
+		IEnumerable<CategoryResponse> result = await _sut
 			.GetCategoriesAsync(cancellationToken)
 			.ConfigureAwait(false);
 
@@ -58,7 +58,7 @@ public sealed partial class WebServiceTests
 		_httpClientFactoryMock.Setup(x => x.CreateClient(Constants.HttpClientName))
 			.Returns(CreateMockedClient(HttpStatusCode.OK, Resources.CategoryJson));
 
-		IEnumerable<CategoryRequest> result = await _sut
+		IEnumerable<CategoryResponse> result = await _sut
 			.GetCategoriesAsync(cancellationToken)
 			.ConfigureAwait(false);
 

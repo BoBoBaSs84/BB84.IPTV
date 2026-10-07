@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a logo for a channel or feed.
@@ -17,7 +17,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Height">The height of the image in pixels</param>
 /// <param name="Format">Image format (one of: PNG, JPEG, SVG, GIF, WebP, AVIF, APNG)</param>
 /// <param name="Url">Logo URL</param>
-public record LogoRequest(
+public record LogoResponse(
 	[property: JsonPropertyName("channel")] string Channel,
 	[property: JsonPropertyName("feed")] string? Feed,
 	[property: JsonPropertyName("tags")] IReadOnlyList<string> Tags,

@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a feed associated with a TV channel.
@@ -19,7 +19,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Timezones">List of timezones in which the feed is broadcast</param>
 /// <param name="Languages">List of broadcast languages</param>
 /// <param name="Format">Video format of the feed</param>
-public record FeedRequest(
+public record FeedResponse(
 	[property: JsonPropertyName("channel")] string Channel,
 	[property: JsonPropertyName("id")] string Id,
 	[property: JsonPropertyName("name")] string Name,

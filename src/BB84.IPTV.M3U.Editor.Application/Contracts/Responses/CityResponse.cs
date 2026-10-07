@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a city within a subdivision and country.
@@ -15,7 +15,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Name">City name</param>
 /// <param name="Code">UN/LOCODE of the city</param>
 /// <param name="WikidataId">ID of this city in Wikidata</param>
-public record CityRequest(
+public record CityResponse(
 	[property: JsonPropertyName("country")] string Country,
 	[property: JsonPropertyName("subdivision")] string? Subdivision,
 	[property: JsonPropertyName("name")] string Name,

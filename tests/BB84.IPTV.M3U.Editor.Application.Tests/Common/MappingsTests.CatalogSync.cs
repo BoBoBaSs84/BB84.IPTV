@@ -4,7 +4,6 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 using BB84.IPTV.M3U.Editor.Domain.Enumerators;
@@ -16,10 +15,10 @@ public sealed partial class MappingsTests
 	[TestMethod]
 	public void TheKeyOfAnImportedRecordShouldMatchTheKeyOfTheStoredOne()
 	{
-		FeedRequest feed = new("DasErste.de", "SD", "Standard", [], true, [], [], [], "576i");
-		GuideRequest guide = new("DasErste.de", null, "hoerzu.de", "ard", "ARD", "de");
-		LogoRequest logo = new("DasErste.de", null, [], 256, 256, "png", "https://example.com/ard.png");
-		StreamRequest stream = new("DasErste.de", "SD", "Das Erste", "https://example.com/ard.m3u8", null, null, null);
+		FeedResponse feed = new("DasErste.de", "SD", "Standard", [], true, [], [], [], "576i");
+		GuideResponse guide = new("DasErste.de", null, "hoerzu.de", "ard", "ARD", "de");
+		LogoResponse logo = new("DasErste.de", null, [], 256, 256, "png", "https://example.com/ard.png");
+		StreamResponse stream = new("DasErste.de", "SD", "Das Erste", "https://example.com/ard.m3u8", null, null, null);
 
 		Assert.AreEqual(feed.GetKey(), feed.ToEntity().GetKey());
 		Assert.AreEqual(guide.GetKey(), guide.ToEntity().GetKey());
@@ -33,9 +32,9 @@ public sealed partial class MappingsTests
 	[TestMethod]
 	public void ApplyingTheSameRecordShouldReportNoChange()
 	{
-		ChannelRequest channel = new("DasErste.de", "Das Erste", ["ARD"], "ARD", [], "DE", ["news"], false, null, null, null, null);
-		FeedRequest feed = new("DasErste.de", "SD", "Standard", [], true, ["DE"], [], ["deu"], "576i");
-		CategoryRequest category = new("news", "News", "What happens.");
+		ChannelResponse channel = new("DasErste.de", "Das Erste", ["ARD"], "ARD", [], "DE", ["news"], false, null, null, null, null);
+		FeedResponse feed = new("DasErste.de", "SD", "Standard", [], true, ["DE"], [], ["deu"], "576i");
+		CategoryResponse category = new("news", "News", "What happens.");
 
 		Assert.IsFalse(channel.ToEntity().Apply(channel));
 		Assert.IsFalse(feed.ToEntity().Apply(feed));
@@ -45,7 +44,7 @@ public sealed partial class MappingsTests
 	[TestMethod]
 	public void ApplyingAChangedRecordShouldTakeTheNewValues()
 	{
-		ChannelRequest stored = new("DasErste.de", "Das Erste", [], null, [], "DE", ["news"], false, null, null, null, null);
+		ChannelResponse stored = new("DasErste.de", "Das Erste", [], null, [], "DE", ["news"], false, null, null, null, null);
 		ChannelEntity entity = stored.ToEntity();
 
 		bool changed = entity.Apply(stored with { Name = "Das Erste HD", Categories = ["news", "general"], IsNsfw = true });
@@ -61,27 +60,27 @@ public sealed partial class MappingsTests
 	{
 		// The converter writes an empty list as null and reads null back as an empty list, so a
 		// second run must not report every record with an empty list as updated.
-		ChannelRequest request = new("ZDF.de", "ZDF", [], null, [], "DE", [], false, null, null, null, null);
-		ChannelEntity entity = request.ToEntity();
+		ChannelResponse response = new("ZDF.de", "ZDF", [], null, [], "DE", [], false, null, null, null, null);
+		ChannelEntity entity = response.ToEntity();
 		entity.AltNames = [];
 		entity.Categories = [];
 		entity.Owners = [];
 
-		Assert.IsFalse(entity.Apply(request));
+		Assert.IsFalse(entity.Apply(response));
 	}
 
 	[TestMethod]
 	public void ApplyingALogoShouldLeaveTheCacheAlone()
 	{
-		LogoRequest request = new("DasErste.de", null, ["horizontal"], 256, 256, "png", "https://example.com/ard.png");
-		LogoEntity entity = request.ToEntity();
+		LogoResponse response = new("DasErste.de", null, ["horizontal"], 256, 256, "png", "https://example.com/ard.png");
+		LogoEntity entity = response.ToEntity();
 		entity.LocalPath = "C:\\cache\\ard.png";
 		entity.ETag = "etag";
 		entity.ContentHash = "hash";
 		entity.FileSize = 1024;
 		entity.DownloadedAt = new DateTime(2026, 10, 1, 8, 0, 0, DateTimeKind.Utc);
 
-		bool changed = entity.Apply(request with { Width = 512, Tags = [] });
+		bool changed = entity.Apply(response with { Width = 512, Tags = [] });
 
 		Assert.IsTrue(changed);
 		Assert.AreEqual(512f, entity.Width);

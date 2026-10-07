@@ -5,7 +5,6 @@
 // LICENSE file in the root directory of this source tree.
 using System.Linq.Expressions;
 
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
@@ -20,23 +19,23 @@ internal static partial class Mappings
 		= language => new CatalogFilterValue(language.Code, language.Name);
 
 	/// <summary>
-	/// Converts a <see cref="LanguageRequest"/> to a <see cref="LanguageEntity"/>.
+	/// Converts a <see cref="LanguageResponse"/> to a <see cref="LanguageEntity"/>.
 	/// </summary>
-	/// <param name="request">The request to convert.</param>
+	/// <param name="response">The response to convert.</param>
 	/// <returns>The converted entity.</returns>
-	internal static LanguageEntity ToEntity(this LanguageRequest request) => new()
+	internal static LanguageEntity ToEntity(this LanguageResponse response) => new()
 	{
-		Code = request.Code,
-		Name = request.Name
+		Code = response.Code,
+		Name = response.Name
 	};
 
 	/// <summary>
 	/// Gets the key that identifies the language of the import.
 	/// </summary>
-	/// <param name="request">The imported language.</param>
+	/// <param name="response">The imported language.</param>
 	/// <returns>The key of the language.</returns>
-	internal static string GetKey(this LanguageRequest request)
-		=> CatalogKey.Of(request.Code);
+	internal static string GetKey(this LanguageResponse response)
+		=> CatalogKey.Of(response.Code);
 
 	/// <summary>
 	/// Gets the key that identifies the stored language.
@@ -50,14 +49,14 @@ internal static partial class Mappings
 	/// Takes what the import holds into the stored language.
 	/// </summary>
 	/// <param name="entity">The stored language.</param>
-	/// <param name="request">The imported language.</param>
+	/// <param name="response">The imported language.</param>
 	/// <returns><see langword="true"/> if the language changed.</returns>
-	internal static bool Apply(this LanguageEntity entity, LanguageRequest request)
+	internal static bool Apply(this LanguageEntity entity, LanguageResponse response)
 	{
-		if (!Differs(entity.Name, request.Name))
+		if (!Differs(entity.Name, response.Name))
 			return false;
 
-		entity.Name = request.Name;
+		entity.Name = response.Name;
 
 		return true;
 	}

@@ -9,7 +9,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Providers;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persistence.Repositories;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Settings;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
@@ -68,14 +68,14 @@ public sealed partial class DatabaseServiceTests
 		_repositoryServiceMock.Setup(x => x.Streams).Returns(new Mock<IStreamRepository>().Object);
 		_repositoryServiceMock.Setup(x => x.CommitChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(0);
 
-		_webServiceMock.Setup(x => x.GetCategoriesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<CategoryRequest>());
-		_webServiceMock.Setup(x => x.GetCountriesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<CountryRequest>());
-		_webServiceMock.Setup(x => x.GetLanguagesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<LanguageRequest>());
-		_webServiceMock.Setup(x => x.GetChannelsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<ChannelRequest>());
-		_webServiceMock.Setup(x => x.GetFeedsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<FeedRequest>());
-		_webServiceMock.Setup(x => x.GetGuidesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<GuideRequest>());
-		_webServiceMock.Setup(x => x.GetLogosAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<LogoRequest>());
-		_webServiceMock.Setup(x => x.GetStreamsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<StreamRequest>());
+		_webServiceMock.Setup(x => x.GetCategoriesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<CategoryResponse>());
+		_webServiceMock.Setup(x => x.GetCountriesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<CountryResponse>());
+		_webServiceMock.Setup(x => x.GetLanguagesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<LanguageResponse>());
+		_webServiceMock.Setup(x => x.GetChannelsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<ChannelResponse>());
+		_webServiceMock.Setup(x => x.GetFeedsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<FeedResponse>());
+		_webServiceMock.Setup(x => x.GetGuidesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<GuideResponse>());
+		_webServiceMock.Setup(x => x.GetLogosAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<LogoResponse>());
+		_webServiceMock.Setup(x => x.GetStreamsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<StreamResponse>());
 
 		_serviceScopeMock.SetupGet(x => x.ServiceProvider).Returns(_serviceProviderMock.Object);
 		_serviceScopeFactoryMock.Setup(x => x.CreateScope()).Returns(_serviceScopeMock.Object);

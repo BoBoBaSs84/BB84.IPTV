@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a category in the IPTV system.
@@ -13,7 +13,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Id">Category ID</param>
 /// <param name="Name">Name of the category</param>
 /// <param name="Description">Short description of the category</param>
-public record CategoryRequest(
+public record CategoryResponse(
 	[property: JsonPropertyName("id")] string Id,
 	[property: JsonPropertyName("name")] string Name,
 	[property: JsonPropertyName("description")] string Description

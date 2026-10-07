@@ -5,7 +5,6 @@
 // LICENSE file in the root directory of this source tree.
 using System.Linq.Expressions;
 
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
@@ -20,18 +19,18 @@ internal static partial class Mappings
 		= guide => new SiteChannel(guide.Site, guide.Channel);
 
 	/// <summary>
-	/// Converts a <see cref="GuideRequest"/> to a <see cref="GuideEntity"/>.
+	/// Converts a <see cref="GuideResponse"/> to a <see cref="GuideEntity"/>.
 	/// </summary>
-	/// <param name="request">The request to convert.</param>
+	/// <param name="response">The response to convert.</param>
 	/// <returns>The converted entity.</returns>
-	internal static GuideEntity ToEntity(this GuideRequest request) => new()
+	internal static GuideEntity ToEntity(this GuideResponse response) => new()
 	{
-		Channel = request.Channel,
-		Feed = request.Feed,
-		Site = request.Site,
-		SiteId = request.SiteId,
-		SiteName = request.SiteName,
-		Lang = request.Lang
+		Channel = response.Channel,
+		Feed = response.Feed,
+		Site = response.Site,
+		SiteId = response.SiteId,
+		SiteName = response.SiteName,
+		Lang = response.Lang
 	};
 
 	/// <summary>
@@ -55,10 +54,10 @@ internal static partial class Mappings
 	/// <summary>
 	/// Gets the key that identifies the guide of the import.
 	/// </summary>
-	/// <param name="request">The imported guide.</param>
+	/// <param name="response">The imported guide.</param>
 	/// <returns>The key of the guide.</returns>
-	internal static string GetKey(this GuideRequest request)
-		=> CatalogKey.Of(request.Channel, request.Feed, request.Site, request.SiteId, request.Lang);
+	internal static string GetKey(this GuideResponse response)
+		=> CatalogKey.Of(response.Channel, response.Feed, response.Site, response.SiteId, response.Lang);
 
 	/// <summary>
 	/// Gets the key that identifies the stored guide.
@@ -75,14 +74,14 @@ internal static partial class Mappings
 	/// Everything but the name the site uses is part of the key, so only that can change.
 	/// </remarks>
 	/// <param name="entity">The stored guide.</param>
-	/// <param name="request">The imported guide.</param>
+	/// <param name="response">The imported guide.</param>
 	/// <returns><see langword="true"/> if the guide changed.</returns>
-	internal static bool Apply(this GuideEntity entity, GuideRequest request)
+	internal static bool Apply(this GuideEntity entity, GuideResponse response)
 	{
-		if (!Differs(entity.SiteName, request.SiteName))
+		if (!Differs(entity.SiteName, response.SiteName))
 			return false;
 
-		entity.SiteName = request.SiteName;
+		entity.SiteName = response.SiteName;
 
 		return true;
 	}

@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents a stream for a channel or feed.
@@ -17,7 +17,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="Referrer">The Referer request header for the stream</param>
 /// <param name="UserAgent">The User-Agent request header for the stream</param>
 /// <param name="Quality">Maximum stream quality</param>
-public record StreamRequest(
+public record StreamResponse(
 	[property: JsonPropertyName("channel")] string? Channel,
 	[property: JsonPropertyName("feed")] string? Feed,
 	[property: JsonPropertyName("title")] string Title,

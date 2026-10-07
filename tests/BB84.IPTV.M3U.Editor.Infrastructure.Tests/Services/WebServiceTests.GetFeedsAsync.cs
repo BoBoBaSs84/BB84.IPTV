@@ -6,7 +6,7 @@
 using System.Net;
 
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Infrastructure.Common;
 using BB84.IPTV.M3U.Editor.Infrastructure.Tests.Common;
@@ -27,7 +27,7 @@ public sealed partial class WebServiceTests
 		_httpClientFactoryMock.Setup(x => x.CreateClient(Constants.HttpClientName))
 			.Throws<Exception>();
 
-		IEnumerable<FeedRequest> result = await _sut
+		IEnumerable<FeedResponse> result = await _sut
 			.GetFeedsAsync(cancellationToken)
 			.ConfigureAwait(false);
 
@@ -42,7 +42,7 @@ public sealed partial class WebServiceTests
 		_httpClientFactoryMock.Setup(x => x.CreateClient(Constants.HttpClientName))
 			.Returns(CreateMockedClient(HttpStatusCode.InternalServerError));
 
-		IEnumerable<FeedRequest> result = await _sut
+		IEnumerable<FeedResponse> result = await _sut
 			.GetFeedsAsync(cancellationToken)
 			.ConfigureAwait(false);
 
@@ -58,7 +58,7 @@ public sealed partial class WebServiceTests
 		_httpClientFactoryMock.Setup(x => x.CreateClient(Constants.HttpClientName))
 			.Returns(CreateMockedClient(HttpStatusCode.OK, Resources.FeedJson));
 
-		IEnumerable<FeedRequest> result = await _sut
+		IEnumerable<FeedResponse> result = await _sut
 			.GetFeedsAsync(cancellationToken)
 			.ConfigureAwait(false);
 

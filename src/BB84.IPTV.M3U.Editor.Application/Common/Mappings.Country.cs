@@ -5,7 +5,6 @@
 // LICENSE file in the root directory of this source tree.
 using System.Linq.Expressions;
 
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
@@ -20,25 +19,25 @@ internal static partial class Mappings
 		= country => new CatalogFilterValue(country.Code, country.Name);
 
 	/// <summary>
-	/// Converts a <see cref="CountryRequest"/> to a <see cref="CountryEntity"/>.
+	/// Converts a <see cref="CountryResponse"/> to a <see cref="CountryEntity"/>.
 	/// </summary>
-	/// <param name="request">The request to convert.</param>
+	/// <param name="response">The response to convert.</param>
 	/// <returns>The converted entity.</returns>
-	internal static CountryEntity ToEntity(this CountryRequest request) => new()
+	internal static CountryEntity ToEntity(this CountryResponse response) => new()
 	{
-		Code = request.Code,
-		Name = request.Name,
-		Languages = [.. request.Languages],
-		Flag = request.Flag
+		Code = response.Code,
+		Name = response.Name,
+		Languages = [.. response.Languages],
+		Flag = response.Flag
 	};
 
 	/// <summary>
 	/// Gets the key that identifies the country of the import.
 	/// </summary>
-	/// <param name="request">The imported country.</param>
+	/// <param name="response">The imported country.</param>
 	/// <returns>The key of the country.</returns>
-	internal static string GetKey(this CountryRequest request)
-		=> CatalogKey.Of(request.Code);
+	internal static string GetKey(this CountryResponse response)
+		=> CatalogKey.Of(response.Code);
 
 	/// <summary>
 	/// Gets the key that identifies the stored country.
@@ -52,27 +51,27 @@ internal static partial class Mappings
 	/// Takes what the import holds into the stored country.
 	/// </summary>
 	/// <param name="entity">The stored country.</param>
-	/// <param name="request">The imported country.</param>
+	/// <param name="response">The imported country.</param>
 	/// <returns><see langword="true"/> if the country changed.</returns>
-	internal static bool Apply(this CountryEntity entity, CountryRequest request)
+	internal static bool Apply(this CountryEntity entity, CountryResponse response)
 	{
 		bool changed = false;
 
-		if (Differs(entity.Name, request.Name))
+		if (Differs(entity.Name, response.Name))
 		{
-			entity.Name = request.Name;
+			entity.Name = response.Name;
 			changed = true;
 		}
 
-		if (Differs(entity.Flag, request.Flag))
+		if (Differs(entity.Flag, response.Flag))
 		{
-			entity.Flag = request.Flag;
+			entity.Flag = response.Flag;
 			changed = true;
 		}
 
-		if (Differs(entity.Languages, request.Languages))
+		if (Differs(entity.Languages, response.Languages))
 		{
-			entity.Languages = [.. request.Languages];
+			entity.Languages = [.. response.Languages];
 			changed = true;
 		}
 

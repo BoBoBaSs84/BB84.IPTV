@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using System.Text.Json.Serialization;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 
 /// <summary>
 /// Represents an IPTV guide for a specific channel and site.
@@ -16,7 +16,7 @@ namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 /// <param name="SiteId">Unique channel ID used on the site</param>
 /// <param name="SiteName">	Channel name used on the site</param>
 /// <param name="Lang">Language of the guide (ISO 639-1 code)</param>
-public record GuideRequest(
+public record GuideResponse(
 	[property: JsonPropertyName("channel")] string? Channel,
 	[property: JsonPropertyName("feed")] string? Feed,
 	[property: JsonPropertyName("site")] string Site,
