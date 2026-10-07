@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
@@ -30,12 +30,12 @@ public sealed class GuideViewModelTests
 
 	public GuideViewModelTests()
 	{
-		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((PlaylistSearchRequest? request, CancellationToken _) => new List<PlaylistSummaryResponse>
+		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchQuery?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((PlaylistSearchQuery? query, CancellationToken _) => new List<PlaylistSummaryResponse>
 			{
 				new() { Id = 1, Name = "First", EntryCount = 2 },
 				new() { Id = 2, Name = "Second", EntryCount = 1 }
-			}.ToPagedList(request?.PageNumber ?? 1, request?.PageSize ?? Parameters.MaxPageSize));
+			}.ToPagedList(query?.PageNumber ?? 1, query?.PageSize ?? PagedQuery.MaxPageSize));
 
 		_guideServiceMock.Setup(x => x.GetMappingsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(() =>
@@ -61,12 +61,12 @@ public sealed class GuideViewModelTests
 				new GuideSiteResponse { Site = "example.com", ChannelCount = 2, GuideCount = 3 },
 				new GuideSiteResponse { Site = "other.example", ChannelCount = 1, GuideCount = 1 }
 			]);
-		_guideServiceMock.Setup(x => x.SearchSiteChannelsAsync(It.IsAny<GuideSiteSearchRequest>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((GuideSiteSearchRequest request, CancellationToken _) => new PagedList<GuideOptionResponse>(
-				[new GuideOptionResponse { Channel = "ZDF.de", Feed = "HD", Site = request.Site, SiteId = "200", SiteName = "ZDF HD", Lang = "de" }],
+		_guideServiceMock.Setup(x => x.SearchSiteChannelsAsync(It.IsAny<GuideSiteSearchQuery>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((GuideSiteSearchQuery query, CancellationToken _) => new PagedList<GuideOptionResponse>(
+				[new GuideOptionResponse { Channel = "ZDF.de", Feed = "HD", Site = query.Site, SiteId = "200", SiteName = "ZDF HD", Lang = "de" }],
 				TotalSiteGuides,
-				request.PageNumber,
-				request.PageSize));
+				query.PageNumber,
+				query.PageSize));
 
 
 		_sut = new GuideViewModel(_guideServiceMock.Object, _playlistServiceMock.Object, _fileDialogServiceMock.Object, _eventServiceMock.Object);
@@ -151,7 +151,7 @@ public sealed class GuideViewModelTests
 		Assert.AreEqual(1, _sut.SiteChannelPageNumber);
 		Assert.IsTrue(_sut.HasNextSiteChannelPage);
 		Assert.IsFalse(_sut.HasPreviousSiteChannelPage);
-		_guideServiceMock.Verify(x => x.SearchSiteChannelsAsync(It.Is<GuideSiteSearchRequest>(request => request.Site == "example.com"), It.IsAny<CancellationToken>()), Times.AtLeastOnce);
+		_guideServiceMock.Verify(x => x.SearchSiteChannelsAsync(It.Is<GuideSiteSearchQuery>(query => query.Site == "example.com"), It.IsAny<CancellationToken>()), Times.AtLeastOnce);
 	}
 
 	[TestMethod]
@@ -176,7 +176,7 @@ public sealed class GuideViewModelTests
 
 		await _sut.SearchSiteChannelsCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
-		_guideServiceMock.Verify(x => x.SearchSiteChannelsAsync(It.Is<GuideSiteSearchRequest>(request => request.SearchText == "ZDF"), It.IsAny<CancellationToken>()), Times.AtLeastOnce);
+		_guideServiceMock.Verify(x => x.SearchSiteChannelsAsync(It.Is<GuideSiteSearchQuery>(query => query.SearchText == "ZDF"), It.IsAny<CancellationToken>()), Times.AtLeastOnce);
 	}
 
 	[TestMethod]
@@ -285,7 +285,7 @@ public sealed class GuideViewModelTests
 	[TestMethod]
 	public async Task LoadAndReportAsyncShouldReportAFailureInsteadOfThrowing()
 	{
-		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()))
+		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchQuery?>(), It.IsAny<CancellationToken>()))
 			.ThrowsAsync(new InvalidOperationException("no database"));
 
 		await _sut.LoadAndReportAsync().ConfigureAwait(false);

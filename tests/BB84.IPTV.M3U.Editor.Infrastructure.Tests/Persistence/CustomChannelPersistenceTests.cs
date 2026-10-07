@@ -4,7 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
@@ -69,11 +69,11 @@ public sealed class CustomChannelPersistenceTests
 			_ = await _sut.CreateAsync(CreateChannel($"Camera {number:000}", $"rtsp://192.168.12.{number}:554"), TestContext.CancellationToken).ConfigureAwait(false);
 
 		IPagedList<CustomChannelResponse> firstPage = await _sut
-			.GetChannelsAsync(new CustomChannelSearchRequest { PageSize = 100 }, TestContext.CancellationToken)
+			.GetChannelsAsync(new CustomChannelSearchQuery { PageSize = 100 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		IPagedList<CustomChannelResponse> secondPage = await _sut
-			.GetChannelsAsync(new CustomChannelSearchRequest { PageNumber = 2, PageSize = 100 }, TestContext.CancellationToken)
+			.GetChannelsAsync(new CustomChannelSearchQuery { PageNumber = 2, PageSize = 100 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(100, firstPage);

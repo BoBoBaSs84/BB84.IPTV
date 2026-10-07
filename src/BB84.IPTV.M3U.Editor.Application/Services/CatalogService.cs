@@ -11,7 +11,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Persistence.Repositories.Base;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
@@ -69,21 +69,21 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 		};
 	}
 
-	public async Task<IPagedList<CatalogChannelResponse>> SearchAsync(CatalogSearchRequest request, CancellationToken cancellationToken = default)
+	public async Task<IPagedList<CatalogChannelResponse>> SearchAsync(CatalogSearchQuery query, CancellationToken cancellationToken = default)
 	{
-		ArgumentNullException.ThrowIfNull(request);
+		ArgumentNullException.ThrowIfNull(query);
 
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
 
 		IReadOnlyList<ChannelEntity> channels = await repositoryService.Channels
 			.GetListAsync(
-				new Query<ChannelEntity> { Where = BuildChannelFilter(request), OrderBy = q => q.OrderBy(c => c.Name) },
+				new Query<ChannelEntity> { Where = BuildChannelFilter(query), OrderBy = q => q.OrderBy(c => c.Name) },
 				cancellationToken)
 			.ConfigureAwait(false);
 
-		string? category = request.Category?.Trim();
-		string? language = request.Language?.Trim();
+		string? category = query.Category?.Trim();
+		string? language = query.Language?.Trim();
 		bool filterByLanguage = !string.IsNullOrWhiteSpace(language);
 
 		IEnumerable<ChannelEntity> candidates = string.IsNullOrWhiteSpace(category)
@@ -98,7 +98,7 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 			? await LoadFeedsAsync(repositoryService, candidateIds, cancellationToken).ConfigureAwait(false)
 			: EmptyLookup<FeedEntity>();
 
-		ILookup<string, StreamEntity> streamsByChannel = request.IncludeWithoutStream
+		ILookup<string, StreamEntity> streamsByChannel = query.IncludeWithoutStream
 			? EmptyLookup<StreamEntity>()
 			: await LoadStreamsAsync(repositoryService, candidateIds, cancellationToken).ConfigureAwait(false);
 
@@ -108,17 +108,17 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 				.Where(channel => feedsByChannel[channel.Channel].Any(feed => Contains(feed.Languages, language)));
 		}
 
-		if (!request.IncludeWithoutStream)
+		if (!query.IncludeWithoutStream)
 			candidates = candidates.Where(channel => streamsByChannel[channel.Channel].Any());
 
 		List<ChannelEntity> matches = [.. candidates];
-		List<ChannelEntity> page = [.. matches.Skip(request.Skip).Take(request.PageSize)];
+		List<ChannelEntity> page = [.. matches.Skip(query.Skip).Take(query.PageSize)];
 		List<string> pageIds = [.. page.Select(channel => channel.Channel)];
 
 		if (!filterByLanguage)
 			feedsByChannel = await LoadFeedsAsync(repositoryService, pageIds, cancellationToken).ConfigureAwait(false);
 
-		if (request.IncludeWithoutStream)
+		if (query.IncludeWithoutStream)
 			streamsByChannel = await LoadStreamsAsync(repositoryService, pageIds, cancellationToken).ConfigureAwait(false);
 
 		List<LogoEntity> logos = await LoadChunkedAsync(
@@ -132,29 +132,29 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 		IEnumerable<CatalogChannelResponse> responses = page
 			.Select(channel => ToResponse(channel, feedsByChannel[channel.Channel], streamsByChannel[channel.Channel], logosByChannel[channel.Channel]));
 
-		return new PagedList<CatalogChannelResponse>(responses, matches.Count, request.PageNumber, request.PageSize);
+		return new PagedList<CatalogChannelResponse>(responses, matches.Count, query.PageNumber, query.PageSize);
 	}
 
 	/// <summary>
 	/// Builds the part of the filter the database can apply: text, country and the NSFW flag.
 	/// </summary>
-	private static Expression<Func<ChannelEntity, bool>>? BuildChannelFilter(CatalogSearchRequest request)
+	private static Expression<Func<ChannelEntity, bool>>? BuildChannelFilter(CatalogSearchQuery query)
 	{
 		Expression<Func<ChannelEntity, bool>>? filter = null;
 
-		if (!string.IsNullOrWhiteSpace(request.SearchText))
+		if (!string.IsNullOrWhiteSpace(query.SearchText))
 		{
-			string text = request.SearchText.Trim();
+			string text = query.SearchText.Trim();
 			filter = channel => channel.Name.Contains(text) || channel.Channel.Contains(text);
 		}
 
-		if (!string.IsNullOrWhiteSpace(request.Country))
+		if (!string.IsNullOrWhiteSpace(query.Country))
 		{
-			string country = request.Country.Trim();
+			string country = query.Country.Trim();
 			filter = Combine(filter, channel => channel.Country == country);
 		}
 
-		if (!request.IncludeNsfw)
+		if (!query.IncludeNsfw)
 			filter = Combine(filter, channel => !channel.IsNsfw);
 
 		return filter;

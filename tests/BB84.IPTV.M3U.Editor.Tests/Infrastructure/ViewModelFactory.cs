@@ -6,6 +6,7 @@
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -59,8 +60,8 @@ internal static class ViewModelFactory
 			Categories = [new CatalogFilterValue("news", "News")]
 		});
 
-		catalogServiceMock.Setup(x => x.SearchAsync(It.IsAny<CatalogSearchRequest>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((CatalogSearchRequest request, CancellationToken _) => new PagedList<CatalogChannelResponse>(
+		catalogServiceMock.Setup(x => x.SearchAsync(It.IsAny<CatalogSearchQuery>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((CatalogSearchQuery query, CancellationToken _) => new PagedList<CatalogChannelResponse>(
 				[
 					new CatalogChannelResponse
 					{
@@ -75,14 +76,14 @@ internal static class ViewModelFactory
 					}
 				],
 				totalChannels,
-				request.PageNumber,
-				request.PageSize));
+				query.PageNumber,
+				query.PageSize));
 
-		customChannelServiceMock.Setup(x => x.GetChannelsAsync(It.IsAny<CustomChannelSearchRequest?>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((CustomChannelSearchRequest? request, CancellationToken _) => new List<CustomChannelResponse>
+		customChannelServiceMock.Setup(x => x.GetChannelsAsync(It.IsAny<CustomChannelSearchQuery?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((CustomChannelSearchQuery? query, CancellationToken _) => new List<CustomChannelResponse>
 			{
 				new() { Id = 1, Name = "Local camera", Url = "rtsp://192.168.12.1:554", GroupTitle = "Local" }
-			}.ToPagedList(request?.PageNumber ?? 1, request?.PageSize ?? CatalogViewModel.CustomChannelPageSize));
+			}.ToPagedList(query?.PageNumber ?? 1, query?.PageSize ?? CatalogViewModel.CustomChannelPageSize));
 
 		Mock<IPlaylistService> playlistServiceMock = new();
 		SetupPlaylistService(playlistServiceMock);
@@ -105,13 +106,13 @@ internal static class ViewModelFactory
 		mergeServiceMock ??= new Mock<IMergeService>();
 		Mock<IPlaylistService> playlistServiceMock = new();
 
-		playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((PlaylistSearchRequest? request, CancellationToken _) => new List<PlaylistSummaryResponse>
+		playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchQuery?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((PlaylistSearchQuery? query, CancellationToken _) => new List<PlaylistSummaryResponse>
 			{
 				new() { Id = 1, Name = "First", EntryCount = 2 },
 				new() { Id = 2, Name = "Second", EntryCount = 1 },
 				new() { Id = 3, Name = "Third", EntryCount = 0 }
-			}.ToPagedList(request?.PageNumber ?? 1, request?.PageSize ?? Parameters.MaxPageSize));
+			}.ToPagedList(query?.PageNumber ?? 1, query?.PageSize ?? PagedQuery.MaxPageSize));
 
 		mergeServiceMock.Setup(x => x.PreviewAsync(It.IsAny<MergeRequest>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(() => new MergePreviewResponse
@@ -147,15 +148,15 @@ internal static class ViewModelFactory
 				new GuideSiteResponse { Site = "tvtoday.de", ChannelCount = 1, GuideCount = 1 }
 			]);
 
-		guideServiceMock.Setup(x => x.SearchGuidesAsync(It.IsAny<GuideSearchRequest>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((GuideSearchRequest request, CancellationToken _) => new PagedList<GuideOptionResponse>(
+		guideServiceMock.Setup(x => x.SearchGuidesAsync(It.IsAny<GuideSearchQuery>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((GuideSearchQuery query, CancellationToken _) => new PagedList<GuideOptionResponse>(
 				[
 					new GuideOptionResponse { Channel = "DasErste.de", ChannelName = "Das Erste", Country = "DE", Site = "hoerzu.de", SiteId = "ard", SiteName = "ARD", Lang = "de" },
 					new GuideOptionResponse { Channel = "DasErste.de", ChannelName = "Das Erste", Country = "DE", Feed = "HD", Site = "magentatv.de", SiteId = "ard-hd", SiteName = "Das Erste HD", Lang = "de" }
 				],
 				2,
-				request.PageNumber,
-				request.PageSize));
+				query.PageNumber,
+				query.PageSize));
 
 		return new GuideOverviewViewModel(guideServiceMock.Object, new Mock<IEventService>().Object);
 	}
@@ -181,8 +182,8 @@ internal static class ViewModelFactory
 		logoServiceMock.Setup(x => x.GetPathsByUrlAsync(It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new Dictionary<string, string>());
 
-		logoServiceMock.Setup(x => x.SearchLogosAsync(It.IsAny<LogoSearchRequest>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((LogoSearchRequest request, CancellationToken _) => new PagedList<LogoOptionResponse>(
+		logoServiceMock.Setup(x => x.SearchLogosAsync(It.IsAny<LogoSearchQuery>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((LogoSearchQuery query, CancellationToken _) => new PagedList<LogoOptionResponse>(
 				[
 					new LogoOptionResponse
 					{
@@ -210,8 +211,8 @@ internal static class ViewModelFactory
 					}
 				],
 				2,
-				request.PageNumber,
-				request.PageSize));
+				query.PageNumber,
+				query.PageSize));
 
 		return new LogoOverviewViewModel(
 			logoServiceMock.Object,
@@ -251,12 +252,12 @@ internal static class ViewModelFactory
 				new GuideSiteResponse { Site = "other.example", ChannelCount = 1, GuideCount = 1 }
 			]);
 
-		guideServiceMock.Setup(x => x.SearchSiteChannelsAsync(It.IsAny<GuideSiteSearchRequest>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((GuideSiteSearchRequest request, CancellationToken _) => new PagedList<GuideOptionResponse>(
-				[new GuideOptionResponse { Channel = "ZDF.de", Feed = "HD", Site = request.Site, SiteId = "200", SiteName = "ZDF HD", Lang = "de" }],
+		guideServiceMock.Setup(x => x.SearchSiteChannelsAsync(It.IsAny<GuideSiteSearchQuery>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((GuideSiteSearchQuery query, CancellationToken _) => new PagedList<GuideOptionResponse>(
+				[new GuideOptionResponse { Channel = "ZDF.de", Feed = "HD", Site = query.Site, SiteId = "200", SiteName = "ZDF HD", Lang = "de" }],
 				1,
-				request.PageNumber,
-				request.PageSize));
+				query.PageNumber,
+				query.PageSize));
 
 		return new GuideViewModel(
 			guideServiceMock.Object,
@@ -290,12 +291,12 @@ internal static class ViewModelFactory
 	/// </summary>
 	private static void SetupPlaylistService(Mock<IPlaylistService> playlistServiceMock)
 	{
-		playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((PlaylistSearchRequest? request, CancellationToken _) => new List<PlaylistSummaryResponse>
+		playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchQuery?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((PlaylistSearchQuery? query, CancellationToken _) => new List<PlaylistSummaryResponse>
 			{
 				new() { Id = 1, Name = "First", EntryCount = 2 },
 				new() { Id = 2, Name = "Second", EntryCount = 1 }
-			}.ToPagedList(request?.PageNumber ?? 1, request?.PageSize ?? PlaylistsViewModel.PageSize));
+			}.ToPagedList(query?.PageNumber ?? 1, query?.PageSize ?? PlaylistsViewModel.PageSize));
 
 		playlistServiceMock.Setup(x => x.LoadAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(() => new PlaylistModel(new PlaylistModel { UrlTvg = "https://tvg.example", Cache = 500 },

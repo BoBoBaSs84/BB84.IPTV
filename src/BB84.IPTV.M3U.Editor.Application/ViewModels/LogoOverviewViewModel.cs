@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
@@ -43,7 +43,7 @@ public sealed class LogoOverviewViewModel : ViewModelBase, INavigateable, IDispo
 	/// <summary>
 	/// The number of logos that are shown at once.
 	/// </summary>
-	private const int LogoPageSize = Parameters.MinPageSize;
+	private const int LogoPageSize = PagedQuery.MinPageSize;
 
 	private readonly ILogoService _logoService;
 	private readonly IPlaylistService _playlistService;
@@ -419,7 +419,7 @@ public sealed class LogoOverviewViewModel : ViewModelBase, INavigateable, IDispo
 		try
 		{
 			IPagedList<PlaylistSummaryResponse> playlists = await _playlistService
-				.GetPlaylistsAsync(new PlaylistSearchRequest(), cancellationToken)
+				.GetPlaylistsAsync(new PlaylistSearchQuery(), cancellationToken)
 				.ConfigureAwait(true);
 
 			int? selectedId = SelectedPlaylist?.Id;
@@ -509,7 +509,7 @@ public sealed class LogoOverviewViewModel : ViewModelBase, INavigateable, IDispo
 		{
 			IPagedList<LogoOptionResponse> logos = await _logoService
 				.SearchLogosAsync(
-					new LogoSearchRequest
+					new LogoSearchQuery
 					{
 						SearchText = SearchText,
 						Channel = OnlySelectedChannel ? SelectedEntry?.Channel : null,

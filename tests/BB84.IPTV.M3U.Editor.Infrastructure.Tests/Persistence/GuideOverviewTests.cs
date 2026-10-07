@@ -4,7 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
@@ -97,7 +97,7 @@ public sealed class GuideOverviewTests
 	[TestMethod]
 	public async Task SearchGuidesAsyncShouldTellWhichProvidersCarryTheChannel()
 	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest { SearchText = "DasErste.de" })
+		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery { SearchText = "DasErste.de" })
 			.ConfigureAwait(false);
 
 		Assert.HasCount(3, page);
@@ -113,7 +113,7 @@ public sealed class GuideOverviewTests
 	public async Task SearchGuidesAsyncShouldFindWhatOnlyTheChannelNameHolds()
 	{
 		// "Station" exists in the catalog channels only, so without the join nothing is found.
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest { SearchText = "Station 249" })
+		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery { SearchText = "Station 249" })
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, page);
@@ -128,7 +128,7 @@ public sealed class GuideOverviewTests
 	[DataRow("Unknown.de", 1, DisplayName = "the channel identifier")]
 	public async Task SearchGuidesAsyncShouldMatchEveryColumn(string searchText, int expected)
 	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest { SearchText = searchText })
+		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery { SearchText = searchText })
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(expected, page.MetaData.TotalCount);
@@ -137,7 +137,7 @@ public sealed class GuideOverviewTests
 	[TestMethod]
 	public async Task SearchGuidesAsyncShouldMatchTheLanguage()
 	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest { SearchText = "en" })
+		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery { SearchText = "en" })
 			.ConfigureAwait(false);
 
 		// Every guide the language matches, plus the ones holding "en" somewhere else.
@@ -154,7 +154,7 @@ public sealed class GuideOverviewTests
 	[TestMethod]
 	public async Task SearchGuidesAsyncShouldIgnoreTheCaseOfAsciiLetters()
 	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest { SearchText = "ard" })
+		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery { SearchText = "ard" })
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(3, page.MetaData.TotalCount);
@@ -166,7 +166,7 @@ public sealed class GuideOverviewTests
 	[DataRow("%")]
 	public async Task SearchGuidesAsyncShouldTakeTheMeaningOffAWildcard(string searchText)
 	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest { SearchText = searchText })
+		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery { SearchText = searchText })
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(0, page.MetaData.TotalCount);
@@ -175,7 +175,7 @@ public sealed class GuideOverviewTests
 	[TestMethod]
 	public async Task SearchGuidesAsyncShouldFindTheIdentifierOfAChannelsXml()
 	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest { SearchText = "DasErste.de@SD" })
+		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery { SearchText = "DasErste.de@SD" })
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, page);
@@ -186,7 +186,7 @@ public sealed class GuideOverviewTests
 	[TestMethod]
 	public async Task SearchGuidesAsyncShouldKeepAGuideTheCatalogDoesNotKnow()
 	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest { SearchText = "Orphan" })
+		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery { SearchText = "Orphan" })
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, page);
@@ -198,7 +198,7 @@ public sealed class GuideOverviewTests
 	[TestMethod]
 	public async Task SearchGuidesAsyncShouldLimitTheGuidesToTheProvider()
 	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest { Site = "hoerzu.de" })
+		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery { Site = "hoerzu.de" })
 			.ConfigureAwait(false);
 
 		Assert.AreEqual(4, page.MetaData.TotalCount);
@@ -208,14 +208,14 @@ public sealed class GuideOverviewTests
 	[TestMethod]
 	public async Task SearchGuidesAsyncShouldPageTheWholeResultInOneFixedOrder()
 	{
-		GuideSearchRequest request = new()
+		GuideSearchQuery query = new()
 		{
 			Site = "big.example.com",
 			PageNumber = 1,
-			PageSize = Parameters.MinPageSize
+			PageSize = PagedQuery.MinPageSize
 		};
 
-		IPagedList<GuideOptionResponse> first = await SearchAsync(request).ConfigureAwait(false);
+		IPagedList<GuideOptionResponse> first = await SearchAsync(query).ConfigureAwait(false);
 
 		Assert.AreEqual(SeededChannels, first.MetaData.TotalCount);
 		Assert.AreEqual(3, first.MetaData.TotalPages);
@@ -226,11 +226,11 @@ public sealed class GuideOverviewTests
 		List<string> channels = [];
 		for (int pageNumber = 1; pageNumber <= first.MetaData.TotalPages; pageNumber++)
 		{
-			IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest
+			IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery
 			{
-				Site = request.Site,
+				Site = query.Site,
 				PageNumber = pageNumber,
-				PageSize = request.PageSize
+				PageSize = query.PageSize
 			}).ConfigureAwait(false);
 
 			channels.AddRange(page.Select(guide => guide.Channel!));
@@ -250,12 +250,12 @@ public sealed class GuideOverviewTests
 
 		for (int pageNumber = 1; pageNumber <= 2; pageNumber++)
 		{
-			IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest
+			IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery
 			{
 				Site = "big.example.com",
 				SearchText = "de",
 				PageNumber = pageNumber,
-				PageSize = Parameters.MinPageSize
+				PageSize = PagedQuery.MinPageSize
 			}).ConfigureAwait(false);
 
 			siteIds.AddRange(page.Select(guide => guide.SiteId));
@@ -267,7 +267,7 @@ public sealed class GuideOverviewTests
 	[TestMethod]
 	public async Task SearchGuidesAsyncShouldReturnAnEmptyPageWhenNothingMatches()
 	{
-		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchRequest { SearchText = "nothing holds this" })
+		IPagedList<GuideOptionResponse> page = await SearchAsync(new GuideSearchQuery { SearchText = "nothing holds this" })
 			.ConfigureAwait(false);
 
 		Assert.IsEmpty(page);
@@ -275,8 +275,8 @@ public sealed class GuideOverviewTests
 		Assert.AreEqual(0, page.MetaData.TotalPages);
 	}
 
-	private Task<IPagedList<GuideOptionResponse>> SearchAsync(GuideSearchRequest request)
-		=> _sut.SearchGuidesAsync(request, TestContext.CancellationToken);
+	private Task<IPagedList<GuideOptionResponse>> SearchAsync(GuideSearchQuery query)
+		=> _sut.SearchGuidesAsync(query, TestContext.CancellationToken);
 
 	public TestContext TestContext { get; set; } = default!;
 }

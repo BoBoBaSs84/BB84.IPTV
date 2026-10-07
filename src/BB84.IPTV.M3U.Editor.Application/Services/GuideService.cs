@@ -10,7 +10,7 @@ using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -174,14 +174,14 @@ internal sealed class GuideService(
 			.OrderBy(site => site.Site, StringComparer.OrdinalIgnoreCase)];
 	}
 
-	public async Task<IPagedList<GuideOptionResponse>> SearchGuidesAsync(GuideSearchRequest request, CancellationToken cancellationToken = default)
+	public async Task<IPagedList<GuideOptionResponse>> SearchGuidesAsync(GuideSearchQuery query, CancellationToken cancellationToken = default)
 	{
-		ArgumentNullException.ThrowIfNull(request);
+		ArgumentNullException.ThrowIfNull(query);
 
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
 
-		Expression<Func<GuideEntity, bool>> filter = await BuildGuideFilterAsync(repositoryService, request, cancellationToken)
+		Expression<Func<GuideEntity, bool>> filter = await BuildGuideFilterAsync(repositoryService, query, cancellationToken)
 			.ConfigureAwait(false);
 
 		// One fixed order with the identity last, so a guide never moves between pages.
@@ -190,19 +190,19 @@ internal sealed class GuideService(
 				new Query<GuideEntity>
 				{
 					Where = filter,
-					OrderBy = query => query
+					OrderBy = q => q
 						.OrderBy(guide => guide.Channel)
 						.ThenBy(guide => guide.Site)
 						.ThenBy(guide => guide.SiteId)
 						.ThenBy(guide => guide.Id),
-					Skip = request.Skip,
-					Take = request.PageSize
+					Skip = query.Skip,
+					Take = query.PageSize
 				},
 				cancellationToken)
 			.ConfigureAwait(false);
 
 		// A first page that is not full holds the whole result, so it needs no counting query.
-		int total = request.Skip is 0 && page.Count < request.PageSize
+		int total = query.Skip is 0 && page.Count < query.PageSize
 			? page.Count
 			: await repositoryService.Guides
 				.CountAsync(new Query<GuideEntity> { Where = filter }, cancellationToken)
@@ -220,18 +220,18 @@ internal sealed class GuideService(
 		IEnumerable<GuideOptionResponse> options = page
 			.Select(guide => guide.ToOption(CatalogLookup.Lookup(channelsById, guide.Channel)));
 
-		return new PagedList<GuideOptionResponse>(options, total, request.PageNumber, request.PageSize);
+		return new PagedList<GuideOptionResponse>(options, total, query.PageNumber, query.PageSize);
 	}
 
-	public async Task<IPagedList<GuideOptionResponse>> SearchSiteChannelsAsync(GuideSiteSearchRequest request, CancellationToken cancellationToken = default)
+	public async Task<IPagedList<GuideOptionResponse>> SearchSiteChannelsAsync(GuideSiteSearchQuery query, CancellationToken cancellationToken = default)
 	{
-		ArgumentNullException.ThrowIfNull(request);
+		ArgumentNullException.ThrowIfNull(query);
 
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
 
-		string site = request.Site;
-		string? text = request.SearchText.TrimToNull();
+		string site = query.Site;
+		string? text = query.SearchText.TrimToNull();
 
 		Expression<Func<GuideEntity, bool>> filter = guide => guide.Site == site;
 
@@ -251,9 +251,9 @@ internal sealed class GuideService(
 				new Query<GuideEntity>
 				{
 					Where = filter,
-					OrderBy = query => query.OrderBy(guide => guide.Channel).ThenBy(guide => guide.Feed),
-					Skip = request.Skip,
-					Take = request.PageSize
+					OrderBy = q => q.OrderBy(guide => guide.Channel).ThenBy(guide => guide.Feed),
+					Skip = query.Skip,
+					Take = query.PageSize
 				},
 				cancellationToken)
 			.ConfigureAwait(false);
@@ -270,7 +270,7 @@ internal sealed class GuideService(
 		IEnumerable<GuideOptionResponse> options = page
 			.Select(guide => guide.ToOption(CatalogLookup.Lookup(channelsById, guide.Channel)));
 
-		return new PagedList<GuideOptionResponse>(options, total, request.PageNumber, request.PageSize);
+		return new PagedList<GuideOptionResponse>(options, total, query.PageNumber, query.PageSize);
 	}
 
 	/// <summary>
@@ -366,11 +366,11 @@ internal sealed class GuideService(
 	[SuppressMessage("Performance", "CA1862", Justification = "A comparison overload of Contains does not translate to SQL.")]
 	private static async Task<Expression<Func<GuideEntity, bool>>> BuildGuideFilterAsync(
 		IRepositoryService repositoryService,
-		GuideSearchRequest request,
+		GuideSearchQuery query,
 		CancellationToken cancellationToken)
 	{
-		string? site = request.Site.TrimToNull();
-		string? text = request.SearchText.TrimToNull();
+		string? site = query.Site.TrimToNull();
+		string? text = query.SearchText.TrimToNull();
 
 		if (text is null)
 			return guide => site == null || guide.Site == site;

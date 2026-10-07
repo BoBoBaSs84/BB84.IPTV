@@ -4,7 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
@@ -40,7 +40,7 @@ public sealed class CatalogSearchTests
 	public async Task SearchAsyncShouldFindByNameAndSkipChannelsWithoutStream()
 	{
 		IPagedList<CatalogChannelResponse> channels = await _sut
-			.SearchAsync(new CatalogSearchRequest { SearchText = "Erste" }, TestContext.CancellationToken)
+			.SearchAsync(new CatalogSearchQuery { SearchText = "Erste" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, channels);
@@ -55,7 +55,7 @@ public sealed class CatalogSearchTests
 	public async Task SearchAsyncShouldReturnChannelsWithoutStreamWhenAsked()
 	{
 		IPagedList<CatalogChannelResponse> channels = await _sut
-			.SearchAsync(new CatalogSearchRequest { SearchText = "Offline", IncludeWithoutStream = true }, TestContext.CancellationToken)
+			.SearchAsync(new CatalogSearchQuery { SearchText = "Offline", IncludeWithoutStream = true }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, channels);
@@ -66,15 +66,15 @@ public sealed class CatalogSearchTests
 	public async Task SearchAsyncShouldFilterByCountryLanguageAndCategory()
 	{
 		IPagedList<CatalogChannelResponse> byCountry = await _sut
-			.SearchAsync(new CatalogSearchRequest { Country = "FR" }, TestContext.CancellationToken)
+			.SearchAsync(new CatalogSearchQuery { Country = "FR" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		IPagedList<CatalogChannelResponse> byLanguage = await _sut
-			.SearchAsync(new CatalogSearchRequest { Language = "fra" }, TestContext.CancellationToken)
+			.SearchAsync(new CatalogSearchQuery { Language = "fra" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		IPagedList<CatalogChannelResponse> byCategory = await _sut
-			.SearchAsync(new CatalogSearchRequest { Category = "news" }, TestContext.CancellationToken)
+			.SearchAsync(new CatalogSearchQuery { Category = "news" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, byCountry);
@@ -88,11 +88,11 @@ public sealed class CatalogSearchTests
 	public async Task SearchAsyncShouldSkipNsfwChannelsUnlessAsked()
 	{
 		IPagedList<CatalogChannelResponse> without = await _sut
-			.SearchAsync(new CatalogSearchRequest(), TestContext.CancellationToken)
+			.SearchAsync(new CatalogSearchQuery(), TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		IPagedList<CatalogChannelResponse> with = await _sut
-			.SearchAsync(new CatalogSearchRequest { IncludeNsfw = true }, TestContext.CancellationToken)
+			.SearchAsync(new CatalogSearchQuery { IncludeNsfw = true }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.IsFalse(without.Any(channel => channel.IsNsfw));
@@ -103,7 +103,7 @@ public sealed class CatalogSearchTests
 	public async Task SearchAsyncShouldPageTheResultAndReportTheTotalCount()
 	{
 		IPagedList<CatalogChannelResponse> firstPage = await _sut
-			.SearchAsync(new CatalogSearchRequest { IncludeWithoutStream = true, IncludeNsfw = true, PageSize = 100 }, TestContext.CancellationToken)
+			.SearchAsync(new CatalogSearchQuery { IncludeWithoutStream = true, IncludeNsfw = true, PageSize = 100 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(4, firstPage);
@@ -119,7 +119,7 @@ public sealed class CatalogSearchTests
 		// The page size is clamped to at least 100, so the whole catalog is one page here; the
 		// second page is empty, but still reports the total.
 		IPagedList<CatalogChannelResponse> secondPage = await _sut
-			.SearchAsync(new CatalogSearchRequest { IncludeWithoutStream = true, IncludeNsfw = true, PageNumber = 2 }, TestContext.CancellationToken)
+			.SearchAsync(new CatalogSearchQuery { IncludeWithoutStream = true, IncludeNsfw = true, PageNumber = 2 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.IsEmpty(secondPage);

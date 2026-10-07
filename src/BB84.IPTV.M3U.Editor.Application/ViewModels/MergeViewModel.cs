@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
@@ -235,7 +236,7 @@ public sealed class MergeViewModel : ViewModelBase, INavigateable
 		try
 		{
 			IPagedList<PlaylistSummaryResponse> playlists = await _playlistService
-				.GetPlaylistsAsync(new PlaylistSearchRequest(), cancellationToken)
+				.GetPlaylistsAsync(new PlaylistSearchQuery(), cancellationToken)
 				.ConfigureAwait(true);
 
 			HashSet<int> selectedIds = [.. Sources.Where(source => source.IsSelected).Select(source => source.Id)];

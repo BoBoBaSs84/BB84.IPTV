@@ -5,16 +5,16 @@
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Features;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 
 /// <summary>
 /// Represents the filter of a search across the guides of every site.
 /// </summary>
 /// <remarks>
-/// The result is paged, see <see cref="Parameters"/>, in one fixed order, so a row never moves between
+/// The result is paged, see <see cref="PagedQuery"/>, in one fixed order, so a row never moves between
 /// pages. The grid sorts only the page it shows.
 /// </remarks>
-public sealed class GuideSearchRequest : Parameters
+public sealed class GuideSearchQuery : PagedQuery
 {
 	/// <summary>
 	/// Gets or initializes the text a guide must hold, in the channel identifier, the channel name,

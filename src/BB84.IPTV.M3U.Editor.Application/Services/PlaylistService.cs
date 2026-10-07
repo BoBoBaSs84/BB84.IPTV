@@ -6,7 +6,7 @@
 using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -35,9 +35,9 @@ internal sealed class PlaylistService(
 	ILogoService logoService,
 	ApplicationSettings settings) : IPlaylistService
 {
-	public async Task<IPagedList<PlaylistSummaryResponse>> GetPlaylistsAsync(PlaylistSearchRequest? request = null, CancellationToken cancellationToken = default)
+	public async Task<IPagedList<PlaylistSummaryResponse>> GetPlaylistsAsync(PlaylistSearchQuery? query = null, CancellationToken cancellationToken = default)
 	{
-		request ??= new PlaylistSearchRequest();
+		query ??= new PlaylistSearchQuery();
 
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
@@ -49,11 +49,11 @@ internal sealed class PlaylistService(
 		IReadOnlyList<PlaylistSummaryResponse> summaries = await repositoryService.Playlists
 			.GetListAsync(
 				Mappings.PlaylistToSummary,
-				new Query<PlaylistEntity> { OrderBy = q => q.OrderBy(p => p.Name), Skip = request.Skip, Take = request.PageSize },
+				new Query<PlaylistEntity> { OrderBy = q => q.OrderBy(p => p.Name), Skip = query.Skip, Take = query.PageSize },
 				cancellationToken)
 			.ConfigureAwait(false);
 
-		return new PagedList<PlaylistSummaryResponse>(summaries, totalCount, request.PageNumber, request.PageSize);
+		return new PagedList<PlaylistSummaryResponse>(summaries, totalCount, query.PageNumber, query.PageSize);
 	}
 
 	public async Task<IPlaylist?> LoadAsync(int id, CancellationToken cancellationToken = default)
@@ -213,4 +213,4 @@ internal sealed class PlaylistService(
 
 	private static IRepositoryService GetRepositoryService(IServiceScope scope)
 		=> scope.ServiceProvider.GetRequiredService<IRepositoryService>();
-}
+}

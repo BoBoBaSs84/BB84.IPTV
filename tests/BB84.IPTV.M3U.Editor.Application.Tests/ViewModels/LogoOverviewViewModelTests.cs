@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -29,17 +29,17 @@ public sealed class LogoOverviewViewModelTests : IDisposable
 	private readonly Mock<IFileDialogService> _fileDialogServiceMock = new();
 	private readonly Mock<IClipboardService> _clipboardServiceMock = new();
 	private readonly Mock<IEventService> _eventServiceMock = new();
-	private readonly List<LogoSearchRequest> _requests = [];
+	private readonly List<LogoSearchQuery> _queries = [];
 	private readonly LogoOverviewViewModel _sut;
 
 	public LogoOverviewViewModelTests()
 	{
-		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((PlaylistSearchRequest? request, CancellationToken _) => new PagedList<PlaylistSummaryResponse>(
+		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchQuery?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((PlaylistSearchQuery? query, CancellationToken _) => new PagedList<PlaylistSummaryResponse>(
 				[new PlaylistSummaryResponse { Id = 1, Name = "Mine", EntryCount = 2 }],
 				1,
-				request?.PageNumber ?? 1,
-				request?.PageSize ?? 100));
+				query?.PageNumber ?? 1,
+				query?.PageSize ?? 100));
 
 		_playlistServiceMock.Setup(x => x.LoadAsync(1, It.IsAny<CancellationToken>()))
 			.ReturnsAsync(() => new PlaylistModel(new PlaylistModel(),
@@ -57,10 +57,10 @@ public sealed class LogoOverviewViewModelTests : IDisposable
 		_logoServiceMock.Setup(x => x.GetPathsByUrlAsync(It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new Dictionary<string, string> { [CachedUrl] = CachedPath });
 
-		_logoServiceMock.Setup(x => x.SearchLogosAsync(It.IsAny<LogoSearchRequest>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((LogoSearchRequest request, CancellationToken _) =>
+		_logoServiceMock.Setup(x => x.SearchLogosAsync(It.IsAny<LogoSearchQuery>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((LogoSearchQuery query, CancellationToken _) =>
 			{
-				_requests.Add(request);
+				_queries.Add(query);
 
 				return new PagedList<LogoOptionResponse>(
 					[
@@ -68,8 +68,8 @@ public sealed class LogoOverviewViewModelTests : IDisposable
 						new LogoOptionResponse { Id = 2, Channel = "DasErste.de", Url = "https://logo.example/ard-dark.png" }
 					],
 					TotalLogos,
-					request.PageNumber,
-					request.PageSize);
+					query.PageNumber,
+					query.PageSize);
 			});
 
 		_clipboardServiceMock.Setup(x => x.SetTextAsync(It.IsAny<string?>())).ReturnsAsync(true);
@@ -111,17 +111,17 @@ public sealed class LogoOverviewViewModelTests : IDisposable
 	public async Task TheSearchShouldBeLimitedToTheChannelOfTheSelectedEntry()
 	{
 		await _sut.LoadAndReportAsync().ConfigureAwait(false);
-		_requests.Clear();
+		_queries.Clear();
 
 		_sut.SelectedEntry = _sut.Entries[0];
 		await _sut.LoadLogosAsync(1).ConfigureAwait(false);
 
-		Assert.AreEqual("DasErste.de", _requests[^1].Channel);
+		Assert.AreEqual("DasErste.de", _queries[^1].Channel);
 
 		_sut.OnlySelectedChannel = false;
 		await _sut.LoadLogosAsync(1).ConfigureAwait(false);
 
-		Assert.IsNull(_requests[^1].Channel);
+		Assert.IsNull(_queries[^1].Channel);
 	}
 
 	[TestMethod]
@@ -226,12 +226,12 @@ public sealed class LogoOverviewViewModelTests : IDisposable
 
 		await _sut.LoadAndReportAsync().ConfigureAwait(false);
 		_sut.SelectedLogo = _sut.Logos[1];
-		_requests.Clear();
+		_queries.Clear();
 
 		await _sut.DownloadLogoCommand.ExecuteAsync().ConfigureAwait(false);
 
 		_logoServiceMock.Verify(x => x.CacheLogoAsync(2, It.IsAny<CancellationToken>()), Times.Once);
-		Assert.HasCount(1, _requests);
+		Assert.HasCount(1, _queries);
 	}
 
 	[TestMethod]
@@ -274,7 +274,7 @@ public sealed class LogoOverviewViewModelTests : IDisposable
 	[TestMethod]
 	public async Task AFailedSearchShouldBeReportedInsteadOfThrown()
 	{
-		_logoServiceMock.Setup(x => x.SearchLogosAsync(It.IsAny<LogoSearchRequest>(), It.IsAny<CancellationToken>()))
+		_logoServiceMock.Setup(x => x.SearchLogosAsync(It.IsAny<LogoSearchQuery>(), It.IsAny<CancellationToken>()))
 			.ThrowsAsync(new InvalidOperationException("The database is gone."));
 
 		await _sut.LoadAndReportAsync().ConfigureAwait(false);

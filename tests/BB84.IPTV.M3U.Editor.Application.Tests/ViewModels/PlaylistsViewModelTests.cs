@@ -6,7 +6,7 @@
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
@@ -217,9 +217,9 @@ public sealed class PlaylistsViewModelTests
 		_storedPlaylists.Clear();
 		_storedPlaylists.AddRange(summaries);
 
-		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((PlaylistSearchRequest? request, CancellationToken _)
-				=> _storedPlaylists.ToPagedList(request?.PageNumber ?? 1, request?.PageSize ?? PlaylistsViewModel.PageSize));
+		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchQuery?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((PlaylistSearchQuery? query, CancellationToken _)
+				=> _storedPlaylists.ToPagedList(query?.PageNumber ?? 1, query?.PageSize ?? PlaylistsViewModel.PageSize));
 
 		_playlistServiceMock.Setup(x => x.DeleteAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync((int id, CancellationToken _) => _storedPlaylists.RemoveAll(playlist => playlist.Id == id) > 0);

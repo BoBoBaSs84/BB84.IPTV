@@ -5,10 +5,10 @@
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Features;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 
 /// <summary>
-/// Represents the page of stored playlists to read, see <see cref="Parameters"/>.
+/// Represents the page of stored playlists to read, see <see cref="PagedQuery"/>.
 /// </summary>
-public sealed class PlaylistSearchRequest : Parameters
+public sealed class PlaylistSearchQuery : PagedQuery
 { }

@@ -5,16 +5,16 @@
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Features;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 
 /// <summary>
 /// Represents the filter of a search in the iptv-org channel catalog.
 /// </summary>
 /// <remarks>
 /// All filters are combined, a filter that is <see langword="null"/> or empty is not applied.
-/// The result is paged, see <see cref="Parameters"/>.
+/// The result is paged, see <see cref="PagedQuery"/>.
 /// </remarks>
-public sealed class CatalogSearchRequest : Parameters
+public sealed class CatalogSearchQuery : PagedQuery
 {
 	/// <summary>
 	/// Gets or initializes the text the channel name or the iptv-org identifier must contain.

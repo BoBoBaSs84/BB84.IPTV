@@ -28,16 +28,16 @@ public static class PagedListExtensions
 	}
 
 	/// <summary>
-	/// Creates the requested page from the <paramref name="parameters"/> of a request.
+	/// Creates the requested page from the <paramref name="query"/> of a request.
 	/// </summary>
 	/// <typeparam name="T">The type of the items.</typeparam>
 	/// <param name="source">All items to page through.</param>
-	/// <param name="parameters">The request the page number and the page size are taken from.</param>
+	/// <param name="query">The request the page number and the page size are taken from.</param>
 	/// <returns>The requested page with the metadata of the whole sequence.</returns>
-	public static PagedList<T> ToPagedList<T>(this IEnumerable<T> source, Parameters parameters)
+	public static PagedList<T> ToPagedList<T>(this IEnumerable<T> source, PagedQuery query)
 	{
-		ArgumentNullException.ThrowIfNull(parameters);
+		ArgumentNullException.ThrowIfNull(query);
 
-		return source.ToPagedList(parameters.PageNumber, parameters.PageSize);
+		return source.ToPagedList(query.PageNumber, query.PageSize);
 	}
 }

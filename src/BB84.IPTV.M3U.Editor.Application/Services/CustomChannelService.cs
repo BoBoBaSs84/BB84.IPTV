@@ -7,7 +7,7 @@ using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
@@ -22,9 +22,9 @@ namespace BB84.IPTV.M3U.Editor.Application.Services;
 /// <param name="serviceScopeFactory">The scope factory used to resolve the scoped repository service per call.</param>
 internal sealed class CustomChannelService(IServiceScopeFactory serviceScopeFactory) : ICustomChannelService
 {
-	public async Task<IPagedList<CustomChannelResponse>> GetChannelsAsync(CustomChannelSearchRequest? request = null, CancellationToken cancellationToken = default)
+	public async Task<IPagedList<CustomChannelResponse>> GetChannelsAsync(CustomChannelSearchQuery? query = null, CancellationToken cancellationToken = default)
 	{
-		request ??= new CustomChannelSearchRequest();
+		query ??= new CustomChannelSearchQuery();
 
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
@@ -36,11 +36,11 @@ internal sealed class CustomChannelService(IServiceScopeFactory serviceScopeFact
 		IReadOnlyList<CustomChannelResponse> channels = await repositoryService.CustomChannels
 			.GetListAsync(
 				Mappings.CustomChannelToResponse,
-				new Query<CustomChannelEntity> { OrderBy = q => q.OrderBy(c => c.Name), Skip = request.Skip, Take = request.PageSize },
+				new Query<CustomChannelEntity> { OrderBy = q => q.OrderBy(c => c.Name), Skip = query.Skip, Take = query.PageSize },
 				cancellationToken)
 			.ConfigureAwait(false);
 
-		return new PagedList<CustomChannelResponse>(channels, totalCount, request.PageNumber, request.PageSize);
+		return new PagedList<CustomChannelResponse>(channels, totalCount, query.PageNumber, query.PageSize);
 	}
 
 	public async Task<int> CreateAsync(CustomChannelResponse channel, CancellationToken cancellationToken = default)
@@ -104,4 +104,4 @@ internal sealed class CustomChannelService(IServiceScopeFactory serviceScopeFact
 
 	private static IRepositoryService GetRepositoryService(IServiceScope scope)
 		=> scope.ServiceProvider.GetRequiredService<IRepositoryService>();
-}
+}

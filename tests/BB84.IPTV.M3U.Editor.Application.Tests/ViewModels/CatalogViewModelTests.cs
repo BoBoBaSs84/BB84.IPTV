@@ -6,7 +6,7 @@
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
@@ -55,12 +55,12 @@ public sealed class CatalogViewModelTests
 			Languages = [new CatalogFilterValue("deu", "German")],
 			Categories = [new CatalogFilterValue("news", "News")]
 		});
-		_catalogServiceMock.Setup(x => x.SearchAsync(It.IsAny<CatalogSearchRequest>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((CatalogSearchRequest request, CancellationToken _)
-				=> new PagedList<CatalogChannelResponse>([CreateCatalogChannel()], TotalChannels, request.PageNumber, request.PageSize));
-		_customChannelServiceMock.Setup(x => x.GetChannelsAsync(It.IsAny<CustomChannelSearchRequest?>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((CustomChannelSearchRequest? request, CancellationToken _)
-				=> _storedCustomChannels.ToPagedList(request?.PageNumber ?? 1, request?.PageSize ?? CatalogViewModel.CustomChannelPageSize));
+		_catalogServiceMock.Setup(x => x.SearchAsync(It.IsAny<CatalogSearchQuery>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((CatalogSearchQuery query, CancellationToken _)
+				=> new PagedList<CatalogChannelResponse>([CreateCatalogChannel()], TotalChannels, query.PageNumber, query.PageSize));
+		_customChannelServiceMock.Setup(x => x.GetChannelsAsync(It.IsAny<CustomChannelSearchQuery?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((CustomChannelSearchQuery? query, CancellationToken _)
+				=> _storedCustomChannels.ToPagedList(query?.PageNumber ?? 1, query?.PageSize ?? CatalogViewModel.CustomChannelPageSize));
 		_customChannelServiceMock.Setup(x => x.CreateAsync(It.IsAny<CustomChannelResponse>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync((CustomChannelResponse channel, CancellationToken _) =>
 			{
@@ -130,7 +130,7 @@ public sealed class CatalogViewModelTests
 		await _sut.SearchCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_catalogServiceMock.Verify(x => x.SearchAsync(
-			It.Is<CatalogSearchRequest>(r => r.SearchText == "Erste" && r.Country == "DE" && r.Language == "deu" && r.Category == "news" && r.IncludeNsfw),
+			It.Is<CatalogSearchQuery>(r => r.SearchText == "Erste" && r.Country == "DE" && r.Language == "deu" && r.Category == "news" && r.IncludeNsfw),
 			It.IsAny<CancellationToken>()), Times.Once);
 		Assert.HasCount(1, _sut.Channels);
 		Assert.AreEqual("Das Erste", _sut.SelectedChannel!.Name);
@@ -163,12 +163,12 @@ public sealed class CatalogViewModelTests
 		Assert.AreEqual(2, _sut.PageNumber);
 		Assert.IsFalse(_sut.HasNextPage);
 		Assert.IsTrue(_sut.PreviousPageCommand.CanExecute());
-		_catalogServiceMock.Verify(x => x.SearchAsync(It.Is<CatalogSearchRequest>(r => r.PageNumber == 2), It.IsAny<CancellationToken>()), Times.Once);
+		_catalogServiceMock.Verify(x => x.SearchAsync(It.Is<CatalogSearchQuery>(r => r.PageNumber == 2), It.IsAny<CancellationToken>()), Times.Once);
 
 		await _sut.PreviousPageCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		Assert.AreEqual(1, _sut.PageNumber);
-		_catalogServiceMock.Verify(x => x.SearchAsync(It.Is<CatalogSearchRequest>(r => r.PageNumber == 1), It.IsAny<CancellationToken>()), Times.Exactly(2));
+		_catalogServiceMock.Verify(x => x.SearchAsync(It.Is<CatalogSearchQuery>(r => r.PageNumber == 1), It.IsAny<CancellationToken>()), Times.Exactly(2));
 	}
 
 	[TestMethod]
