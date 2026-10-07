@@ -96,13 +96,13 @@
 				<MenuItem Header="{x:Static p:Resources.MainWindow_PlaylistsMenuItem_Header}"
 									Click="PlaylistsMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/tv.ico" />
+						<Image Source="/Resources/document_music.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static p:Resources.MainWindow_MergePlaylistsMenuItem_Header}"
 									Click="MergeMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/floppy_disks.ico" />
+						<Image Source="/Resources/documents_exchange.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static p:Resources.MainWindow_CatalogMenuItem_Header}"
@@ -114,19 +114,19 @@
 				<MenuItem Header="{x:Static p:Resources.MainWindow_GuideMenuItem_Header}"
 									Click="GuideMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/document_view.ico" />
+						<Image Source="/Resources/document_refresh.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static p:Resources.MainWindow_GuideOverviewMenuItem_Header}"
 									Click="GuideOverviewMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/document.ico" />
+						<Image Source="/Resources/book_blue_open2.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static p:Resources.MainWindow_LogoOverviewMenuItem_Header}"
 									Click="LogoOverviewMenuItem_Click">
 					<MenuItem.Icon>
-						<Image Source="/Resources/tv.ico" />
+						<Image Source="/Resources/photo_landscape.ico" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static p:Resources.MainWindow_DatabaseMenuItem_Header}"
