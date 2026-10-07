@@ -12,7 +12,7 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Application.ViewModels;
@@ -75,18 +75,18 @@ public sealed class LogoOverviewControlTests
 	public async Task AHeaderClickShouldSortThePageWithoutSearchingAgain()
 		=> await UiTest.RunAsync(() =>
 		{
-			List<LogoSearchRequest> requests = [];
+			List<LogoSearchQuery> queries = [];
 			Mock<ILogoService> serviceMock = new();
 			LogoOverviewViewModel viewModel = ViewModelFactory.CreateLogoOverview(serviceMock);
 
-			// The search of the factory still answers, the requests it gets are the ones counted.
+			// The search of the factory still answers, the queries it gets are the ones counted.
 			serviceMock
-				.Setup(x => x.SearchLogosAsync(It.IsAny<LogoSearchRequest>(), It.IsAny<CancellationToken>()))
-				.ReturnsAsync((LogoSearchRequest request, CancellationToken _) =>
+				.Setup(x => x.SearchLogosAsync(It.IsAny<LogoSearchQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync((LogoSearchQuery query, CancellationToken _) =>
 				{
-					requests.Add(request);
+					queries.Add(query);
 
-					return new PagedList<LogoOptionResponse>([], 0, request.PageNumber, request.PageSize);
+					return new PagedList<LogoOptionResponse>([], 0, query.PageNumber, query.PageSize);
 				});
 
 			LogoOverviewControl control = new() { DataContext = viewModel };
@@ -96,17 +96,17 @@ public sealed class LogoOverviewControlTests
 				UiTest.Settle();
 
 				DataGrid grid = control.GetControl<DataGrid>("LogoDataGrid");
-				int searches = requests.Count;
+				int searches = queries.Count;
 
 				ClickColumnHeader(control, Properties.Resources.LogoOverviewControl_ChannelNameColumn_Header);
 
 				// The grid sorts the page it holds, the database is not asked again.
-				Assert.HasCount(searches, requests);
+				Assert.HasCount(searches, queries);
 				Assert.AreEqual(ListSortDirection.Ascending, grid.CollectionView!.SortDescriptions.Single().Direction);
 
 				ClickColumnHeader(control, Properties.Resources.LogoOverviewControl_ChannelNameColumn_Header);
 
-				Assert.HasCount(searches, requests);
+				Assert.HasCount(searches, queries);
 				Assert.AreEqual(ListSortDirection.Descending, grid.CollectionView!.SortDescriptions.Single().Direction);
 				Assert.IsEmpty(sink.Messages, string.Join(Environment.NewLine, sink.Messages));
 			});

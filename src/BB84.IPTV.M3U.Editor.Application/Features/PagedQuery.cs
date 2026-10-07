@@ -6,9 +6,10 @@
 namespace BB84.IPTV.M3U.Editor.Application.Features;
 
 /// <summary>
-/// The base request parameter class.
+/// Represents a query that is paged, i.e. the result is split into
+/// pages of a certain size.
 /// </summary>
-public abstract class Parameters
+public abstract class PagedQuery
 {
 	/// <summary>
 	/// The smallest allowed page size.
@@ -24,7 +25,7 @@ public abstract class Parameters
 	private int _pageSize = MaxPageSize;
 
 	/// <summary>
-	/// The page number property.
+	/// Gets or sets the desired page number.
 	/// </summary>
 	/// <remarks>
 	/// The first page is page one, a smaller value is raised to it.
@@ -36,7 +37,7 @@ public abstract class Parameters
 	}
 
 	/// <summary>
-	/// The desired page size.
+	/// Gets or sets the desired page size, i.e. the number of items per page.
 	/// </summary>
 	/// <remarks>
 	/// Kept between <see cref="MinPageSize"/> and <see cref="MaxPageSize"/>, so a page is never
@@ -49,7 +50,7 @@ public abstract class Parameters
 	}
 
 	/// <summary>
-	/// The number of items to skip to reach the current page.
+	/// Gets the number of items to skip to reach the current page.
 	/// </summary>
 	public int Skip
 		=> (PageNumber - 1) * PageSize;

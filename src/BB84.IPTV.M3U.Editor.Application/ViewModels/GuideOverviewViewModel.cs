@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
@@ -32,7 +32,7 @@ public sealed class GuideOverviewViewModel : ViewModelBase, INavigateable, IDisp
 	/// <summary>
 	/// The number of guides that are shown at once.
 	/// </summary>
-	private const int GuidePageSize = Parameters.MinPageSize;
+	private const int GuidePageSize = PagedQuery.MinPageSize;
 
 	private readonly IGuideService _guideService;
 	private readonly IEventService _eventService;
@@ -291,7 +291,7 @@ public sealed class GuideOverviewViewModel : ViewModelBase, INavigateable, IDisp
 		{
 			IPagedList<GuideOptionResponse> guides = await _guideService
 				.SearchGuidesAsync(
-					new GuideSearchRequest
+					new GuideSearchQuery
 					{
 						SearchText = SearchText,
 						Site = SelectedProvider?.Site,

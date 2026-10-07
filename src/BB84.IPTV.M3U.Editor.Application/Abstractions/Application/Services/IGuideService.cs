@@ -3,7 +3,7 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
 
@@ -70,16 +70,16 @@ public interface IGuideService
 	/// search and the order run in the database, which means the order covers the whole result and
 	/// not only the page that is read.
 	/// </remarks>
-	/// <param name="request">What to search for, which provider to look at, how to order and page.</param>
+	/// <param name="query">What to search for, which provider to look at, how to order and page.</param>
 	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
 	/// <returns>The page of guides the search found.</returns>
-	Task<IPagedList<GuideOptionResponse>> SearchGuidesAsync(GuideSearchRequest request, CancellationToken cancellationToken = default);
+	Task<IPagedList<GuideOptionResponse>> SearchGuidesAsync(GuideSearchQuery query, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Searches the guides of one site, so the channels and feeds it covers can be looked through.
 	/// </summary>
-	/// <param name="request">The site to look at and what to search for.</param>
+	/// <param name="query">The site to look at and what to search for.</param>
 	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
 	/// <returns>The page of guides the site holds.</returns>
-	Task<IPagedList<GuideOptionResponse>> SearchSiteChannelsAsync(GuideSiteSearchRequest request, CancellationToken cancellationToken = default);
+	Task<IPagedList<GuideOptionResponse>> SearchSiteChannelsAsync(GuideSiteSearchQuery query, CancellationToken cancellationToken = default);
 }

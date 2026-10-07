@@ -4,7 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
@@ -75,7 +75,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldTellWhatTheCatalogKnows()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "hd.example.com" }, TestContext.CancellationToken)
+			.SearchSiteChannelsAsync(new GuideSiteSearchQuery { Site = "hd.example.com" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, page);
@@ -87,7 +87,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldLeaveAnUnknownChannelWithoutAName()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "big.example.com", SearchText = "Channel001" }, TestContext.CancellationToken)
+			.SearchSiteChannelsAsync(new GuideSiteSearchQuery { Site = "big.example.com", SearchText = "Channel001" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, page, "Only Channel001 matches, the catalog does not know it.");
@@ -146,7 +146,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldPageTheGuidesOfTheSite()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "big.example.com", PageNumber = 2, PageSize = 100 }, TestContext.CancellationToken)
+			.SearchSiteChannelsAsync(new GuideSiteSearchQuery { Site = "big.example.com", PageNumber = 2, PageSize = 100 }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(50, page);
@@ -159,7 +159,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldFilterBySearchText()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "big.example.com", SearchText = "Channel01" }, TestContext.CancellationToken)
+			.SearchSiteChannelsAsync(new GuideSiteSearchQuery { Site = "big.example.com", SearchText = "Channel01" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(10, page, "Channel010 to Channel019 are the ones that match.");
@@ -170,7 +170,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldFindTheSiteName()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "hd.example.com", SearchText = "ZDF HD" }, TestContext.CancellationToken)
+			.SearchSiteChannelsAsync(new GuideSiteSearchQuery { Site = "hd.example.com", SearchText = "ZDF HD" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, page);
@@ -182,7 +182,7 @@ public sealed class GuideOptionTests
 	public async Task SearchSiteChannelsAsyncShouldBeEmptyForAnUnknownSite()
 	{
 		IPagedList<GuideOptionResponse> page = await _sut
-			.SearchSiteChannelsAsync(new GuideSiteSearchRequest { Site = "nowhere.example.com" }, TestContext.CancellationToken)
+			.SearchSiteChannelsAsync(new GuideSiteSearchQuery { Site = "nowhere.example.com" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.IsEmpty(page);

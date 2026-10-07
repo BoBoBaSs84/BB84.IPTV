@@ -9,7 +9,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
 using BB84.IPTV.M3U.Editor.Application.Common;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
@@ -41,7 +41,7 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 	/// <summary>
 	/// The number of user defined channels per page.
 	/// </summary>
-	public const int CustomChannelPageSize = Parameters.MaxPageSize;
+	public const int CustomChannelPageSize = PagedQuery.MaxPageSize;
 
 	private readonly ICatalogService _catalogService;
 	private readonly ICustomChannelService _customChannelService;
@@ -453,7 +453,7 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 
 		try
 		{
-			CatalogSearchRequest request = new()
+			CatalogSearchQuery query = new()
 			{
 				SearchText = SearchText,
 				Country = SelectedCountry?.Code,
@@ -466,7 +466,7 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 			};
 
 			IPagedList<CatalogChannelResponse> channels = await _catalogService
-				.SearchAsync(request)
+				.SearchAsync(query)
 				.ConfigureAwait(true);
 
 			Channels.Clear();
@@ -621,7 +621,7 @@ public sealed class CatalogViewModel : ViewModelBase, INavigateable
 	private async Task LoadCustomChannelPageAsync(int pageNumber, CancellationToken cancellationToken = default)
 	{
 		IPagedList<CustomChannelResponse> channels = await _customChannelService
-			.GetChannelsAsync(new CustomChannelSearchRequest { PageNumber = pageNumber, PageSize = CustomChannelPageSize }, cancellationToken)
+			.GetChannelsAsync(new CustomChannelSearchQuery { PageNumber = pageNumber, PageSize = CustomChannelPageSize }, cancellationToken)
 			.ConfigureAwait(true);
 
 		int? selectedId = SelectedCustomChannel?.Id;

@@ -56,9 +56,9 @@ public sealed class PagedListTests
 	[TestMethod]
 	public void ToPagedListShouldTakeThePageOfTheParameters()
 	{
-		TestParameters parameters = new() { PageNumber = 2, PageSize = 100 };
+		TestQuery query = new() { PageNumber = 2, PageSize = 100 };
 
-		PagedList<int> page = Enumerable.Range(1, 150).ToPagedList(parameters);
+		PagedList<int> page = Enumerable.Range(1, 150).ToPagedList(query);
 
 		Assert.HasCount(50, page);
 		Assert.AreEqual(101, page[0]);
@@ -74,6 +74,6 @@ public sealed class PagedListTests
 		Assert.IsFalse(page.MetaData.HasNext);
 	}
 
-	private sealed class TestParameters : Parameters
+	private sealed class TestQuery : PagedQuery
 	{ }
 }

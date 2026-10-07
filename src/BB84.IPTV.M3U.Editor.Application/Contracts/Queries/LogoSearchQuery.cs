@@ -6,16 +6,16 @@
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Features;
 
-namespace BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+namespace BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 
 /// <summary>
 /// Represents the filter of a search across the logos the catalog knows.
 /// </summary>
 /// <remarks>
-/// The result is paged, see <see cref="Parameters"/>, in one fixed order, so a row never moves between
+/// The result is paged, see <see cref="PagedQuery"/>, in one fixed order, so a row never moves between
 /// pages. The grid sorts only the page it shows.
 /// </remarks>
-public sealed class LogoSearchRequest : Parameters
+public sealed class LogoSearchQuery : PagedQuery
 {
 	/// <summary>
 	/// Gets or initializes the text a logo must hold, in the channel identifier, the channel name,

@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Extensions;
@@ -40,7 +40,7 @@ public sealed class GuideViewModel : ViewModelBase, INavigateable
 	/// <summary>
 	/// The number of guides of a site that are shown at once.
 	/// </summary>
-	private const int SiteChannelPageSize = Parameters.MinPageSize;
+	private const int SiteChannelPageSize = PagedQuery.MinPageSize;
 
 	private readonly IGuideService _guideService;
 	private readonly IPlaylistService _playlistService;
@@ -318,7 +318,7 @@ public sealed class GuideViewModel : ViewModelBase, INavigateable
 		try
 		{
 			IPagedList<PlaylistSummaryResponse> playlists = await _playlistService
-				.GetPlaylistsAsync(new PlaylistSearchRequest(), cancellationToken)
+				.GetPlaylistsAsync(new PlaylistSearchQuery(), cancellationToken)
 				.ConfigureAwait(true);
 
 			int? selectedId = SelectedPlaylist?.Id;
@@ -552,7 +552,7 @@ public sealed class GuideViewModel : ViewModelBase, INavigateable
 		{
 			IPagedList<GuideOptionResponse> guides = await _guideService
 				.SearchSiteChannelsAsync(
-					new GuideSiteSearchRequest
+					new GuideSiteSearchQuery
 					{
 						Site = site.Site,
 						SearchText = SiteSearchText,

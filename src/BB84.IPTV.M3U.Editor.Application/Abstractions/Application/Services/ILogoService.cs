@@ -3,6 +3,7 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -42,10 +43,10 @@ public interface ILogoService
 	/// another feed, format or tag can be looked at and assigned. Whether the file of a row is
 	/// really there is asked of the store for the page that is returned.
 	/// </remarks>
-	/// <param name="request">What to search for, how to order it and which page to read.</param>
+	/// <param name="query">What to search for, how to order it and which page to read.</param>
 	/// <param name="cancellationToken">The cancellation token, for cancelling the operation if needed.</param>
 	/// <returns>The logos of the page and what the search found.</returns>
-	Task<IPagedList<LogoOptionResponse>> SearchLogosAsync(LogoSearchRequest request, CancellationToken cancellationToken = default);
+	Task<IPagedList<LogoOptionResponse>> SearchLogosAsync(LogoSearchQuery query, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Downloads one logo, whether or not it is the one that is picked for its channel.

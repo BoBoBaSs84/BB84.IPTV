@@ -4,7 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.EntityFrameworkCore.Repositories.Abstractions;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -18,7 +18,7 @@ public sealed partial class LogoServiceTests
 	public async Task SearchLogosAsyncShouldReadEveryLogoWithWhatTheCatalogKnowsAboutItsChannel()
 	{
 		IPagedList<LogoOptionResponse> logos = await _sut
-			.SearchLogosAsync(new LogoSearchRequest(), TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery(), TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(3, logos, "Every logo of a channel is offered, not only the one that is picked for it.");
@@ -42,7 +42,7 @@ public sealed partial class LogoServiceTests
 	{
 		IPagedList<LogoOptionResponse> page = await _sut
 			.SearchLogosAsync(
-				new LogoSearchRequest { PageNumber = 2, PageSize = Parameters.MinPageSize },
+				new LogoSearchQuery { PageNumber = 2, PageSize = PagedQuery.MinPageSize },
 				TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
@@ -53,8 +53,8 @@ public sealed partial class LogoServiceTests
 		Query<LogoEntity> query = _queries[^1];
 
 		Assert.IsNotNull(query.OrderBy);
-		Assert.AreEqual(Parameters.MinPageSize, query.Skip);
-		Assert.AreEqual(Parameters.MinPageSize, query.Take);
+		Assert.AreEqual(PagedQuery.MinPageSize, query.Skip);
+		Assert.AreEqual(PagedQuery.MinPageSize, query.Take);
 	}
 
 	[TestMethod]
@@ -63,11 +63,11 @@ public sealed partial class LogoServiceTests
 		_logos[0].LocalPath = Path.Combine("logos", "DasErste.de", "DasErste.de-1.png");
 
 		IPagedList<LogoOptionResponse> cached = await _sut
-			.SearchLogosAsync(new LogoSearchRequest { CacheState = LogoCacheFilter.Cached }, TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery { CacheState = LogoCacheFilter.Cached }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		IPagedList<LogoOptionResponse> missing = await _sut
-			.SearchLogosAsync(new LogoSearchRequest { CacheState = LogoCacheFilter.NotCached }, TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery { CacheState = LogoCacheFilter.NotCached }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, cached);
@@ -81,7 +81,7 @@ public sealed partial class LogoServiceTests
 		_ = await _sut.CacheLogosAsync(cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
 
 		IPagedList<LogoOptionResponse> logos = await _sut
-			.SearchLogosAsync(new LogoSearchRequest(), TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery(), TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		// The run cached one logo per channel, the tagged one of the first channel stayed behind.
@@ -104,7 +104,7 @@ public sealed partial class LogoServiceTests
 	public async Task SearchLogosAsyncShouldReadEveryLogoOfTheChannelOfATvgId()
 	{
 		IPagedList<LogoOptionResponse> logos = await _sut
-			.SearchLogosAsync(new LogoSearchRequest { SearchText = "DasErste.de@HD" }, TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery { SearchText = "DasErste.de@HD" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		// The feed only decides which logo is preferred, so the whole channel is offered.
@@ -115,7 +115,7 @@ public sealed partial class LogoServiceTests
 	public async Task SearchLogosAsyncShouldLimitTheResultToOneChannel()
 	{
 		IPagedList<LogoOptionResponse> logos = await _sut
-			.SearchLogosAsync(new LogoSearchRequest { Channel = " ZDF.de " }, TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery { Channel = " ZDF.de " }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, logos, "The channel is trimmed before it is matched.");
@@ -123,12 +123,12 @@ public sealed partial class LogoServiceTests
 	}
 
 	[TestMethod]
-	public async Task SearchLogosAsyncShouldThrowWhenThereIsNoRequest()
+	public async Task SearchLogosAsyncShouldThrowWhenThereIsNoQuery()
 		=> _ = await Assert.ThrowsExactlyAsync<ArgumentNullException>(
 			() => _sut.SearchLogosAsync(null!, TestContext.CancellationToken)).ConfigureAwait(false);
 
 	private async Task<IPagedList<LogoOptionResponse>> SearchAsync(string searchText)
 		=> await _sut
-			.SearchLogosAsync(new LogoSearchRequest { SearchText = searchText }, TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery { SearchText = searchText }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 }

@@ -4,7 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -63,7 +63,7 @@ public sealed class LogoSearchPersistenceTests
 	public async Task SearchLogosAsyncShouldReadEveryLogoWithTheNameOfItsChannel()
 	{
 		IPagedList<LogoOptionResponse> logos = await _sut
-			.SearchLogosAsync(new LogoSearchRequest(), TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery(), TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(3, logos);
@@ -102,7 +102,7 @@ public sealed class LogoSearchPersistenceTests
 	public async Task SearchLogosAsyncShouldReadEveryLogoOfTheChannelOfATvgId()
 	{
 		IPagedList<LogoOptionResponse> logos = await _sut
-			.SearchLogosAsync(new LogoSearchRequest { SearchText = "DasErste.de@HD" }, TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery { SearchText = "DasErste.de@HD" }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		// The feed only decides which logo is preferred, so the whole channel is offered.
@@ -113,11 +113,11 @@ public sealed class LogoSearchPersistenceTests
 	public async Task SearchLogosAsyncShouldKeepOnlyWhatTheCacheFilterAsksFor()
 	{
 		IPagedList<LogoOptionResponse> cached = await _sut
-			.SearchLogosAsync(new LogoSearchRequest { CacheState = LogoCacheFilter.Cached }, TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery { CacheState = LogoCacheFilter.Cached }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		IPagedList<LogoOptionResponse> missing = await _sut
-			.SearchLogosAsync(new LogoSearchRequest { CacheState = LogoCacheFilter.NotCached }, TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery { CacheState = LogoCacheFilter.NotCached }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 		Assert.HasCount(1, cached);
@@ -131,7 +131,7 @@ public sealed class LogoSearchPersistenceTests
 	{
 		IPagedList<LogoOptionResponse> logos = await _sut
 			.SearchLogosAsync(
-				new LogoSearchRequest(),
+				new LogoSearchQuery(),
 				TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
@@ -143,7 +143,7 @@ public sealed class LogoSearchPersistenceTests
 	{
 		IPagedList<LogoOptionResponse> page = await _sut
 			.SearchLogosAsync(
-				new LogoSearchRequest { Channel = "DasErste.de", PageNumber = 2, PageSize = Parameters.MinPageSize },
+				new LogoSearchQuery { Channel = "DasErste.de", PageNumber = 2, PageSize = PagedQuery.MinPageSize },
 				TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
@@ -153,7 +153,7 @@ public sealed class LogoSearchPersistenceTests
 
 	private async Task<IPagedList<LogoOptionResponse>> SearchAsync(string searchText)
 		=> await _sut
-			.SearchLogosAsync(new LogoSearchRequest { SearchText = searchText }, TestContext.CancellationToken)
+			.SearchLogosAsync(new LogoSearchQuery { SearchText = searchText }, TestContext.CancellationToken)
 			.ConfigureAwait(false);
 
 	private static LogoEntity CreateLogo(string channel, string? feed, string url, string format, string[] tags, string? localPath = null) => new()

@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.ViewModels;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Presentation.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
 using BB84.IPTV.M3U.Editor.Application.Events;
@@ -36,7 +36,7 @@ public sealed class PlaylistsViewModel : ViewModelBase, INavigateable
 	/// <summary>
 	/// The number of playlists per page, more than anybody keeps, so the paging stays out of the way.
 	/// </summary>
-	public const int PageSize = Parameters.MaxPageSize;
+	public const int PageSize = PagedQuery.MaxPageSize;
 
 	private readonly IPlaylistService _playlistService;
 	private readonly IFileDialogService _fileDialogService;
@@ -219,7 +219,7 @@ public sealed class PlaylistsViewModel : ViewModelBase, INavigateable
 	public async Task LoadPageAsync(int pageNumber, CancellationToken cancellationToken = default)
 	{
 		IPagedList<PlaylistSummaryResponse> summaries = await _playlistService
-			.GetPlaylistsAsync(new PlaylistSearchRequest { PageNumber = pageNumber, PageSize = PageSize }, cancellationToken)
+			.GetPlaylistsAsync(new PlaylistSearchQuery { PageNumber = pageNumber, PageSize = PageSize }, cancellationToken)
 			.ConfigureAwait(true);
 
 		int? currentId = CurrentPlaylist?.Id;

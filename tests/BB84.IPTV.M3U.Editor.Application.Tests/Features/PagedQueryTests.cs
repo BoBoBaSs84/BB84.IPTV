@@ -8,16 +8,16 @@ using BB84.IPTV.M3U.Editor.Application.Features;
 namespace BB84.IPTV.M3U.Editor.Application.Tests.Features;
 
 [TestClass]
-public sealed class ParametersTests
+public sealed class PagedQueryTests
 {
 	[TestMethod]
 	public void DefaultsShouldBeTheFirstPageWithTheLargestSize()
 	{
-		TestParameters parameters = new();
+		TestQuery query = new();
 
-		Assert.AreEqual(1, parameters.PageNumber);
-		Assert.AreEqual(Parameters.MaxPageSize, parameters.PageSize);
-		Assert.AreEqual(0, parameters.Skip);
+		Assert.AreEqual(1, query.PageNumber);
+		Assert.AreEqual(PagedQuery.MaxPageSize, query.PageSize);
+		Assert.AreEqual(0, query.Skip);
 	}
 
 	[TestMethod]
@@ -26,19 +26,19 @@ public sealed class ParametersTests
 	[DataRow(3, 3)]
 	public void PageNumberShouldNeverBeSmallerThanOne(int value, int expected)
 	{
-		TestParameters parameters = new() { PageNumber = value };
+		TestQuery parameters = new() { PageNumber = value };
 
 		Assert.AreEqual(expected, parameters.PageNumber);
 	}
 
 	[TestMethod]
-	[DataRow(0, Parameters.MinPageSize)]
-	[DataRow(50, Parameters.MinPageSize)]
+	[DataRow(0, PagedQuery.MinPageSize)]
+	[DataRow(50, PagedQuery.MinPageSize)]
 	[DataRow(250, 250)]
-	[DataRow(5000, Parameters.MaxPageSize)]
+	[DataRow(5000, PagedQuery.MaxPageSize)]
 	public void PageSizeShouldStayWithinTheAllowedRange(int value, int expected)
 	{
-		TestParameters parameters = new() { PageSize = value };
+		TestQuery parameters = new() { PageSize = value };
 
 		Assert.AreEqual(expected, parameters.PageSize);
 	}
@@ -46,11 +46,11 @@ public sealed class ParametersTests
 	[TestMethod]
 	public void SkipShouldBeTheItemsOfThePagesBefore()
 	{
-		TestParameters parameters = new() { PageNumber = 4, PageSize = 250 };
+		TestQuery parameters = new() { PageNumber = 4, PageSize = 250 };
 
 		Assert.AreEqual(750, parameters.Skip);
 	}
 
-	private sealed class TestParameters : Parameters
+	private sealed class TestQuery : PagedQuery
 	{ }
 }

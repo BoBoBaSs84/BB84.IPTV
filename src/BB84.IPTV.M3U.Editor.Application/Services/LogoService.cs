@@ -11,6 +11,7 @@ using BB84.EntityFrameworkCore.Repositories.Abstractions;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Common;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
@@ -118,14 +119,14 @@ internal sealed class LogoService(
 		return downloaded;
 	}
 
-	public async Task<IPagedList<LogoOptionResponse>> SearchLogosAsync(LogoSearchRequest request, CancellationToken cancellationToken = default)
+	public async Task<IPagedList<LogoOptionResponse>> SearchLogosAsync(LogoSearchQuery query, CancellationToken cancellationToken = default)
 	{
-		ArgumentNullException.ThrowIfNull(request);
+		ArgumentNullException.ThrowIfNull(query);
 
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
 
-		Expression<Func<LogoEntity, bool>> filter = await BuildFilterAsync(repositoryService, request, cancellationToken)
+		Expression<Func<LogoEntity, bool>> filter = await BuildFilterAsync(repositoryService, query, cancellationToken)
 			.ConfigureAwait(false);
 
 		int total = await repositoryService.Logos
@@ -138,9 +139,9 @@ internal sealed class LogoService(
 				new Query<LogoEntity>
 				{
 					Where = filter,
-					OrderBy = query => query.OrderBy(logo => logo.Channel).ThenBy(logo => logo.Id),
-					Skip = request.Skip,
-					Take = request.PageSize
+					OrderBy = q => q.OrderBy(logo => logo.Channel).ThenBy(logo => logo.Id),
+					Skip = query.Skip,
+					Take = query.PageSize
 				},
 				cancellationToken)
 			.ConfigureAwait(false);
@@ -157,7 +158,7 @@ internal sealed class LogoService(
 		IEnumerable<LogoOptionResponse> options = page
 			.Select(logo => logo.ToOption(CatalogLookup.Lookup(channelsById, logo.Channel), logoStoreService.Exists(logo.LocalPath)));
 
-		return new PagedList<LogoOptionResponse>(options, total, request.PageNumber, request.PageSize);
+		return new PagedList<LogoOptionResponse>(options, total, query.PageNumber, query.PageSize);
 	}
 
 	public async Task<string?> CacheLogoAsync(int logoId, CancellationToken cancellationToken = default)
@@ -251,11 +252,11 @@ internal sealed class LogoService(
 	/// </remarks>
 	private static async Task<Expression<Func<LogoEntity, bool>>> BuildFilterAsync(
 		IRepositoryService repositoryService,
-		LogoSearchRequest request,
+		LogoSearchQuery query,
 		CancellationToken cancellationToken)
 	{
-		string? text = request.SearchText.TrimToNull();
-		string? channel = request.Channel.TrimToNull() ?? (text.TryParseChannelFeed(out string tvgChannel, out _) ? tvgChannel : null);
+		string? text = query.SearchText.TrimToNull();
+		string? channel = query.Channel.TrimToNull() ?? (text.TryParseChannelFeed(out string tvgChannel, out _) ? tvgChannel : null);
 
 		// The text named the channel, so it is not matched as a text as well.
 		if (channel is not null)
@@ -265,7 +266,7 @@ internal sealed class LogoService(
 			? []
 			: [.. await LoadChannelsByNameAsync(repositoryService, text, cancellationToken).ConfigureAwait(false)];
 
-		LogoCacheFilter cacheState = request.CacheState;
+		LogoCacheFilter cacheState = query.CacheState;
 
 		return logo
 			=> (channel == null || logo.Channel == channel)

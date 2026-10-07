@@ -4,6 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Enumerators;
@@ -40,9 +41,9 @@ public sealed class MergeViewModelTests
 	{
 		_sut = new MergeViewModel(_mergeServiceMock.Object, _playlistServiceMock.Object, _eventServiceMock.Object);
 
-		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((PlaylistSearchRequest? request, CancellationToken _)
-				=> _storedPlaylists.ToPagedList(request?.PageNumber ?? 1, request?.PageSize ?? Parameters.MaxPageSize));
+		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchQuery?>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((PlaylistSearchQuery? query, CancellationToken _)
+				=> _storedPlaylists.ToPagedList(query?.PageNumber ?? 1, query?.PageSize ?? PagedQuery.MaxPageSize));
 
 		_mergeServiceMock.Setup(x => x.PreviewAsync(It.IsAny<MergeRequest>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(CreatePreview);
@@ -64,7 +65,7 @@ public sealed class MergeViewModelTests
 	[TestMethod]
 	public async Task LoadAndReportAsyncShouldReportAFailureInsteadOfThrowing()
 	{
-		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()))
+		_playlistServiceMock.Setup(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchQuery?>(), It.IsAny<CancellationToken>()))
 			.ThrowsAsync(new InvalidOperationException("no database"));
 
 		await _sut.LoadAndReportAsync().ConfigureAwait(false);
@@ -174,7 +175,7 @@ public sealed class MergeViewModelTests
 		await _sut.MergeCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
 		_mergeServiceMock.Verify(x => x.MergeAsync(It.Is<MergeRequest>(request => request.Name == "Everything"), It.IsAny<CancellationToken>()), Times.Once);
-		_playlistServiceMock.Verify(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchRequest?>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+		_playlistServiceMock.Verify(x => x.GetPlaylistsAsync(It.IsAny<PlaylistSearchQuery?>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
 	}
 
 	private async Task SelectTwoAsync()

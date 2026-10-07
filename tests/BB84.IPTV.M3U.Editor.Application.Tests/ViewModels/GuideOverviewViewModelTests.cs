@@ -4,7 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using BB84.IPTV.M3U.Editor.Application.Abstractions.Application.Services;
-using BB84.IPTV.M3U.Editor.Application.Contracts.Requests;
+using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Application.Features;
@@ -21,7 +21,7 @@ public sealed class GuideOverviewViewModelTests : IDisposable
 
 	private readonly Mock<IGuideService> _guideServiceMock = new();
 	private readonly Mock<IEventService> _eventServiceMock = new();
-	private readonly List<GuideSearchRequest> _requests = [];
+	private readonly List<GuideSearchQuery> _queries = [];
 	private readonly GuideOverviewViewModel _sut;
 
 	public GuideOverviewViewModelTests()
@@ -34,16 +34,16 @@ public sealed class GuideOverviewViewModelTests : IDisposable
 				new GuideSiteResponse { Site = "tvtoday.de", ChannelCount = 1, GuideCount = 1 }
 			]);
 
-		_guideServiceMock.Setup(x => x.SearchGuidesAsync(It.IsAny<GuideSearchRequest>(), It.IsAny<CancellationToken>()))
-			.ReturnsAsync((GuideSearchRequest request, CancellationToken _) =>
+		_guideServiceMock.Setup(x => x.SearchGuidesAsync(It.IsAny<GuideSearchQuery>(), It.IsAny<CancellationToken>()))
+			.ReturnsAsync((GuideSearchQuery query, CancellationToken _) =>
 			{
-				_requests.Add(request);
+				_queries.Add(query);
 
 				return new PagedList<GuideOptionResponse>(
 					[new GuideOptionResponse { Channel = "DasErste.de", Site = "hoerzu.de", SiteId = "ard", SiteName = "ARD", Lang = "de" }],
 					TotalGuides,
-					request.PageNumber,
-					request.PageSize);
+					query.PageNumber,
+					query.PageSize);
 			});
 
 		_sut = new GuideOverviewViewModel(_guideServiceMock.Object, _eventServiceMock.Object);
@@ -68,10 +68,10 @@ public sealed class GuideOverviewViewModelTests : IDisposable
 		Assert.IsFalse(_sut.HasPreviousPage);
 		Assert.IsFalse(_sut.IsBusy);
 
-		GuideSearchRequest request = _requests.Single();
+		GuideSearchQuery query = _queries.Single();
 
-		Assert.AreEqual(Parameters.MinPageSize, request.PageSize);
-		Assert.IsNull(request.Site);
+		Assert.AreEqual(PagedQuery.MinPageSize, query.PageSize);
+		Assert.IsNull(query.Site);
 	}
 
 	[TestMethod]
@@ -92,10 +92,10 @@ public sealed class GuideOverviewViewModelTests : IDisposable
 
 		await _sut.SearchCommand.ExecuteAsync(TestContext.CancellationToken).ConfigureAwait(false);
 
-		GuideSearchRequest request = _requests[^1];
+		GuideSearchQuery query = _queries[^1];
 
-		Assert.AreEqual("Das Erste", request.SearchText);
-		Assert.AreEqual(1, request.PageNumber);
+		Assert.AreEqual("Das Erste", query.SearchText);
+		Assert.AreEqual(1, query.PageNumber);
 		Assert.AreEqual(1, _sut.PageNumber);
 	}
 
@@ -105,15 +105,15 @@ public sealed class GuideOverviewViewModelTests : IDisposable
 		await _sut.LoadAndReportAsync().ConfigureAwait(false);
 
 		_sut.SelectedProvider = _sut.Providers[1];
-		await WaitForRequestsAsync(2).ConfigureAwait(false);
+		await WaitForQueriesAsync(2).ConfigureAwait(false);
 
-		Assert.AreEqual("magentatv.de", _requests[^1].Site);
+		Assert.AreEqual("magentatv.de", _queries[^1].Site);
 		Assert.IsTrue(_sut.ClearProviderCommand.CanExecute());
 
 		_sut.ClearProviderCommand.Execute();
-		await WaitForRequestsAsync(3).ConfigureAwait(false);
+		await WaitForQueriesAsync(3).ConfigureAwait(false);
 
-		Assert.IsNull(_requests[^1].Site);
+		Assert.IsNull(_queries[^1].Site);
 		Assert.IsNull(_sut.SelectedProvider);
 	}
 
@@ -126,12 +126,12 @@ public sealed class GuideOverviewViewModelTests : IDisposable
 
 		Assert.HasCount(2, _sut.Providers);
 		Assert.AreEqual("magentatv.de", _sut.Providers[0].Site);
-		Assert.HasCount(1, _requests);
+		Assert.HasCount(1, _queries);
 
 		_sut.ProviderSearchText = string.Empty;
 
 		Assert.HasCount(3, _sut.Providers);
-		Assert.HasCount(1, _requests);
+		Assert.HasCount(1, _queries);
 	}
 
 	[TestMethod]
@@ -149,7 +149,7 @@ public sealed class GuideOverviewViewModelTests : IDisposable
 	[TestMethod]
 	public async Task AFailingSearchShouldBeReported()
 	{
-		_guideServiceMock.Setup(x => x.SearchGuidesAsync(It.IsAny<GuideSearchRequest>(), It.IsAny<CancellationToken>()))
+		_guideServiceMock.Setup(x => x.SearchGuidesAsync(It.IsAny<GuideSearchQuery>(), It.IsAny<CancellationToken>()))
 			.ThrowsAsync(new InvalidOperationException("no database"));
 
 		await _sut.LoadAndReportAsync().ConfigureAwait(false);
@@ -161,12 +161,12 @@ public sealed class GuideOverviewViewModelTests : IDisposable
 	/// <summary>
 	/// Waits for the searches a property setter starts, which cannot be awaited by the caller.
 	/// </summary>
-	private async Task WaitForRequestsAsync(int count)
+	private async Task WaitForQueriesAsync(int count)
 	{
-		for (int attempt = 0; attempt < 50 && _requests.Count < count; attempt++)
+		for (int attempt = 0; attempt < 50 && _queries.Count < count; attempt++)
 			await Task.Delay(10, TestContext.CancellationToken).ConfigureAwait(false);
 
-		Assert.HasCount(count, _requests);
+		Assert.HasCount(count, _queries);
 	}
 
 	public TestContext TestContext { get; set; } = default!;
