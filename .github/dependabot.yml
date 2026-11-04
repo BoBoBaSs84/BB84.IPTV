@@ -10,25 +10,48 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "03:00"
-    assignees:
-      - "BoBoBaSs84"
+      time: "01:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 10
+    assignees: ["BoBoBaSs84"]
+    labels: ["dependencies", "nuget"]
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    ignore:
+      # The .NET major line (10 -> 11) moves together with the SDK and TFM, so it is done by hand.
+      - dependency-name: "Microsoft.*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "Avalonia.*"
+        update-types: ["version-update:semver-major"]
     groups:
-      avalonia-dependencies:
+      microsoft:
         patterns:
-          - "Avalonia*"
-      bb84-dependencies:
+          - "Microsoft.*"
+        update-types: ["minor", "patch"]
+      avalonia:
         patterns:
-          - "BB84*"
-      microsoft-dependencies:
-        patterns:
-          - "Microsoft*"
+          - "Avalonia.*"
+        update-types: ["minor", "patch"]
+      bb84:
+        patterns: ["BB84.*"]
+        update-types: ["minor", "patch"]
+      security:
+        applies-to: "security-updates"
+        patterns: ["*"]
       
+  # GitHub Actions used by the workflows.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "03:00"
-    assignees:
-      - "BoBoBaSs84"
+      time: "01:00"
+      timezone: "Europe/Berlin"
+    assignees: ["BoBoBaSs84"]
+    labels: ["dependencies", "github_actions"]
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      actions:
+        patterns: ["*"]

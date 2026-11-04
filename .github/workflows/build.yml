@@ -46,7 +46,7 @@ jobs:
       - name: Setup the .NET SDK
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.x
+          global-json-file: global.json
 
       - name: Cache the NuGet packages
         uses: actions/cache@v6
@@ -62,7 +62,7 @@ jobs:
         run: dotnet build BB84.IPTV.slnx --configuration Release --no-restore
 
       - name: Run the tests
-        run: dotnet test BB84.IPTV.slnx --configuration Release --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
+        run: dotnet test BB84.IPTV.slnx --configuration Release --no-build --report-trx --results-directory ./test-results
 
       - name: Upload the test results
         if: ${{ !cancelled() }}

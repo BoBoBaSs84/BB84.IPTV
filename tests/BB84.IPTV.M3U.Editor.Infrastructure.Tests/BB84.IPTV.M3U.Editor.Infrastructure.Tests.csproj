@@ -1,10 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<IsTestProject>True</IsTestProject>
-	</PropertyGroup>
+﻿<Project Sdk="MSTest.Sdk">
   <ItemGroup>
     <PackageReference Include="Moq" />
-    <PackageReference Include="MSTest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\BB84.IPTV.M3U.Editor.Infrastructure\BB84.IPTV.M3U.Editor.Infrastructure.csproj" />
