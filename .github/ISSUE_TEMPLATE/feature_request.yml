@@ -1,0 +1,56 @@
+name: Feature request
+description: Suggest an idea for the BB84.IPTV M3U editor
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem? Please describe.
+      description: A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+    validations:
+      required: false
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Playlists (editor, import, M3U export)
+        - Channel catalog / custom channels
+        - Merging
+        - Logo cache / logo assignment
+        - channels.xml export / guide mapping
+        - Database (create database, update catalog)
+        - Settings / localization
+        - Other / new area
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: A clear and concise description of any alternative solutions or features you've considered.
+    validations:
+      required: false
+  - type: textarea
+    id: example
+    attributes:
+      label: Example
+      description: If the request concerns M3U or channels.xml output, sketch the desired input and output.
+      render: text
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add any other context, mockups or screenshots about the feature request here.
+    validations:
+      required: false

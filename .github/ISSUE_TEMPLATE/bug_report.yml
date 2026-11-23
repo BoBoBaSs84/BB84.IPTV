@@ -1,0 +1,96 @@
+name: Bug report
+description: Report a problem with the BB84.IPTV M3U editor
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to fill out this bug report.
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Playlists (editor, import, M3U export)
+        - Channel catalog / custom channels
+        - Merging
+        - Logo cache / logo assignment
+        - channels.xml export / guide mapping
+        - Database (create database, update catalog)
+        - Settings / localization
+        - Startup / other
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: To reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Open the '...' screen
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: sample
+    attributes:
+      label: Sample M3U / channels.xml
+      description: If the bug concerns import, export or merge, paste a minimal playlist snippet that shows it. Remove private stream URLs or credentials.
+      render: text
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log output
+      description: Relevant lines from the log file in `<app data>/logs` (enable logging in the settings if needed).
+      render: text
+    validations:
+      required: false
+  - type: input
+    id: app-version
+    attributes:
+      label: Application version
+      description: Release tag or commit you are running.
+      placeholder: e.g. v1.0.0 or e1dbc53
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - Linux
+        - macOS
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: OS version
+      placeholder: e.g. Windows 11 24H2, Ubuntu 24.04, macOS 15
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the problem here.
+    validations:
+      required: false
