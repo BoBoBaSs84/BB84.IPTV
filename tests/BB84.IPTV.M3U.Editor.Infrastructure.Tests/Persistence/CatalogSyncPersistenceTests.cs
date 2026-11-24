@@ -356,7 +356,7 @@ public sealed class CatalogSyncPersistenceTests
 			return true;
 		}
 
-		public int Clear()
+		public int Clear(IEnumerable<string?> paths)
 			=> 0;
 	}
 }

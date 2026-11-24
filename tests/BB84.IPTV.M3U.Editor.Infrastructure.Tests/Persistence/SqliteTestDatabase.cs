@@ -121,7 +121,7 @@ internal sealed class SqliteTestDatabase : IDisposable
 		public bool Delete(string? path)
 			=> false;
 
-		public int Clear()
+		public int Clear(IEnumerable<string?> paths)
 			=> 0;
 	}
 

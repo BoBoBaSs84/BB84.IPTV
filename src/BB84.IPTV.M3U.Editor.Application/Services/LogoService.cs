@@ -221,7 +221,11 @@ internal sealed class LogoService(
 		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		IRepositoryService repositoryService = GetRepositoryService(scope);
 
-		int deleted = logoStoreService.Clear();
+		IReadOnlyList<LogoEntity> logos = await repositoryService.Logos
+			.GetListAsync(new Query<LogoEntity> { Where = logo => logo.LocalPath != null }, cancellationToken)
+			.ConfigureAwait(false);
+
+		int deleted = logoStoreService.Clear(logos.Select(logo => logo.LocalPath));
 
 		_ = await repositoryService.Logos
 			.ExecuteUpdateAsync(

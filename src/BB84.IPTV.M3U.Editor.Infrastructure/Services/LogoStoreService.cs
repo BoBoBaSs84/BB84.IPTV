@@ -13,7 +13,8 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 /// </summary>
 /// <remarks>
 /// The files live in the logo directory the <see cref="IPathService"/> provides, one folder per
-/// channel, so a channel keeps its logos together and a cleared cache is one directory to delete.
+/// channel, so a channel keeps its logos together. The directory is user-configurable and may hold
+/// foreign files, so only the files the catalog knows are ever deleted.
 /// </remarks>
 /// <param name="pathService">The service that provides the file system locations of the application.</param>
 /// <param name="providerService">The provider service used for file access.</param>
@@ -57,13 +58,27 @@ internal sealed class LogoStoreService(IPathService pathService, IProviderServic
 		return true;
 	}
 
-	public int Clear()
+	public int Clear(IEnumerable<string?> paths)
 	{
-		if (!providerService.Directory.Exists(pathService.LogoDirectory))
-			return 0;
+		ArgumentNullException.ThrowIfNull(paths);
 
-		int deleted = providerService.Directory.GetFiles(pathService.LogoDirectory, "*", SearchOption.AllDirectories).Length;
-		providerService.Directory.Delete(pathService.LogoDirectory, true);
+		string root = providerService.Path.GetFullPath(pathService.LogoDirectory);
+		int deleted = 0;
+
+		foreach (string? path in paths)
+		{
+			if (!Delete(path))
+				continue;
+
+			deleted++;
+
+			// The channel folder goes once it is empty, the logo directory itself always stays.
+			string? directory = providerService.Path.GetDirectoryName(providerService.Path.GetFullPath(path!));
+			if (directory is not null
+				&& !string.Equals(directory, root, StringComparison.OrdinalIgnoreCase)
+				&& !providerService.Directory.EnumerateFileSystemEntries(directory).Any())
+				providerService.Directory.Delete(directory);
+		}
 
 		return deleted;
 	}

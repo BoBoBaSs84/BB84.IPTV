@@ -38,10 +38,16 @@ public sealed class LogoStoreServiceTests
 
 		Mock<IPathProvider> pathProviderMock = new();
 		pathProviderMock.Setup(x => x.GetFullPath(It.IsAny<string>())).Returns((string path) => Path.GetFullPath(path));
+		pathProviderMock.Setup(x => x.GetDirectoryName(It.IsAny<string>())).Returns((string path) => Path.GetDirectoryName(path));
+
+		Mock<IDirectoryProvider> directoryProviderMock = new();
+		directoryProviderMock.Setup(x => x.EnumerateFileSystemEntries(It.IsAny<string>())).Returns((string path) => Directory.EnumerateFileSystemEntries(path));
+		directoryProviderMock.Setup(x => x.Delete(It.IsAny<string>())).Callback((string path) => Directory.Delete(path));
 
 		Mock<IProviderService> providerServiceMock = new();
 		providerServiceMock.SetupGet(x => x.File).Returns(fileProviderMock.Object);
 		providerServiceMock.SetupGet(x => x.Path).Returns(pathProviderMock.Object);
+		providerServiceMock.SetupGet(x => x.Directory).Returns(directoryProviderMock.Object);
 
 		_sut = new LogoStoreService(_pathServiceMock.Object, providerServiceMock.Object);
 	}
@@ -97,4 +103,39 @@ public sealed class LogoStoreServiceTests
 	[TestMethod]
 	public void DeleteShouldDoNothingWhenTheFileIsAlreadyGone()
 		=> Assert.IsFalse(_sut.Delete(Path.Combine(_logoDirectory, "gone.png")));
+
+	[TestMethod]
+	public void ClearShouldDeleteOnlyTheKnownFilesAndKeepForeignOnes()
+	{
+		string channelDirectory = Path.Combine(_logoDirectory, "DasErste.de");
+		_ = Directory.CreateDirectory(channelDirectory);
+		string logoPath = Path.Combine(channelDirectory, "ard.png");
+		File.WriteAllBytes(logoPath, [1, 2, 3]);
+		string foreignPath = Path.Combine(_logoDirectory, "holiday.jpg");
+		File.WriteAllBytes(foreignPath, [4, 5, 6]);
+
+		int deleted = _sut.Clear([logoPath, null, Path.Combine(_logoDirectory, "gone.png")]);
+
+		Assert.AreEqual(1, deleted);
+		Assert.IsFalse(File.Exists(logoPath));
+		Assert.IsFalse(Directory.Exists(channelDirectory));
+		Assert.IsTrue(File.Exists(foreignPath));
+		Assert.IsTrue(Directory.Exists(_logoDirectory));
+	}
+
+	[TestMethod]
+	public void ClearShouldKeepAChannelFolderThatStillHoldsFiles()
+	{
+		string channelDirectory = Path.Combine(_logoDirectory, "DasErste.de");
+		_ = Directory.CreateDirectory(channelDirectory);
+		string logoPath = Path.Combine(channelDirectory, "ard.png");
+		File.WriteAllBytes(logoPath, [1, 2, 3]);
+		string foreignPath = Path.Combine(channelDirectory, "notes.txt");
+		File.WriteAllBytes(foreignPath, [4, 5, 6]);
+
+		int deleted = _sut.Clear([logoPath]);
+
+		Assert.AreEqual(1, deleted);
+		Assert.IsTrue(File.Exists(foreignPath));
+	}
 }
