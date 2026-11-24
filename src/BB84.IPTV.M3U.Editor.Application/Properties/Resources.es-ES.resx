@@ -367,9 +367,6 @@
   <data name="SettingsSaveFailed" xml:space="preserve">
     <value>No se pudo escribir la configuración.</value>
   </data>
-  <data name="WebRequestFailed" xml:space="preserve">
-    <value>No se pudieron leer los datos de iptv-org.</value>
-  </data>
   <data name="LogoAssigned" xml:space="preserve">
     <value>El logotipo se ha asignado a {0} entradas.</value>
   </data>

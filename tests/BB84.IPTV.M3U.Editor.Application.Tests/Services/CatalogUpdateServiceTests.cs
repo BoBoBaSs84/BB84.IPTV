@@ -146,6 +146,46 @@ public sealed class CatalogUpdateServiceTests
 			Times.Once);
 	}
 
+	[TestMethod]
+	public async Task ACancelledRunShouldReportNothing()
+	{
+		_settings.Database.UpdateIntervalDays = 7;
+		_settings.Database.AutoUpdate = true;
+		SetupStatus(Now.AddDays(-9));
+
+		using CancellationTokenSource tokenSource = new();
+		_databaseServiceMock.Setup(x => x.SynchronizeAsync(It.IsAny<CancellationToken>()))
+			.Returns(async () =>
+			{
+				await tokenSource.CancelAsync().ConfigureAwait(false);
+				throw new TaskCanceledException();
+			});
+
+		bool updated = await _sut.RunStartupCheckAsync(tokenSource.Token).ConfigureAwait(false);
+
+		Assert.IsFalse(updated);
+		_eventServiceMock.Verify(x => x.Publish(It.IsAny<ErrorOccuredEvent>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task ATimeoutShouldBeReportedAsAFailure()
+	{
+		_settings.Database.UpdateIntervalDays = 7;
+		_settings.Database.AutoUpdate = true;
+		SetupStatus(Now.AddDays(-9));
+
+		// HttpClient reports its timeout as a cancellation, although nobody cancelled the run.
+		_databaseServiceMock.Setup(x => x.SynchronizeAsync(It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new TaskCanceledException("timeout"));
+
+		bool updated = await _sut.RunStartupCheckAsync(TestContext.CancellationToken).ConfigureAwait(false);
+
+		Assert.IsFalse(updated);
+		_eventServiceMock.Verify(
+			x => x.Publish(It.Is<ErrorOccuredEvent>(@event => @event.Message == Resources.DatabaseSyncFailed)),
+			Times.Once);
+	}
+
 	/// <summary>
 	/// Says that every list was read at the given time.
 	/// </summary>

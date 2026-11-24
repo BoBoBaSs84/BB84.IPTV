@@ -45,6 +45,21 @@ public sealed partial class DatabaseServiceTests
 	}
 
 	[TestMethod]
+	public async Task SynchronizeAsyncShouldStopAtTheFirstListThatCannotBeRead()
+	{
+		_webServiceMock.Setup(x => x.GetCategoriesAsync(It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new HttpRequestException("offline"));
+
+		_ = await Assert.ThrowsExactlyAsync<HttpRequestException>(
+			() => _sut.SynchronizeAsync(TestContext.CancellationToken)).ConfigureAwait(false);
+
+		// One outage is one failure for the caller to report, not one message per list.
+		_webServiceMock.Verify(x => x.GetCountriesAsync(It.IsAny<CancellationToken>()), Times.Never);
+		_eventServiceMock.Verify(x => x.Publish(It.IsAny<WarningOccuredEvent>()), Times.Never);
+		_eventServiceMock.Verify(x => x.Publish(It.IsAny<ErrorOccuredEvent>()), Times.Never);
+	}
+
+	[TestMethod]
 	public async Task SynchronizeAsyncShouldStopWhenItIsCancelled()
 	{
 		_webServiceMock.Setup(x => x.GetCategoriesAsync(It.IsAny<CancellationToken>()))

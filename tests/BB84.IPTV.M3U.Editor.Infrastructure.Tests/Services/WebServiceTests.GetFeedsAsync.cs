@@ -7,7 +7,6 @@ using System.Net;
 
 using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
-using BB84.IPTV.M3U.Editor.Application.Events;
 using BB84.IPTV.M3U.Editor.Infrastructure.Common;
 using BB84.IPTV.M3U.Editor.Infrastructure.Tests.Common;
 using BB84.IPTV.M3U.Editor.Infrastructure.Tests.Properties;
@@ -21,34 +20,25 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Tests.Services;
 public sealed partial class WebServiceTests
 {
 	[TestMethod]
-	public async Task GetFeedsAsyncShouldPublishErrorOnException()
+	public async Task GetFeedsAsyncShouldThrowOnException()
 	{
 		CancellationToken cancellationToken = CancellationToken.None;
 		_httpClientFactoryMock.Setup(x => x.CreateClient(Constants.HttpClientName))
 			.Throws<Exception>();
 
-		IEnumerable<FeedResponse> result = await _sut
-			.GetFeedsAsync(cancellationToken)
-			.ConfigureAwait(false);
-
-		Assert.IsNotNull(result);
-		_eventServiceMock.Verify(x => x.Publish(It.IsAny<ErrorOccuredEvent>()), Times.Once);
+		_ = await Assert.ThrowsExactlyAsync<Exception>(() => _sut.GetFeedsAsync(cancellationToken)).ConfigureAwait(false);
 	}
 
 	[TestMethod]
-	public async Task GetFeedsAsyncShouldPublishErrorWhenNotSuccessful()
+	public async Task GetFeedsAsyncShouldThrowWhenNotSuccessful()
 	{
 		CancellationToken cancellationToken = CancellationToken.None;
 		_httpClientFactoryMock.Setup(x => x.CreateClient(Constants.HttpClientName))
 			.Returns(CreateMockedClient(HttpStatusCode.InternalServerError));
 
-		IEnumerable<FeedResponse> result = await _sut
-			.GetFeedsAsync(cancellationToken)
-			.ConfigureAwait(false);
+		_ = await Assert.ThrowsExactlyAsync<HttpRequestException>(() => _sut.GetFeedsAsync(cancellationToken)).ConfigureAwait(false);
 
-		Assert.IsNotNull(result);
 		_loggerMock.VerifyLogged(LogLevel.Information, LogEvents.Web.ApiRequestSent, Times.Once());
-		_eventServiceMock.Verify(x => x.Publish(It.IsAny<ErrorOccuredEvent>()), Times.Once);
 	}
 
 	[TestMethod]
@@ -65,6 +55,5 @@ public sealed partial class WebServiceTests
 		Assert.IsNotNull(result);
 		_loggerMock.VerifyLogged(LogLevel.Information, LogEvents.Web.ApiRequestSent, Times.Once());
 		_loggerMock.VerifyLogged(LogLevel.Information, LogEvents.Web.ApiItemsReceived, Times.Once());
-		_eventServiceMock.Verify(x => x.Publish(It.IsAny<ErrorOccuredEvent>()), Times.Never);
 	}
 }

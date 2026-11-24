@@ -227,7 +227,7 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 	{
 		List<TResponse> imported = [.. await FetchAsync(fetch, cancellationToken).ConfigureAwait(false)];
 
-		// The web service answers a failed request with an empty list, so nothing is removed for one.
+		// A failed request throws and ends the run, an empty answer only skips the list, so nothing is removed for it.
 		if (imported.Count is 0)
 		{
 			_eventService.Publish(new WarningOccuredEvent(Resources.DatabaseSyncEmptyResult.FormatMessage(kind.ToString())));
@@ -303,6 +303,10 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 	/// <summary>
 	/// Reads the list from iptv-org.
 	/// </summary>
+	/// <remarks>
+	/// A failed request throws, so the run stops at the first list that cannot be read and the caller
+	/// reports it once.
+	/// </remarks>
 	private async Task<IEnumerable<TResponse>> FetchAsync<TResponse>(
 		Func<IWebService, CancellationToken, Task<IEnumerable<TResponse>>> fetch,
 		CancellationToken cancellationToken)
@@ -310,12 +314,7 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 		using IServiceScope scope = _serviceScopeFactory.CreateScope();
 		IWebService webService = scope.ServiceProvider.GetRequiredService<IWebService>();
 
-		IEnumerable<TResponse> result = await fetch(webService, cancellationToken).ConfigureAwait(false);
-
-		// The web service swallows a cancellation as well, so it is checked here.
-		cancellationToken.ThrowIfCancellationRequested();
-
-		return result;
+		return await fetch(webService, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
