@@ -91,10 +91,12 @@ internal sealed class GuideService(
 		IRepositoryService repositoryService = GetRepositoryService(scope);
 
 		// Replacing everything of the playlist in one commit keeps the stored mappings and the
-		// ones on screen the same, also when a row was cleared.
-		_ = await repositoryService.GuideMappings
-			.ExecuteDeleteAsync(mapping => mapping.PlaylistId == playlistId, cancellationToken)
+		// ones on screen the same, also when a row was cleared, and a failed save keeps the old ones.
+		IReadOnlyList<GuideMappingEntity> stored = await repositoryService.GuideMappings
+			.GetListAsync(new Query<GuideMappingEntity> { Where = mapping => mapping.PlaylistId == playlistId, TrackChanges = true }, cancellationToken)
 			.ConfigureAwait(false);
+
+		repositoryService.GuideMappings.Delete(stored);
 
 		// One mapping per key, whatever the caller passes: the key is unique per playlist, so a
 		// playlist that holds the same tvg-id twice would otherwise break the insert.

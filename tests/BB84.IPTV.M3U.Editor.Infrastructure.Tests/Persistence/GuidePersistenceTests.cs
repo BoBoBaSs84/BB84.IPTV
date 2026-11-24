@@ -8,6 +8,7 @@ using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 using BB84.IPTV.M3U.Editor.Domain.Models;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BB84.IPTV.M3U.Editor.Infrastructure.Tests.Persistence;
@@ -115,6 +116,24 @@ public sealed class GuidePersistenceTests
 		// Saving a playlist replaces all its entries, the mappings must still be found.
 		Domain.Abstractions.Models.IPlaylist playlist = (await _playlistService.LoadAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false))!;
 		_ = await _playlistService.UpdateAsync(_playlistId, "Mine", playlist, TestContext.CancellationToken).ConfigureAwait(false);
+
+		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
+
+		Assert.AreEqual("mine.example", stored[0].Site);
+		Assert.IsTrue(stored[0].IsStored);
+	}
+
+	[TestMethod]
+	public async Task SaveMappingsAsyncShouldKeepWhatWasStoredWhenTheInsertFails()
+	{
+		IReadOnlyList<GuideMappingResponse> mappings = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
+		_ = await _sut.SaveMappingsAsync(_playlistId, [Override(mappings[0], site: "mine.example", siteId: "999")], TestContext.CancellationToken).ConfigureAwait(false);
+
+		// A row without a key breaks the insert on the NOT NULL column.
+		GuideMappingResponse broken = new() { EntryKey = null!, Title = "Broken", Site = "broken.example" };
+
+		_ = await Assert.ThrowsAsync<DbUpdateException>(()
+			=> _sut.SaveMappingsAsync(_playlistId, [mappings[1], broken], TestContext.CancellationToken)).ConfigureAwait(false);
 
 		IReadOnlyList<GuideMappingResponse> stored = await _sut.GetMappingsAsync(_playlistId, TestContext.CancellationToken).ConfigureAwait(false);
 
