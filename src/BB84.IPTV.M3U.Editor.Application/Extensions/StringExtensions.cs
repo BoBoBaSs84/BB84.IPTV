@@ -31,6 +31,23 @@ public static class StringExtensions
 		=> string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 
 	/// <summary>
+	/// Folds the ASCII letters of the text to lower case and keeps every other character, as the
+	/// <c>lower</c> function of SQLite does.
+	/// </summary>
+	/// <remarks>
+	/// A search that compares the folded text with <c>column.ToLower()</c> ignores the case of ASCII
+	/// letters in memory and in SQLite alike.
+	/// </remarks>
+	/// <param name="text">The text to fold.</param>
+	/// <returns>The text with its ASCII letters in lower case.</returns>
+	internal static string ToLowerAscii(this string text)
+		=> string.Create(text.Length, text, static (span, source) =>
+		{
+			for (int index = 0; index < source.Length; index++)
+				span[index] = char.IsAsciiLetterUpper(source[index]) ? char.ToLowerInvariant(source[index]) : source[index];
+		});
+
+	/// <summary>
 	/// Splits an identifier of the form <c>channel@feed</c>, as a <c>channels.xml</c> or the
 	/// <c>tvg-id</c> of an entry holds it, into the channel and the feed.
 	/// </summary>

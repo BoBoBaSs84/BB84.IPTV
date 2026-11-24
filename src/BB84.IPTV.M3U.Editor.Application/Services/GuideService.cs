@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -225,6 +225,9 @@ internal sealed class GuideService(
 		return new PagedList<GuideOptionResponse>(options, total, query.PageNumber, query.PageSize);
 	}
 
+	[SuppressMessage("Globalization", "CA1304", Justification = "Translated to the lower function of SQLite, not run in memory.")]
+	[SuppressMessage("Globalization", "CA1311", Justification = "Translated to the lower function of SQLite, not run in memory.")]
+	[SuppressMessage("Performance", "CA1862", Justification = "A comparison overload of Contains does not translate to SQL.")]
 	public async Task<IPagedList<GuideOptionResponse>> SearchSiteChannelsAsync(GuideSiteSearchQuery query, CancellationToken cancellationToken = default)
 	{
 		ArgumentNullException.ThrowIfNull(query);
@@ -239,8 +242,11 @@ internal sealed class GuideService(
 
 		if (text is not null)
 		{
+			string folded = text.ToLowerAscii();
 			filter = guide => guide.Site == site
-				&& ((guide.Channel != null && guide.Channel.Contains(text)) || guide.SiteId.Contains(text) || guide.SiteName.Contains(text));
+				&& ((guide.Channel != null && guide.Channel.ToLower().Contains(folded))
+					|| guide.SiteId.ToLower().Contains(folded)
+					|| guide.SiteName.ToLower().Contains(folded));
 		}
 
 		int total = await repositoryService.Guides
@@ -381,7 +387,7 @@ internal sealed class GuideService(
 		if (text.TryParseChannelFeed(out string channelId, out string feedId))
 			return guide => (site == null || guide.Site == site) && guide.Channel == channelId && guide.Feed == feedId;
 
-		string folded = ToLowerAscii(text);
+		string folded = text.ToLowerAscii();
 
 		List<string> named = [.. await repositoryService.Channels
 			.GetListAsync(
@@ -397,17 +403,6 @@ internal sealed class GuideService(
 				|| guide.SiteName.ToLower().Contains(folded)
 				|| guide.Lang.ToLower().Contains(folded));
 	}
-
-	/// <summary>
-	/// Folds the ASCII letters of the text to lower case and keeps every other character, as the
-	/// <c>lower</c> function of SQLite does.
-	/// </summary>
-	private static string ToLowerAscii(string text)
-		=> string.Create(text.Length, text, static (span, source) =>
-		{
-			for (int index = 0; index < source.Length; index++)
-				span[index] = char.IsAsciiLetterUpper(source[index]) ? char.ToLowerInvariant(source[index]) : source[index];
-		});
 
 	private static IRepositoryService GetRepositoryService(IServiceScope scope)
 		=> scope.ServiceProvider.GetRequiredService<IRepositoryService>();

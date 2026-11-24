@@ -4,6 +4,7 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 using System.Globalization;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 
@@ -254,6 +255,9 @@ internal sealed class LogoService(
 	/// entry, and a feed only decides which logo of a channel is preferred, so the channel alone is
 	/// matched and the logos of its other feeds stay in the result.
 	/// </remarks>
+	[SuppressMessage("Globalization", "CA1304", Justification = "Translated to the lower function of SQLite, not run in memory.")]
+	[SuppressMessage("Globalization", "CA1311", Justification = "Translated to the lower function of SQLite, not run in memory.")]
+	[SuppressMessage("Performance", "CA1862", Justification = "A comparison overload of Contains does not translate to SQL.")]
 	private static async Task<Expression<Func<LogoEntity, bool>>> BuildFilterAsync(
 		IRepositoryService repositoryService,
 		LogoSearchQuery query,
@@ -271,33 +275,41 @@ internal sealed class LogoService(
 			: [.. await LoadChannelsByNameAsync(repositoryService, text, cancellationToken).ConfigureAwait(false)];
 
 		LogoCacheFilter cacheState = query.CacheState;
+		string? folded = text?.ToLowerAscii();
 
 		return logo
 			=> (channel == null || logo.Channel == channel)
 			&& (cacheState != LogoCacheFilter.Cached || logo.LocalPath != null)
 			&& (cacheState != LogoCacheFilter.NotCached || logo.LocalPath == null)
-			&& (text == null
-				|| logo.Channel.Contains(text)
+			&& (folded == null
+				|| logo.Channel.ToLower().Contains(folded)
 				|| named.Contains(logo.Channel)
-				|| (logo.Feed != null && logo.Feed.Contains(text))
-				|| (logo.Format != null && logo.Format.Contains(text))
-				|| logo.Url.Contains(text)
-				|| (logo.LocalPath != null && logo.LocalPath.Contains(text)));
+				|| (logo.Feed != null && logo.Feed.ToLower().Contains(folded))
+				|| (logo.Format != null && logo.Format.ToLower().Contains(folded))
+				|| logo.Url.ToLower().Contains(folded)
+				|| (logo.LocalPath != null && logo.LocalPath.ToLower().Contains(folded)));
 	}
 
 	/// <summary>
 	/// Reads the identifiers of the channels whose name holds the text.
 	/// </summary>
+	[SuppressMessage("Globalization", "CA1304", Justification = "Translated to the lower function of SQLite, not run in memory.")]
+	[SuppressMessage("Globalization", "CA1311", Justification = "Translated to the lower function of SQLite, not run in memory.")]
+	[SuppressMessage("Performance", "CA1862", Justification = "A comparison overload of Contains does not translate to SQL.")]
 	private static async Task<IReadOnlyList<string>> LoadChannelsByNameAsync(
 		IRepositoryService repositoryService,
 		string text,
 		CancellationToken cancellationToken)
-		=> await repositoryService.Channels
+	{
+		string folded = text.ToLowerAscii();
+
+		return await repositoryService.Channels
 			.GetListAsync(
 				Mappings.ChannelToIdentifier,
-				new Query<ChannelEntity> { Where = channel => channel.Name.Contains(text) },
+				new Query<ChannelEntity> { Where = channel => channel.Name.ToLower().Contains(folded) },
 				cancellationToken)
 			.ConfigureAwait(false);
+	}
 
 	/// <summary>
 	/// Reads which logos are to be downloaded.

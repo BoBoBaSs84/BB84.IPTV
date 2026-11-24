@@ -1,8 +1,9 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 using BB84.EntityFrameworkCore.Entities.Abstractions;
@@ -13,6 +14,7 @@ using BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 using BB84.IPTV.M3U.Editor.Application.Common;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Queries;
 using BB84.IPTV.M3U.Editor.Application.Contracts.Responses;
+using BB84.IPTV.M3U.Editor.Application.Extensions;
 using BB84.IPTV.M3U.Editor.Application.Features;
 using BB84.IPTV.M3U.Editor.Domain.Entities;
 
@@ -138,14 +140,17 @@ internal sealed class CatalogService(IServiceScopeFactory serviceScopeFactory) :
 	/// <summary>
 	/// Builds the part of the filter the database can apply: text, country and the NSFW flag.
 	/// </summary>
+	[SuppressMessage("Globalization", "CA1304", Justification = "Translated to the lower function of SQLite, not run in memory.")]
+	[SuppressMessage("Globalization", "CA1311", Justification = "Translated to the lower function of SQLite, not run in memory.")]
+	[SuppressMessage("Performance", "CA1862", Justification = "A comparison overload of Contains does not translate to SQL.")]
 	private static Expression<Func<ChannelEntity, bool>>? BuildChannelFilter(CatalogSearchQuery query)
 	{
 		Expression<Func<ChannelEntity, bool>>? filter = null;
 
 		if (!string.IsNullOrWhiteSpace(query.SearchText))
 		{
-			string text = query.SearchText.Trim();
-			filter = channel => channel.Name.Contains(text) || channel.Channel.Contains(text);
+			string folded = query.SearchText.Trim().ToLowerAscii();
+			filter = channel => channel.Name.ToLower().Contains(folded) || channel.Channel.ToLower().Contains(folded);
 		}
 
 		if (!string.IsNullOrWhiteSpace(query.Country))

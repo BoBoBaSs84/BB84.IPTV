@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -164,6 +164,16 @@ public sealed class GuideOptionTests
 
 		Assert.HasCount(10, page, "Channel010 to Channel019 are the ones that match.");
 		Assert.IsTrue(page.All(option => option.Site == "big.example.com"));
+	}
+
+	[TestMethod]
+	public async Task SearchSiteChannelsAsyncShouldIgnoreTheCaseOfTheSearchText()
+	{
+		IPagedList<GuideOptionResponse> page = await _sut
+			.SearchSiteChannelsAsync(new GuideSiteSearchQuery { Site = "big.example.com", SearchText = "cHANNEL01" }, TestContext.CancellationToken)
+			.ConfigureAwait(false);
+
+		Assert.HasCount(10, page, "Channel010 to Channel019 are the ones that match.");
 	}
 
 	[TestMethod]
