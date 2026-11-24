@@ -147,11 +147,11 @@ internal sealed class PlaylistService(
 
 	public async Task<int> ImportAsync(string filePath, string? name = null, CancellationToken cancellationToken = default)
 	{
-		string[] fileLines = await providerService.File
-			.ReadAllLinesAsync(filePath, cancellationToken)
+		byte[] fileContent = await providerService.File
+			.ReadAllBytesAsync(filePath, cancellationToken)
 			.ConfigureAwait(false);
 
-		IPlaylist playlist = serializerService.Deserialize(fileLines);
+		IPlaylist playlist = serializerService.Deserialize(fileContent);
 
 		return await CreateAsync(name ?? providerService.Path.GetFileNameWithoutExtension(filePath)!, playlist, cancellationToken)
 			.ConfigureAwait(false);

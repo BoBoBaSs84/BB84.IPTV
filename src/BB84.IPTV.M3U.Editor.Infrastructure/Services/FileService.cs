@@ -31,11 +31,11 @@ internal sealed class FileService(IEventService eventService, ILogger<FileServic
 			Log.PlaylistFileLoading(logger, filePath);
 			PublishDelayedStatus(Resources.PlaylistFileLoading.FormatMessage(filePath));
 
-			string[] fileLines = await providerService.File
-				.ReadAllLinesAsync(filePath, cancellationToken)
+			byte[] fileContent = await providerService.File
+				.ReadAllBytesAsync(filePath, cancellationToken)
 				.ConfigureAwait(false);
 
-			IPlaylist playlist = serializer.Deserialize(fileLines);
+			IPlaylist playlist = serializer.Deserialize(fileContent);
 
 			Log.PlaylistFileLoaded(logger, filePath);
 			PublishDelayedStatus(Resources.PlaylistFileLoaded.FormatMessage(filePath));
