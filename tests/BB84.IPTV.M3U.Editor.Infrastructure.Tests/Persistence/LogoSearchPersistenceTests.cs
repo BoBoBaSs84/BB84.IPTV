@@ -94,8 +94,10 @@ public sealed class LogoSearchPersistenceTests
 		Assert.HasCount(1, await SearchAsync("/logos/ard.png").ConfigureAwait(false), "The path of the cached file.");
 		Assert.IsEmpty(await SearchAsync("_").ConfigureAwait(false), "A wildcard of a pattern is a text like any other.");
 
-		// The text is matched with instr, like every other catalog search of the application does it.
-		Assert.IsEmpty(await SearchAsync("dasERSTE").ConfigureAwait(false), "The search is case sensitive.");
+		// The case of ASCII letters is ignored, like every other catalog search of the application does it.
+		Assert.HasCount(2, await SearchAsync("dasERSTE").ConfigureAwait(false), "The identifier in another case.");
+		Assert.HasCount(2, await SearchAsync("das erste").ConfigureAwait(false), "The name in another case.");
+		Assert.HasCount(1, await SearchAsync("webp").ConfigureAwait(false), "The format in another case.");
 	}
 
 	[TestMethod]

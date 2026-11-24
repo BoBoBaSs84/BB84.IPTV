@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -49,6 +49,22 @@ public sealed class CatalogSearchTests
 		Assert.AreEqual("1080p", channels[0].Quality);
 		Assert.AreEqual("https://logo.example/ard.png", channels[0].LogoUrl);
 		Assert.AreSequenceEqual(["deu"], channels[0].Languages);
+	}
+
+	[TestMethod]
+	public async Task SearchAsyncShouldIgnoreTheCaseOfTheSearchText()
+	{
+		IPagedList<CatalogChannelResponse> byName = await _sut
+			.SearchAsync(new CatalogSearchQuery { SearchText = "ERSTE" }, TestContext.CancellationToken)
+			.ConfigureAwait(false);
+
+		IPagedList<CatalogChannelResponse> byIdentifier = await _sut
+			.SearchAsync(new CatalogSearchQuery { SearchText = "daserste.DE" }, TestContext.CancellationToken)
+			.ConfigureAwait(false);
+
+		Assert.HasCount(1, byName);
+		Assert.HasCount(1, byIdentifier);
+		Assert.AreEqual("DasErste.de", byIdentifier[0].Channel);
 	}
 
 	[TestMethod]
