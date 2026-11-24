@@ -57,7 +57,7 @@ internal sealed class CatalogUpdateService(
 
 			return true;
 		}
-		catch (OperationCanceledException)
+		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
 		{
 			// The application is closing, the next start checks again.
 			return false;

@@ -905,14 +905,5 @@ namespace BB84.IPTV.M3U.Editor.Application.Properties {
                 return ResourceManager.GetString("SettingsSaveFailed", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The data could not be read from iptv-org..
-        /// </summary>
-        public static string WebRequestFailed {
-            get {
-                return ResourceManager.GetString("WebRequestFailed", resourceCulture);
-            }
-        }
     }
 }
