@@ -51,6 +51,10 @@ public sealed partial class SerializerService(IProviderService providerService) 
 		List<EntryModel> entries = [];
 		EntryModel? currentEntry = null;
 
+		// Lines that come before their #EXTINF, e.g. #PLAYLIST or #EXTVLCOPT, go to the next entry.
+		string? pendingGrouping = null;
+		string? pendingDirectives = null;
+
 		foreach (string rawLine in fileLines.Skip(headerIndex + 1))
 		{
 			string line = rawLine.Trim();
@@ -61,19 +65,31 @@ public sealed partial class SerializerService(IProviderService providerService) 
 			if (line.StartsWith(ExtInf, StringComparison.OrdinalIgnoreCase))
 			{
 				currentEntry = ReadEntry(line[ExtInf.Length..]);
+				TakePending(currentEntry);
 			}
 			else if (line.StartsWith(ExtGrp, StringComparison.OrdinalIgnoreCase))
 			{
-				currentEntry?.Grouping = line[ExtGrp.Length..];
+				if (currentEntry is null)
+					pendingGrouping = line[ExtGrp.Length..];
+				else
+					currentEntry.Grouping = line[ExtGrp.Length..];
 			}
 			else if (line.StartsWith('#'))
 			{
-				currentEntry?.Directives = currentEntry.Directives is null ? line : $"{currentEntry.Directives}\n{line}";
+				if (currentEntry is null)
+					pendingDirectives = AppendLine(pendingDirectives, line);
+				else
+					currentEntry.Directives = AppendLine(currentEntry.Directives, line);
 			}
 			else
 			{
 				// A link without #EXTINF is a plain M3U entry, it is kept with an empty title.
-				currentEntry ??= new EntryModel(string.Empty, string.Empty);
+				if (currentEntry is null)
+				{
+					currentEntry = new EntryModel(string.Empty, string.Empty);
+					TakePending(currentEntry);
+				}
+
 				currentEntry.FilePath = line;
 				entries.Add(currentEntry);
 				currentEntry = null;
@@ -81,6 +97,14 @@ public sealed partial class SerializerService(IProviderService providerService) 
 		}
 
 		return new PlaylistModel(playlist, entries);
+
+		void TakePending(EntryModel entry)
+		{
+			entry.Grouping = pendingGrouping;
+			entry.Directives = pendingDirectives;
+			pendingGrouping = null;
+			pendingDirectives = null;
+		}
 	}
 
 	/// <inheritdoc/>
@@ -267,6 +291,9 @@ public sealed partial class SerializerService(IProviderService providerService) 
 		if (!string.IsNullOrWhiteSpace(text))
 			sb.Append(' ').Append(text.Trim());
 	}
+
+	private static string AppendLine(string? text, string line)
+		=> text is null ? line : $"{text}\n{line}";
 
 	private static string? JoinOrNull(List<string> values)
 		=> values.Count > 0 ? string.Join(' ', values) : null;

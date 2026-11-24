@@ -276,6 +276,46 @@ public sealed class SerializerServiceTests
 	}
 
 	[TestMethod]
+	public void DeserializeShouldKeepDirectivesThatComeBeforeTheirExtInf()
+	{
+		string[] fileLines =
+		[
+			"#EXTM3U",
+			"#PLAYLIST:Sport",
+			"#EXTVLCOPT:http-user-agent=Foo",
+			"#EXTGRP:Favorites",
+			"#EXTINF:-1 tvg-id=\"DasErste.de\",Das Erste",
+			"http://example.com/daserste.m3u8",
+			"#EXTVLCOPT:http-referrer=https://example.com",
+			"https://example.com/plain"
+		];
+
+		List<EntryModel> entries = [.. _sut.Deserialize(fileLines).Entries];
+
+		Assert.AreEqual("#PLAYLIST:Sport\n#EXTVLCOPT:http-user-agent=Foo", entries[0].Directives);
+		Assert.AreEqual("Favorites", entries[0].Grouping);
+		Assert.AreEqual("#EXTVLCOPT:http-referrer=https://example.com", entries[1].Directives);
+		Assert.IsNull(entries[1].Grouping);
+	}
+
+	[TestMethod]
+	public void SerializeShouldKeepDirectivesThatComeBeforeTheFirstExtInf()
+	{
+		string content =
+			"#EXTM3U\n" +
+			"#PLAYLIST:Sport\n" +
+			"#EXTVLCOPT:http-user-agent=Foo\n" +
+			"#EXTINF:-1 tvg-id=\"DasErste.de\",Das Erste\n" +
+			"http://example.com/daserste.m3u8\n";
+
+		string result = _sut.Serialize(_sut.Deserialize(Encoding.UTF8.GetBytes(content)));
+
+		Assert.Contains("#PLAYLIST:Sport\n", result);
+		Assert.Contains("#EXTVLCOPT:http-user-agent=Foo\n", result);
+		Assert.AreEqual(result, _sut.Serialize(_sut.Deserialize(Encoding.UTF8.GetBytes(result))), "A second round trip changes nothing.");
+	}
+
+	[TestMethod]
 	public void SerializeShouldOmitOptionalPlaylistAttributesWhenNotSet()
 	{
 		PlaylistModel playlist = new();
