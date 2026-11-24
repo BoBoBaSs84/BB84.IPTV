@@ -1,4 +1,4 @@
-// Copyright: 2026 Robert Peter Meyer
+﻿// Copyright: 2026 Robert Peter Meyer
 // License: MIT
 //
 // This source code is licensed under the MIT license found in the
@@ -92,7 +92,16 @@ internal sealed class DatabaseService : IDatabaseService, IDisposable
 			IRepositoryService repositoryService = GetRepositoryService(scope);
 
 			await repositoryService.MigrateDatabaseAsync(cancellationToken).ConfigureAwait(false);
+
+			// The reset deletes the logo rows, so their cached files are read first and deleted after.
+			IReadOnlyList<LogoEntity> cachedLogos = await repositoryService.Logos
+				.GetListAsync(new Query<LogoEntity> { Where = logo => logo.LocalPath != null }, cancellationToken)
+				.ConfigureAwait(false);
+
 			await repositoryService.ResetCatalogAsync(cancellationToken).ConfigureAwait(false);
+
+			if (_logoStoreService.Clear(cachedLogos.Select(logo => logo.LocalPath)) > 0)
+				_eventService.Publish(new LogoCacheChangedEvent(0));
 
 			return true;
 		}

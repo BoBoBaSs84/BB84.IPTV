@@ -64,7 +64,9 @@ public sealed partial class DatabaseServiceTests
 		_repositoryServiceMock.Setup(x => x.Languages).Returns(new Mock<ILanguageRepository>().Object);
 		_repositoryServiceMock.Setup(x => x.Feeds).Returns(new Mock<IFeedRepository>().Object);
 		_repositoryServiceMock.Setup(x => x.Guides).Returns(new Mock<IGuideRepository>().Object);
-		_repositoryServiceMock.Setup(x => x.Logos).Returns(new Mock<ILogoRepository>().Object);
+		Mock<ILogoRepository> logoRepositoryMock = new();
+		logoRepositoryMock.Setup(x => x.GetListAsync(It.IsAny<Query<LogoEntity>>(), It.IsAny<CancellationToken>())).ReturnsAsync([]);
+		_repositoryServiceMock.Setup(x => x.Logos).Returns(logoRepositoryMock.Object);
 		_repositoryServiceMock.Setup(x => x.Streams).Returns(new Mock<IStreamRepository>().Object);
 		_repositoryServiceMock.Setup(x => x.CommitChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(0);
 
