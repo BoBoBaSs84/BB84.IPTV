@@ -3,6 +3,7 @@
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
+using System.Globalization;
 using System.Text;
 
 using BB84.IPTV.M3U.Editor.Application.Services;
@@ -102,6 +103,49 @@ public sealed class SerializerServiceTests
 		Assert.AreEqual("Title", entry.Title);
 		Assert.AreEqual("https://example.com/stream", entry.FilePath);
 	}
+
+	[TestMethod]
+	[DataRow("utf-8-no-bom")]
+	[DataRow("utf-8")]
+	[DataRow("utf-16")]
+	[DataRow("utf-16BE")]
+	[DataRow("utf-32")]
+	[DataRow("utf-32BE")]
+	public void DeserializeByteArrayShouldReadUnicodeFiles(string encoding)
+	{
+		Encoding marked = encoding is "utf-8-no-bom" ? new UTF8Encoding(false) : Encoding.GetEncoding(encoding);
+		byte[] bytes = [.. marked.Preamble, .. marked.GetBytes(Sample)];
+
+		var result = _sut.Deserialize(bytes);
+
+		Assert.AreEqual("Österreich 1 €", result.Entries.Single().Title);
+	}
+
+	[TestMethod]
+	[DataRow("de-DE", 1252, "Österreich 1 €")]
+	[DataRow("cs-CZ", 1250, "ČT1 Šport")]
+	[DataRow("ru-RU", 1251, "Первый канал")]
+	public void DeserializeByteArrayShouldReadAnAnsiFileInTheCodePageOfTheCulture(string culture, int codePage, string title)
+	{
+		byte[] bytes = CodePagesEncodingProvider.Instance.GetEncoding(codePage)!
+			.GetBytes($"#EXTM3U\n#EXTINF:-1,{title}\nhttp://example.com/1.m3u8\n");
+		CultureInfo current = CultureInfo.CurrentCulture;
+
+		try
+		{
+			CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo(culture);
+
+			var result = _sut.Deserialize(bytes);
+
+			Assert.AreEqual(title, result.Entries.Single().Title);
+		}
+		finally
+		{
+			CultureInfo.CurrentCulture = current;
+		}
+	}
+
+	private const string Sample = "#EXTM3U\n#EXTINF:-1 tvg-id=\"ORF1.at\",Österreich 1 €\nhttp://example.com/orf1.m3u8\n";
 
 	[TestMethod]
 	public void DeserializeFilePathShouldParsePlaylist()

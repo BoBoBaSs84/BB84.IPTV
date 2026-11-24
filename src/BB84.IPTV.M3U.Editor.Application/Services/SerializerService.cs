@@ -28,6 +28,12 @@ public sealed partial class SerializerService(IProviderService providerService) 
 	private const string ExtInf = "#EXTINF:";
 	private const string ExtGrp = "#EXTGRP:";
 	private const char ByteOrderMark = '﻿';
+	private static readonly UTF8Encoding StrictUtf8 = new(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
+	private static readonly Encoding Windows1252 = CodePagesEncodingProvider.Instance.GetEncoding(1252)!;
+
+	// UTF-32 LE comes before UTF-16 LE, its byte order mark starts with the one of UTF-16 LE.
+	private static readonly Encoding[] MarkedEncodings =
+		[Encoding.UTF32, new UTF32Encoding(bigEndian: true, byteOrderMark: true), Encoding.UTF8, Encoding.Unicode, Encoding.BigEndianUnicode];
 
 	/// <inheritdoc/>
 	public IPlaylist Deserialize(string filePath)
@@ -110,7 +116,7 @@ public sealed partial class SerializerService(IProviderService providerService) 
 	/// <inheritdoc/>
 	public IPlaylist Deserialize(byte[] fileContent)
 	{
-		string content = Encoding.UTF8.GetString(fileContent);
+		string content = Decode(fileContent);
 		List<string> fileLines = [];
 
 		// StringReader splits on "\r\n", "\n" and "\r".
@@ -290,6 +296,45 @@ public sealed partial class SerializerService(IProviderService providerService) 
 	{
 		if (!string.IsNullOrWhiteSpace(text))
 			sb.Append(' ').Append(text.Trim());
+	}
+
+	/// <summary>
+	/// Decodes the file in the encoding its byte order mark names, else as UTF-8, else in the ANSI
+	/// code page of the current culture.
+	/// </summary>
+	/// <remarks>
+	/// An "ANSI" file of Windows carries no mark and is rarely valid UTF-8. Its code page cannot be
+	/// told from the bytes, so the one Windows uses for the culture is taken.
+	/// </remarks>
+	private static string Decode(byte[] fileContent)
+	{
+		ReadOnlySpan<byte> content = fileContent;
+
+		foreach (Encoding encoding in MarkedEncodings)
+		{
+			ReadOnlySpan<byte> preamble = encoding.Preamble;
+			if (content.StartsWith(preamble))
+				return encoding.GetString(content[preamble.Length..]);
+		}
+
+		try
+		{
+			return StrictUtf8.GetString(content);
+		}
+		catch (DecoderFallbackException)
+		{
+			return GetAnsiEncoding(CultureInfo.CurrentCulture).GetString(content);
+		}
+	}
+
+	/// <summary>
+	/// Gets the ANSI code page of the <paramref name="culture"/>; Windows-1252 for a culture that has
+	/// none, as a culture that is written in Unicode only.
+	/// </summary>
+	private static Encoding GetAnsiEncoding(CultureInfo culture)
+	{
+		int codePage = culture.TextInfo.ANSICodePage;
+		return codePage > 0 ? CodePagesEncodingProvider.Instance.GetEncoding(codePage) ?? Windows1252 : Windows1252;
 	}
 
 	private static string AppendLine(string? text, string line)

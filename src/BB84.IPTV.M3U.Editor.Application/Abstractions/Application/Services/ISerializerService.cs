@@ -55,6 +55,8 @@ public interface ISerializerService
 	/// entry-level metadata like <c>tvg-id</c>, <c>tvg-name</c>, <c>tvg-logo</c>, <c>group-title</c>, and <c>group_id</c>.
 	/// Lines starting with <c>#EXTINF:</c> are treated as metadata for the next entry, while lines starting with
 	/// <c>#EXTGRP:</c> specify grouping information. Non-comment lines are interpreted as file paths for playlist entries.
+	/// The content is read in the encoding its byte order mark names, else as UTF-8; content that is not valid
+	/// UTF-8 is read in the ANSI code page of the current culture.
 	/// </remarks>
 	/// <param name="fileContent">The content of the M3U file as a byte array to deserialize.
 	/// The content must represent a valid M3U playlist.</param>
