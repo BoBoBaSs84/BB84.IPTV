@@ -200,18 +200,8 @@ public sealed class LogoCachePersistenceTests
 			return true;
 		}
 
-		public int Clear()
-		{
-			string directory = Path.Combine(root, "logos");
-
-			if (!Directory.Exists(directory))
-				return 0;
-
-			int deleted = Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Length;
-			Directory.Delete(directory, true);
-
-			return deleted;
-		}
+		public int Clear(IEnumerable<string?> paths)
+			=> paths.Count(Delete);
 	}
 
 	public TestContext TestContext { get; set; }

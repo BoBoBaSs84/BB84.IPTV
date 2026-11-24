@@ -42,8 +42,13 @@ public interface ILogoStoreService
 	bool Delete(string? path);
 
 	/// <summary>
-	/// Deletes every cached file.
+	/// Deletes the cached files at <paramref name="paths"/> and the channel folders they leave empty.
 	/// </summary>
+	/// <remarks>
+	/// Each path goes through <see cref="Delete(string?)"/>, so foreign files in the logo directory
+	/// and the directory itself stay.
+	/// </remarks>
+	/// <param name="paths">The full paths of the cached files the catalog knows.</param>
 	/// <returns>The number of deleted files.</returns>
-	int Clear();
+	int Clear(IEnumerable<string?> paths);
 }
