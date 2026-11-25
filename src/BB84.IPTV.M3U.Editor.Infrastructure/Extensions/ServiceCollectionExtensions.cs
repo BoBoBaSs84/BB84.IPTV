@@ -147,6 +147,8 @@ internal static class ServiceCollectionExtensions
 		services.AddHttpClient(Constants.DownloadClientName, configureClient =>
 		{
 			configureClient.WithTimeout(TimeSpan.FromSeconds(30));
+			// Logos are buffered in memory, several at once, so one huge file must not take gigabytes.
+			configureClient.MaxResponseContentBufferSize = Constants.DownloadClientMaxResponseSize;
 			configureClient.DefaultRequestHeaders.UserAgent.ParseAdd(Constants.DownloadClientUserAgent);
 		});
 
