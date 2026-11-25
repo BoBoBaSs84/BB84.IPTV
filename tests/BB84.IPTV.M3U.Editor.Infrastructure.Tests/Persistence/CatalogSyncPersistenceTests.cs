@@ -316,21 +316,6 @@ public sealed class CatalogSyncPersistenceTests
 
 		public Task<IEnumerable<StreamResponse>> GetStreamsAsync(CancellationToken cancellationToken = default)
 			=> Task.FromResult<IEnumerable<StreamResponse>>([.. Streams]);
-
-		public Task<IEnumerable<BlocklistResponse>> GetBlocklistsAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<BlocklistResponse>>([]);
-
-		public Task<IEnumerable<CityResponse>> GetCitiesAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<CityResponse>>([]);
-
-		public Task<IEnumerable<RegionResponse>> GetRegionsAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<RegionResponse>>([]);
-
-		public Task<IEnumerable<SubdivisionResponse>> GetSubdivisionsAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<SubdivisionResponse>>([]);
-
-		public Task<IEnumerable<TimezoneResponse>> GetTimezonesAsync(CancellationToken cancellationToken = default)
-			=> Task.FromResult<IEnumerable<TimezoneResponse>>([]);
 	}
 
 	/// <summary>

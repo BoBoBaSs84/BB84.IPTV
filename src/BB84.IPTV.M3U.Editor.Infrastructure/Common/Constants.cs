@@ -74,29 +74,4 @@ public static class Constants
 	/// The relative path to the countries JSON file.
 	/// </summary>
 	public const string CountriesJsonPath = "api/countries.json";
-
-	/// <summary>
-	/// The relative path to the subdivisions JSON file.
-	/// </summary>
-	public const string SubdivisionsJsonPath = "api/subdivisions.json";
-
-	/// <summary>
-	/// The relative path to the cities JSON file.
-	/// </summary>
-	public const string CitiesJsonPath = "api/cities.json";
-
-	/// <summary>
-	/// The relative path to the regions JSON file.
-	/// </summary>
-	public const string RegionsJsonPath = "api/regions.json";
-
-	/// <summary>
-	/// The relative path to the timezones JSON file.
-	/// </summary>
-	public const string TimezonesJsonPath = "api/timezones.json";
-
-	/// <summary>
-	/// The relative path to the blocklist JSON file.
-	/// </summary>
-	public const string BlocklistJsonPath = "api/blocklist.json";
 }

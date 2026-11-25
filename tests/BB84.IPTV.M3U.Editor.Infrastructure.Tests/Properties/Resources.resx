@@ -117,17 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BlocklistJson" xml:space="preserve">
-    <value>[{"channel":"AnimalPlanetEast.us","reason":"dmca","ref":"https://github.com/iptv-org/iptv/issues/1831"}]</value>
-  </data>
   <data name="CategoryJson" xml:space="preserve">
     <value>[{"id":"documentary","name":"Documentary","description":"Programming that depicts a person or real-world event"}]</value>
   </data>
   <data name="ChannelJson" xml:space="preserve">
     <value>[{"alt_names": ["安徽卫视"],"categories": ["general"],"closed": "2020-05-31","country": "CN","id": "AnhuiTV.cn","is_nsfw": false,"launched": "2016-07-28","name": "Anhui TV","network": "Anhui","owners": ["China Central Television"],"replaced_by": "CCTV1.cn","website": "http://www.ahtv.cn/"}]</value>
-  </data>
-  <data name="CityJson" xml:space="preserve">
-    <value>[{"code":"CNYAT","country":"CN","name":"Yantai","subdivision":"CN-SD","wikidata_id":"Q210493"}]</value>
   </data>
   <data name="CountryJson" xml:space="preserve">
     <value>[{"code":"CA","flag":"🇨🇦","languages":["eng","fra"],"name":"Canada"}]</value>
@@ -144,16 +138,7 @@
   <data name="LogoJson" xml:space="preserve">
     <value>[{"channel":"France3.fr","feed":"ParisIledeFrance","format":"SVG","height":468,"tags":["horizontal","white"],"url":"https://example.com/logo.svg","width":1000}]</value>
   </data>
-  <data name="RegionJson" xml:space="preserve">
-    <value>[{"code":"MAGHREB","countries":["DZ","LY","MA","MR","TN"],"name":"Maghreb"}]</value>
-  </data>
   <data name="StreamJson" xml:space="preserve">
     <value>[{"channel":"France3.fr","feed":"NordPasdeCalaisHD","quality":"720p","referrer":"http://example.com/","title":"France 3 Nord Pas-de-Calais HD","url":"http://1111296894.rsc.cdn77.org/LS-ATL-54548-6/index.m3u8","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}]</value>
-  </data>
-  <data name="SubdivisionJson" xml:space="preserve">
-    <value>[{"code":"BD-01","country":"BD","name":"Bandarban","parent":"BD-B"}]</value>
-  </data>
-  <data name="TimezoneJson" xml:space="preserve">
-    <value>[{"countries":["UK","GG","IM","JE"],"id":"Europe/London","utc_offset":"+00:00"}]</value>
   </data>
 </root>

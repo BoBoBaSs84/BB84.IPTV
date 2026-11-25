@@ -24,17 +24,11 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Services;
 /// </remarks>
 internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<WebService> logger) : IWebService
 {
-	public Task<IEnumerable<BlocklistResponse>> GetBlocklistsAsync(CancellationToken cancellationToken = default)
-		=> GetFromApiAsync<BlocklistResponse>(Constants.BlocklistJsonPath, cancellationToken);
-
 	public Task<IEnumerable<CategoryResponse>> GetCategoriesAsync(CancellationToken cancellationToken = default)
 		=> GetFromApiAsync<CategoryResponse>(Constants.CategoriesJsonPath, cancellationToken);
 
 	public Task<IEnumerable<ChannelResponse>> GetChannelsAsync(CancellationToken cancellationToken = default)
 		=> GetFromApiAsync<ChannelResponse>(Constants.ChannelsJsonPath, cancellationToken);
-
-	public Task<IEnumerable<CityResponse>> GetCitiesAsync(CancellationToken cancellationToken = default)
-		=> GetFromApiAsync<CityResponse>(Constants.CitiesJsonPath, cancellationToken);
 
 	public Task<IEnumerable<CountryResponse>> GetCountriesAsync(CancellationToken cancellationToken = default)
 		=> GetFromApiAsync<CountryResponse>(Constants.CountriesJsonPath, cancellationToken);
@@ -51,17 +45,8 @@ internal sealed class WebService(IHttpClientFactory httpClientFactory, ILogger<W
 	public Task<IEnumerable<LogoResponse>> GetLogosAsync(CancellationToken cancellationToken = default)
 		=> GetFromApiAsync<LogoResponse>(Constants.LogosJsonPath, cancellationToken);
 
-	public Task<IEnumerable<RegionResponse>> GetRegionsAsync(CancellationToken cancellationToken = default)
-		=> GetFromApiAsync<RegionResponse>(Constants.RegionsJsonPath, cancellationToken);
-
 	public Task<IEnumerable<StreamResponse>> GetStreamsAsync(CancellationToken cancellationToken = default)
 		=> GetFromApiAsync<StreamResponse>(Constants.StreamsJsonPath, cancellationToken);
-
-	public Task<IEnumerable<SubdivisionResponse>> GetSubdivisionsAsync(CancellationToken cancellationToken = default)
-		=> GetFromApiAsync<SubdivisionResponse>(Constants.SubdivisionsJsonPath, cancellationToken);
-
-	public Task<IEnumerable<TimezoneResponse>> GetTimezonesAsync(CancellationToken cancellationToken = default)
-		=> GetFromApiAsync<TimezoneResponse>(Constants.TimezonesJsonPath, cancellationToken);
 
 	private async Task<IEnumerable<T>> GetFromApiAsync<T>(string requestUri, CancellationToken cancellationToken = default)
 	{
