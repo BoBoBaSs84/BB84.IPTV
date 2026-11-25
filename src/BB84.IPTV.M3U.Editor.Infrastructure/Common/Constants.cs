@@ -26,6 +26,11 @@ public static class Constants
 	public const string DownloadClientUserAgent = "BB84.IPTV.M3U.Editor (+https://github.com/BoBoBaSs84/BB84.IPTV)";
 
 	/// <summary>
+	/// The largest response in bytes the download client buffers, a larger file fails the download.
+	/// </summary>
+	public const int DownloadClientMaxResponseSize = 10 * 1024 * 1024;
+
+	/// <summary>
 	/// The media type to be used in HTTP requests and responses.
 	/// </summary>
 	public const string HttpClientMediaType = "application/json";

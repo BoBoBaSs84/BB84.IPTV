@@ -52,4 +52,22 @@ public class DependencyInjectionInstallerTests
 		Assert.AreEqual(new PathService(settings).DataDirectory, pathService.DataDirectory);
 		Assert.IsFalse(pathService.HasPendingChanges());
 	}
+
+	[TestMethod]
+	public void RegisterInfrastructureServicesShouldCapTheResponseSizeOfTheDownloadClient()
+	{
+		Mock<IHostEnvironment> hostEnvironmentMock = new Mock<IHostEnvironment>()
+			.SetupAllProperties();
+		ServiceCollection services = new();
+
+		services
+			.AddSingleton<ApplicationSettings>()
+			.RegisterInfrastructureServices(hostEnvironmentMock.Object);
+
+		using HttpClient client = services.BuildServiceProvider()
+			.GetRequiredService<IHttpClientFactory>()
+			.CreateClient(Constants.DownloadClientName);
+
+		Assert.AreEqual(Constants.DownloadClientMaxResponseSize, client.MaxResponseContentBufferSize);
+	}
 }

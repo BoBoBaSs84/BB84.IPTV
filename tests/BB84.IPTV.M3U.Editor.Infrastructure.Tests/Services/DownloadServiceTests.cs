@@ -79,6 +79,23 @@ public sealed class DownloadServiceTests
 	}
 
 	[TestMethod]
+	public async Task DownloadAsyncShouldSkipTheLogoWhenItIsLargerThanTheClientBuffers()
+	{
+		Mock<HttpMessageHandler> handlerMock = new();
+		handlerMock.Protected()
+			.Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+			.ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(new byte[11]) });
+		_httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>()))
+			.Returns(() => new HttpClient(handlerMock.Object, false) { MaxResponseContentBufferSize = 10 });
+		DownloadService sut = new(_httpClientFactoryMock.Object, _loggerMock.Object);
+
+		LogoDownloadResponse? response = await sut.DownloadAsync(Url, cancellationToken: TestContext.CancellationToken).ConfigureAwait(false);
+
+		Assert.IsNull(response, "An oversized logo is a logo that could not be downloaded.");
+		_loggerMock.VerifyLogged(LogLevel.Warning, LogEvents.Logo.DownloadFailed, Times.Once());
+	}
+
+	[TestMethod]
 	public async Task DownloadAsyncShouldSendTheOriginOfTheLogoAsReferer()
 	{
 		Uri? referrer = null;
