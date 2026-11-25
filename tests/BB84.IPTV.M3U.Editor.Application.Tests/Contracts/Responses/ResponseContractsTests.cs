@@ -11,16 +11,6 @@ namespace BB84.IPTV.M3U.Editor.Application.Tests.Contracts.Responses;
 public sealed class ResponseContractsTests
 {
 	[TestMethod]
-	public void BlocklistResponseShouldInitializePropertiesCorrectly()
-	{
-		BlocklistResponse response = new("channel-1", "dmca", "https://example.com/ref");
-
-		Assert.AreEqual("channel-1", response.Channel);
-		Assert.AreEqual("dmca", response.Reason);
-		Assert.AreEqual("https://example.com/ref", response.Ref);
-	}
-
-	[TestMethod]
 	public void CategoryResponseShouldInitializePropertiesCorrectly()
 	{
 		CategoryResponse response = new("cat-1", "News", "News channels");
@@ -53,18 +43,6 @@ public sealed class ResponseContractsTests
 		Assert.AreEqual(closed, response.Closed);
 		Assert.AreEqual("channel-2", response.ReplacedBy);
 		Assert.AreEqual("https://example.com", response.Website);
-	}
-
-	[TestMethod]
-	public void CityResponseShouldInitializePropertiesCorrectly()
-	{
-		CityResponse response = new("DE", "DE-BY", "Munich", "MUC", "Q1726");
-
-		Assert.AreEqual("DE", response.Country);
-		Assert.AreEqual("DE-BY", response.Subdivision);
-		Assert.AreEqual("Munich", response.Name);
-		Assert.AreEqual("MUC", response.Code);
-		Assert.AreEqual("Q1726", response.WikidataId);
 	}
 
 	[TestMethod]
@@ -138,17 +116,6 @@ public sealed class ResponseContractsTests
 	}
 
 	[TestMethod]
-	public void RegionResponseShouldInitializePropertiesCorrectly()
-	{
-		IReadOnlyList<string> countries = ["DE", "FR"];
-		RegionResponse response = new("EU", "Europe", countries);
-
-		Assert.AreEqual("EU", response.Code);
-		Assert.AreEqual("Europe", response.Name);
-		CollectionAssert.AreEqual(countries.ToArray(), response.Countries.ToArray());
-	}
-
-	[TestMethod]
 	public void StreamResponseShouldInitializePropertiesCorrectly()
 	{
 		StreamResponse response = new("channel-1", "feed-1", "Stream Title", "https://example.com/stream.m3u8", "https://example.com", "agent", "1080p");
@@ -160,27 +127,5 @@ public sealed class ResponseContractsTests
 		Assert.AreEqual("https://example.com", response.Referrer);
 		Assert.AreEqual("agent", response.UserAgent);
 		Assert.AreEqual("1080p", response.Quality);
-	}
-
-	[TestMethod]
-	public void SubdivisionResponseShouldInitializePropertiesCorrectly()
-	{
-		SubdivisionResponse response = new("DE", "Bavaria", "DE-BY", "DE");
-
-		Assert.AreEqual("DE", response.Country);
-		Assert.AreEqual("Bavaria", response.Name);
-		Assert.AreEqual("DE-BY", response.Code);
-		Assert.AreEqual("DE", response.Parent);
-	}
-
-	[TestMethod]
-	public void TimezoneResponseShouldInitializePropertiesCorrectly()
-	{
-		IReadOnlyList<string> countries = ["DE", "AT"];
-		TimezoneResponse response = new("Europe/Berlin", "+01:00", countries);
-
-		Assert.AreEqual("Europe/Berlin", response.Id);
-		Assert.AreEqual("+01:00", response.UtcOffset);
-		CollectionAssert.AreEqual(countries.ToArray(), response.Countries.ToArray());
 	}
 }

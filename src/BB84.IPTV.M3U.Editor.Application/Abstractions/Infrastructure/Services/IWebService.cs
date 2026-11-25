@@ -13,15 +13,6 @@ namespace BB84.IPTV.M3U.Editor.Application.Abstractions.Infrastructure.Services;
 public interface IWebService
 {
 	/// <summary>
-	/// Gets the blocklists from the web service.
-	/// </summary>
-	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of blocklist responses.
-	/// </returns>
-	Task<IEnumerable<BlocklistResponse>> GetBlocklistsAsync(CancellationToken cancellationToken = default);
-
-	/// <summary>
 	/// Gets the categories from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
@@ -38,15 +29,6 @@ public interface IWebService
 	/// A task that represents the asynchronous operation. The task result contains a collection of channel responses.
 	/// </returns>
 	Task<IEnumerable<ChannelResponse>> GetChannelsAsync(CancellationToken cancellationToken = default);
-
-	/// <summary>
-	/// Gets the cities from the web service.
-	/// </summary>
-	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of city responses.
-	/// </returns>
-	Task<IEnumerable<CityResponse>> GetCitiesAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Gets the countries from the web service.
@@ -94,15 +76,6 @@ public interface IWebService
 	Task<IEnumerable<LogoResponse>> GetLogosAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Gets the regions from the web service.
-	/// </summary>
-	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of region responses.
-	/// </returns>
-	Task<IEnumerable<RegionResponse>> GetRegionsAsync(CancellationToken cancellationToken = default);
-
-	/// <summary>
 	/// Gets the streams from the web service.
 	/// </summary>
 	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
@@ -110,22 +83,4 @@ public interface IWebService
 	/// A task that represents the asynchronous operation. The task result contains a collection of stream responses.
 	/// </returns>
 	Task<IEnumerable<StreamResponse>> GetStreamsAsync(CancellationToken cancellationToken = default);
-
-	/// <summary>
-	/// Gets the sub-divions from the web service.
-	/// </summary>
-	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of sub-division responses.
-	/// </returns>
-	Task<IEnumerable<SubdivisionResponse>> GetSubdivisionsAsync(CancellationToken cancellationToken = default);
-
-	/// <summary>
-	/// Gets the timezones from the web service.
-	/// </summary>
-	/// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-	/// <returns>
-	/// A task that represents the asynchronous operation. The task result contains a collection of timezone responses.
-	/// </returns>
-	Task<IEnumerable<TimezoneResponse>> GetTimezonesAsync(CancellationToken cancellationToken = default);
 }

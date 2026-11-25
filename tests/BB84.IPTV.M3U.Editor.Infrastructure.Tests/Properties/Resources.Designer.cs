@@ -61,15 +61,6 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Tests.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [{&quot;channel&quot;:&quot;AnimalPlanetEast.us&quot;,&quot;reason&quot;:&quot;dmca&quot;,&quot;ref&quot;:&quot;https://github.com/iptv-org/iptv/issues/1831&quot;}].
-        /// </summary>
-        internal static string BlocklistJson {
-            get {
-                return ResourceManager.GetString("BlocklistJson", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to [{&quot;id&quot;:&quot;documentary&quot;,&quot;name&quot;:&quot;Documentary&quot;,&quot;description&quot;:&quot;Programming that depicts a person or real-world event&quot;}].
         /// </summary>
         internal static string CategoryJson {
@@ -84,15 +75,6 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Tests.Properties {
         internal static string ChannelJson {
             get {
                 return ResourceManager.GetString("ChannelJson", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to [{&quot;code&quot;:&quot;CNYAT&quot;,&quot;country&quot;:&quot;CN&quot;,&quot;name&quot;:&quot;Yantai&quot;,&quot;subdivision&quot;:&quot;CN-SD&quot;,&quot;wikidata_id&quot;:&quot;Q210493&quot;}].
-        /// </summary>
-        internal static string CityJson {
-            get {
-                return ResourceManager.GetString("CityJson", resourceCulture);
             }
         }
         
@@ -142,38 +124,11 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Tests.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [{&quot;code&quot;:&quot;MAGHREB&quot;,&quot;countries&quot;:[&quot;DZ&quot;,&quot;LY&quot;,&quot;MA&quot;,&quot;MR&quot;,&quot;TN&quot;],&quot;name&quot;:&quot;Maghreb&quot;}].
-        /// </summary>
-        internal static string RegionJson {
-            get {
-                return ResourceManager.GetString("RegionJson", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to [{&quot;channel&quot;:&quot;France3.fr&quot;,&quot;feed&quot;:&quot;NordPasdeCalaisHD&quot;,&quot;quality&quot;:&quot;720p&quot;,&quot;referrer&quot;:&quot;http://example.com/&quot;,&quot;title&quot;:&quot;France 3 Nord Pas-de-Calais HD&quot;,&quot;url&quot;:&quot;http://1111296894.rsc.cdn77.org/LS-ATL-54548-6/index.m3u8&quot;,&quot;user_agent&quot;:&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64)&quot;}].
         /// </summary>
         internal static string StreamJson {
             get {
                 return ResourceManager.GetString("StreamJson", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to [{&quot;code&quot;:&quot;BD-01&quot;,&quot;country&quot;:&quot;BD&quot;,&quot;name&quot;:&quot;Bandarban&quot;,&quot;parent&quot;:&quot;BD-B&quot;}].
-        /// </summary>
-        internal static string SubdivisionJson {
-            get {
-                return ResourceManager.GetString("SubdivisionJson", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to [{&quot;countries&quot;:[&quot;UK&quot;,&quot;GG&quot;,&quot;IM&quot;,&quot;JE&quot;],&quot;id&quot;:&quot;Europe/London&quot;,&quot;utc_offset&quot;:&quot;+00:00&quot;}].
-        /// </summary>
-        internal static string TimezoneJson {
-            get {
-                return ResourceManager.GetString("TimezoneJson", resourceCulture);
             }
         }
     }
