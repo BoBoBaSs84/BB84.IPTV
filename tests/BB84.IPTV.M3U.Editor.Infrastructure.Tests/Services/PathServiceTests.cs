@@ -20,8 +20,8 @@ public sealed class PathServiceTests
 		Assert.AreEqual(ApplicationPaths.DataDirectory, sut.DataDirectory);
 		Assert.AreEqual(ApplicationPaths.DatabaseFilePath, sut.DatabaseFilePath);
 		Assert.AreEqual(ApplicationPaths.SettingsFilePath, sut.SettingsFilePath);
-		Assert.AreEqual(ApplicationPaths.LogoDirectory, sut.LogoDirectory);
-		Assert.AreEqual(ApplicationPaths.LogDirectory, sut.LogDirectory);
+		Assert.AreEqual(Path.Combine(ApplicationPaths.DataDirectory, ApplicationPaths.LogoDirectoryName), sut.LogoDirectory);
+		Assert.AreEqual(Path.Combine(ApplicationPaths.DataDirectory, ApplicationPaths.LogDirectoryName), sut.LogDirectory);
 	}
 
 	[TestMethod]

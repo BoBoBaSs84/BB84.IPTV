@@ -17,13 +17,6 @@ namespace BB84.IPTV.M3U.Editor.Infrastructure.Persistence;
 public sealed partial class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options), IDatabaseContext
 {
 	/// <inheritdoc/>
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	{
-		optionsBuilder.AddInterceptors([]);
-		base.OnConfiguring(optionsBuilder);
-	}
-
-	/// <inheritdoc/>
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.ApplyConfigurationsFromAssembly(typeof(IInfrastructureAssemblyMarker).Assembly);

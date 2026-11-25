@@ -31,10 +31,4 @@ public class ApplicationPathsTests
 		Assert.AreEqual(ApplicationPaths.DataDirectory, Path.GetDirectoryName(ApplicationPaths.SettingsFilePath));
 		Assert.AreEqual($"{AssemblyInformation.Product}.ini", Path.GetFileName(ApplicationPaths.SettingsFilePath));
 	}
-
-	[TestMethod]
-	public void LogDirectoryTest()
-	{
-		Assert.AreEqual(ApplicationPaths.DataDirectory, Path.GetDirectoryName(ApplicationPaths.LogDirectory));
-	}
 }

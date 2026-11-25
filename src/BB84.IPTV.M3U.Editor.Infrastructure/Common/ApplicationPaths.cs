@@ -55,14 +55,4 @@ internal static class ApplicationPaths
 	/// The settings file stays here, it is what tells the application where everything else lives.
 	/// </remarks>
 	internal static string SettingsFilePath { get; } = Path.Combine(DataDirectory, SettingsFileName);
-
-	/// <summary>
-	/// The directory that holds the cached channel logos, one folder per iptv-org channel.
-	/// </summary>
-	internal static string LogoDirectory { get; } = Path.Combine(DataDirectory, LogoDirectoryName);
-
-	/// <summary>
-	/// The directory that holds the log files.
-	/// </summary>
-	internal static string LogDirectory { get; } = Path.Combine(DataDirectory, LogDirectoryName);
 }
