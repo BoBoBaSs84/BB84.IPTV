@@ -23,11 +23,6 @@ public interface IProviderService
 	IDirectoryProvider Directory { get; }
 
 	/// <summary>
-	/// The provider for accessing environment operations.
-	/// </summary>
-	IEnvironmentProvider Environment { get; }
-
-	/// <summary>
 	/// The provider for accessing file operations.
 	/// </summary>
 	IFileProvider File { get; }

@@ -21,7 +21,6 @@ public sealed class ProviderServiceTests
 	{
 		Assert.IsInstanceOfType<DateTimeProvider>(_sut.DateTime);
 		Assert.IsInstanceOfType<DirectoryProvider>(_sut.Directory);
-		Assert.IsInstanceOfType<EnvironmentProvider>(_sut.Environment);
 		Assert.IsInstanceOfType<FileProvider>(_sut.File);
 		Assert.IsInstanceOfType<PathProvider>(_sut.Path);
 	}
